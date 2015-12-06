@@ -3,6 +3,9 @@ language: r
 sudo: required
 warnings_are_errors: false
 
+apt_packages:
+          - r-cran-rjava
+
 env:
   global:
     - CRAN: http://cran.rstudio.com
