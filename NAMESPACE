@@ -1,0 +1,222 @@
+useDynLib(stream)
+#exportPattern("^[[:alpha:]]+")
+
+import(methods)
+import(Rcpp)
+import(proxy)
+#import(birch) 
+
+importFrom(utils, "head", "read.table", "write.table")
+importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit") 
+importFrom(graphics, "plot", "par", "layout", "title", "pairs", "points", 
+  "lines", "image")
+importFrom(grDevices, "gray", "gray.colors", "rgb", "col2rgb")
+
+importFrom(dbscan, "dbscan")
+importFrom(fpc, "cluster.stats")
+importFrom(MASS, "mvrnorm")
+importFrom(clusterGeneration, "genPositiveDefMat")
+importFrom(clue, "as.cl_hard_partition", "cl_agreement", "cl_ensemble")
+importFrom(mlbench, "mlbench.2dnormals","mlbench.cassini","mlbench.circle",
+    "mlbench.cuboids","mlbench.friedman1", "mlbench.friedman2",
+    "mlbench.friedman3","mlbench.hypercube", "mlbench.peak",
+    "mlbench.ringnorm", "mlbench.shapes","mlbench.simplex","mlbench.smiley",
+    "mlbench.spirals","mlbench.threenorm", "mlbench.twonorm",
+    "mlbench.waveform","mlbench.xor")
+
+export(
+	# DSC
+  DSC,
+  DSC_R,
+  DSC_Micro,
+  DSC_Macro,
+  
+  #  DSC_BIRCH,  # removed from CRAN
+  DSC_DStream,
+  DSC_Sample,
+	DSC_DBSTREAM, 
+  DSC_Window,
+	
+  DSC_DBSTREAM, 
+
+  DSC_Kmeans,
+	DSC_DBSCAN,
+	DSC_Hierarchical,
+  DSC_Reachability,
+	
+  DSC_TwoStage,
+
+  DSC_Static,
+
+  # DSD
+	DSD,
+  DSD_R,
+  
+  DSD_Memory,
+  DSD_ScaleStream,
+  DSD_ReadCSV,
+  DSD_ReadDB,
+  
+  DSD_mlbenchGenerator,
+	DSD_mlbenchData,
+  
+	DSD_Gaussians,
+  DSD_Cubes,
+	DSD_UniformNoise,
+	DSD_Target,
+  DSD_BarsAndGaussians,
+  DSD_Benchmark,
+
+  # DSO
+  DSO_Window,
+  DSO_Sample,
+  
+  # MGCs
+  DSD_MG,
+  MGC_Linear,
+  MGC_Function,
+  MGC_Random,
+  MGC_Noise,
+  MGC_Static,
+  MGC_Shape_Gaussian,
+  MGC_Shape_Block,
+
+  # functions
+	# DSD
+	get_points,
+	write_stream,
+	reset_stream,
+	close_stream,
+	scale_stream,
+
+  add_keyframe,
+  keyframe,
+  remove_keyframe,
+  get_keyframes,
+  add_cluster,
+  get_clusters,
+  remove_cluster,
+	
+	# DSC
+	#cluster,
+	recluster,
+	get_centers,
+	get_weights,
+	get_assignment,
+	get_copy,
+	nclusters,
+#	merge_DSC,
+	prune_clusters,
+	microToMacro,	
+	
+	evaluate,
+	evaluate_cluster,
+	
+	animate_cluster,
+	animate_data,
+  
+  ### DSC_DBSTREAM
+  get_shared_density,
+  change_alpha,
+  get_cluster_assignments,
+  
+  ### DSC_DStream
+  get_attraction,
+  
+  ### generics internally used
+  get_microclusters,
+  get_microweights,
+  get_macroclusters,
+  get_macroweights,
+
+  saveDSC,
+  readDSC,
+  
+  description
+)
+
+### update
+S3method(update, DSC_R)
+S3method(update, DSC_TwoStage)
+
+### DSD Methods
+S3method(print, DSD)
+S3method(summary, DSD)
+S3method(print, DSD_Memory)
+S3method(plot, DSD)
+S3method(write_stream, DSD)
+
+S3method(get_points, DSD_Gaussians)
+S3method(get_points, DSD_mlbenchGenerator)
+S3method(get_points, DSD_BarsAndGaussians)
+S3method(get_points, DSD_ReadCSV)
+S3method(get_points, DSD_ReadDB)
+S3method(get_points, DSD_Target)
+S3method(get_points, DSD_Memory)
+S3method(get_points, DSD_ScaleStream)
+
+S3method(reset_stream, DSD)
+S3method(reset_stream, DSD_Memory)
+S3method(reset_stream, DSD_ReadCSV)
+S3method(reset_stream, DSD_ScaleStream)
+
+### DSO Methods
+S3method(print, DSO)
+S3method(update, DSO_Window)
+S3method(get_points, DSO_Window)
+S3method(get_weights, DSO_Window)
+S3method(update, DSO_Sample)
+S3method(get_points, DSO_Sample)
+S3method(get_weights, DSO_Sample)
+
+### DSC Methods
+S3method(print, DSC)
+S3method(summary, DSC)
+
+S3method(plot, DSC)
+S3method(plot, DSC_DBSTREAM)
+S3method(plot, DSC_DStream)
+
+S3method(nclusters, DSC)
+S3method(get_assignment, DSC)
+S3method(get_assignment, DSC_DBSTREAM)
+S3method(get_assignment, DSC_DStream)
+S3method(get_assignment, DSC_TwoStage)
+
+S3method(get_centers, DSC_Macro)
+S3method(get_centers, DSC_Micro)
+S3method(get_centers, DSC_TwoStage)
+
+S3method(get_weights, DSC_Micro)
+S3method(get_weights, DSC_Macro)
+S3method(get_weights, DSC_TwoStage)
+
+S3method(recluster, DSC_Macro)
+
+S3method(microToMacro, DSC_R)
+S3method(microToMacro, DSC_DBSTREAM)
+S3method(microToMacro, DSC_DStream)
+S3method(microToMacro, DSC_TwoStage)
+
+S3method(get_copy, DSC_R)
+
+S3method(print, stream_eval)
+
+### description
+S3method(description, DSD)
+S3method(description, DSC)
+S3method(description, DSO)
+
+### DSD_MGC
+S3method(add_cluster, DSD_MG)
+S3method(reset_stream, DSD_MG)
+S3method(get_points, DSD_MG)
+S3method(get_clusters, DSD_MG)
+S3method(print, DSD_MG)
+S3method(remove_cluster, DSD_MG)
+S3method(print, MGC)
+S3method(print, MGC_Linear)
+S3method(add_keyframe, MGC_Linear)
+S3method(get_keyframes, MGC_Linear)
+S3method(remove_keyframe, MGC_Linear)
+
