@@ -1,3 +1,5 @@
 library("testthat")
-test_package("stream")
+
+library("stream")
+test_check("stream")
 

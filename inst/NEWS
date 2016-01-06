@@ -1,25 +1,26 @@
-Changes in version 1.2-3 (xx/xx/15)
+Changes in version 1.2-2.1 (xx/xx/15)
+    * fixed saveDSC for DBStream
 
 Changes in version 1.2-2 (10/28/15)
     * evaluate now reports noise information.
-    
+
 Changes in version 1.2-1 (09/08/15)
     * fixed problem with failing test under Windows.
 
 Changes in version 1.2-0 (09/06/15)
     * generic and methods for description() added to exact descriptions from
         DSD, DSC and DSO objects.
-    * write_stream() gained parameter append and now throws an error if it 
+    * write_stream() gained parameter append and now throws an error if it
 	      would overwrite a file.
-    * DSC objects can now be saved and loaded using saveDSC and readDSC.  
+    * DSC objects can now be saved and loaded using saveDSC and readDSC.
     * we use now DBSCAN from package dbscan.
-    * DSC_DBSTREAM gained parameter metric and now also supports 
-        Manhattan and Maximum norm. 
-    * DSC_DBSTREAM gained parameter assignments and function 
+    * DSC_DBSTREAM gained parameter metric and now also supports
+        Manhattan and Maximum norm.
+    * DSC_DBSTREAM gained parameter assignments and function
         get_cluster_assignments() to retrieve the MC assignment of the
         clustered data points.
     * cleaned up interface for animate_cluster() and animate_data().
-    * DSD_ReadCSV was completely rewritten to be more reliable. Lost argument d 
+    * DSD_ReadCSV was completely rewritten to be more reliable. Lost argument d
         which is now figured out automatically.
     * write_stream has now an argument called header (former name was col.names)
         to be consistent with DSD_ReadCSV.
@@ -31,13 +32,13 @@ Changes in version 1.1-5 (07/02/15)
     * evaluate gains argument noise to control if noise is ignored
 
 Changes in version 1.1-4 (05/24/15)
-    * evaluate checks if DSD has cluster labels for external 
+    * evaluate checks if DSD has cluster labels for external
 	      evaluation measures.
     * DSD_mlbenchmarkGenerator now shuffles data points.
     * DSC_ReadCSV gains arguments skip and header.
     * DSC_DStream: was reimplemented in C++ (Rcpp),
         number of grids N can now be fixed by the user.
-    * DSC_tNN was renamed DSC_DBSTREAM. Uses now SOM-style micro-cluster update 
+    * DSC_tNN was renamed DSC_DBSTREAM. Uses now SOM-style micro-cluster update
         and was reimplemented in C++ (Rcpp).
 
 Changes in version 1.1-1 (01/15/15)
@@ -74,7 +75,7 @@ Changes in version 1.0-1 (06/12/14)
 Changes in version 1.0-0 (5/24/14)
     * added D-Stream (with attraction)
     * improved support for creating animations
-    * tnn: new decay models, tNN without shared density now reclusters 
+    * tnn: new decay models, tNN without shared density now reclusters
         using density reachability
     * plot gained the type "both" that plots micro and macro-clusters
     * DSC_Hierarchical and DSC_Kmeans gained min_weight to filter low weight
