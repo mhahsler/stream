@@ -4,11 +4,11 @@ useDynLib(stream)
 import(methods)
 import(Rcpp)
 import(proxy)
-#import(birch) 
+#import(birch)
 
 importFrom(utils, "head", "read.table", "write.table")
-importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit") 
-importFrom(graphics, "plot", "par", "layout", "title", "pairs", "points", 
+importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit")
+importFrom(graphics, "plot", "par", "layout", "title", "pairs", "points",
   "lines", "image")
 importFrom(grDevices, "gray", "gray.colors", "rgb", "col2rgb")
 
@@ -30,20 +30,20 @@ export(
   DSC_R,
   DSC_Micro,
   DSC_Macro,
-  
+
   #  DSC_BIRCH,  # removed from CRAN
   DSC_DStream,
   DSC_Sample,
-	DSC_DBSTREAM, 
+	DSC_DBSTREAM,
   DSC_Window,
-	
-  DSC_DBSTREAM, 
+
+  DSC_DBSTREAM,
 
   DSC_Kmeans,
 	DSC_DBSCAN,
 	DSC_Hierarchical,
   DSC_Reachability,
-	
+
   DSC_TwoStage,
 
   DSC_Static,
@@ -51,15 +51,15 @@ export(
   # DSD
 	DSD,
   DSD_R,
-  
+
   DSD_Memory,
   DSD_ScaleStream,
   DSD_ReadCSV,
   DSD_ReadDB,
-  
+
   DSD_mlbenchGenerator,
 	DSD_mlbenchData,
-  
+
 	DSD_Gaussians,
   DSD_Cubes,
 	DSD_UniformNoise,
@@ -70,7 +70,7 @@ export(
   # DSO
   DSO_Window,
   DSO_Sample,
-  
+
   # MGCs
   DSD_MG,
   MGC_Linear,
@@ -96,7 +96,7 @@ export(
   add_cluster,
   get_clusters,
   remove_cluster,
-	
+
 	# DSC
 	#cluster,
 	recluster,
@@ -107,22 +107,22 @@ export(
 	nclusters,
 #	merge_DSC,
 	prune_clusters,
-	microToMacro,	
-	
+	microToMacro,
+
 	evaluate,
 	evaluate_cluster,
-	
+
 	animate_cluster,
 	animate_data,
-  
+
   ### DSC_DBSTREAM
   get_shared_density,
   change_alpha,
   get_cluster_assignments,
-  
+
   ### DSC_DStream
   get_attraction,
-  
+
   ### generics internally used
   get_microclusters,
   get_microweights,
@@ -131,7 +131,7 @@ export(
 
   saveDSC,
   readDSC,
-  
+
   description
 )
 
@@ -149,6 +149,7 @@ S3method(write_stream, DSD)
 S3method(get_points, DSD_Gaussians)
 S3method(get_points, DSD_mlbenchGenerator)
 S3method(get_points, DSD_BarsAndGaussians)
+S3method(get_points, DSD_UniformNoise)
 S3method(get_points, DSD_ReadCSV)
 S3method(get_points, DSD_ReadDB)
 S3method(get_points, DSD_Target)

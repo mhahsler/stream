@@ -1,5 +1,6 @@
 Changes in version 1.2-2.1 (xx/xx/15)
     * fixed saveDSC for DBStream
+    * fixed handling of data with d=1 (reported by Ilana Lichtenstein)
 
 Changes in version 1.2-2 (10/28/15)
     * evaluate now reports noise information.
