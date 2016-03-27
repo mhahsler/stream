@@ -16,6 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+# Reachability and single-link hierarchical clustering are equivalent
 
 ### creator    
 DSC_Reachability <- function(epsilon, min_weight=NULL, description=NULL) {
