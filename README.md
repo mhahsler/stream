@@ -35,6 +35,7 @@ R> plot(kmeans, stream, type="both")
 
 ## Further Information
 
+* Development version of [stream on github](https://github.com/mhahsler/stream).
 * [stream package vignette](http://cran.r-project.org/web/packages/stream/vignettes/stream.pdf) with complete examples.
 * [stream reference manual](http://cran.r-project.org/web/packages/stream/stream.pdf)
 
