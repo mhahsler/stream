@@ -12,7 +12,7 @@ Additional packages in the stream family are: [streamMOA](http://github.com/mhah
 ## Installation
 
 * __Stable CRAN version:__ install from within R.
-* __Current development version:__ Download package from [AppVeyor](https://ci.appveyor.com/project/mhahsler/stream/build/artifacts) or install via `intall_git("mhahsler/stream")` (needs devtools) 
+* __Current development version:__ Download package from [AppVeyor](https://ci.appveyor.com/project/mhahsler/stream/build/artifacts) or install via `install_git("mhahsler/stream")` (needs devtools) 
 
 ## Example
 ```R
@@ -36,5 +36,7 @@ R> plot(kmeans, stream, type="both")
 ## Further Information
 
 * [stream package vignette](http://cran.r-project.org/web/packages/stream/vignettes/stream.pdf) with complete examples.
-* [Reference manual](http://cran.r-project.org/web/packages/stream/stream.pdf)
+* [stream reference manual](http://cran.r-project.org/web/packages/stream/stream.pdf)
+
+_Maintainer:_ [Michael Hahsler](http://michael.hahsler.net)
 
