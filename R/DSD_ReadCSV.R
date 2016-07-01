@@ -28,7 +28,7 @@ DSD_ReadCSV <- function(file, k=NA,
   # if the user passes a string, create a new connection and open it
   if (is(file, "character")) file <- file(file)
   
-  # error out if no string or connection is passed
+  # error if no string or connection is passed
   if (!is(file, "connection")) stop("Please pass a valid connection!")
   
   # open the connection if its closed
@@ -71,8 +71,6 @@ DSD_ReadCSV <- function(file, k=NA,
   ### integer -> numeric, factor -> character
   colClasses[colClasses == "integer"] <- "numeric"
   colClasses[colClasses == "factor"] <- "character"
-  
-  
  
   # class?
   if(is.character(class)) {
@@ -109,8 +107,8 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   cluster = FALSE, class = FALSE,  ...) {
   .nodots(...)
   
-  #.DEBUG <- TRUE
-  .DEBUG <- FALSE
+  .DEBUG <- TRUE
+  #.DEBUG <- FALSE
   
   if((class || cluster) && is.null(x$class)) 
     stop("Stream does not support class/cluster labels.")

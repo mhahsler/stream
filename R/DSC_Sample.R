@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ### Interface to DSO_Sample (see DSO_Sample.R)
-DSC_Sample <- function(k = 100, biased = FALSE) 
-  structure(list(description = 
+DSC_Sample <- function(k = 100, biased = FALSE)
+  structure(list(description =
       if(biased) "Reservoir sampling (biased)" else "Reservoir sampling",
     RObj = SampleDSC$new(k = k, biased = biased)),
     class = c("DSC_Sample","DSC_Micro","DSC_R","DSC"))
