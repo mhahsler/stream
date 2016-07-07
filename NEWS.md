@@ -1,7 +1,8 @@
 # Changes in version 1.2-2.1 (xx/xx/16)
 
-* fixed saveDSC for DBStream
-* fixed handling of data with d=1 (reported by Ilana Lichtenstein)
+* fixed saveDSC for DBStream.
+* fixed handling of data with d=1 (reported by Ilana Lichtenstein).
+* plot now automatically determines if the data supports a class attribute.
 
 # Changes in version 1.2-2 (10/28/15)
 
