@@ -1,7 +1,7 @@
 # stream - Infrastructure for Data Stream Mining - R package
 
-[![CRAN version](http://www.r-pkg.org/badges/version/stream)](http://cran.r-project.org/web/packages/stream/index.html)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/stream)](http://cran.r-project.org/web/packages/stream/index.html)
+[![CRAN version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
 [![Travis-CI Build Status](https://travis-ci.org/mhahsler/stream.svg?branch=master)](https://travis-ci.org/mhahsler/stream)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mhahsler/stream?branch=master&svg=true)](https://ci.appveyor.com/project/mhahsler/stream)
 

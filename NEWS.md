@@ -1,4 +1,4 @@
-# Changes in version 1.2-2.1 (xx/xx/16)
+# Changes in version 1.2-3 (08/07/16)
 
 * fixed saveDSC for DBStream.
 * fixed handling of data with d=1 (reported by Ilana Lichtenstein).
