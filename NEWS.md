@@ -1,3 +1,7 @@
+# Changes in version 1.2-3.1 (xx/x/16)
+
+* Use dbFetch in DSD_ReadDB (new version of RSQLite).
+
 # Changes in version 1.2-3 (08/07/16)
 
 * fixed saveDSC for DBStream.

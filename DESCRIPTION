@@ -1,6 +1,6 @@
 Package: stream
-Version: 1.2-3
-Date: 2016-08-07
+Version: 1.2-3.1
+Date: 2016-xx-xx
 Title: Infrastructure for Data Stream Mining
 Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
                 email = "mhahsler@lyle.smu.edu"),
