@@ -11,10 +11,10 @@
   to micro-clusters with a given radius and implements shared-density-based reclustering.}
 
 \usage{
-DSC_DBSTREAM(r, lambda = 0.001, gaptime = 1000L, 
-  Cm = 3, metric = "Euclidean", shared_density = FALSE, 
+DSC_DBSTREAM(r, lambda = 0.001, gaptime = 1000L,
+  Cm = 3, metric = "Euclidean", shared_density = FALSE,
   alpha=0.1, k=0, minweight = 0)
-get_shared_density(x, use_alpha = TRUE)  
+get_shared_density(x, use_alpha = TRUE)
 change_alpha(x, alpha)
 get_cluster_assignments(x)
 }
@@ -22,18 +22,18 @@ get_cluster_assignments(x)
 \arguments{
 	\item{r}{The radius of micro-clusters.}
 	\item{lambda}{The lambda used in the fading function.}
-	\item{gaptime}{weak micro-clusters (and weak shared density entries) 
+	\item{gaptime}{weak micro-clusters (and weak shared density entries)
     are removed every \code{gaptime} points.}
 	\item{Cm}{ minimum weight for a micro-cluster. }
 	\item{metric}{ metric used to calculate distances. }
   \item{shared_density}{Record shared density information. If set to \code{TRUE}
     then shared density is used for reclustering, otherwise reachability is
-    used (overlapping clusters with less than \eqn{r*(1-alpha)} distance 
+    used (overlapping clusters with less than \eqn{r*(1-alpha)} distance
     are clustered together). }
 	\item{k}{The number of macro clusters to be returned if macro is true.}
-  \item{alpha}{For shared density: The minimum proportion of shared 
-    points between to 
-    clusters to warrant combining them (a suitable value for 2D data is .3). 
+  \item{alpha}{For shared density: The minimum proportion of shared
+    points between to
+    clusters to warrant combining them (a suitable value for 2D data is .3).
     For reachability clustering it is a distance factor.}
   \item{minweight}{The proportion of the total weight a macro-cluster
     needs to have not to be noise (between 0 and 1).}
@@ -44,17 +44,17 @@ get_cluster_assignments(x)
 \details{
 The DBSTREAM algorithm checks for each new data point in the
 incoming stream, if it is below the threshold value of dissimilarity value of
-any existing micro-clusters, and if so, merges the point with the 
-micro-cluster. Otherwise, a new micro-cluster is created to accommodate 
+any existing micro-clusters, and if so, merges the point with the
+micro-cluster. Otherwise, a new micro-cluster is created to accommodate
 the new data point.
 
 Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters
 and weights are available.
 
-\code{get_cluster_assignments()} can be used to extract the MC assignment for 
+\code{get_cluster_assignments()} can be used to extract the MC assignment for
 each data point clustered during the last update operation (note: update needs
-to be called with \code{assignments = TRUE} and the block size needs to be large 
-enough). The function returns the MC index (in the current set of MCs obtained 
+to be called with \code{assignments = TRUE} and the block size needs to be large
+enough). The function returns the MC index (in the current set of MCs obtained
   with, e.g., \code{get_centers()}) and as an attribute the permanent MC ids.
 
 \code{plot()} for DSC_DBSTREAM has two extra logical parameters called \code{assignment}
@@ -63,14 +63,13 @@ the shared density graph, respectively.
 }
 
 \value{
-An object of class \code{DSC_DBSTREAM} 
-  (subclass of  \code{DSC}, \code{DSC_R}, \code{DSC_Micro}). 
+An object of class \code{DSC_DBSTREAM}
+  (subclass of  \code{DSC}, \code{DSC_R}, \code{DSC_Micro}).
 }
 
-%\references{ 
-%M. Hahsler, M. H. Dunham (2010): rEMM: Extensible Markov Model for Data
-%Stream Clustering in R, Journal of Statistical Software, 35(5), 1-31, URL \url{http://www%.jstatsoft.org/v35/i05/}
-%}
+\references{
+Michael Hahsler and Matthew Bolaños. Clustering data streams based on shared density between micro-clusters. \emph{IEEE Transactions on Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
+}
 
 \seealso{
 	\code{\link{DSC}},
@@ -89,7 +88,7 @@ stream <- DSD_Gaussians(k = 3, noise = 0.05)
 # create clusterer with r = 0.05
 dbstream <- DSC_DBSTREAM(r = .05)
 update(dbstream, stream, 1000)
-dbstream 
+dbstream
 
 # check micro-clusters
 nclusters(dbstream)
@@ -103,7 +102,7 @@ plot(dbstream, stream, type = "both")
 plot(dbstream, stream, type = "both", assignment = TRUE)
 
 
-# DBSTREAM with shared density 
+# DBSTREAM with shared density
 dbstream <- DSC_DBSTREAM(r = .05, shared_density = TRUE, Cm=5)
 update(dbstream, stream, 1000)
 dbstream

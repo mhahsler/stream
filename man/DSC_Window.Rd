@@ -2,7 +2,7 @@
 \alias{DSC_Window}
 \title{A sliding window from a Data Stream}
 \description{
-    Implements a sliding window which keeps a fixed amount (window length) of the 
+    Implements a sliding window which keeps a fixed amount (window length) of the
   most recent data points of the stream.
 }
 
@@ -17,9 +17,9 @@
 }
 
 \details{
-  If \code{lambda} is greater than 0 then the weight 
+  If \code{lambda} is greater than 0 then the weight
   uses a damped window model (Zhu and Shasha, 2002).
-  The weight for points in 
+  The weight for points in
   the window follows \eqn{2^{-lambda*t}} where \eqn{t} is the age of the point.
 }
 
@@ -34,8 +34,8 @@ An object of class \code{DSC_Window} (subclass of
 }
 
 \references{
-Zhu, Y. and Shasha, D. (2002). StatStream: Statistical Monitoring of Thousands 
-of Data Streams in Real Time, Intl. Conference of Very Large Data Bases (VLDB'02).
+Zhu, Y. and Shasha, D. (2002). StatStream: Statistical Monitoring of Thousands
+of Data Streams in Real Time, \emph{International Conference of Very Large Data Bases (VLDB'02).}
 }
 
 \author{
@@ -55,7 +55,7 @@ window
 # plot micro-clusters
 plot(window, stream)
 
-# animation for a window using a damped window model. The weight decays 
+# animation for a window using a damped window model. The weight decays
 # with a half-life of 25
 \dontrun{
 window <- DSC_Window(horizon=25, lambda=1/25)

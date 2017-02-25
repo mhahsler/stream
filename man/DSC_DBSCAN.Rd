@@ -20,19 +20,19 @@
 \details{
 DBSCAN is a weighted extended version of the implementation in \pkg{fpc} where
 each micro-cluster center considered a pseudo point. For weighting we use
-in the MinPts comparison the sum of weights of the micro-cluster instead of the 
+in the MinPts comparison the sum of weights of the micro-cluster instead of the
 number.
 
 DBSCAN first finds core points based on the number of other points
-in its eps-neighborhood. Then core points are joined into clusters using 
-reachability (overlapping eps-neighborhoods). 
+in its eps-neighborhood. Then core points are joined into clusters using
+reachability (overlapping eps-neighborhoods).
 
 Note that this clustering cannot be updated iteratively and every time
 it is used for (re)clustering, the old clustering is deleted.
 }
 
 \value{
-An object of class \code{DSC_DBSCAN} (a subclass of \code{DSC}, 
+An object of class \code{DSC_DBSCAN} (a subclass of \code{DSC},
 \code{DSC_R}, \code{DSC_Macro}).
 }
 
@@ -42,7 +42,7 @@ An object of class \code{DSC_DBSCAN} (a subclass of \code{DSC},
 }
 
 \references{
-Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu (1996). A density-based algorithm for discovering clusters in large spatial databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad. Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (KDD-96). AAAI Press. pp. 226-231.
+Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu (1996). A density-based algorithm for discovering clusters in large spatial databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad. \emph{Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 }
 
 \author{
