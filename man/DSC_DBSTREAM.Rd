@@ -68,7 +68,7 @@ An object of class \code{DSC_DBSTREAM}
 }
 
 \references{
-Michael Hahsler and Matthew Bolaños. Clustering data streams based on shared density between micro-clusters. \emph{IEEE Transactions on Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
+Michael Hahsler and Matthew Bolanos. Clustering data streams based on shared density between micro-clusters. \emph{IEEE Transactions on Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
 }
 
 \seealso{
