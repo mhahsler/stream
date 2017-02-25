@@ -7,37 +7,51 @@
 
 A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893 and NIH R21HG005912.
 
-Additional packages in the stream family are: [streamMOA](http://github.com/mhahsler/streamMOA). 
+Additional packages in the stream family are: 
+
+* [streamMOA](http://github.com/mhahsler/streamMOA). 
 
 ## Installation
 
-* __Stable CRAN version:__ install from within R.
-* __Current development version:__ Download package from [AppVeyor](https://ci.appveyor.com/project/mhahsler/stream/build/artifacts) or install via `install_git("mhahsler/stream")` (needs devtools) 
-
-## Example
+__Stable CRAN version:__ install from within R with
 ```R
-R> library("stream")
-R> stream <- DSD_Gaussians(k=3, noise=0)
+install.packages("stream")
+```
+__Current development version:__ Download package from [AppVeyor](https://ci.appveyor.com/project/mhahsler/steam/build/artifacts) or install from GitHub (needs devtools).
+```R 
+install_git("mhahsler/stream")
+```
 
-# create micro-clusters via sampling
-R> sample <- DSC_Sample(k=20)
-R> update(sample, stream, 500)
-R> sample
+
+
+## Usage
+
+Load the package and create micro-clusters via sampling.
+
+```R
+library("stream")
+stream <- DSD_Gaussians(k=3, noise=0)
+
+sample <- DSC_Sample(k=20)
+update(sample, stream, 500)
+sample
+```
+
+```
 Reservoir sampling
 Class: DSC_Sample, DSC_Micro, DSC_R, DSC 
 Number of micro-clusters: 20 
-
-# recluster micro-clusters
-R> kmeans <- DSC_Kmeans(k=3)
-R> recluster(kmeans, sample)
-R> plot(kmeans, stream, type="both")
 ```
 
-## Further Information
+Recluster micro-clusters using k-means and plot results
 
-* Development version of [stream on github](https://github.com/mhahsler/stream).
-* [stream package vignette](http://cran.r-project.org/web/packages/stream/vignettes/stream.pdf) with complete examples.
-* [stream reference manual](http://cran.r-project.org/web/packages/stream/stream.pdf)
+```R
+kmeans <- DSC_Kmeans(k=3)
+recluster(kmeans, sample)
+plot(kmeans, stream, type="both")
+```
 
-_Maintainer:_ [Michael Hahsler](http://michael.hahsler.net)
+## References
 
+* [stream package vignette](https://cran.r-project.org/package=stream/vignettes/stream.pdf) with complete examples.
+* [stream reference manual](https://cran.r-project.org/package=stream/stream.pdf)
