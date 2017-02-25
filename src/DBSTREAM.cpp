@@ -465,8 +465,8 @@ private:
 
 
 //RCPP_EXPOSED_CLASS(DBSTREAM)
-using namespace Rcpp ;
 RCPP_MODULE(MOD_DBSTREAM){
+  using namespace Rcpp;
 
   class_<DBSTREAM>("DBSTREAM")
   // expose the default constructor

@@ -318,8 +318,8 @@ private:
   
 };
 
-using namespace Rcpp ;
 RCPP_MODULE(MOD_DStream){
+  using namespace Rcpp;
   
   class_<DStream>("DStream")
   .constructor<double, double, int, double, double, bool, double>()
