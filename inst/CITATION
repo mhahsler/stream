@@ -4,7 +4,7 @@ bibentry(bibtype = "Article",
                           family = "Hahsler",
                           email = "mhahsler@lyle.smu.edu"),
                    person(given = "Matthew",
-                          family = "Bola\\~nos",
+                          family = "Bola{\\~n}os",
                           email = "mbolanos@curiouscrane.com"),
                    person(given = "John",
                           family = "Forrest",
@@ -18,7 +18,7 @@ bibentry(bibtype = "Article",
 
   header       = "To cite stream in publications use:",
   textVersion  =
-  paste("Michael Hahsler, Matthew Bola\~nos, John Forrest (2017).",
+  paste("Michael Hahsler, Matthew Bolanos, John Forrest (2017).",
         "Introduction to stream: An Extensible Framework for Data Stream Clustering Research with R.",
         "Journal of Statistical Software, 76(14), 1-50.",
         "doi:10.18637/jss.v076.i14")
