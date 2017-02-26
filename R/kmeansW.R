@@ -53,22 +53,24 @@ kmeansW <- function(x, centers, weight = rep(1,nrow(x)),
         stop("'iter.max' must be positive")
     if (ncol(x) != ncol(centers))
         stop("must have same number of columns in 'x' and 'centers'")
-    Z <- .C("kmnsw", as.double(x), as.integer(m),
-            as.integer(ncol(x)),
-            centers = as.double(centers), as.double(weight),
-            as.integer(k), c1 = integer(m), nc = integer(k), 
-            as.integer(iter.max), wss = double(k),
-            ifault = as.integer(0), PACKAGE="stream")
+    #Z <- .Call("kmnsw", as.double(x), as.integer(m),
+    #        as.integer(ncol(x)),
+    #        centers = as.double(centers), as.double(weight),
+    #        as.integer(k), c1 = integer(m), nc = integer(k),
+    #        as.integer(iter.max), wss = double(k),
+    #       ifault = as.integer(0))
+    Z <- kmnsw(x, centers, weight, k, as.integer(iter.max))
     if (nstart >= 2 && !is.null(cn)) {
         best <- sum(Z$wss)
         for (i in 2:nstart) {
             centers <- cn[sample(1:mm, k), , drop = FALSE]
-            ZZ <-  .C("kmnsw", as.double(x), as.integer(m),
-                      as.integer(ncol(x)),
-                      centers = as.double(centers), as.double(weight),
-                      as.integer(k), c1 = integer(m), nc = integer(k), 
-                      as.integer(iter.max), wss = double(k),
-                      ifault = as.integer(0L), PACKAGE="stream")
+            #ZZ <-  .Call("kmnsw", as.double(x), as.integer(m),
+            #          as.integer(ncol(x)),
+            #          centers = as.double(centers), as.double(weight),
+            #          as.integer(k), c1 = integer(m), nc = integer(k),
+            #          as.integer(iter.max), wss = double(k),
+            #          ifault = as.integer(0L))
+            ZZ <- kmnsw(x, centers, weight, k, as.integer(iter.max))
             if ((z <- sum(ZZ$wss)) < best) {
                 Z <- ZZ
                 best <- z

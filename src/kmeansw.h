@@ -19,10 +19,10 @@
 #ifndef KMEANSW_H
 #define KMEANSW_H
 
-extern "C" {
+//extern "C" {
 void kmnsw ( double *a, int *mR, int *nR, double *c, double *wh, int *kR, int *ic1, int *nc,
              int *iterR, double *wss, int *ifault );
-}
+//}
 
 void optra ( double a[], int m, int n, double c[], double wh[], double whc[], int k, int ic1[],
              int ic2[], int nc[], int ncp[], double d[],

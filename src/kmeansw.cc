@@ -16,23 +16,25 @@
 
 //
 
+#include <Rcpp.h>
+
 #include <cstdlib>
 #include <iomanip>
 #include <cmath>
 #include <ctime>
 #include "kmeansw.h"
 
+
 using namespace std;
 
 # define epsilon 1.0E-30 //NEW
 
 
-extern "C"  {
+//extern "C"  {
 //****************************************************************************80
 //MODIF function name: kmnsw
 //NEW   weight of each point variable: wh
-void kmnsw ( double *a, int *m_p, int *n_p, double *c, double *wh, int *k_p,
-                 int *ic1, int *nc, int *iter_p, double *wss, int *ifault )
+
 //****************************************************************************80
 //
 //     Purpose:
@@ -97,7 +99,39 @@ void kmnsw ( double *a, int *m_p, int *n_p, double *c, double *wh, int *k_p,
 //
 //NEW    Output, double WHC(K), the weight of each cluster.
 //
+
+// [[Rcpp::export]]
+Rcpp::List kmnsw (Rcpp::NumericMatrix a_R,
+            Rcpp::NumericMatrix c_R, Rcpp::NumericVector wh_R, int k,
+            int iter)
 {
+            //int *ic1, int *nc, int iter, double *wss, int *ifault )
+
+
+  Rcpp::List ret;
+
+  int ifault_;
+  int *ifault = &ifault_;
+  int m = a_R.nrow();
+  int n = a_R.ncol();
+  std::vector<double> a_ = Rcpp::as<std::vector<double> >(a_R);
+  double *a = &a_[0];
+
+  std::vector<double> c_ = Rcpp::as<std::vector<double> >(c_R);
+  double *c = &c_[0];
+
+  std::vector<double> wh_ = Rcpp::as<std::vector<double> >(wh_R);
+  double *wh = &wh_[0];
+
+  std::vector<int> ic1_(m);
+  int *ic1 = &ic1_[0];
+
+  std::vector<int> nc_(k);
+  int *nc = &nc_[0];
+
+  std::vector<double> wss_(k);
+  double *wss = &wss_[0];
+
   //DEL  double aa;
   double da;
   double db;
@@ -117,14 +151,14 @@ void kmnsw ( double *a, int *m_p, int *n_p, double *c, double *wh, int *k_p,
   int *live;
   int *ncp;
   double *whc; //NEW
-  int m=*m_p, n=*n_p, k=*k_p, iter=*iter_p; //NEW
 
   *ifault = 0;
 
   if ( k <= 1 || m <= k )
   {
     *ifault = 3;
-    return;
+    ret["ifault"] = *ifault;
+    return ret;
   }
   d = new double[m];
   ic2 = new int[m];
@@ -218,7 +252,8 @@ void kmnsw ( double *a, int *m_p, int *n_p, double *c, double *wh, int *k_p,
   {
     if ( whc[l-1] < epsilon ) //MODIF
     {
-      return;
+      ret["ifault"] = *ifault;
+      return ret;
     }
   }
 
@@ -341,7 +376,7 @@ void kmnsw ( double *a, int *m_p, int *n_p, double *c, double *wh, int *k_p,
       wss[ii-1] = wss[ii-1] + da * da * wh[i-1]; //MODIF
     }
   }
-  
+
   delete [] d;
   delete [] ic2;
   delete [] itran;
@@ -349,10 +384,15 @@ void kmnsw ( double *a, int *m_p, int *n_p, double *c, double *wh, int *k_p,
   delete [] ncp;
   delete [] whc; //NEW
 
-  return;
+  ret["c1"] = Rcpp::wrap(ic1_);
+  ret["centers"] = Rcpp::wrap(c_);
+  ret["nc"] = Rcpp::wrap(nc_);
+  ret["wss"] = Rcpp::wrap(wss_);
+  ret["ifault"] = *ifault;
+  return ret;
 }
 
-} // extern "C"
+//} // extern "C"
 
 //****************************************************************************80
 //DEL   variables: an1, an2
