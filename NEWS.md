@@ -1,22 +1,23 @@
-# Changes in version 1.2-3.1 (xx/x/16)
+# stream 1.2-4 (02/25/17)
 
 * Use dbFetch in DSD_ReadDB (new version of RSQLite).
+* Register native C routines.
 
-# Changes in version 1.2-3 (08/07/16)
+# stream 1.2-3 (08/07/16)
 
 * fixed saveDSC for DBStream.
 * fixed handling of data with d=1 (reported by Ilana Lichtenstein).
 * plot now automatically determines if the data supports a class attribute.
 
-# Changes in version 1.2-2 (10/28/15)
+# stream 1.2-2 (10/28/15)
 
 * evaluate now reports noise information.
 
-# Changes in version 1.2-1 (09/08/15)
+# stream 1.2-1 (09/08/15)
 
 * fixed problem with failing test under Windows.
 
-# Changes in version 1.2-0 (09/06/15)
+# stream 1.2-0 (09/06/15)
 
 * generic and methods for description() added to exact descriptions from
         DSD, DSC and DSO objects.
@@ -35,14 +36,14 @@
 * write_stream has now an argument called header (former name was col.names)
         to be consistent with DSD_ReadCSV.
 
-# Changes in version 1.1-5 (07/02/15)
+# stream 1.1-5 (07/02/15)
 
 * NAMESPACE now imports non-standard packages correctly.
 * DSC_DBSTREAM uses now Cm instead of noise.
 * fixed iterator bug for DSC_DBSTREAM.
 * evaluate gains argument noise to control if noise is ignored
 
-# Changes in version 1.1-4 (05/24/15)
+# stream 1.1-4 (05/24/15)
 
 * evaluate checks if DSD has cluster labels for external
 	      evaluation measures.
@@ -53,13 +54,13 @@
 * DSC_tNN was renamed DSC_DBSTREAM. Uses now SOM-style micro-cluster update
         and was reimplemented in C++ (Rcpp).
 
-# Changes in version 1.1-1 (01/15/15)
+# stream 1.1-1 (01/15/15)
 
 * DSC_DStream: fixed bug with removing too many sporadic grids
 * DSD_ReadCSV now uses readLine so it can read properly from URLs
 * updated vignette
 
-# Changes in version 1.1-0 (12/18/14)
+# stream 1.1-0 (12/18/14)
 
 * update now directly dispatches
 * DSC_Memory replaces DSD_Wrapper
@@ -68,17 +69,17 @@
 * added DSD_ReadDB (DBI interface)
 * get_points can now produce cluster and class information
 
-# Changes in version 1.0-3 (07/14/14)
+# stream 1.0-3 (07/14/14)
 
 * Fixed precision and recall calculation
 * Added DSC_TwoStage
 
-# Changes in version 1.0-2 (06/16/14)
+# stream 1.0-2 (06/16/14)
 
 * Warning for reclusterers removed.
 * plot can now show micro-cluster assignment areas using assignment=TRUE
 
-# Changes in version 1.0-1 (06/12/14)
+# stream 1.0-1 (06/12/14)
 
 * Improved documentation
 * Improved DSD_MG
@@ -89,7 +90,7 @@
 * DSC_Wrapper can now wrap matrix-like objects (e.g., from package ff and
         bigmemory)
 
-# Changes in version 1.0-0 (5/24/14)
+# stream 1.0-0 (5/24/14)
 
 * added D-Stream (with attraction)
 * improved support for creating animations
@@ -104,8 +105,10 @@
 * suspended DSC_BIRCH because of memory issues
 * reset_stream gained a pos argument
 
-# Changes in version 0.2-0 (2/21/14)
+# stream 0.2-0 (2/21/14)
 
 * major restructuring
 
-# Initial version 0.1-1 (8/16/13)
+#  stream 0.1-1 (8/16/13)
+
+* initial version

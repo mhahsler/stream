@@ -1,4 +1,4 @@
-useDynLib(stream)
+useDynLib(stream, .registration = TRUE)
 #exportPattern("^[[:alpha:]]+")
 
 import(methods)
