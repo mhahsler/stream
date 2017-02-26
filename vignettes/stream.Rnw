@@ -1466,7 +1466,7 @@ For evolving data streams it is more appropriate to bias the sample
 toward more recent data points. For biased sampling,
 the method called Algorithm~2.1 by \cite{stream:Aggarwal:2006} is also implemented.
 
-\item\code{DSC_DBSTREAM} implements an extension of the simple data stream clustering algorithm called
+\item\code{DSC_DBSTREAM}~\citep{hahsler:Hahsler2016b} implements an extension of the simple data stream clustering algorithm called
 \emph{tNN threshold nearest-neighbors (tNN)} which was developed
 for package~\pkg{rEMM}
 by \cite{stream:Hahsler+Dunham:2014,stream:Hahsler+Dunham:2010b}.
