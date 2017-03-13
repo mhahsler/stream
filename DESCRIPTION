@@ -1,6 +1,6 @@
 Package: stream
-Version: 1.2-4
-Date: 2017-02-25
+Version: 1.2-4.1
+Date: 2017-xx-x
 Title: Infrastructure for Data Stream Mining
 Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
                 email = "mhahsler@lyle.smu.edu"),
@@ -11,6 +11,6 @@ Depends: R (>= 2.13.0), methods, proxy (>= 0.4-7)
 Imports: animation, clue, cluster, clusterGeneration, dbscan (>= 0.9-2), fpc, graphics, grDevices, MASS, mlbench, Rcpp (>= 0.11.4), stats, utils
 Suggests: DBI, rJava, RSQLite, testthat
 URL: http://lyle.smu.edu/IDA/TRACDS/
-BugReports: https://github.com/mhahsler/stream/issues
+BugReports: https://github.com/mhahsler/stream
 LinkingTo: Rcpp
 License: GPL-3

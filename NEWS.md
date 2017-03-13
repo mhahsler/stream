@@ -1,3 +1,7 @@
+# stream 1.2-4.1 (xx/xx/17)
+
+* DSD_ReadCSV: Fixed bug with streams that have no class/cluster label (reported by MatthiasCarnein). 
+
 # stream 1.2-4 (02/25/17)
 
 * Use dbFetch in DSD_ReadDB (new version of RSQLite).

@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,26 +17,26 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-DSD_Memory <- function(x, n, k=NA, loop=FALSE, 
+DSD_Memory <- function(x, n, k=NA, loop=FALSE,
   class = NULL, description=NULL) {
-  
+
   if(is(x, "DSD")) {
     if(is.na(k) && !is.null(x$k)) k <- x$k
-    
+
     x <- get_points(x, n, cluster = TRUE)
     class <- attr(x, "cluster")
-  }else{ ### x is a matrix-like object    
-    if(!is.null(class) && length(class) != nrow(x)) 
+  }else{ ### x is a matrix-like object
+    if(!is.null(class) && length(class) != nrow(x))
       stop("Length of class and rows of x do not agree!")
   }
-  
+
   d <- ncol(x)
-  
+
   state <- new.env()
   assign("counter", 1L, envir = state)
-  
+
   if(is.null(description)) description <- "Memory Stream Interface"
-  
+
   # creating the DSD object
   structure(list(
     description = description,
@@ -49,13 +49,13 @@ DSD_Memory <- function(x, n, k=NA, loop=FALSE,
     ), class = c("DSD_Memory", "DSD_R", "DSD_data.frame", "DSD"))
 }
 
-get_points.DSD_Memory <- function(x, n=1, 
-  outofpoints=c("stop", "warn", "ignore"), 
+get_points.DSD_Memory <- function(x, n=1,
+  outofpoints=c("stop", "warn", "ignore"),
   cluster = FALSE, class = FALSE, ...) {
   .nodots(...)
 
   n <- as.integer(n)
-  outofpoints <- match.arg(outofpoints)  
+  outofpoints <- match.arg(outofpoints)
 
   if(x$state$counter > nrow(x$strm)) {
     if(x$loop) x$state$counter <- 1L
@@ -65,9 +65,9 @@ get_points.DSD_Memory <- function(x, n=1,
       return(x$strm[0,])
     }
   }
-  
+
   n_left <- nrow(x$strm) - x$state$counter + 1L
-  
+
   if(n_left < n && !x$loop) {
     if(outofpoints == "stop") stop("Not enough data points left in stream! Only ", n_left," are available.")
     if(outofpoints == "warn") warning("Not enough data points left in stream! Remaining points returned.")
@@ -81,29 +81,29 @@ get_points.DSD_Memory <- function(x, n=1,
     x$state$counter <- x$state$counter + n
   }else{
     ### we need to loop!
-    
-    
+
+
     # take what is left and reset counter
-    d <- x$strm[x$state$counter:nrow(x$strm),,drop=FALSE] 
+    d <- x$strm[x$state$counter:nrow(x$strm),,drop=FALSE]
     a <- x$class[x$state$counter:nrow(x$strm)]
-    
+
     togo <- n-n_left
     x$state$counter <- 1L
-    
+
     while(togo > 0L) {
       n_left <- nrow(x$strm) - x$state$counter + 1L
-      
+
       if(n_left < togo) {
         # take the whole stream
         d <- rbind(d, x$strm)
         a <- append(a, x$class)
-        
+
         togo <- togo - n_left
       }else{
         # take the rest
         d <- rbind(d, x$strm[1:(x$state$counter+togo-1),])
         a <- append(a, x$class[1:(x$state$counter+togo-1)])
-        
+
         x$state$counter <- x$state$counter + togo
         togo <- 0L
       }
@@ -111,19 +111,22 @@ get_points.DSD_Memory <- function(x, n=1,
   }
 
   d <- data.frame(d)
+
+  ### handle missing cluster/class info
+  if((cluster || class) && is.null(a)) a <- rep(NA_integer_, nrow(d))
   if(cluster) attr(d, "cluster") <- a
   if(class) d <- cbind(d, class = a)
-  
+
   d
 }
 
 print.DSD_Memory <- function(x, ...) {
   NextMethod() # calling the super classes print()
   pos <- x$state$counter
-  if (pos>nrow(x$strm)) 
+  if (pos>nrow(x$strm))
     if (!x$loop) pos <- "'end'" else pos <- 1
-  cat(paste('Contains', nrow(x$strm), 
-    'data points - currently at position', pos, 
+  cat(paste('Contains', nrow(x$strm),
+    'data points - currently at position', pos,
     '- loop is', x$loop, '\n'))
 }
 
