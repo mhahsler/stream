@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // kmnsw
 Rcpp::List kmnsw(Rcpp::NumericMatrix a_R, Rcpp::NumericMatrix c_R, Rcpp::NumericVector wh_R, int k, int iter);
-RcppExport SEXP stream_kmnsw(SEXP a_RSEXP, SEXP c_RSEXP, SEXP wh_RSEXP, SEXP kSEXP, SEXP iterSEXP) {
+RcppExport SEXP _stream_kmnsw(SEXP a_RSEXP, SEXP c_RSEXP, SEXP wh_RSEXP, SEXP kSEXP, SEXP iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,4 +19,19 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(kmnsw(a_R, c_R, wh_R, k, iter));
     return rcpp_result_gen;
 END_RCPP
+}
+
+RcppExport SEXP _rcpp_module_boot_MOD_DBSTREAM();
+RcppExport SEXP _rcpp_module_boot_MOD_DStream();
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_stream_kmnsw", (DL_FUNC) &_stream_kmnsw, 5},
+    {"_rcpp_module_boot_MOD_DBSTREAM", (DL_FUNC) &_rcpp_module_boot_MOD_DBSTREAM, 0},
+    {"_rcpp_module_boot_MOD_DStream", (DL_FUNC) &_rcpp_module_boot_MOD_DStream, 0},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_stream(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

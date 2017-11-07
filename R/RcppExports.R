@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 kmnsw <- function(a_R, c_R, wh_R, k, iter) {
-    .Call('stream_kmnsw', PACKAGE = 'stream', a_R, c_R, wh_R, k, iter)
+    .Call(`_stream_kmnsw`, a_R, c_R, wh_R, k, iter)
 }
 
