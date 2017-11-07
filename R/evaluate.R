@@ -148,7 +148,7 @@ evaluate <- function (dsc, dsd, measure, n = 100,
       clustering=predict_fpc,
       alt.clustering = actual_fpc,
       noisecluster=TRUE,
-      silhouette = TRUE,
+      silhouette = FALSE,
       G2 = TRUE, G3 = FALSE,
       wgap=FALSE, sepindex=FALSE, sepprob=0.1,
       sepwithnoise=withnoise,
@@ -393,6 +393,7 @@ silhouette <- function(points, actual, predict) {
 #  if(any(predict==0)) warning("silhouette: ", sum(predict==0), " non-noise points were predicted noise incorrectly and form their own cluster.")
 
   ## points that are predicted as noise but are not are its own group!
+
 
   mean(cluster::silhouette(predict, dist(points))[,"sil_width"])
 }
