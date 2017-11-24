@@ -1,0 +1,13 @@
+PKG_CPPFLAGS=-I.
+CXX_STD = CXX11
+
+SOURCES=$(wildcard *.c *.cc *.cpp BICO/*.cpp)
+
+CPPOBJECTS = $(SOURCES:.cpp=.o)
+CCObjects = $(CPPOBJECTS:.cc=.o)
+OBJECTS = $(CCObjects:.c=.o)
+
+all: $(SHLIB)
+
+clean:
+	@rm -f $(OBJECTS)
