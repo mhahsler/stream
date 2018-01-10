@@ -5,11 +5,20 @@
 [![Travis-CI Build Status](https://travis-ci.org/mhahsler/stream.svg?branch=master)](https://travis-ci.org/mhahsler/stream)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mhahsler/stream?branch=master&svg=true)](https://ci.appveyor.com/project/mhahsler/stream)
 
-A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893 and NIH R21HG005912.
+The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
+experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides
+implementations of **D-Stream** and **DBSTREAM**. 
 
 Additional packages in the stream family are: 
 
-* [streamMOA](http://github.com/mhahsler/streamMOA). 
+* [streamMOA](http://github.com/mhahsler/streamMOA): Interface to clustering
+  algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
+  Includes implementations of **DenStream**, **ClusTree** and **CluStream**.
+* [subspaceMOA](https://cran.r-project.org/package=subspaceMOA):
+  Interface to [Subspace MOA](http://dme.rwth-aachen.de/de/subspacemoa) and
+  its implementations of **HDDStream** and **PreDeConStream**.
+
+The development of the stream package was supported in part by NSF IIS-0948893 and NIH R21HG005912.
 
 ## Installation
 
@@ -53,5 +62,6 @@ plot(kmeans, stream, type="both")
 
 ## References
 
+* Michael Hahsler, Matthew Bolaños, and John Forrest. [stream: An extensible framework for data stream clustering research with R.](http://dx.doi.org/10.18637/jss.v076.i14) _Journal of Statistical Software,_ 76(14), February 2017. 
 * [stream package vignette](https://cran.r-project.org/package=stream/vignettes/stream.pdf) with complete examples.
 * [stream reference manual](https://cran.r-project.org/package=stream/stream.pdf)
