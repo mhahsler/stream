@@ -206,11 +206,11 @@ public:
 
 
   Rcpp::NumericMatrix get_microclusters(){
-    return(this->micro);
+    return this->micro;
   }
 
   Rcpp::IntegerVector get_microweights(){
-    return(this->microWeight);
+    return this->microWeight;
   }
 
   Rcpp::NumericMatrix get_macroclusters(){
@@ -218,7 +218,7 @@ public:
       this->recluster();
       this->upToDate=true;
     }
-    return(this->macro);
+    return this->macro;
   }
 
   Rcpp::IntegerVector get_macroweights(){
@@ -226,7 +226,7 @@ public:
       this->recluster();
       this->upToDate=true;
     }
-    return(this->macroWeight);
+    return this->macroWeight;
   }
 
   Rcpp::IntegerVector microToMacro(){
@@ -234,7 +234,7 @@ public:
       this->recluster();
       this->upToDate=true;
     }
-    return(this->assignment);
+    return this->assignment;
   }
 
 };

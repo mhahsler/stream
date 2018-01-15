@@ -198,12 +198,20 @@ bool MASTER::readFile(char*fileName)
     double val;
     int countD = 0;
     int countP = 0;
-    std::fscanf(input, "%d", &numberOfPoints);
+    int success = std::fscanf(input, "%d", &numberOfPoints);
+    if(!success){
+      return false;
+    }
     points = new triple<double, double*, int>*[numberOfPoints];
 
     while (countP < numberOfPoints && !std::feof(input))
     {
-        std::fscanf(input, "%lf", &val);
+        success = std::fscanf(input, "%lf", &val);
+
+        if(!success){
+          return false;
+        }
+
 
         if (countD == 0)
         {
@@ -223,7 +231,7 @@ bool MASTER::readFile(char*fileName)
         }
     }
     fclose(input);
-    std::cout << "Input file read" << std::endl;
+    // std::cout << "Input file read" << std::endl;
     return true;
 }
 
@@ -257,7 +265,10 @@ void MASTER::readInitialCenters(char*initcenter)
     double val;
     while (countK < k && !std::feof(input))
     {
-        std::fscanf(input, "%lf", &val);
+        int success = std::fscanf(input, "%lf", &val);
+        if(!success){
+          return;
+        }
         if (countD < dimension - 1)
         {
             centers[countK][countD] = val;
