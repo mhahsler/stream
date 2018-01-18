@@ -10,3 +10,4 @@
 ## a load action, so this does not have to be placed in .onLoad() or evalqOnLoad().
 loadModule("MOD_DBSTREAM", TRUE)
 loadModule("MOD_DStream", TRUE)
+loadModule("MOD_BICO", TRUE)

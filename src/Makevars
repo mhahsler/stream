@@ -1,0 +1,10 @@
+PKG_CPPFLAGS=-I.
+CXX_STD = CXX11
+
+OBJECTS = BICO.o DBSTREAM.o DStream.o init.o kmeansw.o NumericVector.o RcppExports.o BICO/l2metric.o BICO/point.o BICO/pointcentroid.o BICO/randomness.o BICO/realspaceprovider.o BICO/squaredl2metric.o
+
+
+all: $(SHLIB)
+
+clean:
+	@rm -f $(OBJECTS)
