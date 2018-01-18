@@ -2,6 +2,8 @@
 % Please edit documentation in R/DSC_BICO.R
 \name{DSC_BICO}
 \alias{DSC_BICO}
+\alias{BICO}
+\alias{bico}
 \title{BICO - Fast computation of k-means coresets in a data stream}
 \usage{
 DSC_BICO(k = 5, space = 10, p = 10, iterations = 10)

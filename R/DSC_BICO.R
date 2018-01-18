@@ -15,6 +15,8 @@
 #' This implementation interfaces the original C++ implementation available here: \url{http://ls2-www.cs.tu-dortmund.de/grav/de/bico}.
 #' For micro-clustering, the algorithm computes the coreset of the stream. Reclustering is performed by using the \code{kmeans++} algorithm on the coreset.
 #'
+#' @aliases BICO bico
+#'
 #' @param k number of centres
 #' @param space coreset size
 #' @param p number of random projections used for nearest neighbour search in first level

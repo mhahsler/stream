@@ -1,6 +1,10 @@
-# stream 1.2-4.1 (xx/xx/17)
+# stream 1.2-4.1 (xx/xx/18)
 
-* DSD_ReadCSV: Fixed bug with streams that have no class/cluster label (reported by MatthiasCarnein). 
+* Added DSC_BICO. Code by Hendrik Fichtenberger, Marc Gille, Melanie Schmidt, 
+    Chris Schwiegelshohn, Christian Sohler and Interface provided by Matthias 
+    Carnein and Dennis Assenmacher.
+* DSD_ReadCSV: Fixed bug with streams that have no class/cluster label 
+    (reported by Matthias Carnein). 
 
 # stream 1.2-4 (02/25/17)
 
