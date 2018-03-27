@@ -51,6 +51,7 @@ birch <- setRefClass("BIRCH", fields = list(
 
 
 #' @title CF-Tree creation
+#' @description Initializes an empty CF-Tree.
 #' @param treshold Specifies the treshold used to check whether a new datapoint can be absorbed or not.
 #' @param branching Specifies the branching factor (maximum amount of child nodes for a nonleaf node) of the CF-Tree.
 #' @param maxLeaf Specifies the maximum number of entries within a leaf node.
@@ -74,7 +75,8 @@ birch$methods(
     .self$C$udpateTree(data.matrix(newdata))
   })
 
-#' @title Deletes the whole tree structure
+#' @title CF-Tree deletion
+#' @description Deletes the whole tree structure.
 #' @name BIRCH-deleteTree
 NULL
 birch$methods(
