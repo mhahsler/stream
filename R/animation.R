@@ -47,7 +47,7 @@ cluster.ani <- function(dsc, dsd, measure, horizon, n, type, assign,
   if(is.null(plot.args)) plot.args <- list()
   plot.args <- c(plot.args, list(...))
    
-  if(!is.null(measure) && length(measure)!=1) 
+  if(!is.null(measure) && length(measure)>1)
     stop("animate_cluster can only use a single measure!")
    
   rounds <- n %/% horizon 
@@ -57,7 +57,7 @@ cluster.ani <- function(dsc, dsd, measure, horizon, n, type, assign,
   animation::ani.record(reset = TRUE)
   
   ## setup layout for dsc + eval measure plotting (animate_cluster)
-  if(!is.null(dsc)) {
+  if(!is.null(dsc) && !is.null(measure)) {
     layout(matrix(c(1,2), 2, 1, byrow = TRUE), heights=c(3,1.5))
     evaluation <- data.frame(points=seq(from=1, by=horizon, length.out=rounds))
     evaluation[[measure]] <- NA_real_
