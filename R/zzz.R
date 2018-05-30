@@ -11,3 +11,4 @@
 loadModule("MOD_DBSTREAM", TRUE)
 loadModule("MOD_DStream", TRUE)
 loadModule("MOD_BICO", TRUE)
+loadModule("MOD_BIRCH", TRUE)
