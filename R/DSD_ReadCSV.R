@@ -115,7 +115,7 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   msg <- switch(outofpoints,
     "stop" = stop,
     "warn" = warning,
-    "ignor" = noop
+    "ignore" = noop
   )
 
   n <- as.integer(n)

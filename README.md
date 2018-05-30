@@ -7,7 +7,7 @@
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
 experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides
-implementations of **D-Stream** and **DBSTREAM**. 
+implementations of **D-Stream**, **DBSTREAM** and **BICO**. 
 
 Additional packages in the stream family are: 
 

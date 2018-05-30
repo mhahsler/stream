@@ -4,7 +4,8 @@
     Chris Schwiegelshohn, Christian Sohler and Interface provided by Matthias 
     Carnein and Dennis Assenmacher.
 * DSD_ReadCSV: Fixed bug with streams that have no class/cluster label 
-    (reported by Matthias Carnein). 
+    (reported by Matthias Carnein).
+* animate_cluster: noise now accepts "class" or "exclude" ("ignore" is deprecated).
 
 # stream 1.2-4 (02/25/17)
 
@@ -17,7 +18,7 @@
 * fixed handling of data with d=1 (reported by Ilana Lichtenstein).
 * plot now automatically determines if the data supports a class attribute.
 
-# stream 1.2-2 (10/28/15)
+# stream 1.2-2 (10/28/15) 
 
 * evaluate now reports noise information.
 
