@@ -22,12 +22,14 @@ END_RCPP
 }
 
 RcppExport SEXP _rcpp_module_boot_MOD_BICO();
+RcppExport SEXP _rcpp_module_boot_MOD_BIRCH();
 RcppExport SEXP _rcpp_module_boot_MOD_DBSTREAM();
 RcppExport SEXP _rcpp_module_boot_MOD_DStream();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_stream_kmnsw", (DL_FUNC) &_stream_kmnsw, 5},
     {"_rcpp_module_boot_MOD_BICO", (DL_FUNC) &_rcpp_module_boot_MOD_BICO, 0},
+    {"_rcpp_module_boot_MOD_BIRCH", (DL_FUNC) &_rcpp_module_boot_MOD_BIRCH, 0},
     {"_rcpp_module_boot_MOD_DBSTREAM", (DL_FUNC) &_rcpp_module_boot_MOD_DBSTREAM, 0},
     {"_rcpp_module_boot_MOD_DStream", (DL_FUNC) &_rcpp_module_boot_MOD_DStream, 0},
     {NULL, NULL, 0}

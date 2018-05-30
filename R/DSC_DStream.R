@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 DSC_DStream <- function(gridsize, lambda = 1e-3,
-  gaptime=1000L, Cm=3, Cl=.8, attraction=FALSE, epsilon=.3,
+  gaptime=1000L, Cm=3, Cl=.8, attraiction=FALSE, epsilon=.3,
   Cm2=Cm, k=NULL, N=0) {
 
   dstream <- dstream$new(gridsize, lambda,

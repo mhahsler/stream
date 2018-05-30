@@ -59,6 +59,10 @@ BICO_R <- setRefClass("BICO_R", fields = list(
   C ="ANY"
 ))
 
+BICO_R$methods(
+  cache = function(){
+    stop("SaveDSC not implemented for DSC_BICO!")
+  })
 
 BICO_R$methods(
   initialize = function(k, space, p, iterations) {
