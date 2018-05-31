@@ -1,3 +1,22 @@
+#######################################################################
+# stream -  Infrastructure for Data Stream Mining
+# Copyright (C) 2018 Dennis Assenmacher, Matthias Carnein and Michael Hahsler
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
 #' BICO - Fast computation of k-means coresets in a data stream
 #'
 #' BICO maintains a tree which is inspired by the clustering tree of BIRCH,
@@ -14,34 +33,7 @@
 #'
 #' This implementation interfaces the original C++ implementation available here: \url{http://ls2-www.cs.tu-dortmund.de/grav/de/bico}.
 #' For micro-clustering, the algorithm computes the coreset of the stream. Reclustering is performed by using the \code{kmeans++} algorithm on the coreset.
-#'
-#' @aliases BICO bico
-#'
-#' @param k number of centres
-#' @param space coreset size
-#' @param p number of random projections used for nearest neighbour search in first level
-#' @param iterations number of repetitions for the kmeans++ procedure in the offline component
-#'
-#' @references Hendrik Fichtenberger, Marc Gille, Melanie Schmidt, Chris Schwiegelshohn, Christian Sohler: BICO: BIRCH Meets Coresets for k-Means Clustering. ESA 2013: 481-492
-#'
-#' @author
-#' R-Interface:
-#' Matthias Carnein (\email{Matthias.Carnein@@uni-muenster.de}),
-#' Dennis Assenmacher,
-#' C-Implementation:
-#' Hendrik Fichtenberger,
-#' Marc Gille,
-#' Melanie Schmidt,
-#' Chris Schwiegelshohn,
-#' Christian Sohler
-#'
-#' @examples
-#' stream <- DSD_Gaussians(k = 3, d = 2)
-#' BICO <- DSC_BICO(k = 3, p = 10, space = 100, iterations = 10)
-#' update(BICO, stream, n = 500)
-#' plot(BICO,stream, type = "both")
-#'
-#' @export
+
 DSC_BICO <- function(k=5, space=10, p=10, iterations=10) {
 
   BICO <- BICO_R$new(k, space, p, iterations)
@@ -105,9 +97,8 @@ BICO_R$methods(
 
 BICO_R$methods(
   microToMacro = function(micro=NULL, ...){
-    assignment = .self$C$microToMacro()+1 ## from C to R indexing
+    assignment = .self$C$microToMacro() + 1L ## from C to R indexing
     if(is.null(micro)) micro <- 1:length(assignment)
     structure(assignment[micro], names=micro)
   }
 )
-
