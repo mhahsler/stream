@@ -213,7 +213,7 @@ Clustering of Data Streams at Multiple Resolutions, \emph{ACM Transactions on Kn
 }
 
 \author{
-    Michael Hahsler, Matthew Boanos and John Forrest
+    Michael Hahsler, Matthew Bolanos and John Forrest
 }
 
 

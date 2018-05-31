@@ -6,7 +6,8 @@ Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
                 email = "mhahsler@lyle.smu.edu"),
             person("Matthew", "Bolanos", role = c("aut", "cph")),
             person("John", "Forrest", role = c("aut", "cph")),
-            person("Matthias", "Carnein", role = c("aut", "cph"))
+            person("Matthias", "Carnein", role = c("ctb")),
+            person("Dennis", "Assenmacher", role = c("ctb"))
             )
 Description: A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893 and NIH R21HG005912.
 Depends: R (>= 2.13.0), methods, proxy (>= 0.4-7)

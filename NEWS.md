@@ -1,5 +1,6 @@
 # stream 1.2-4.1 (xx/xx/18)
 
+* Added DSC_BIRCH. Code and Interface by Dennis Assenmacher and Matthias Carnein.
 * Added DSC_BICO. Code by Hendrik Fichtenberger, Marc Gille, Melanie Schmidt, 
     Chris Schwiegelshohn, Christian Sohler and Interface provided by Matthias 
     Carnein and Dennis Assenmacher.
