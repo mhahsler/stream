@@ -137,16 +137,16 @@ MASTER::~MASTER()
 {
     for (int i = 0; i < numberOfPoints; i++)
     {
-        delete points[i]->second;
+        delete[] points[i]->second;
         delete points[i];
     }
     for (int i = 0; i < k; i++)
     {
-        delete centers[i];
-        delete finalcenters[i];
+        delete[] centers[i];
+        delete[] finalcenters[i];
     }
-    delete centers;
-    delete finalcenters;
+    delete[] centers;
+    delete[] finalcenters;
 }
 
 double***MASTER::run(double* finalWeights)
