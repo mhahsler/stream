@@ -4,7 +4,7 @@
 #include "kmeans.h"
 #include "triple.h"
 #include <iostream>
-#include <fstream>
+//#include <fstream>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,14 +15,15 @@ class KMEANS;
 class MASTER
 {
 public:
-    MASTER(char*input, int k, int dimension, int iterations, char*initcenter);
-    MASTER(char*input, int k, int dimension, int iterations);
-    MASTER(char*input, int k, int dimension, int iterations, bool projections);
+//    MASTER(char*input, int k, int dimension, int iterations, char*initcenter);
+//    MASTER(char*input, int k, int dimension, int iterations);
+//    MASTER(char*input, int k, int dimension, int iterations, bool projections);
     MASTER(Rcpp::NumericMatrix data, Rcpp::IntegerVector weight, int k, int dimension, int iterations, bool projections);
+
     triple<double, double*, int>** getAssignment();
     virtual~MASTER();
     double***run(double* weight);
-    bool readFile(char*filename);
+    //bool readFile(char*filename);
     double calccosts();
     void readInitialCenters(char*initcenter);
 private:
@@ -41,112 +42,113 @@ private:
     triple<double, double*, int>** points;
 };
 
-MASTER::MASTER(char*input, int k, int dimension, int iterations, char*initcenter) :
-dimension(dimension),
-k(k),
-iterations(iterations),
-numberOfPoints(0),
-costs(std::numeric_limits<double>::max()),
-projections(false)
-{
-    centers = new double*[k];
-    finalcenters = new double*[k];
-    for (int i = 0; i < k; i++)
-    {
-        centers[i] = new double[dimension];
-        finalcenters[i] = new double[dimension];
-    }
-    readFile(input);
-    readInitialCenters(initcenter);
-    /*
-          std::cout << "input read" <<std::endl;
-          for(int i = 0; i < numberOfPoints; i++) {
-                  std::cout<< points[i]->first << " ";
-                  for(int j = 0; j < dimension; j++) {
-                          std::cout << points[i]->second[j]<<" ";
-                  }
-                  std::cout << std::endl;
-          }
-          std::cout << "initial centers:"<<std::endl;
-          for(int i = 0; i < k; i++) {
-                  for(int j = 0; j < dimension; j++) {
-                          std::cout<<centers[i][j] << " ";
-                  }
-                  std::cout<<std::endl;
-          }
-     */
-}
-
-MASTER::MASTER(char*input, int k, int dimension, int iterations, bool projections) :
-dimension(dimension),
-k(k),
-iterations(iterations),
-numberOfPoints(0),
-costs(std::numeric_limits<double>::max()),
-projections(projections)
-{
-    centers = new double*[k];
-    finalcenters = new double*[k];
-    for (int i = 0; i < k; i++)
-    {
-        centers[i] = new double[dimension];
-        finalcenters[i] = new double[dimension];
-    }
-    readFile(input);
-    /*
-          std::cout << "input read" <<std::endl;
-          for(int i = 0; i < numberOfPoints; i++) {
-                  std::cout<< points[i]->first << " ";
-                  for(int j = 0; j < dimension; j++) {
-                          std::cout << points[i]->second[j]<<" ";
-                  }
-                  std::cout << std::endl;
-          }
-     */
-}
-
-MASTER::MASTER(char*input, int k, int dimension, int iterations) :
-dimension(dimension),
-k(k),
-iterations(iterations),
-numberOfPoints(0),
-costs(std::numeric_limits<double>::max()),
-projections(false)
-{
-    centers = new double*[k];
-    finalcenters = new double*[k];
-    for (int i = 0; i < k; i++)
-    {
-        centers[i] = new double[dimension];
-        finalcenters[i] = new double[dimension];
-    }
-    readFile(input);
-    /*
-            std::cout << "input read" <<std::endl;
-            for(int i = 0; i < numberOfPoints; i++) {
-                    std::cout<< points[i]->first << " ";
-                    for(int j = 0; j < dimension; j++) {
-                            std::cout << points[i]->second[j]<<" ";
-                    }
-                    std::cout << std::endl;
-            }
-     */
-}
+// NOTE: Implementation of MASTER(Rcpp::NumericMatrix data, Rcpp::IntegerVector weight, ...) is in ../BICO.cpp
+// MASTER::MASTER(char*input, int k, int dimension, int iterations, char*initcenter) :
+// dimension(dimension),
+// k(k),
+// iterations(iterations),
+// numberOfPoints(0),
+// costs(std::numeric_limits<double>::max()),
+// projections(false)
+// {
+//     centers = new double*[k];
+//     finalcenters = new double*[k];
+//     for (int i = 0; i < k; i++)
+//     {
+//         centers[i] = new double[dimension];
+//         finalcenters[i] = new double[dimension];
+//     }
+//     readFile(input);
+//     readInitialCenters(initcenter);
+//     /*
+//           std::cout << "input read" <<std::endl;
+//           for(int i = 0; i < numberOfPoints; i++) {
+//                   std::cout<< points[i]->first << " ";
+//                   for(int j = 0; j < dimension; j++) {
+//                           std::cout << points[i]->second[j]<<" ";
+//                   }
+//                   std::cout << std::endl;
+//           }
+//           std::cout << "initial centers:"<<std::endl;
+//           for(int i = 0; i < k; i++) {
+//                   for(int j = 0; j < dimension; j++) {
+//                           std::cout<<centers[i][j] << " ";
+//                   }
+//                   std::cout<<std::endl;
+//           }
+//      */
+// }
+//
+// MASTER::MASTER(char*input, int k, int dimension, int iterations, bool projections) :
+// dimension(dimension),
+// k(k),
+// iterations(iterations),
+// numberOfPoints(0),
+// costs(std::numeric_limits<double>::max()),
+// projections(projections)
+// {
+//     centers = new double*[k];
+//     finalcenters = new double*[k];
+//     for (int i = 0; i < k; i++)
+//     {
+//         centers[i] = new double[dimension];
+//         finalcenters[i] = new double[dimension];
+//     }
+//     readFile(input);
+//     /*
+//           std::cout << "input read" <<std::endl;
+//           for(int i = 0; i < numberOfPoints; i++) {
+//                   std::cout<< points[i]->first << " ";
+//                   for(int j = 0; j < dimension; j++) {
+//                           std::cout << points[i]->second[j]<<" ";
+//                   }
+//                   std::cout << std::endl;
+//           }
+//      */
+// }
+//
+// MASTER::MASTER(char*input, int k, int dimension, int iterations) :
+// dimension(dimension),
+// k(k),
+// iterations(iterations),
+// numberOfPoints(0),
+// costs(std::numeric_limits<double>::max()),
+// projections(false)
+// {
+//     centers = new double*[k];
+//     finalcenters = new double*[k];
+//     for (int i = 0; i < k; i++)
+//     {
+//         centers[i] = new double[dimension];
+//         finalcenters[i] = new double[dimension];
+//     }
+//     readFile(input);
+//     /*
+//             std::cout << "input read" <<std::endl;
+//             for(int i = 0; i < numberOfPoints; i++) {
+//                     std::cout<< points[i]->first << " ";
+//                     for(int j = 0; j < dimension; j++) {
+//                             std::cout << points[i]->second[j]<<" ";
+//                     }
+//                     std::cout << std::endl;
+//             }
+//      */
+// }
 
 MASTER::~MASTER()
 {
     for (int i = 0; i < numberOfPoints; i++)
     {
-        delete points[i]->second;
+        delete[] points[i]->second;
         delete points[i];
     }
     for (int i = 0; i < k; i++)
     {
-        delete centers[i];
-        delete finalcenters[i];
+        delete[] centers[i];
+        delete[] finalcenters[i];
     }
-    delete centers;
-    delete finalcenters;
+    delete[] centers;
+    delete[] finalcenters;
 }
 
 double***MASTER::run(double* finalWeights)
@@ -192,48 +194,48 @@ double***MASTER::run(double* finalWeights)
     return &finalcenters;
 }
 
-bool MASTER::readFile(char*fileName)
-{
-    std::FILE*input = std::fopen(fileName, "r");
-    double val;
-    int countD = 0;
-    int countP = 0;
-    int success = std::fscanf(input, "%d", &numberOfPoints);
-    if(!success){
-      return false;
-    }
-    points = new triple<double, double*, int>*[numberOfPoints];
-
-    while (countP < numberOfPoints && !std::feof(input))
-    {
-        success = std::fscanf(input, "%lf", &val);
-
-        if(!success){
-          return false;
-        }
-
-
-        if (countD == 0)
-        {
-            points[countP] = new triple<double, double*, int>(val, new double[dimension], -1);
-            countD++;
-        }
-        else if (countD < dimension)
-        {
-            points[countP]->second[countD - 1] = val;
-            countD++;
-        }
-        else
-        {
-            points[countP]->second[dimension - 1] = val;
-            countD = 0;
-            countP++;
-        }
-    }
-    fclose(input);
-    // std::cout << "Input file read" << std::endl;
-    return true;
-}
+// bool MASTER::readFile(char*fileName)
+// {
+//     std::FILE*input = std::fopen(fileName, "r");
+//     double val;
+//     int countD = 0;
+//     int countP = 0;
+//     int success = std::fscanf(input, "%d", &numberOfPoints);
+//     if(!success){
+//       return false;
+//     }
+//     points = new triple<double, double*, int>*[numberOfPoints];
+//
+//     while (countP < numberOfPoints && !std::feof(input))
+//     {
+//         success = std::fscanf(input, "%lf", &val);
+//
+//         if(!success){
+//           return false;
+//         }
+//
+//
+//         if (countD == 0)
+//         {
+//             points[countP] = new triple<double, double*, int>(val, new double[dimension], -1);
+//             countD++;
+//         }
+//         else if (countD < dimension)
+//         {
+//             points[countP]->second[countD - 1] = val;
+//             countD++;
+//         }
+//         else
+//         {
+//             points[countP]->second[dimension - 1] = val;
+//             countD = 0;
+//             countP++;
+//         }
+//     }
+//     fclose(input);
+//     // std::cout << "Input file read" << std::endl;
+//     return true;
+// }
 
 double MASTER::calccosts()
 {
@@ -257,32 +259,32 @@ double MASTER::squaredDistance(double*p1, double*p2)
     return distance;
 }
 
-void MASTER::readInitialCenters(char*initcenter)
-{
-    std::FILE*input = std::fopen(initcenter, "r");
-    int countD = 0;
-    int countK = 0;
-    double val;
-    while (countK < k && !std::feof(input))
-    {
-        int success = std::fscanf(input, "%lf", &val);
-        if(!success){
-          return;
-        }
-        if (countD < dimension - 1)
-        {
-            centers[countK][countD] = val;
-            countD++;
-        }
-        else
-        {
-            centers[countK][countD] = val;
-            countD = 0;
-            countK++;
-        }
-    }
-    fclose(input);
-}
+// void MASTER::readInitialCenters(char*initcenter)
+// {
+//     std::FILE*input = std::fopen(initcenter, "r");
+//     int countD = 0;
+//     int countK = 0;
+//     double val;
+//     while (countK < k && !std::feof(input))
+//     {
+//         int success = std::fscanf(input, "%lf", &val);
+//         if(!success){
+//           return;
+//         }
+//         if (countD < dimension - 1)
+//         {
+//             centers[countK][countD] = val;
+//             countD++;
+//         }
+//         else
+//         {
+//             centers[countK][countD] = val;
+//             countD = 0;
+//             countK++;
+//         }
+//     }
+//     fclose(input);
+// }
 
 triple<double, double*, int>** MASTER::getAssignment(){
   return points;
