@@ -1,4 +1,6 @@
 library("testthat")
+library("stream")
+
 setwd(tempdir())
 
 ### read and reload write some DSCs (see if Cpp serialization works)
