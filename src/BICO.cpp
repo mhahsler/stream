@@ -177,8 +177,10 @@ public:
     bool projections = false;
 
     MASTER master = MASTER(this->micro, this->microWeight, this->k, this->d, this->iterations, projections);
-    double weights[k];
-    double***centers = master.run(weights);
+    //double weights[k];
+    double* weights = new double[k];
+
+    double*** centers = master.run(weights);
 
 
     triple<double, double*, int>** points = master.getAssignment();
@@ -198,6 +200,8 @@ public:
         macro(i,j) = (*centers)[i][j];
       }
     }
+
+    delete[] weights;
 
     this->macro = macro;
     this->macroWeight = macroWeight;

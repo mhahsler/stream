@@ -159,7 +159,10 @@ double***MASTER::run(double* finalWeights)
     double temp;
     int itcount;
     bool converged;
-    double weights[k];
+    
+    //double weights[k];
+    double* weights = new double[k];
+
     for (int j = 0; j < iterations; j++)
     {
         algo.initialCenters(points, centers);
@@ -191,6 +194,9 @@ double***MASTER::run(double* finalWeights)
             }
         }
     }
+    
+    delete[] weights;
+	
     return &finalcenters;
 }
 

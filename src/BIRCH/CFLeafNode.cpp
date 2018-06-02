@@ -28,7 +28,7 @@ int CFLeafNode::getLength(){
 
 int CFLeafNode::getMaxEntries(){
   return this->maxEntries;
-};
+}
 
 CFLeafNode* CFLeafNode::getNext(){
   return this->next;
@@ -60,8 +60,8 @@ return closest;
 
 CF::CFNode* CFLeafNode::findClosestEntry(){
   return NULL;
-};
+}
 
 CF::CFNode* CFLeafNode::findFarthestEntry(){
   return NULL;
-};
+}
