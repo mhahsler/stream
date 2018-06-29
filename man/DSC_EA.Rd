@@ -12,9 +12,11 @@ DSC_EA(k, generations = 2000, crossoverRate = 0.8, mutationRate = 0.001,
 
 \item{generations}{number of EA generations performed during reclustering}
 
+\item{crossoverRate}{cross-over rate for the evolutionary algorithm}
+
 \item{mutationRate}{mutation rate for the evolutionary algorithm}
 
-\item{populationsize}{number of solutions that the evolutionary algorithm maintains}
+\item{populationSize}{number of solutions that the evolutionary algorithm maintains}
 }
 \description{
 Reclustering using an evolutionary algorithm.

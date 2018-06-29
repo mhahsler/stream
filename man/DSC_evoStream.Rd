@@ -25,9 +25,9 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, incrementalGenerations = 5,
 
 \item{mutationRate}{mutation rate for the evolutionary algorithm}
 
-\item{initializeAfter}{number of micro-cluster required for the initialization of the evolutionary algorithm.}
+\item{populationSize}{number of solutions that the evolutionary algorithm maintains}
 
-\item{populationsize}{number of solutions that the evolutionary algorithm maintains}
+\item{initializeAfter}{number of micro-cluster required for the initialization of the evolutionary algorithm.}
 }
 \description{
 Stream clustering algorithm based on evolutionary optimization.
