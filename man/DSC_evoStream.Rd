@@ -46,6 +46,9 @@ update(evoStream, stream, n = 1200)
 plot(evoStream, stream, type = "both")
 
 }
+\references{
+Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary Stream Clustering Utilizing Idle Times", Big Data Research.
+}
 \author{
 Matthias Carnein \email{Matthias.Carnein@uni-muenster.de}
 }

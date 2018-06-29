@@ -23,6 +23,8 @@
 #'
 #' @author Matthias Carnein \email{Matthias.Carnein@@uni-muenster.de}
 #'
+#' @references Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary Stream Clustering Utilizing Idle Times", Big Data Research.
+#'
 #' @examples
 #' stream <- DSD_Gaussians(k = 3, d = 2)
 #' evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=5, reclusterGenerations=2000)
