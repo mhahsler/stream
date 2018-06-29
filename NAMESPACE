@@ -37,6 +37,8 @@ export(
 	DSC_DBSTREAM,
   DSC_Window,
   DSC_BICO,
+  DSC_evoStream,
+  DSC_EA,
 
   DSC_Kmeans,
 	DSC_DBSCAN,
