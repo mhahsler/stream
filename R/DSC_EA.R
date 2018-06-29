@@ -9,8 +9,9 @@
 #'
 #' @param k number of macro-clusters
 #' @param generations number of EA generations performed during reclustering
+#' @param crossoverRate cross-over rate for the evolutionary algorithm
 #' @param mutationRate mutation rate for the evolutionary algorithm
-#' @param populationsize number of solutions that the evolutionary algorithm maintains
+#' @param populationSize number of solutions that the evolutionary algorithm maintains
 #'
 #' @author Matthias Carnein \email{Matthias.Carnein@@uni-muenster.de}
 #'

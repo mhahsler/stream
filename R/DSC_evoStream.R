@@ -18,7 +18,7 @@
 #' @param reclusterGenerations number of EA generations performed during reclustering
 #' @param crossoverRate cross-over rate for the evolutionary algorithm
 #' @param mutationRate mutation rate for the evolutionary algorithm
-#' @param populationsize number of solutions that the evolutionary algorithm maintains
+#' @param populationSize number of solutions that the evolutionary algorithm maintains
 #' @param initializeAfter number of micro-cluster required for the initialization of the evolutionary algorithm.
 #'
 #' @author Matthias Carnein \email{Matthias.Carnein@@uni-muenster.de}
