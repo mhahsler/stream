@@ -15,7 +15,7 @@ Additional packages in the stream family are:
   algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
   Includes implementations of **DenStream**, **ClusTree** and **CluStream**.
 * [subspaceMOA](https://cran.r-project.org/package=subspaceMOA):
-  Interface to [Subspace MOA](http://dme.rwth-aachen.de/de/subspacemoa) and
+  Interface to [Subspace MOA] and
   its implementations of **HDDStream** and **PreDeConStream**.
 
 The development of the stream package was supported in part by NSF IIS-0948893 and NIH R21HG005912.

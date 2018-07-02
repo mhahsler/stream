@@ -4,7 +4,6 @@ useDynLib(stream, .registration = TRUE)
 import(methods)
 import(Rcpp)
 import(proxy)
-#import(birch)
 
 importFrom(utils, "head", "read.table", "write.table")
 importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit")

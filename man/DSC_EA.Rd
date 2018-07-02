@@ -27,18 +27,18 @@ The evolutionary algorithm is incremental, which allows to improve existing macr
 }
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 2)
-dbstream <- DSC_DBSTREAM(r=0.1)
-EA <- DSC_EA(k=3, generations=2000)
+dbstream <- DSC_DBSTREAM(r = 0.1)
+EA <- DSC_EA(k = 3, generations = 100)
 
-two <- DSC_TwoStage(dbstream, EA)
-update(two, stream, n=1200)
-plot(two, stream, type="both")
-
-update(dbstream, stream, n = 1200)
+# cluster with DBSTREAM and recluster with EA
+update(dbstream, stream, n = 1000)
 recluster(EA, dbstream)
-plot(EA, stream)
+plot(EA, stream, type = "both")
 
-
+# create a two-stage clustering algorithm with EA reclustering
+dbstream_EA <- DSC_TwoStage(dbstream, EA)
+update(dbstream_EA, stream, n = 1000)
+plot(dbstream_EA, stream, type = "both")
 }
 \author{
 Matthias Carnein \email{Matthias.Carnein@uni-muenster.de}

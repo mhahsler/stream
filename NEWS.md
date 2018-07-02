@@ -1,3 +1,7 @@
+# stream 1.3-0.1 (xx/xx/18)
+
+* Added DSC_evoStream and DSC_EA. Code by Matthias Carnein.
+
 # stream 1.3-0 (05/31/18)
 
 * Added DSC_BIRCH. Code and Interface by Dennis Assenmacher and Matthias Carnein.

@@ -32,7 +32,7 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, incrementalGenerations = 5,
 \description{
 Stream clustering algorithm based on evolutionary optimization.
 The online component uses a simplified version of \code{DBSTREAM} to generate micro-clusters.
-The micro-clusters are then incrementally reclustered using an evloutionary algorithm.
+The micro-clusters are then incrementally reclustered using an evolutionary algorithm.
 Evolutionary algorithms create slight variations by combining and randomly modifying existing solutions.
 By iteratively selecting better solutions, an evolutionary pressure is created which improves the clustering over time.
 Since the evolutionary algorithm is incremental, it is possible to apply it between observations, e.g. in the idle time of the stream.
@@ -41,10 +41,11 @@ This implementation allows to use a fixed number of generations after each obser
 }
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 2)
-evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=5, reclusterGenerations=2000)
-update(evoStream, stream, n = 1200)
-plot(evoStream, stream, type = "both")
+evoStream <- DSC_evoStream(r = 0.05, k = 3,
+  incrementalGenerations = 5, reclusterGenerations = 100)
 
+update(evoStream, stream, n = 500)
+plot(evoStream, stream, type = "both")
 }
 \references{
 Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary Stream Clustering Utilizing Idle Times", Big Data Research.
