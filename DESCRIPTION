@@ -17,4 +17,4 @@ URL: http://lyle.smu.edu/IDA/TRACDS/
 BugReports: https://github.com/mhahsler/stream
 LinkingTo: Rcpp, BH
 License: GPL-3
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

@@ -4,9 +4,10 @@
 \alias{DSC_evoStream}
 \title{evoStream - Evolutionary Stream Clustering}
 \usage{
-DSC_evoStream(r, lambda = 0.001, tgap = 100, incrementalGenerations = 5,
-  reclusterGenerations = 2000, k = 2, crossoverRate = 0.8,
-  mutationRate = 0.001, populationSize = 100, initializeAfter = 2 * k)
+DSC_evoStream(r, lambda = 0.001, tgap = 100, k = 2,
+  incrementalGenerations = 5, reclusterGenerations = 2000,
+  crossoverRate = 0.8, mutationRate = 0.001, populationSize = 100,
+  initializeAfter = 2 * k)
 }
 \arguments{
 \item{r}{radius threshold for micro-cluster assignment}
@@ -15,11 +16,11 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, incrementalGenerations = 5,
 
 \item{tgap}{time-interval between outlier detection and clean-up}
 
+\item{k}{number of macro-clusters}
+
 \item{incrementalGenerations}{number of EA generations performed after each observation}
 
 \item{reclusterGenerations}{number of EA generations performed during reclustering}
-
-\item{k}{number of macro-clusters}
 
 \item{crossoverRate}{cross-over rate for the evolutionary algorithm}
 
@@ -32,20 +33,40 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, incrementalGenerations = 5,
 \description{
 Stream clustering algorithm based on evolutionary optimization.
 The online component uses a simplified version of \code{DBSTREAM} to generate micro-clusters.
-The micro-clusters are then incrementally reclustered using an evolutionary algorithm.
+The micro-clusters are then incrementally reclustered using an evloutionary algorithm.
 Evolutionary algorithms create slight variations by combining and randomly modifying existing solutions.
 By iteratively selecting better solutions, an evolutionary pressure is created which improves the clustering over time.
 Since the evolutionary algorithm is incremental, it is possible to apply it between observations, e.g. in the idle time of the stream.
-Alternatively it can be applied as a traditional reclustering step, or a combination of both.
-This implementation allows to use a fixed number of generations after each observation and during reclustering.
+Whenever there is idle time, we can call the \code{recluster} function of the reference class to improve the macro-clusters (see example).
+The evolutionary algorithm can also be applied as a traditional reclustering step, or a combination of both.
+In addition, this implementation also allows to evaluate a fixed number of generations after each observation.
 }
 \examples{
-stream <- DSD_Gaussians(k = 3, d = 2)
-evoStream <- DSC_evoStream(r = 0.05, k = 3,
-  incrementalGenerations = 5, reclusterGenerations = 100)
+stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 1000)
 
-update(evoStream, stream, n = 500)
+## init evoStream
+evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=5, reclusterGenerations=2000)
+
+## insert observations
+update(evoStream, stream, n = 1000)
+
+## micro clusters
+get_centers(evoStream, type="micro")
+
+## macro clusters
+get_centers(evoStream, type="macro")
+
+## plot result
+reset_stream(stream)
 plot(evoStream, stream, type = "both")
+
+## if we have time, evaluate additional generations. This can be called at any time, also between observations.
+evoStream$RObj$recluster(1000)
+
+## plot improved result
+reset_stream(stream)
+plot(evoStream, stream, type="both")
+
 }
 \references{
 Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary Stream Clustering Utilizing Idle Times", Big Data Research.
