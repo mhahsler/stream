@@ -5,9 +5,9 @@
 \title{evoStream - Evolutionary Stream Clustering}
 \usage{
 DSC_evoStream(r, lambda = 0.001, tgap = 100, k = 2,
-  incrementalGenerations = 5, reclusterGenerations = 2000,
   crossoverRate = 0.8, mutationRate = 0.001, populationSize = 100,
-  initializeAfter = 2 * k)
+  initializeAfter = 2 * k, incrementalGenerations = 1,
+  reclusterGenerations = 1000)
 }
 \arguments{
 \item{r}{radius threshold for micro-cluster assignment}
@@ -18,10 +18,6 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, k = 2,
 
 \item{k}{number of macro-clusters}
 
-\item{incrementalGenerations}{number of EA generations performed after each observation}
-
-\item{reclusterGenerations}{number of EA generations performed during reclustering}
-
 \item{crossoverRate}{cross-over rate for the evolutionary algorithm}
 
 \item{mutationRate}{mutation rate for the evolutionary algorithm}
@@ -29,6 +25,10 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, k = 2,
 \item{populationSize}{number of solutions that the evolutionary algorithm maintains}
 
 \item{initializeAfter}{number of micro-cluster required for the initialization of the evolutionary algorithm.}
+
+\item{incrementalGenerations}{number of EA generations performed after each observation}
+
+\item{reclusterGenerations}{number of EA generations performed during reclustering}
 }
 \description{
 Stream clustering algorithm based on evolutionary optimization.
@@ -45,7 +45,7 @@ In addition, this implementation also allows to evaluate a fixed number of gener
 stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 1000)
 
 ## init evoStream
-evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=5, reclusterGenerations=2000)
+evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=1, reclusterGenerations=1000)
 
 ## insert observations
 update(evoStream, stream, n = 1000)
@@ -53,19 +53,29 @@ update(evoStream, stream, n = 1000)
 ## micro clusters
 get_centers(evoStream, type="micro")
 
+## micro weights
+get_weights(evoStream, type="micro")
+
 ## macro clusters
 get_centers(evoStream, type="macro")
+
+## macro weights
+get_weights(evoStream, type="macro")
 
 ## plot result
 reset_stream(stream)
 plot(evoStream, stream, type = "both")
 
 ## if we have time, evaluate additional generations. This can be called at any time, also between observations.
-evoStream$RObj$recluster(1000)
+## by default, 1 generation is evaluated after each observation and 1000 generations during reclustering (parameters)
+evoStream$RObj$recluster(2000)
 
 ## plot improved result
 reset_stream(stream)
 plot(evoStream, stream, type="both")
+
+## get assignment of micro to macro clusters
+microToMacro(evoStream)
 
 }
 \references{

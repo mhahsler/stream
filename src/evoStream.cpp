@@ -98,17 +98,17 @@ public:
 
 
   // since exposed constructors have a limited number of parameters, we expose a setter function and use the default constructor
-  void setFields(double r, double lambda, int tgap, unsigned int k, int incrementalGenerations, int reclusterGenerations, double crossoverRate, double mutationRate, int populationSize, unsigned int initializeAfter){
+  void setFields(double r, double lambda, int tgap, unsigned int k, double crossoverRate, double mutationRate, int populationSize, unsigned int initializeAfter, int incrementalGenerations, int reclusterGenerations){
     this->r=r;
     this->lambda=lambda;
     this->tgap=tgap;
     this->k=k;
-    this->incrementalGenerations = incrementalGenerations;
-    this->reclusterGenerations = reclusterGenerations;
     this->crossoverRate=crossoverRate;
     this->mutationRate=mutationRate;
     this->populationSize=populationSize;
     this->initializeAfter=initializeAfter;
+    this->incrementalGenerations = incrementalGenerations;
+    this->reclusterGenerations = reclusterGenerations;
 
     this->macroFitness = Rcpp::NumericVector(this->populationSize);
     this->omega = pow(2, (-1*lambda * tgap));
