@@ -7,7 +7,7 @@
 \alias{get_macroweights}
 \title{Data Stream Clusterer Base Classes}
 \description{Abstract base classes for all DSC (Data Stream
-Clusterer) and DSC\_R classes.}
+Clusterer) and DSC_R classes.}
 
 \details{
 The \code{DSC} and \code{DSC_R} classes cannot be instantiated 

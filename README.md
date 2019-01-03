@@ -7,7 +7,7 @@
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
 experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides
-implementations of **BICO**, **BIRCH**, **D-Stream** and **DBSTREAM**. 
+implementations of **BICO**, **BIRCH**, **D-Stream**, **DBSTREAM**, and **evoStream**. 
 
 Additional packages in the stream family are: 
 
@@ -15,7 +15,7 @@ Additional packages in the stream family are:
   algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
   Includes implementations of **DenStream**, **ClusTree** and **CluStream**.
 * [subspaceMOA](https://cran.r-project.org/package=subspaceMOA):
-  Interface to [Subspace MOA] and
+  Interface to Subspace MOA and
   its implementations of **HDDStream** and **PreDeConStream**.
 
 The development of the stream package was supported in part by NSF IIS-0948893 and NIH R21HG005912.

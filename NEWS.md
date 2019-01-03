@@ -1,6 +1,8 @@
 # stream 1.3-0.1 (xx/xx/18)
 
 * Added DSC_evoStream and DSC_EA. Code by Matthias Carnein.
+* Package animation is now only suggested since it requires package magick 
+    which may need the imagemagick++ libraries installed. 
 
 # stream 1.3-0 (05/31/18)
 

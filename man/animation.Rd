@@ -7,6 +7,8 @@
 
 \description{
 Generates an animation of a data stream or a data steam clustering.
+\bold{Note:} You need to install package \code{animation}, and, if necessary, the
+libraries required for package \code{magick}.
 }
 
 \usage{

@@ -48,6 +48,9 @@ animate_data <- function(dsd, horizon=100, n=1000, wait=.1,
 cluster.ani <- function(dsc, dsd, measure, horizon, n, type, assign,
   assignmentMethod, noise, wait, plot.args, ...){
 
+  if(!.installed("animation")) stop ("Install package animation (and, if necessary, the needed libraries for package magick).")
+  requireNamespace("animation")
+
   if(is.null(plot.args)) plot.args <- list()
   plot.args <- c(plot.args, list(...))
 

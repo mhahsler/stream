@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,14 +19,14 @@
 
 
 ### noise symbol and color
-.noise_pch <- 20L 
+.noise_pch <- 20L
 .noise_col <- gray(.5, alpha = .3)
 .points_col <- gray(.5, alpha = .5)
 
 ### helper for doing things in blocks
 .make_block <- function(n, block) {
     if(n<block) return(n)
-    
+
     b <- rep(block, times=as.integer(n/block))
     if(n%%block) b<- c(b, n%%block)
     b
@@ -41,7 +41,12 @@
 ### nodots
 .nodots <- function(...) {
   l <- list(...)
-  if(length(l) > 0L) warning("Unknown arguments: ", 
+  if(length(l) > 0L) warning("Unknown arguments: ",
     paste(names(l), "=",l, collapse=", "))
 }
+
+### installed
+.installed <- function(pkg) !is(try(installed.packages()[pkg,],
+  silent=TRUE), "try-error")
+
 
