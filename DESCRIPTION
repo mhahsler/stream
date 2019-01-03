@@ -13,8 +13,7 @@ Description: A framework for data stream modeling and associated data mining tas
 Depends: R (>= 2.13.0), methods, proxy (>= 0.4-7)
 Imports: clue, cluster, clusterGeneration, dbscan (>= 1.0-0), fpc, graphics, grDevices, MASS, mlbench, Rcpp (>= 0.11.4), stats, utils
 Suggests: animation, DBI, rJava, RSQLite, testthat
-URL: http://lyle.smu.edu/IDA/TRACDS/
-BugReports: https://github.com/mhahsler/stream
+URL: https://github.com/mhahsler/stream
+BugReports: https://github.com/mhahsler/stream/issues
 LinkingTo: Rcpp, BH
 License: GPL-3
-RoxygenNote: 6.1.0
