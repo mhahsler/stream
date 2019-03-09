@@ -1,3 +1,4 @@
+#include <R.h>
 #include <Rcpp.h>
 #include "NumericVector.h"
 #include "dist.h"
@@ -177,6 +178,13 @@ public:
   // update
   void update(Rcpp::NumericMatrix& data,
     bool debug = FALSE, bool assignments = FALSE) {
+
+    // check dimensions of new data
+    if (mcs.size()>0) {
+      if (mcs[1].center.length() != data.ncol()) {
+        Rf_error("Dimensions of new data do not match the current DBSTREAM clustering.");
+      }
+    }
 
     int n = data.nrow();
     std::vector<MC>::iterator it;
