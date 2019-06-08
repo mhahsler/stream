@@ -45,13 +45,13 @@
 #' @references Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary Stream Clustering Utilizing Idle Times", Big Data Research.
 #'
 #' @examples
-#' stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 1000)
+#' stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 500)
 #'
 #' ## init evoStream
-#' evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=1, reclusterGenerations=1000)
+#' evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=1, reclusterGenerations=500)
 #'
 #' ## insert observations
-#' update(evoStream, stream, n = 1000)
+#' update(evoStream, stream, n = 500)
 #'
 #' ## micro clusters
 #' get_centers(evoStream, type="micro")
@@ -69,9 +69,11 @@
 #' reset_stream(stream)
 #' plot(evoStream, stream, type = "both")
 #'
-#' ## if we have time, evaluate additional generations. This can be called at any time, also between observations.
-#' ## by default, 1 generation is evaluated after each observation and 1000 generations during reclustering (parameters)
-#' evoStream$RObj$recluster(2000)
+#' ## if we have time, evaluate additional generations.
+#' ## This can be called at any time, also between observations.
+#' ## by default, 1 generation is evaluated after each observation and
+#' ## 1000 generations during reclustering but we set it here to 500
+#' evoStream$RObj$recluster(500)
 #'
 #' ## plot improved result
 #' reset_stream(stream)
@@ -94,19 +96,6 @@ DSC_evoStream <- function(r, lambda=0.001, tgap=100, k=2, crossoverRate=.8, muta
 }
 
 
-
-
-
-
-
-#' Reference Class evoStream_R
-#'
-#' Reference class mostly used to expose the C class object
-#'
-#' @field C exposed C class
-#'
-#' @author Matthias Carnein \email{matthias.carnein@@uni-muenster.de}
-#'
 evoStream_R <- setRefClass("evoStream_R", fields = list(
   C ="ANY"
 ))

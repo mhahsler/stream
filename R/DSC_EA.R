@@ -53,7 +53,8 @@
 #' reset_stream(stream)
 #' plot(two, stream, type="both")
 #'
-#' ## if we have time, evaluate additional generations. This can be called at any time, also between observations.
+#' ## if we have time, evaluate additional generations. This can be
+#' ## called at any time, also between observations.
 #' two$macro_dsc$RObj$recluster(2000)
 #'
 #' ## plot improved result
@@ -85,30 +86,14 @@ DSC_EA <- function(k, generations=2000, crossoverRate=.8, mutationRate=.001, pop
 }
 
 
-
-#' Reference Class EA_R
-#'
-#' Reference class used for Reclustering using an evolutionary algorithm
-#'
-#' @field crossoverRate cross-over rate for the evolutionary algorithm
-#' @field mutationRate mutation rate for the evolutionary algorithm
-#' @field populationSize number of solutions that the evolutionary algorithm maintains
-#' @field k number of macro-clusters
-#' @field generations number of EA generations performed during reclustering
-#' @field data micro-clusters to recluster
-#' @field weights weights of the micro-clusters
-#' @field C exposed C class
-#'
-#' @author Matthias Carnein \email{matthias.carnein@@uni-muenster.de}
-#'
 EA_R <- setRefClass("EA",
                     fields = list(
-                      crossoverRate	        = "numeric",
-                      mutationRate	    = "numeric",
+                      crossoverRate	= "numeric",
+                      mutationRate	= "numeric",
                       populationSize    = "integer",
-                      k  = "integer",
+                      k           = "integer",
                       data        = "data.frame",
-                      weights	    = "numeric",
+                      weights	  = "numeric",
                       generations = "integer",
                       C = "ANY"
                     ),

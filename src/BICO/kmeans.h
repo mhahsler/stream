@@ -6,8 +6,10 @@
 #include <limits>
 #include <math.h>
 #include <algorithm>
-#include <random>
-#include "randomness.h"
+//#include <random>
+//#include "randomness.h"
+#include <Rcpp.h>
+
 #include <iostream>
 
 class MASTER;
@@ -30,11 +32,12 @@ private:
     int numberOfPoints;
     MASTER*master;
 
-    std::random_device rd;
-    std::mt19937 rg;
+    //std::random_device rd;
+    //std::mt19937 rg;
 };
 
-KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints) : rg(rd())
+KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints)
+  //: rg(rd())
 {
 
     this->master = master;
@@ -44,7 +47,8 @@ KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints) : rg(rd(
     this->projections = false;
 }
 
-KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints, bool projections) : rg(rd())
+KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints, bool projections)
+//: rg(rd())
 {
     this->master = master;
     this->k = k;
@@ -60,13 +64,14 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
 
         //double projection[dimension];
         double* projection = new double[dimension];
-	
+
 	double random;
         double length = 0;
         for (int i = 0; i < dimension; i++)
         {
-            std::normal_distribution<double> realDist(0.0, 1.0);
-            random = realDist(rg);
+            //std::normal_distribution<double> realDist(0.0, 1.0);
+            //random = realDist(rg);
+            random = R::rnorm(0,1);
             projection[i] = random;
             length += random*random;
         }
@@ -85,12 +90,12 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
             }
         }
         bool result = true;
-        
+
 	//double newCenter[k][dimension];
         double** newCenter = new double*[k];
         for(int i = 0; i < k; ++i)
            newCenter[i] = new double[dimension];
-	
+
 	for (int i = 0; i < k; i++)
         {
             weight[i] = 0;
@@ -145,7 +150,7 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
     else
     {
         bool result = true;
-        
+
 	//double newCenter[k][dimension];
         double** newCenter = new double*[k];
         for(int i = 0; i < k; ++i)
@@ -185,11 +190,11 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
                 centers[i][j] = newCenter[i][j] / weight[i];
             }
         }
-        
+
         for(int i = 0; i < k; ++i)
            delete[] newCenter[i];
 	delete[] newCenter;
-	
+
 	return result;
     }
 }
@@ -248,15 +253,17 @@ int KMEANS::findNearest(double* point, double** centers)
 void KMEANS::initialCenters(triple<double, double*, int>** points, double**centers)
 {
     double randomR;
-    
+
     //double distance[numberOfPoints];
-    double* distance = new double[numberOfPoints]; 
-    
+    double* distance = new double[numberOfPoints];
+
     int randomI;
-    std::uniform_real_distribution<double> realDist(0.0, 1.0);
-    randomR = realDist(rg);
-    std::uniform_int_distribution<int> intDist(0, numberOfPoints - 1);
-    randomI = intDist(rg);
+    //std::uniform_real_distribution<double> realDist(0.0, 1.0);
+    //randomR = realDist(rg);
+    //std::uniform_int_distribution<int> intDist(0, numberOfPoints - 1);
+    //randomI = intDist(rg);
+    randomR = R::rnorm(0,1);
+    randomI = (int) R::runif(0, numberOfPoints - 1);
     double temp;
 
     for (int i = 0; i < dimension; i++)
@@ -281,8 +288,9 @@ void KMEANS::initialCenters(triple<double, double*, int>** points, double**cente
             }
             sum += distance[j];
         }
-        std::uniform_real_distribution<double> realDist(0.0, sum);
-        randomR = realDist(rg);
+        //std::uniform_real_distribution<double> realDist(0.0, sum);
+        //randomR = realDist(rg);
+        randomR = R::runif(0,sum);
         temp = distance[0];
         candidate = 0;
         while (!(randomR < temp))

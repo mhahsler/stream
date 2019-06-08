@@ -60,12 +60,12 @@ template<typename T> unsigned int ProxySolution<T>::size_of_solution(unsigned in
 
 template<typename T> T ProxySolution<T>::proxy(unsigned int n, unsigned int c) const
 {
-	if (n<this->proxysets.size())
-		if (c<this->proxysets[n].size())
+//	if (n<this->proxysets.size())
+//		if (c<this->proxysets[n].size())
 				return this->proxysets[n][c];
 
 	// std::cerr << "ProxySolution<T>::proxy(" << n << "," << c << "): requested proxy not available" << std::endl;
-	throw "ILLEGAL STATE";
+	//throw "ILLEGAL STATE";
 }
 
 template<typename T> std::vector<T> ProxySolution<T>::proxies(unsigned int n) const

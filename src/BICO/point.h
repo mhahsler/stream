@@ -1,7 +1,9 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <iostream>
+//#include <iostream>
+// for size_t
+#include <stdlib.h>
 #include <vector>
 
 #include "weightedobject.h"
@@ -140,7 +142,7 @@ private:
 	double weight;
 };
 
-std::ostream& operator<<(std::ostream&, Point const&);
+//std::ostream& operator<<(std::ostream&, Point const&);
 
 Point operator*(double scalar, Point const & vec);
 

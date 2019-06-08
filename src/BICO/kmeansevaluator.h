@@ -336,11 +336,11 @@ template<typename T> double KMeansEvaluator<T>::combinedcost(std::vector<std::ve
 
 	if(numOfClusters < numOfProxies)
 	{
-		std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T>) - WARNING: More proxies than clusters: ignoring redundant proxies." << std::endl;
+		//std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T>) - WARNING: More proxies than clusters: ignoring redundant proxies." << std::endl;
 	}
 	else if(numOfClusters > numOfProxies)
 	{
-		std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T>) - WARNING: Less proxies than clusters: assigning remaining points to proxies." << std::endl;
+		//std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T>) - WARNING: Less proxies than clusters: assigning remaining points to proxies." << std::endl;
 		for(int i = numOfProxies; i < numOfClusters; i++)
 		{
 			sum += proxycost(clusters[i], proxies);
@@ -365,11 +365,11 @@ template<typename T> double KMeansEvaluator<T>::combinedcost(std::vector<std::ve
 
 	if(numOfClusters < numOfProxies)
 	{
-		std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T*>) - WARNING: More proxies than clusters: ignoring redundant proxies." << std::endl;
+		//std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T*>) - WARNING: More proxies than clusters: ignoring redundant proxies." << std::endl;
 	}
 	else if(numOfClusters > numOfProxies)
 	{
-		std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T*>) - WARNING: Less proxies than clusters: assigning remaining points to proxies." << std::endl;
+		//std::clog << "CluE::KMeansEvaluator<T>::combinedcost(std::vector<std::vector<T*> >, std::vector<T*>) - WARNING: Less proxies than clusters: assigning remaining points to proxies." << std::endl;
 		for(int i = numOfProxies; i < numOfClusters; i++)
 		{
 			sum += proxycost(clusters[i], proxies);

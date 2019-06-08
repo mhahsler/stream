@@ -1,30 +1,30 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <random>
-#include <ctime>
-#include <time.h>
+//#include <iostream>
+//#include <sstream>
+//#include <fstream>
+//#include <random>
+//#include <ctime>
+//#include <time.h>
 
-#include <boost/algorithm/string.hpp>
+//#include <boost/algorithm/string.hpp>
 
 #include "BICO/l2metric.h"
 #include "BICO/squaredl2metric.h"
 #include "BICO/point.h"
 #include "BICO/pointweightmodifier.h"
 #include "BICO/bico.h"
-#include "BICO/randomness.h"
-#include "BICO/randomgenerator.h"
+//#include "BICO/randomness.h"
+//#include "BICO/randomgenerator.h"
 #include "BICO/proxysolution.h"
 #include "BICO/pointcentroid.h"
 #include "BICO/pointweightmodifier.h"
 #include "BICO/realspaceprovider.h"
 
 #include "BICO/master.h"
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 
 
 // data structure adapted to Rcpp NumericMatrix and IntegerVector
@@ -115,21 +115,24 @@ public:
   }
 
 
-  void cluster(Rcpp::NumericMatrix data){
+  void cluster(Rcpp::NumericMatrix data) {
 
     // initialize
     if(bico==NULL){
       this->d = data.ncol();
       // parameter n is not used, therefore pass dummy 0 value
       this->bico = new CluE::Bico<CluE::Point>(this->d, 0, this->k, this->p, this->space, &this->metric, &this->modifier);
+    }else{
+      if(d != data.ncol()) {
+        Rf_error("Dimensions of new data do not match the current BICO clustering.");
+      }
     }
 
     this->upToDate=false;
 
-    time_t starttime;
-
+//    time_t starttime;
     // Randomness::initialize(seed);
-    time(&starttime);
+//    time(&starttime);
     int n = data.nrow();
 
     for(int row=0; row < n; row++){
@@ -162,12 +165,12 @@ public:
 
     this->micro = micro;
     this->microWeight = microWeight;
-  }
+}
 
 
 
 
-  void recluster(){
+  void recluster() {
 
     if(this->micro.nrow() == 0){
       return;
@@ -206,7 +209,7 @@ public:
     this->macro = macro;
     this->macroWeight = macroWeight;
     this->assignment = assignment;
-  }
+}
 
 
   Rcpp::NumericMatrix get_microclusters(){

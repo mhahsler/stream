@@ -42,7 +42,8 @@ update(two, stream, n=1000)
 reset_stream(stream)
 plot(two, stream, type="both")
 
-## if we have time, evaluate additional generations. This can be called at any time, also between observations.
+## if we have time, evaluate additional generations. This can be
+## called at any time, also between observations.
 two$macro_dsc$RObj$recluster(2000)
 
 ## plot improved result

@@ -17,23 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' BICO - Fast computation of k-means coresets in a data stream
-#'
-#' BICO maintains a tree which is inspired by the clustering tree of BIRCH,
-#' a SIGMOD Test of Time award-winning clustering algorithm.
-#' Each node in the tree represents a subset of these points. Instead of
-#' storing all points as individual objects, only the number of points,
-#' the sum and the squared sum of the subset's points are stored as key features
-#' of each subset. Points are inserted into exactly one node.
-#'
-#' In this implementation, the nearest neighbour search on the first level
-#' of the tree ist sped up by projecting all points to random 1-d subspaces.
-#' The first estimation of the optimal clustering cost is computed in a
-#' buffer phase at the beginning of the algorithm.
-#'
-#' This implementation interfaces the original C++ implementation available here: \url{http://ls2-www.cs.tu-dortmund.de/grav/de/bico}.
-#' For micro-clustering, the algorithm computes the coreset of the stream. Reclustering is performed by using the \code{kmeans++} algorithm on the coreset.
-
 DSC_BICO <- function(k=5, space=10, p=10, iterations=10) {
 
   BICO <- BICO_R$new(k, space, p, iterations)

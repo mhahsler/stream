@@ -7,6 +7,7 @@
 #include <random>
 #include <vector>
 
+
 #include "streamingalgorithm.h"
 #include "dissimilaritymeasure.h"
 #include "solutionprovider.h"
@@ -15,8 +16,10 @@
 #include "cfrentry.h"
 #include "proxysolution.h"
 #include "kmeansevaluator.h"
-#include "invalidruntimeconfigurationexception.h"
-#include "randomness.h"
+//#include "invalidruntimeconfigurationexception.h"
+// We use the R random number generator
+//#include "randomness.h"
+#include <Rcpp.h>
 
 namespace CluE
 {
@@ -544,22 +547,23 @@ dimension(dim)
     // RandomGenerator rg = Randomness::getRandomGenerator()
 
     // Create random device and generator
-    std::random_device rd;
-    std::mt19937 rg(rd());
+    //std::random_device rd;
+    //std::mt19937 rg(rd());
 
     std::vector<double> rndpoint(dimension);
     rndprojections.resize(L);
     bucket_radius.resize(L);
     maxVal.resize(L);
     double norm;
-    std::normal_distribution<double> realDist(0.0, 1.0);
+    //std::normal_distribution<double> realDist(0.0, 1.0);
     for (unsigned int i = 0; i < L; i++)
     {
         maxVal[i] = -1;
         norm = 0.0;
         for (unsigned int j = 0; j < dimension; j++)
         {
-            rndpoint[j] = realDist(rg);
+            //rndpoint[j] = realDist(rg);
+            rndpoint[j] = R::rnorm(0,1);
             norm += rndpoint[j] * rndpoint[j];
         }
         norm = std::sqrt(norm);
@@ -802,8 +806,8 @@ template<typename T> void Bico<T>::insertIntoNN(typename BicoNode::FeatureList::
 template<typename T> void Bico<T>::insert(BicoNode* node, int level, T const & element)
 {
 
-    if (optEst < 0)
-        throw (InvalidRuntimeConfigurationException(0, "Estimated optimal cost invalid"));
+    //if (optEst < 0)
+    //    throw (InvalidRuntimeConfigurationException(0, "Estimated optimal cost invalid"));
 
     // Determine nearest clustering feature in current node
     typename BicoNode::FeatureList::iterator nearest(node->nearest(element, level));

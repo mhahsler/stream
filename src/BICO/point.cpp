@@ -1,10 +1,10 @@
 #include "point.h"
 
-#include "invalidargumentexception.h"
-#include "invalidruntimeconfigurationexception.h"
+//#include "invalidargumentexception.h"
+//#include "invalidruntimeconfigurationexception.h"
 
 #include <math.h>
-#include <iostream>
+//#include <iostream>
 #include <numeric>
 #include <vector>
 #include <algorithm>
@@ -22,8 +22,8 @@ Point::Point(std::vector<Point*> const& v)
 		for(size_t i=1; i < size; ++i)
 		{
 			weightSum+=v[i]->weight;
-			if(v[i]->dimension()!=dimension)
-				throw InvalidArgumentException(0, "Can't consolidate points with different dimensions!", "v");
+			//if(v[i]->dimension()!=dimension)
+			//	throw InvalidArgumentException(0, "Can't consolidate points with different dimensions!", "v");
 		}
 
 		for(size_t n=0; n < dimension; ++n)
@@ -49,8 +49,8 @@ Point& Point::operator+=(Point const & x)
 {
 	size_t d = this->dimension();
 
-	if(x.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "x");
+	//if(x.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "x");
 
 	for(size_t i = 0; i < d; ++i)
 		(*this)[i] += x[i];
@@ -62,8 +62,8 @@ Point& Point::operator-=(Point const & x)
 {
 	size_t d = this->dimension();
 
-	if(x.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "x");
+	//if(x.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "x");
 
 	for(size_t i = 0; i < d; ++i)
 		(*this)[i] -= x[i];
@@ -84,8 +84,8 @@ Point Point::operator-(Point const & x) const
 double Point::l1distance(Point const& p) const
 {
 	size_t d = this->dimension();
-	if(p.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
+	//if(p.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
 
 	double sum = 0;
 	for(size_t i=0; i<d; ++i)
@@ -103,8 +103,8 @@ double Point::squaredL1distance(Point const& p) const
 double Point::squaredL2distance(Point const& p) const
 {
 	size_t d = this->dimension();
-	if(p.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
+	//if(p.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
 
 	double sum = 0;
 	for(unsigned int i=0; i<d; ++i)
@@ -124,8 +124,8 @@ double Point::l2distance(Point const& p) const
 double Point::lpdistance(Point const& p, double exp) const
 {
 	size_t d = this->dimension();
-	if(p.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
+	//if(p.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
 
 	double sum = 0;
 	for(size_t i=0; i<d; ++i)
@@ -147,8 +147,8 @@ double Point::squaredLpDistance(Point const& p, double exp) const
 double Point::kullbackleibler(Point const& p) const
 {
 	size_t d = this->dimension();
-	if(p.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
+	//if(p.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "p");
 
 	std::vector<double> temp;
 	std::vector<double> sortedX;
@@ -167,11 +167,11 @@ double Point::kullbackleibler(Point const& p) const
 				if(r>.0)
 					temp.push_back(xi*log(r));
 			}
-			else
-				throw InvalidRuntimeConfigurationException(1, "Point has coordinate <= 0.");
+			//else
+			//	throw InvalidRuntimeConfigurationException(1, "Point has coordinate <= 0.");
 		}
-		else
-			throw InvalidRuntimeConfigurationException(1, "Point has coordinate <= 0.");
+		//else
+		//	throw InvalidRuntimeConfigurationException(1, "Point has coordinate <= 0.");
 	}
 
 	// for numeric stability
@@ -184,6 +184,7 @@ double Point::kullbackleibler(Point const& p) const
 	       +accumulate(sortedY.begin(), sortedY.end(), .0);
 }
 
+/*
 std::ostream& CluE::operator<<(std::ostream& os, Point const& p)
 {
 	size_t d = p.dimension();
@@ -197,6 +198,7 @@ std::ostream& CluE::operator<<(std::ostream& os, Point const& p)
 	os << ")";
 	return os;
 }
+*/
 
 Point CluE::operator*(double scalar, Point const & vec)
 {
@@ -213,8 +215,8 @@ double CluE::operator*(Point const & vec1, Point const & vec2)
 {
 	size_t d = vec1.dimension();
 
-	if(vec2.dimension() != d)
-		throw InvalidArgumentException(0, "Incompatible dimensions!", "vec1 / vec2");
+	//if(vec2.dimension() != d)
+	//	throw InvalidArgumentException(0, "Incompatible dimensions!", "vec1 / vec2");
 
 	double ret = 0;
 	for(size_t i = 0; i<d; ++i)

@@ -3,10 +3,10 @@
 
 #include "kmeans.h"
 #include "triple.h"
-#include <iostream>
+//#include <iostream>
 //#include <fstream>
 #include <sstream>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <limits>
 

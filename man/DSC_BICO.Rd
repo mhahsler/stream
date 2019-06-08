@@ -28,16 +28,13 @@ In this implementation, the nearest neighbour search on the first level
 of the tree ist sped up by projecting all points to random 1-d subspaces.
 The first estimation of the optimal clustering cost is computed in a
 buffer phase at the beginning of the algorithm.
-
 This implementation interfaces the original C++ implementation available here: \url{http://ls2-www.cs.tu-dortmund.de/grav/de/bico}.
 For micro-clustering, the algorithm computes the coreset of the stream. Reclustering is performed by using the \code{kmeans++} algorithm on the coreset.
 }
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 2)
-
 BICO <- DSC_BICO(k = 3, p = 10, space = 100, iterations = 10)
 update(BICO, stream, n = 500)
-
 plot(BICO,stream, type = "both")
 }
 \references{
@@ -47,7 +44,6 @@ Hendrik Fichtenberger, Marc Gille, Melanie Schmidt, Chris Schwiegelshohn, Christ
 R-Interface:
 Matthias Carnein (\email{Matthias.Carnein@uni-muenster.de}),
 Dennis Assenmacher.
-
 C-Implementation:
 Hendrik Fichtenberger,
 Marc Gille,

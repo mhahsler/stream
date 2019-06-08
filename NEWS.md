@@ -1,26 +1,34 @@
-# stream 1.3-0.1 (xx/xx/18)
+# stream 1.3-1 (06/07/19)
 
+## New Features
 * Added DSC_evoStream and DSC_EA. Code by Matthias Carnein.
+
+## Changes
 * Package animation is now only suggested since it requires package magick 
     which may need the imagemagick++ libraries installed. 
 
 # stream 1.3-0 (05/31/18)
 
+## New Features
 * Added DSC_BIRCH. Code and Interface by Dennis Assenmacher and Matthias Carnein.
 * Added DSC_BICO. Code by Hendrik Fichtenberger, Marc Gille, Melanie Schmidt, 
     Chris Schwiegelshohn, Christian Sohler and Interface provided by Matthias 
     Carnein and Dennis Assenmacher.
+* animate_cluster: noise now accepts "class" or "exclude" ("ignore" is deprecated).
+
+## Bug Fixes
 * DSD_ReadCSV: Fixed bug with streams that have no class/cluster label 
     (reported by Matthias Carnein).
-* animate_cluster: noise now accepts "class" or "exclude" ("ignore" is deprecated).
 
 # stream 1.2-4 (02/25/17)
 
+## Bug Fixes
 * Use dbFetch in DSD_ReadDB (new version of RSQLite).
 * Register native C routines.
 
 # stream 1.2-3 (08/07/16)
 
+## Bug Fixes
 * fixed saveDSC for DBStream.
 * fixed handling of data with d=1 (reported by Ilana Lichtenstein).
 * plot now automatically determines if the data supports a class attribute.

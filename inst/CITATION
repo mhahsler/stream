@@ -17,13 +17,6 @@ bibentry(bibtype = "Article",
   volume       = "76",
   number       = "14",
   pages        = "1--50",
-  doi          = "10.18637/jss.v076.i14",
-
-  header       = "To cite stream in publications use:",
-  textVersion  =
-  paste("Michael Hahsler, Matthew Bolanos, John Forrest (2017).",
-        "Introduction to stream: An Extensible Framework for Data Stream Clustering Research with R.",
-        "Journal of Statistical Software, 76(14), 1-50.",
-        "doi:10.18637/jss.v076.i14")
-)
+  doi          = "10.18637/jss.v076.i14"
+  )
 
