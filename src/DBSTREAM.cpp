@@ -179,9 +179,9 @@ public:
   void update(Rcpp::NumericMatrix& data,
     bool debug = FALSE, bool assignments = FALSE) {
 
-    // check dimensions of new data
+    // check dimensions of new data against the dimenstions for the first cluster
     if (mcs.size()>0) {
-      if (mcs[1].center.length() != data.ncol()) {
+      if (mcs[0].center.length() != data.ncol()) {
         Rf_error("Dimensions of new data do not match the current DBSTREAM clustering.");
       }
     }

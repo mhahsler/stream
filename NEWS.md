@@ -1,3 +1,9 @@
+# stream 1.3-1.1 (xx/xx/19)
+
+## Bug Fixes
+* DBSTREAM: Fixed array index bug (reported by MatthiasCarnein) 
+
+
 # stream 1.3-1 (06/07/19)
 
 ## New Features
