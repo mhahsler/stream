@@ -14,10 +14,12 @@ get_assignment(dsc, points, type=c("auto", "micro", "macro"),
 	\item{points}{The points to be assigned as a data.frame.}
 	\item{type}{Use micro- or macro-clusters in DSC for assignment. Auto
 	used the class of dsc to decide.}
-	\item{method}{ assignment method \code{"model"} uses the assignment model
-  of the underlying algorithm (unassigned points return \code{NA}).
-  \code{"nn"} performs nearest neighbor assignment using Euclidean distance.
-	\code{"auto"} uses model if it is avaialble and defaults to nn otherwise. }
+	\item{method}{ assignment method
+	\itemize{
+	\item \code{"model"} uses the assignment method
+  of the underlying algorithm (unassigned points return \code{NA}). Not all algorithms implement this option.
+  \item \code{"nn"} performs nearest neighbor assignment using Euclidean distance.
+	\item \code{"auto"} uses the model assignment method. If this method is not implemented/available then nn assignment is used instead. }}
 	\item{...}{Additional arguments are passed on.}
 }
 
