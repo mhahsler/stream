@@ -46,7 +46,7 @@
 }
 
 ### installed
-.installed <- function(pkg) !is(try(installed.packages()[pkg,],
+.installed <- function(pkg) !is(try(utils::installed.packages()[pkg,],
   silent=TRUE), "try-error")
 
 
