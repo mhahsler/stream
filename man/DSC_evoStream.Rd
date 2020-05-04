@@ -45,22 +45,23 @@ In addition, this implementation also allows to evaluate a fixed number of gener
 stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 500)
 
 ## init evoStream
-evoStream <- DSC_evoStream(r=0.05, k=3, incrementalGenerations=1, reclusterGenerations=500)
+evoStream <- DSC_evoStream(r = 0.05, k = 3,
+  incrementalGenerations = 1, reclusterGenerations = 500)
 
 ## insert observations
 update(evoStream, stream, n = 500)
 
 ## micro clusters
-get_centers(evoStream, type="micro")
+get_centers(evoStream, type = "micro")
 
 ## micro weights
-get_weights(evoStream, type="micro")
+get_weights(evoStream, type = "micro")
 
 ## macro clusters
-get_centers(evoStream, type="macro")
+get_centers(evoStream, type = "macro")
 
 ## macro weights
-get_weights(evoStream, type="macro")
+get_weights(evoStream, type = "macro")
 
 ## plot result
 reset_stream(stream)
@@ -74,7 +75,7 @@ evoStream$RObj$recluster(500)
 
 ## plot improved result
 reset_stream(stream)
-plot(evoStream, stream, type="both")
+plot(evoStream, stream, type = "both")
 
 ## get assignment of micro to macro clusters
 microToMacro(evoStream)
