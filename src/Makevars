@@ -1,10 +1,10 @@
-PKG_CPPFLAGS=-I.
 CXX_STD = CXX11
 
 OBJECTS = evoStream.o BIRCH.o BICO.o DBSTREAM.o DStream.o init.o kmeansw.o NumericVector.o RcppExports.o BICO/l2metric.o BICO/point.o BICO/pointcentroid.o BICO/realspaceprovider.o BICO/squaredl2metric.o BIRCH/CFLeafNode.o BIRCH/CFNode.o BIRCH/CFNonLeafNode.o BIRCH/CFTree.o BIRCH/ClusteringFeature.o BIRCH/Util.o
-
 
 all: $(SHLIB)
 
 clean:
 	@rm -f $(OBJECTS)
+
+.PHONY: clean

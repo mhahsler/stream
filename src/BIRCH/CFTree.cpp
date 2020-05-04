@@ -6,7 +6,7 @@
 namespace CF {
 
 CFTree::CFTree(double treshold, int branchingFactor, int maxLeafEntries, int maxMemory, float outlierThreshold) : treshold(treshold), branchingFactor(branchingFactor),maxLeafEntries(maxLeafEntries),treeHeight(0),usedMem(0),maxMemory(maxMemory),outlierTreshold(outlierThreshold) {
- // Rcpp::Rcout<<"Constructor called"<<std::endl;
+  // Rcpp::Rcout<<"Constructor called"<<std::endl;
   this->root = NULL;
   this->outlier = new std::vector<CF::ClusteringFeature*>();
 }
@@ -15,11 +15,9 @@ CFTree::CFTree(double treshold, int branchingFactor, int maxLeafEntries, int max
  * Destructor
  */
 CFTree::~CFTree(){
-  if(this!=NULL){
   //Destructor of tree simply calls delete Tree method
-    this->deleteTree(this->root, 1);
-    // Rcpp::Rcout<<"Tree successfully deleted"<<std::endl;
-    ;}
+  this->deleteTree(this->root, 1);
+  // Rcpp::Rcout<<"Tree successfully deleted"<<std::endl;
 }
 
 void CFTree::insert(ClusteringFeature *feature,CF::CFNode *node){
