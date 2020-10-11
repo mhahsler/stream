@@ -21,10 +21,15 @@
 
 # accepts an open connection
 # ... goes to read.table
-DSD_ReadCSV <- function(file, k=NA,
-  take=NULL, class=NULL, loop=FALSE,
-  sep=",", header=FALSE, skip=0, colClasses = NA, ...) {
+DSD_ReadCSV <- function(file, k=NA, o=NA,
+                        take=NULL, class=NULL, outlier=NULL, loop=FALSE,
+                        sep=",", header=FALSE, skip=0, colClasses = NA, ...) {
+  env <- environment()
 
+  if(is.na(o) && !is.null(outlier))
+    stop("The outlier column is defined, but the number of outliers is not supplied")
+  if(!is.na(o) && is.null(outlier))
+    stop("The number of outliers is supplied, but the outlier column was not supplied")
   # if the user passes a string, create a new connection and open it
   if (is(file, "character")) file <- file(file)
 
@@ -43,7 +48,7 @@ DSD_ReadCSV <- function(file, k=NA,
   # read first point to figure out structure!
   if(skip>0) readLines(file, n=skip)
   point <- read.table(text=readLines(con=file, n=1+header),
-    sep=sep, header=header, colClasses = colClasses, ...)
+                      sep=sep, header=header, colClasses = colClasses, ...)
 
   # reset stream if possible (otherwise first point is lost)
   if(isSeekable(file)) {
@@ -81,12 +86,24 @@ DSD_ReadCSV <- function(file, k=NA,
     if(!is.null(take)) class <- match(class, take)
     if(is.na(class)) stop("Invalid class column index!")
   }
+  # outlier?
+  if(is.character(outlier)) {
+    if(is.null(header)) stop("Only numeric column index allowed if no headers are available!")
+    outlier <- pmatch(outlier, header)
+    if(is.na(outlier)) stop("No matching column name for outlier indicators!")
+  } else if(!is.null(outlier)) {
+    if(!is.null(take)) outlier <- match(outlier, take)
+    if(is.na(outlier)) stop("Invalid outlier column index!")
+  }
+  if(!is.null(outlier) && class(point[1,outlier])!="logical")
+    stop("Outlier column must have logical values!")
 
   # creating the DSD object
   l <- list(
     description = paste('File Data Stream (', filename, ')', sep=''),
     d = d,
     k = k,
+    o = o,
     file = file,
     sep = sep,
     take = take,
@@ -94,8 +111,10 @@ DSD_ReadCSV <- function(file, k=NA,
     colClasses = colClasses,
     read.table.args = list(...),
     class = class,
+    outlier = outlier,
     loop = loop,
-    skip = skip)
+    skip = skip,
+    env = env)
   class(l) <- c("DSD_ReadCSV", "DSD_R", "DSD_data.frame", "DSD")
 
   l
@@ -103,8 +122,8 @@ DSD_ReadCSV <- function(file, k=NA,
 
 ## it is important that the connection is OPEN
 get_points.DSD_ReadCSV <- function(x, n=1,
-  outofpoints=c("stop", "warn", "ignore"),
-  cluster = FALSE, class = FALSE,  ...) {
+                                   outofpoints=c("stop", "warn", "ignore"),
+                                   cluster = FALSE, class = FALSE, outlier=FALSE, ...) {
   .nodots(...)
 
   .DEBUG <- TRUE
@@ -113,9 +132,9 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   outofpoints <- match.arg(outofpoints)
   noop <- function(...) {}
   msg <- switch(outofpoints,
-    "stop" = stop,
-    "warn" = warning,
-    "ignore" = noop
+                "stop" = stop,
+                "warn" = warning,
+                "ignore" = noop
   )
 
   n <- as.integer(n)
@@ -141,9 +160,9 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   else {
     suppressWarnings(
       try(d <- do.call(read.table,
-        c(list(text=lines, sep=x$sep, nrows=n,
-          colClasses=x$colClasses), x$read.table.args)),
-        silent = !.DEBUG))
+                       c(list(text=lines, sep=x$sep, nrows=n,
+                              colClasses=x$colClasses), x$read.table.args)),
+          silent = !.DEBUG))
   }
 
   if(eof) msg("The stream is at its end (EOF)!")
@@ -164,9 +183,9 @@ get_points.DSD_ReadCSV <- function(x, n=1,
           d2 <- NULL
           suppressWarnings(
             try(d2 <- do.call(read.table,
-              c(list(text=lines, sep=x$sep, nrows=n,
-                colClasses=x$colClasses), x$read.table.args)),
-              silent = !.DEBUG))
+                              c(list(text=lines, sep=x$sep, nrows=n,
+                                     colClasses=x$colClasses), x$read.table.args)),
+                silent = !.DEBUG))
           if(!is.null(d2) && nrow(d2 > 0)) d <- rbind(d, d2)
           else msg("Read failed (use smaller n for unreliable sources)!")
         }
@@ -194,18 +213,28 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   if(nrow(d)>0) {
     if(!is.null(x$header)) colnames(d) <- x$header
 
+    removals <- c()
     ### handle missing cluster/class info
     if(!is.null(x$class)) {
       cl <- d[,x$class]
-      d <- d[,-x$class, drop=FALSE]
+      removals <- c(x$class)
     }else{
       if(cluster || class) {
         cl <- rep(NA_integer_, nrow(d))
       }
     }
+    ### handle outlier info
+    if(!is.null(x$outlier)) {
+      out <- d[,x$outlier]
+      removals <- c(removals, x$outlier)
+    }else{
+      out <- rep(FALSE, nrow(d))
+    }
+    d <- d[,-removals, drop=FALSE]
 
     if(class) d <- cbind(d, class = cl)
     if(cluster) attr(d, "cluster") <- cl
+    if(outlier) attr(d, "outlier") <- out
   }
 
   d

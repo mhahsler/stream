@@ -18,16 +18,19 @@
 
 
 DSD_Memory <- function(x, n, k=NA, loop=FALSE,
-  class = NULL, description=NULL) {
+                       class = NULL, outlier = NULL, description=NULL) {
 
   if(is(x, "DSD")) {
     if(is.na(k) && !is.null(x$k)) k <- x$k
 
-    x <- get_points(x, n, cluster = TRUE)
+    x <- get_points(x, n, cluster = TRUE, outlier = TRUE)
     class <- attr(x, "cluster")
+    outlier <- attr(x, "outlier")
   }else{ ### x is a matrix-like object
     if(!is.null(class) && length(class) != nrow(x))
       stop("Length of class and rows of x do not agree!")
+    if(!is.null(outlier) && length(outlier) != nrow(x))
+      stop("Length of outlier and rows of x do not agree!")
   }
 
   d <- ncol(x)
@@ -45,13 +48,14 @@ DSD_Memory <- function(x, n, k=NA, loop=FALSE,
     d = d,
     k = k,
     loop = loop,
-    class = class
-    ), class = c("DSD_Memory", "DSD_R", "DSD_data.frame", "DSD"))
+    class = class,
+    outlier = outlier
+  ), class = c("DSD_Memory", "DSD_R", "DSD_data.frame", "DSD"))
 }
 
 get_points.DSD_Memory <- function(x, n=1,
-  outofpoints=c("stop", "warn", "ignore"),
-  cluster = FALSE, class = FALSE, ...) {
+                                  outofpoints=c("stop", "warn", "ignore"),
+                                  cluster = FALSE, class = FALSE, outlier = FALSE, ...) {
   .nodots(...)
 
   n <- as.integer(n)
@@ -60,8 +64,8 @@ get_points.DSD_Memory <- function(x, n=1,
   if(x$state$counter > nrow(x$strm)) {
     if(x$loop) x$state$counter <- 1L
     else {
-    if(outofpoints == "stop") stop("The stream is at its end!")
-    if(outofpoints == "warn") warning("The stream is at its end! No more points available!")
+      if(outofpoints == "stop") stop("The stream is at its end!")
+      if(outofpoints == "warn") warning("The stream is at its end! No more points available!")
       return(x$strm[0,])
     }
   }
@@ -74,10 +78,12 @@ get_points.DSD_Memory <- function(x, n=1,
     n <- n_left
   }
 
+  o <- NULL
   if(n_left >= n) {
     ### regular case
     d <- x$strm[x$state$counter:(x$state$counter + n -1L),,drop=FALSE]
     a <- x$class[x$state$counter:(x$state$counter + n -1L)]
+    if(!is.null(x$outlier)) o <- x$outlier[x$state$counter:(x$state$counter + n -1L)]
     x$state$counter <- x$state$counter + n
   }else{
     ### we need to loop!
@@ -86,6 +92,7 @@ get_points.DSD_Memory <- function(x, n=1,
     # take what is left and reset counter
     d <- x$strm[x$state$counter:nrow(x$strm),,drop=FALSE]
     a <- x$class[x$state$counter:nrow(x$strm)]
+    if(!is.null(x$outlier)) o <- x$outlier[x$state$counter:nrow(x$strm)]
 
     togo <- n-n_left
     x$state$counter <- 1L
@@ -97,12 +104,14 @@ get_points.DSD_Memory <- function(x, n=1,
         # take the whole stream
         d <- rbind(d, x$strm)
         a <- append(a, x$class)
+        if(!is.null(x$outlier)) o <- append(o, x$outlier)
 
         togo <- togo - n_left
       }else{
         # take the rest
         d <- rbind(d, x$strm[1:(x$state$counter+togo-1),])
         a <- append(a, x$class[1:(x$state$counter+togo-1)])
+        if(!is.null(x$outlier)) o <- append(o, x$outlier[1:(x$state$counter+togo-1)])
 
         x$state$counter <- x$state$counter + togo
         togo <- 0L
@@ -115,6 +124,7 @@ get_points.DSD_Memory <- function(x, n=1,
   ### handle missing cluster/class info
   if((cluster || class) && is.null(a)) a <- rep(NA_integer_, nrow(d))
   if(cluster) attr(d, "cluster") <- a
+  if(outlier) attr(d, "outlier") <- o
   if(class) d <- cbind(d, class = a)
 
   d
@@ -126,8 +136,8 @@ print.DSD_Memory <- function(x, ...) {
   if (pos>nrow(x$strm))
     if (!x$loop) pos <- "'end'" else pos <- 1
   cat(paste('Contains', nrow(x$strm),
-    'data points - currently at position', pos,
-    '- loop is', x$loop, '\n'))
+            'data points - currently at position', pos,
+            '- loop is', x$loop, '\n'))
 }
 
 reset_stream.DSD_Memory <- function(dsd, pos=1) {

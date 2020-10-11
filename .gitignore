@@ -16,5 +16,8 @@ vignettes/*.pdf
 *.o
 *.so
 *.Rproj
+*.RData
 
 Work
+doc
+Meta

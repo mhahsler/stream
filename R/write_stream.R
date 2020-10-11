@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,41 +18,44 @@
 
 ### write data from a stream to a file
 
-write_stream <- function(dsd, file, n=100, block=100000L, 
-  class=FALSE, append = FALSE, sep=",", 
-  header=FALSE, row.names=FALSE, ...) UseMethod("write_stream")
+write_stream <- function(dsd, file, n=100, block=100000L,
+                         class=FALSE, append = FALSE, sep=",",
+                         header=FALSE, row.names=FALSE, ...) UseMethod("write_stream")
 
-write_stream.default <- function(dsd, file, n=100, block=100000L, 
-  class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, ...) {
+write_stream.default <- function(dsd, file, n=100, block=100000L,
+                                 class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, ...) {
   stop(gettextf("write_stream not implemented for class '%s'.", class(dsd)))
 }
 
-write_stream.DSD <- function(dsd, file, n=100, block=100000L, 
-  class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, ...) {	
+write_stream.DSD <- function(dsd, file, n=100, block=100000L,
+                             class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, write_outliers=FALSE, ...) {
 
   # make sure files are not overwritten
-  if(is(file, "character") && file.exists(file) && !append) 
+  if(is(file, "character") && file.exists(file) && !append)
     stop("file exists already. Please remove the file first.")
-  
+
   # string w/ file name (clears the file)
   if (is(file, "character")) {
     if(append) file <- file(file, open="a")
     else file <- file(file, open="w")
   }
-  # error	
+  # error
   else if (!is(file, "connection")) stop("Please pass a valid connection!")
-  
+
   # needs opening
   else if (!isOpen(file)) open(file)
-  
+
   # all following calls have to have col.names=FALSE regardless
   for (bl in .make_block(n, block)) {
-    p <- get_points(dsd, bl, class=class)
-    
+    if(write_outliers) {
+      p <- get_points(dsd, bl, class=class, outlier=TRUE)
+      p <- cbind(p, attr(p, "outlier"))
+    } else p <- get_points(dsd, bl, class=class)
+
     ## suppress warning for append and col.names
-    suppressWarnings(write.table(p, 
-      file, sep=sep, append=TRUE, col.names=header,
-      row.names=row.names, ...))
+    suppressWarnings(write.table(p,
+                                 file, sep=sep, append=TRUE, col.names=header,
+                                 row.names=row.names, ...))
   }
   close(file)
 }

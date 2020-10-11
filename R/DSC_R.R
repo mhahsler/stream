@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,30 +31,31 @@ DSC_R <- function(...) stop("DSC_R is an abstract class and cannot be instantiat
 ### geting a block of data improves performance the R implementation
 ### needs to make sure that points are processed sequencially
 ### (make especially BIRCH faster by passing block data points at once)
-update.DSC_R <- function(object, dsd, n=1, verbose=FALSE, 
+update.DSC_R <- function(object, dsd, n=1, verbose=FALSE,
   block=10000L, ...) {
   ### object contains an RObj which is  a reference object with a cluster method
-  
+
   ### for data frame/matrix we do it all at once
   if(is.data.frame(dsd) || is.matrix(dsd)) {
     if(verbose) cat("Clustering all data at once for matrix/data.frame.")
-    object$RObj$cluster(dsd, ...)  
+    object$RObj$cluster(dsd, ...)
     return(invisible(object))
   }
-  
+
   n <- as.integer(n)
   block <- as.integer(block)
   if(n>0) {
     if(!is(dsd, "DSD_data.frame"))
       stop("Cannot cluster stream (need a DSD_data.frame.)")
-  
+
     ### for clusterers which also create macro-clusterings
     if(is.environment(object$macro)) object$macro$newdata <- TRUE
-    
+
     ### TODO: Check data
     if(verbose) total <- 0L
     for(bl in .make_block(n, block)) {
-      object$RObj$cluster(get_points(dsd, bl), ...)
+      p <- get_points(dsd, bl, outlier=TRUE)
+      object$RObj$cluster(p, ...)
       if(verbose) {
         total <- total + bl
         cat("Processed", total, "/", n, "points -",
@@ -62,7 +63,7 @@ update.DSC_R <- function(object, dsd, n=1, verbose=FALSE,
       }
     }
   }
-  
+
   # so cl <- cluster(cl, ...) also works
   invisible(object)
 }
@@ -75,15 +76,15 @@ get_macroweights.DSC_R <- function(x, ...) x$RObj$get_macroweights(...)
 microToMacro.DSC_R <- function(x, micro=NULL, ...)  x$RObj$microToMacro(micro, ...)
 
 
-### make a deep copy of the reference class in RObj 
+### make a deep copy of the reference class in RObj
 get_copy.DSC_R <- function(x) {
 	temp <- x
-	
+
 	temp$RObj <- x$RObj$copy(TRUE)
-  
-	if(is.environment(temp$macro)) 
+
+	if(is.environment(temp$macro))
     temp$macro <- as.environment(as.list(temp$macro, all.names=TRUE))
-	
+
 	temp
 }
 
