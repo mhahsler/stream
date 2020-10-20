@@ -1,4 +1,4 @@
-\name{DSC_Mirco}
+\name{DSC_Micro}
 \alias{DSC_Micro}
 \title{Abstract Class for Micro Clusterers}
 \description{Abstract class for all DSC Micro Clusterers.}

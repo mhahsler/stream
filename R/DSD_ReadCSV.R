@@ -25,7 +25,6 @@ DSD_ReadCSV <- function(file, k=NA, o=NA,
                         take=NULL, class=NULL, outlier=NULL, loop=FALSE,
                         sep=",", header=FALSE, skip=0, colClasses = NA, ...) {
   env <- environment()
-
   if(is.na(o) && !is.null(outlier))
     stop("The outlier column is defined, but the number of outliers is not supplied")
   if(!is.na(o) && is.null(outlier))
@@ -230,7 +229,7 @@ get_points.DSD_ReadCSV <- function(x, n=1,
     }else{
       out <- rep(FALSE, nrow(d))
     }
-    d <- d[,-removals, drop=FALSE]
+    if(length(removals)>0) d <- d[,-removals, drop=FALSE]
 
     if(class) d <- cbind(d, class = cl)
     if(cluster) attr(d, "cluster") <- cl

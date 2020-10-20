@@ -42,8 +42,8 @@ get_outlier_positions.DSC_TwoStage <- function(x, ...) {
   get_outlier_positions(x$micro_dsc)
 }
 
-recheck_outlier.DSC_TwoStage <- function(x, ocid, ...) {
-  recheck_outlier(x$micro_dsc, ocid)
+recheck_outlier.DSC_TwoStage <- function(x, outlier_correlated_id, ...) {
+  recheck_outlier(x$micro_dsc, outlier_correlated_id)
 }
 
 ### TwoStage has its own interface (does not use DSC_R)
@@ -102,12 +102,12 @@ get_weights.DSC_TwoStage <- function(x, type=c("auto", "micro", "macro"), ...) {
   }
 }
 
-microToMacro.DSC_TwoStage <- function(dsc, micro=NULL, ...) {
-  if(dsc$macro$newdata) {
-    recluster(dsc$macro_dsc, dsc$micro_dsc)
-    dsc$macro$newdata <- FALSE
+microToMacro.DSC_TwoStage <- function(x, micro=NULL, ...) {
+  if(x$macro$newdata) {
+    recluster(x$macro_dsc, x$micro_dsc)
+    x$macro$newdata <- FALSE
   }
-  microToMacro(dsc$macro_dsc, micro, ...)
+  microToMacro(x$macro_dsc, micro, ...)
 }
 
 get_assignment.DSC_TwoStage <- function(dsc, points, type=c("auto", "micro", "macro"),
@@ -119,7 +119,7 @@ get_assignment.DSC_TwoStage <- function(dsc, points, type=c("auto", "micro", "ma
   } else {
     if(dsc$macro$newdata) {
       recluster(dsc$macro_dsc, dsc$micro_dsc)
-      dsc$macro$newdata <- FALSE
+      x$macro$newdata <- FALSE
     }
     get_assignment(dsc$macro_dsc, points, type, method, ...)
   }

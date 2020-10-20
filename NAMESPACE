@@ -5,7 +5,7 @@ import(proxy)
 
 importFrom(methods, "is", "new")
 importFrom(utils, "head", "read.table", "write.table")
-importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit")
+importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit", "mahalanobis")
 importFrom(graphics, "plot", "par", "layout", "title", "pairs", "points",
   "lines", "image")
 importFrom(grDevices, "gray", "gray.colors", "rgb", "col2rgb")

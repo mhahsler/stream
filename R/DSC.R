@@ -309,7 +309,7 @@ get_assignment.DSC_Outlier <- function(x, points, type=c("auto", "micro", "macro
 }
 
 DSC_SinglePass <- function(...) stop("DSC_SinglePass is an abstract class and cannot be instantiated!")
-get_assignment.DSC_SinglePass <- function(x, points, type=c("auto", "micro", "macro"),
+get_assignment.DSC_SinglePass <- function(dsc, points, type=c("auto", "micro", "macro"),
                                           method=c("auto", "nn", "model"), ...) {
-  stop(gettextf("No assignments and update available for class '%s'.", paste(class(x), collapse=", ")))
+  stop(gettextf("No assignments and update available for class '%s'.", paste(class(dsc), collapse=", ")))
 }

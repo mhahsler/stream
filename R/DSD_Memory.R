@@ -47,6 +47,7 @@ DSD_Memory <- function(x, n, k=NA, loop=FALSE,
     state = state,
     d = d,
     k = k,
+    o = sum(outlier),
     loop = loop,
     class = class,
     outlier = outlier

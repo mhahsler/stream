@@ -22,42 +22,13 @@
 #	- rangeVar (for genPositiveDefMat)
 #	- min/max on runif
 #
-mahaDist <- function(mu, sigma, out_mu=NULL, out_sigma=NULL, m_th=4) {
-  require(MASS)
-  if(!is.null(out_mu) && is.null(out_sigma)) stop("virtual covariance for outliers is missing")
-  inv_sigma <- list()
-  for(i in 1:length(sigma)) inv_sigma[[i]] <- ginv(sigma[[i]])
-  if(!is.null(out_sigma)) inv_out_sigma <- ginv(out_sigma)
-  v <- nrow(mu)
-  if(!is.null(out_mu)) v <- v + nrow(out_mu)
-  mx <- matrix(rep(-1,length(v)^2),ncol=v,nrow=v)
-  if(is.null(out_mu)) tmu <- mu
-  else tmu <- rbind(mu, out_mu)
-  if(v>1)
-    for(i in 1:(v-1)) {
-      for(j in (i+1):v) {
-        if(i<=nrow(mu)) Si <- inv_sigma[[i]]
-        else Si <- inv_out_sigma
-        if(j<=nrow(mu)) Sj <- inv_sigma[[j]]
-        else Sj <- inv_out_sigma
-        md <- c(mahalanobis(tmu[j,],tmu[i,],Si,inverted=T), mahalanobis(tmu[i,],tmu[j,],Sj,inverted=T))
-        p <- rep(2*m_th,2) / md
-        if(sum(p)==0) mx[i,j] <- mx[j,i] <- 0
-        else mx[i,j] <- mx[j,i] <- 1/sum(p)
-      }
-    }
-  mx[mx<0] <- 10000
-  mx
-}
 
 DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
                           separation_type=c("auto","Euclidean","Mahalanobis"), separation=0.2,
                           mahalanobis_separation=4, outlier_virtual_variance=1,
-                          o = 0, lim = c(0.2,0.8), variance_lim = 0.01, outlier_horizon,
-                          verbose=FALSE) {
+                          o = 0, lim = c(0.2,0.8), variance_lim = 0.01, outlier_horizon=500,
+                          outs, out_positions, verbose=FALSE) {
 
-  if(o>0 && missing(outlier_horizon))
-    stop("When generating outliers, the outlier horizon must be defined")
   separation_type <- match.arg(separation_type, c("auto","Euclidean","Mahalanobis"))
   if(separation_type=="auto") separation_type="Euclidean"
 
@@ -128,28 +99,33 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
 
   if(noise>0 && o>0)
     stop("outliers cannot be generated with noise!")
-  outs <- NULL
-  out_positions <- NULL
-  out_virtual_sigma <- diag(outlier_virtual_variance, d, d)
-  if(o>0) {
-    outs <- matrix(nrow=0,ncol=d)
-    outs_index <- 1
-    while(outs_index<=o) {
-      if(verbose) message(paste("Estimating outlier",outs_index))
-      i <- 10000L
-      while(i>0){
-        out <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
-        outs_tmp <- rbind(outs,out)
-        if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(outs_tmp,mu))<separation)) break;
-        if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
-           !any(mahaDist(mu,sigma,outs_tmp,out_virtual_sigma,mahalanobis_separation)<=1)) break;
-        i <- i + 1
+  if(missing(outs) || is.null(outs) || missing(out_positions) || is.null(out_positions)) {
+    outs <- NULL
+    out_positions <- NULL
+    out_virtual_sigma <- diag(outlier_virtual_variance, d, d)
+    if(o>0) {
+      outs <- matrix(nrow=0,ncol=d)
+      outs_index <- 1
+      while(outs_index<=o) {
+        if(verbose) message(paste("Estimating outlier",outs_index))
+        i <- 10000L
+        while(i>0){
+          out <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
+          outs_tmp <- rbind(outs,out)
+          if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(outs_tmp,mu))<separation)) break;
+          if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
+             !any(mahaDist(mu,sigma,outs_tmp,out_virtual_sigma,mahalanobis_separation)<=1)) break;
+          i <- i + 1
+        }
+        if(i==0) stop("Unable to find outliers with sufficient separation!")
+        outs <- outs_tmp
+        outs_index <- outs_index + 1
       }
-      if(i==0) stop("Unable to find outliers with sufficient separation!")
-      outs <- outs_tmp
-      outs_index <- outs_index + 1
+      out_positions <- sample(1:outlier_horizon,o)
     }
-    out_positions <- sample(1:outlier_horizon,o)
+  } else {
+    if(length(outs)!=length(out_positions))
+      stop("The number of outlier spatial positions (outs) must be the same as the number of outlier stream positions (out_positions).")
   }
 
 
@@ -264,6 +240,34 @@ get_points.DSD_Gaussians <- function(x, n=1,
   data
 }
 
-reset_stream.DSD_Gaussians <- function(x, pos=1) {
-  x$env$pos <- pos
+reset_stream.DSD_Gaussians <- function(dsd, pos=1) {
+  dsd$env$pos <- pos
+}
+
+mahaDist <- function(mu, sigma, out_mu=NULL, out_sigma=NULL, m_th=4) {
+  if(!requireNamespace("MASS")) stop("To use mahalanobis separation in DSD_Gaussians, you need MASS package")
+  if(!is.null(out_mu) && is.null(out_sigma)) stop("virtual covariance for outliers is missing")
+  inv_sigma <- list()
+  for(i in 1:length(sigma)) inv_sigma[[i]] <- MASS::ginv(sigma[[i]])
+  if(!is.null(out_sigma)) inv_out_sigma <- MASS::ginv(out_sigma)
+  v <- nrow(mu)
+  if(!is.null(out_mu)) v <- v + nrow(out_mu)
+  mx <- matrix(rep(-1,length(v)^2),ncol=v,nrow=v)
+  if(is.null(out_mu)) tmu <- mu
+  else tmu <- rbind(mu, out_mu)
+  if(v>1)
+    for(i in 1:(v-1)) {
+      for(j in (i+1):v) {
+        if(i<=nrow(mu)) Si <- inv_sigma[[i]]
+        else Si <- inv_out_sigma
+        if(j<=nrow(mu)) Sj <- inv_sigma[[j]]
+        else Sj <- inv_out_sigma
+        md <- c(stats::mahalanobis(tmu[j,],tmu[i,],Si,inverted=T), stats::mahalanobis(tmu[i,],tmu[j,],Sj,inverted=T))
+        p <- rep(2*m_th,2) / md
+        if(sum(p)==0) mx[i,j] <- mx[j,i] <- 0
+        else mx[i,j] <- mx[j,i] <- 1/sum(p)
+      }
+    }
+  mx[mx<0] <- 10000
+  mx
 }

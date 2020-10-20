@@ -1,6 +1,8 @@
 \name{evaluate}
 \alias{evaluate}
+\alias{evaluate_with_callbacks}
 \alias{evaluate_cluster}
+\alias{evaluate_cluster_with_callbacks}
 \alias{print.stream_eval}
 \title{Evaluate Clusterings}
 
@@ -13,8 +15,15 @@
 evaluate(dsc, dsd, measure, n = 100, type=c("auto", "micro", "macro"),
   assign="micro", assignmentMethod=c("auto", "model", "nn"),
   noise = c("class", "exclude"), ...)
+evaluate_with_callbacks(dsc, dsd, measure, callbacks=NULL, n = 100,
+  type=c("auto", "micro", "macro"), assign="micro",
+  assignmentMethod=c("auto", "model", "nn"), noise = c("class", "exclude"), ...)
 evaluate_cluster(dsc, dsd, measure, n = 1000,
   type=c("auto", "micro", "macro"),
+  assign="micro", assignmentMethod=c("auto", "model", "nn"),
+  horizon=100, verbose=FALSE, noise = c("class", "exclude"), ...)
+evaluate_cluster_with_callbacks(dsc, dsd, measure, callbacks=NULL,
+  n = 1000, type=c("auto", "micro", "macro"),
   assign="micro", assignmentMethod=c("auto", "model", "nn"),
   horizon=100, verbose=FALSE, noise = c("class", "exclude"), ...)
 }
@@ -32,10 +41,12 @@ evaluate_cluster(dsc, dsd, measure, n = 1000,
     evaluation (see \code{get_assignment})?}
 	\item{horizon}{Evaluation is done using horizon many previous points
     (see detail section).}
-	\item{verbose}{report progress?}
-	\item{noise}{how to handle noise points in the data. Options are
+	\item{verbose}{Report progress?}
+	\item{noise}{How to handle noise points in the data. Options are
 	  to  treat as a separate class (default) or
 	  to exclude them from evaluation. }
+	\item{callbacks}{A list of \code{\link{EvalCallback}} objects, invoked when
+	  measurement is calculated. }
 	\item{...}{Unused arguments are ignored.}
 }
 
@@ -155,11 +166,28 @@ points and ad what level (micro or macro) to evaluate.
 Many of the above measures are implemented package \pkg{clue} in function
 \code{cl_agreement().}
 
+The following outlier measures are available:
+  \itemize{
+    \item \code{"OutlierJaccard"} - A variant of the Jaccard index used to
+    assess outlier detection accuracy (see Krleza et al (2020)).
+    Outlier Jaccard index is calculated as TP/(TP+FP+UNDETECTED).
+  }
+Outlier measures are taken as external measures, and can be applied only for
+DSD that can mark outliers (see \code{\link{DSD_Gaussians}}) and outlier
+detection clusterers that inherits \code{\link{DSC_Outlier}} class.
+
 \code{evaluate_cluster()} is used to evaluate an evolving data stream using
 the method described by Wan et al. (2009). Of the \code{n} data points
 \code{horizon} many points are clustered and then the evaluation
 measure is calculated on the same data points. The idea is to find out if
 the clustering algorithm was able to adapt to the changing stream.
+
+\code{evaluate_with_callbacks()} and \code{evaluate_cluster_with_callbacks()}
+can be used to add external measure calculations, without need to update
+\emph{stream} package. At the end of each evaluation, a set of callbacks
+is done. Measurements described hereby are placed in the
+\code{\link{DefaultEvalCallback}} class. All other callbacks are done through
+objects inheriting the \code{\link{EvalCallback}} class.
 }
 
 \value{
@@ -203,6 +231,8 @@ Statistics,} 14/3, 511-528.
 
 L Wan, W.K. Ng, X.H. Dang, P.S. Yu and K. Zhang (2009). Density-Based
 Clustering of Data Streams at Multiple Resolutions, \emph{ACM Transactions on Knowledge Discovery from Data,} 3(3).
+
+D. Krleža, B. Vrdoljak, and M. Brčić (2020). Statistical Hierarchical Clustering Algorithm for Outlier Detection in Evolving Data Streams, \emph{Springer Machine Learning}.
 }
 
 \seealso{
@@ -253,5 +283,32 @@ dstream <- DSC_DStream(gridsize=0.05, lambda=0.1)
 animate_cluster(dstream, stream, horizon=100, n=5000,
   measure=c("crand"), type="macro", assign="micro",
   plot.args = list(type="both", xlim=c(0,1), ylim=c(0,1)))
+}
+
+# a simple callback example
+# this example requires DSC_MCOD in the streamMOA package
+if(requireNamespace("streamMOA",quietly=TRUE)) {
+  MySuperCallback <- function() {
+    env <- environment()
+    all_measures <- c("NoOfOutliers")
+    internal_measures <- c()
+    external_measures <- c(all_measures)
+    outlier_measures <- c()
+    this <- list(description = "My super callback", env = environment())
+    class(this) <- c("MySuperCallback", "EvalCallback")
+    this
+  }
+  evaluate_callback.MySuperCallback <- function(cb_obj, dsc, measure, points, actual, predict,
+                                                outliers, predict_outliers,
+                                                predict_outliers_corrid, centers, noise) {
+    r <- list()
+    if("NoOfOutliers" \%in\% measure) r$NoOfOutliers <- noutliers(dsc)
+    r
+  }
+  stream <- DSD_Gaussians(k=3, d=5, o=1, outlier_horizon=100, separation=0.3)
+  c <- streamMOA::DSC_MCOD(r=0.25, w=100, t=5)
+  my_cb_obj <- MySuperCallback()
+  evaluate_with_callbacks(c,stream,n=100,measure=c("cRand","OutlierJaccard","NoOfOutliers"),
+      callbacks=list(my_callback=my_cb_obj))
 }
 }

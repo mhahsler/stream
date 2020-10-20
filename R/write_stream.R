@@ -49,7 +49,7 @@ write_stream.DSD <- function(dsd, file, n=100, block=100000L,
   for (bl in .make_block(n, block)) {
     if(write_outliers) {
       p <- get_points(dsd, bl, class=class, outlier=TRUE)
-      p <- cbind(p, attr(p, "outlier"))
+      p <- cbind(p, outlier=attr(p, "outlier"))
     } else p <- get_points(dsd, bl, class=class)
 
     ## suppress warning for append and col.names

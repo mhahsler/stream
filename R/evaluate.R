@@ -70,10 +70,10 @@
 
 EvalCallback <- function(...) stop("EvalCallback is an abstract class and cannot be instantiated!")
 evaluate_callback <- function(cb_obj, dsc, measure, points, actual, predict,
-                              outliers, predict_outliers, predict_outtliers_corrid,
+                              outliers, predict_outliers, predict_outliers_corrid,
                               centers, noise, ...) UseMethod("evaluate_callback")
 evaluate_callback.default <- function(cb_obj, dsc, measure, points, actual, predict,
-                                      outliers, predict_outliers, predict_outtliers_corrid,
+                                      outliers, predict_outliers, predict_outliers_corrid,
                                       centers, noise, ...) {
   stop(gettextf("evaluate_callback not implemented for class '%s'.",
                 paste(class(cb_obj), collapse=", ")))
@@ -89,7 +89,7 @@ DefaultEvalCallback <- function() {
   this
 }
 evaluate_callback.DefaultEvalCallback <- function(cb_obj, dsc, measure, points, actual, predict,
-                                                  outliers, predict_outliers, predict_outtliers_corrid,
+                                                  outliers, predict_outliers, predict_outliers_corrid,
                                                   centers, noise) {
   ## no centers available
   if(nrow(centers)<1) {
@@ -162,7 +162,7 @@ evaluate_callback.DefaultEvalCallback <- function(cb_obj, dsc, measure, points, 
 
     v <- sapply(measure[!fpc],
                 function(m) .evaluate(m, predict, actual, points, centers, outliers, predict_outliers,
-                                      predict_outtliers_corrid, dsc, cb_obj))
+                                      predict_outliers_corrid, dsc, cb_obj))
     e <- c(e, v)
   }
 
@@ -337,7 +337,7 @@ evaluate_cluster_with_callbacks <- function(dsc, dsd, measure, callbacks=NULL, n
 
 # work horse
 .evaluate <- function(measure, predict, actual, points, centers, outliers, predict_outliers,
-                      predict_outtliers_corrid, dsc, callback_obj) {
+                      predict_outliers_corrid, dsc, callback_obj) {
 
   if(is.null(actual) && ! measure %in% .eval_measures_int)
     stop("Evaluation measure not available for streams without cluster labels!")
@@ -375,7 +375,7 @@ evaluate_cluster_with_callbacks <- function(dsc, dsd, measure, callbacks=NULL, n
 
                 purity     = purity(predict, actual),
                 #classPurity	    = classPurity(actual, predict),
-                OutlierJaccard = outlierJaccard(predict, actual, outliers, predict_outliers, predict_outtliers_corrid,
+                OutlierJaccard = outlierJaccard(predict, actual, outliers, predict_outliers, predict_outliers_corrid,
                                                 dsc, callback_obj),
   )
 
