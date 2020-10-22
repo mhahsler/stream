@@ -243,7 +243,7 @@ D. Krleža, B. Vrdoljak, and M. Brčić (2020). Statistical Hierarchical Cluster
 }
 
 \author{
-    Michael Hahsler, Matthew Bolanos and John Forrest
+    Michael Hahsler, Matthew Bolanos, John Forrest, and Dalibor Krleža
 }
 
 
@@ -287,28 +287,31 @@ animate_cluster(dstream, stream, horizon=100, n=5000,
 
 # a simple callback example
 # this example requires DSC_MCOD in the streamMOA package
-if(requireNamespace("streamMOA",quietly=TRUE)) {
-  MySuperCallback <- function() {
-    env <- environment()
-    all_measures <- c("NoOfOutliers")
-    internal_measures <- c()
-    external_measures <- c(all_measures)
-    outlier_measures <- c()
-    this <- list(description = "My super callback", env = environment())
-    class(this) <- c("MySuperCallback", "EvalCallback")
-    this
-  }
-  evaluate_callback.MySuperCallback <- function(cb_obj, dsc, measure, points, actual, predict,
-                                                outliers, predict_outliers,
-                                                predict_outliers_corrid, centers, noise) {
-    r <- list()
-    if("NoOfOutliers" \%in\% measure) r$NoOfOutliers <- noutliers(dsc)
-    r
-  }
-  stream <- DSD_Gaussians(k=3, d=5, o=1, outlier_horizon=100, separation=0.3)
-  c <- streamMOA::DSC_MCOD(r=0.25, w=100, t=5)
-  my_cb_obj <- MySuperCallback()
-  evaluate_with_callbacks(c,stream,n=100,measure=c("cRand","OutlierJaccard","NoOfOutliers"),
-      callbacks=list(my_callback=my_cb_obj))
+CustomCallback <- function() {
+  env <- environment()
+  all_measures <- c("LowestWeightPercentage")
+  internal_measures <- c()
+  external_measures <- all_measures
+  outlier_measures <- c()
+  this <- list(description = "Custom evaluation callback",
+               env = environment())
+  class(this) <- c("CustomCallback", "EvalCallback")
+  this
 }
+evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
+                                             actual, predict, outliers,
+                                             predict_outliers,
+                                             predict_outliers_corrid,
+                                             centers, noise) {
+    r <- list()
+    if("LowestWeightPercentage" \%in\% measure)
+        r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
+    r
+}
+stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
+km <- DSC_Kmeans(3)
+update(km, stream, n=500)
+evaluate_with_callbacks(km, stream, type="macro", n=500,
+                        measure = c("crand","LowestWeightPercentage"),
+                        callbacks = list(cc=CustomCallback()))
 }

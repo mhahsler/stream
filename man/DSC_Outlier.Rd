@@ -33,20 +33,3 @@ The abstract class for all outlier detection clusterers. Cannot be instantiated.
 \author{
 Dalibor Krleža
 }
-\examples{
-# this example requires DSC_MCOD in the streamMOA package
-if(requireNamespace("streamMOA",quietly=TRUE)) {
-  stream <- DSD_Gaussians(k=3, d=5, o=1, outlier_horizon=100, separation=0.3)
-  c <- streamMOA::DSC_MCOD(r=0.35, w=100, t=5)
-  update(c,stream,n=100)
-  print(c)
-  no <- noutliers(c)
-  get_outlier_positions(c)
-  reset_stream(stream)
-  plot(c,stream,n=100,type=c("micro"))
-  if(no>0) {
-    reset_stream(stream)
-    plot(c,stream,n=100,type=c("outliers"))
-  }
-}
-}

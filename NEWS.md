@@ -1,3 +1,12 @@
+# stream 1.4-0 (10/20/20)
+
+## New Features
+* Added additional features to the DSD_Gaussians, now capable of using Mahalanobis distance and
+  generating outliers.
+* Updated evaluation procedure, now capable of performing external indices calculation using callbacks
+* Added support for single-pass clusterers and outlier detectors
+* Added outlier correctness assessment indices
+
 # stream 1.3-2 (05/04/20)
 
 ## Bug Fixes
