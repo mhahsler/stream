@@ -472,15 +472,30 @@ Details of these methods as well as other data stream clustering algorithms
 are discussed in
 the survey by \cite{stream:Silva:2013}.
 
+\subsection{Outlier detection} \label{sec:background:outlier_dtct}
+
 The outlier detection in data streams is a popular task, often used for risk management, e.g.,
-fraud and intrusion detection. This requires that a detected outlier gets reported back to the user
-in a limited time frame, which is directly correlated with data stream velocity.
+fraud and intrusion detection. From the end-user point of view, outliers are important and
+meaningful data points that are standing out from the usual populations (clusters) that can
+be found in data streams \citep{stream:Silva:2013}. This differentiation between clusters and outliers
+can be statistically or density-based.\\
+
+We build special outlier detectors to detect them in big data streams. Detecting small statistical
+(or density) differences between clusters and outliers is the key feature of a good outlier detector.
+Outlier detectors that can detect outlier smaller statistical or density variations are
+better. This leads us to the outlier detector breaking point, which is the smaller statistical or
+density variation for which the outlier detector still can detect some outlier.\\
+
+End-user interest in outliers requires that detected outliers get reported back to the user
+in a limited time frame, which is directly correlated with data stream velocity.\\
+
 Such a time requirement requires a more fine-grained approach than the previously described two-stage approach.
 For outlier detectors, such as Continuous Outlier Detection (COD), Micro-cluster Continuous Outlier Detection (MCOD) (\cite{kontaki2016efficient}), and Statistical Hierarchical Clustering (SHC) (\cite{krleza2020shc}),
 this means processing each data point retrieved from the input data stream in two steps.
-In the first step, outlier detectors are trying to classify an input data point.
-If a new data point does not belong to any
-known cluster, the outlier detector must decide whether the data point represents a new outlier.
+In the first step, outlier detectors are trying to classify the input data point. If the input data
+point does not belong to any known cluster (population), the outlier detector must decide whether the
+data point represents a new outlier.\\
+
 The evolving nature of the input data stream causes outliers to become inliers, which represents
 an issue while trying to assess the outlier detection correctness. In such cases, outlier detectors
 must have outlier tracking capabilities, which allows users to re-check each outlier individually and
@@ -1197,8 +1212,8 @@ plot(stream2, 1000)
 
 \subsubsection{Adding outliers}
 
-For working and assessment of outlier detectors, we want to generate some smaller portion
-of outliers in the data stream. Outliers need to be marked and statistically just enough
+For assessment of outlier detectors, we want to generate some number of outliers in the data stream.
+Each data point (\code{o} in total) that represents an outlier need to be marked and statistically just enough
 separated from clusters so that outlier detectors could pick this separation. In
 \code{DSD_Gaussians}, a concept of virtual covariance (\cite{krleza2020shc}) is used to
 create a statistically significant free area around outliers. This can be controlled through
@@ -2678,7 +2693,7 @@ evaluate_with_callbacks(km, stream, type="macro", n=500,
 %
 %\pagebreak[1]
 %
-
+\newpage
 \section{Example applications} \label{sec:example}
 \subsection{Experimental comparison of different algorithms}
 Providing a framework for rapid prototyping new data stream mining algorithms

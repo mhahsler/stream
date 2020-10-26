@@ -60,28 +60,45 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
   # for each d, random value between 0 and 1
   # we create a matrix of d columns and k rows
   if (missing(mu)) {
-
-    mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
-    if(verbose) message("Estimating cluster centers, round=1")
-
-    if(separation_type=="Euclidean" && separation>0) {
-      i <- 1L
-      while(any(dist(mu)<separation)){
-        mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
-        if(verbose) message(paste0("Estimating cluster centers, round="),(i+1))
-        i <- i + 1L
-        if(i>9999L) stop("Unable to find centers with sufficient Euclidean separation!")
+    mu <- matrix(nrow=0,ncol=d)
+    mu_index <- 1
+    while(mu_index<=k) {
+      if(verbose) message(paste("Estimating cluster centers",mu_index))
+      i <- 1
+      while(i<1000){
+        centroid <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
+        if(verbose) message(paste("... try",i,"cluster centroid [",paste(centroid,collapse=","),"]"))
+        mu_tmp <- rbind(mu,centroid)
+        if(separation_type=="Euclidean" && separation>0 && !any(dist(mu_tmp)<separation)) break;
+        if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
+           !any(mahaDist(mu_tmp,sigma,m_th=mahalanobis_separation)<=1)) break;
+        i <- i + 1
       }
-    } else if(separation_type=="Mahalanobis" && mahalanobis_separation>0) {
-      i <- 1L
-      while(any(mahaDist(mu,sigma,m_th=mahalanobis_separation)<=1)){
-        mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
-        if(verbose) message(paste0("Estimating cluster centers, round="),(i+1))
-        i <- i + 1L
-        if(i>9999L) stop("Unable to find centers with sufficient Mahalanobis separation!")
-      }
+      if(i>=1000) stop("Unable to find set of clusters with sufficient separation!")
+      mu <- mu_tmp
+      mu_index <- mu_index + 1
     }
 
+    #mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
+    #if(verbose) message("Estimating cluster centers, round=1")
+
+    #if(separation_type=="Euclidean" && separation>0) {
+    #  i <- 1L
+    #  while(any(dist(mu)<separation)){
+    #    mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
+    #    if(verbose) message(paste0("Estimating cluster centers, round="),(i+1))
+    #    i <- i + 1L
+    #    if(i>9999L) stop("Unable to find centers with sufficient Euclidean separation!")
+    #  }
+    #} else if(separation_type=="Mahalanobis" && mahalanobis_separation>0) {
+    #  i <- 1L
+    #  while(any(mahaDist(mu,sigma,m_th=mahalanobis_separation)<=1)){
+    #    mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
+    #    if(verbose) message(paste0("Estimating cluster centers, round="),(i+1))
+    #    i <- i + 1L
+    #    if(i>9999L) stop("Unable to find centers with sufficient Mahalanobis separation!")
+    #  }
+    #}
   } else {
     mu <- as.matrix(mu)
   }
@@ -108,16 +125,17 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
       outs_index <- 1
       while(outs_index<=o) {
         if(verbose) message(paste("Estimating outlier",outs_index))
-        i <- 10000L
-        while(i>0){
+        i <- 1L
+        while(i<1000){
           out <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
+          if(verbose) message(paste("... try",i,"outlier [",paste(out,collapse=","),"]"))
           outs_tmp <- rbind(outs,out)
           if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(outs_tmp,mu))<separation)) break;
           if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
              !any(mahaDist(mu,sigma,outs_tmp,out_virtual_sigma,mahalanobis_separation)<=1)) break;
           i <- i + 1
         }
-        if(i==0) stop("Unable to find outliers with sufficient separation!")
+        if(i>=1000) stop("Unable to find a set of clusters and outliers with sufficient separation!")
         outs <- outs_tmp
         outs_index <- outs_index + 1
       }
