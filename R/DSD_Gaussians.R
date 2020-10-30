@@ -180,6 +180,7 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
             noise_range = noise_range,
             outs = outs,
             outs_pos = out_positions,
+            outs_vv = outlier_virtual_variance,
             env = e1)
   class(l) <- c("DSD_Gaussians","DSD_R", "DSD_data.frame", "DSD")
   l
