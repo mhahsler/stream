@@ -1182,13 +1182,13 @@ on the related covariance matrix. This is the reason why we want do use statisti
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 5, d = 2, variance_lim = 0.2, lim = c(0, 5),
+stream1 <- DSD_Gaussians(k = 5, d = 2, variance_lim = 0.2, lim = c(0, 7),
                          separation_type = "Mahalanobis",
                          mahalanobis_separation = 4)
 @
 <<>>=
 set.seed(1000)
-stream2 <- DSD_Gaussians(k = 5, d = 2, variance_lim = 0.2, lim = c(0, 5),
+stream2 <- DSD_Gaussians(k = 5, d = 2, variance_lim = 0.2, lim = c(0, 15),
                          separation_type = "Mahalanobis",
                          mahalanobis_separation = 10)
 @
@@ -1221,14 +1221,14 @@ create a statistically significant free area around outliers. This can be contro
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 5, d = 2, o = 5, variance_lim = 0.2, lim = c(0, 10),
-                         separation_type = "Mahalanobis",
+stream1 <- DSD_Gaussians(k = 5, d = 2, o = 5, variance_lim = 0.2,
+                         lim = c(0, 15), separation_type = "Mahalanobis",
                          outlier_virtual_variance = 0.3)
 @
 <<>>=
 set.seed(1000)
-stream2 <- DSD_Gaussians(k = 5, d = 2, o = 5, variance_lim = 0.2, lim = c(0, 20),
-                         separation_type = "Mahalanobis",
+stream2 <- DSD_Gaussians(k = 5, d = 2, o = 5, variance_lim = 0.2,
+                         lim = c(0, 40), separation_type = "Mahalanobis",
                          outlier_virtual_variance = 3)
 @
 Plots comprising 1000 points from the data stream can be seen in Figure \ref{figure:dsd_gauss_mahasep}.
@@ -1342,7 +1342,7 @@ get_points(stream_scaled, n = 5)
 %resetting the position in the \code{DSD_ReadCSV} to the file's beginning
 %is possible with \code{reset_stream()}
 %and will described in the next example.
-
+\newpage
 \subsection{Example: Replaying a data stream} \label{examples:replay}
 
 An important feature of \pkg{stream} is the ability to replay portions of a

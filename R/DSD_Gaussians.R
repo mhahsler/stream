@@ -52,9 +52,8 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
         diag(tmpS) <- replicate(d, runif(1, min=0.001, max=vlim))
         for(i in 1:d)
           for(j in i:d)
-            if(i!=j) tmpS[i,j] <- tmpS[j,i] <- runif(1, min=0, max=0.2)*sqrt(tmpS[i,i])*sqrt(tmpS[j,j])
-        tmpSDPO <- Matrix::nearPD(tmpS)$mat
-        matrix(data=tmpSDPO@x, ncol=d, nrow=d)
+            if(i!=j) tmpS[i,j] <- tmpS[j,i] <- runif(1, min=0, max=0.5)*sqrt(tmpS[i,i])*sqrt(tmpS[j,j])
+        tmpS
       }
       sigma <- replicate(k, genRandomSigma(d, variance_lim), simplify=F)
     }

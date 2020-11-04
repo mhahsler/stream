@@ -101,18 +101,17 @@ plot(stream3)
 # maximal variance for clusters is 2
 # mahalanobis separation is 6
 stream4 <- DSD_Gaussians(k=2, o=2, d=2, separation_type="Mahalanobis",
-    mahalanobis_separation=6, lim=c(0,10), variance_lim=2)
+    mahalanobis_separation=6, lim=c(0,25), variance_lim=2)
 plot(stream4)
 
 # spread outliers over 20000 data instances
 stream5 <- DSD_Gaussians(k=2, o=20, d=2, separation_type="Mahalanobis",
-    mahalanobis_separation=6, lim=c(0,35), variance_lim=2, outlier_horizon=20000,
+    mahalanobis_separation=6, lim=c(0,45), variance_lim=2, outlier_horizon=20000,
     outlier_virtual_variance = 0.3)
 plot(stream5, n=20000)
 
 # big example with generation printout
 stream6 <- DSD_Gaussians(k=40, o=40, d=2, separation_type="Mahalanobis",
-    lim=c(0,200), outlier_horizon=20000, variance_lim=16,
-    outlier_virtual_variance=16, verbose=TRUE)
+    lim=c(0,200), outlier_horizon=20000, variance_lim=8, verbose=TRUE)
 plot(stream6, n=20000)
 }
