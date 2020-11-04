@@ -46,14 +46,17 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
         dim=d)$Sigma,
         simplify=F)
     }
-    if(separation_type=="Mahalanobis") { # let us make these a bit mors spherical
-      if((0.01*variance_lim)<0.001) variance_lim <- 0.1
-      sigma <- replicate(k,clusterGeneration::genPositiveDefMat(
-        "unifcorrmat",
-        rangeVar=c(0.001,0.01*variance_lim),
-        dim=d)$Sigma,
-        simplify=F)
-      for(i in 1:length(sigma)) diag(sigma[[i]]) <- runif(d,0.1*variance_lim,variance_lim)
+    if(separation_type=="Mahalanobis") {
+      genRandomSigma <- function(d, vlim) {
+        tmpS <- matrix(data = rep(0, length=d^2), ncol=d, nrow=d)
+        diag(tmpS) <- replicate(d, runif(1, min=0.001, max=vlim))
+        for(i in 1:d)
+          for(j in i:d)
+            if(i!=j) tmpS[i,j] <- tmpS[j,i] <- runif(1, min=0, max=0.2)*sqrt(tmpS[i,i])*sqrt(tmpS[j,j])
+        tmpSDPO <- Matrix::nearPD(tmpS)$mat
+        matrix(data=tmpSDPO@x, ncol=d, nrow=d)
+      }
+      sigma <- replicate(k, genRandomSigma(d, variance_lim), simplify=F)
     }
   }
 
@@ -281,8 +284,8 @@ mahaDist <- function(mu, sigma, out_mu=NULL, out_sigma=NULL, m_th=4) {
         else Si <- inv_out_sigma
         if(j<=nrow(mu)) Sj <- inv_sigma[[j]]
         else Sj <- inv_out_sigma
-        md <- c(stats::mahalanobis(tmu[j,],tmu[i,],Si,inverted=T), stats::mahalanobis(tmu[i,],tmu[j,],Sj,inverted=T))
-        p <- rep(2*m_th,2) / md
+        md <- c(sqrt(stats::mahalanobis(tmu[j,],tmu[i,],Si,inverted=T)), sqrt(stats::mahalanobis(tmu[i,],tmu[j,],Sj,inverted=T)))
+        p <- rep(m_th,2) / md
         if(sum(p)==0) mx[i,j] <- mx[j,i] <- 0
         else mx[i,j] <- mx[j,i] <- 1/sum(p)
       }
