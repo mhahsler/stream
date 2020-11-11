@@ -32,6 +32,9 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
   separation_type <- match.arg(separation_type, c("auto","Euclidean","Mahalanobis"))
   if(separation_type=="auto") separation_type="Euclidean"
 
+  if(separation_type=="Mahalanobis" && !requireNamespace("MASS"))
+      stop("To use mahalanobis separation in DSD_Gaussians, you need MASS package")
+
   # if p isn't defined, we give all the clusters equal probability
   if (missing(p)) {
     p <- rep(1/k, k)
@@ -59,6 +62,12 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
     }
   }
 
+  # prepare inverted covariance matrices / only for Mahalanobis
+  if(separation_type=="Mahalanobis") {
+    inv_sigma <- list()
+    for(i in 1:length(sigma)) inv_sigma[[i]] <- MASS::ginv(sigma[[i]])
+    inv_out_sigma <- MASS::ginv(diag(outlier_virtual_variance, d, d))
+  }
   # for each d, random value between 0 and 1
   # we create a matrix of d columns and k rows
   if (missing(mu)) {
@@ -70,37 +79,17 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
       while(i<1000){
         centroid <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
         if(verbose) message(paste("... try",i,"cluster centroid [",paste(centroid,collapse=","),"]"))
-        mu_tmp <- rbind(mu,centroid)
-        if(separation_type=="Euclidean" && separation>0 && !any(dist(mu_tmp)<separation)) break;
+        if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(mu,centroid))<separation))
+          break;
         if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
-           !any(mahaDist(mu_tmp,sigma,m_th=mahalanobis_separation)<=1)) break;
+           !any(mahaDist(centroid,mu_index,mu,inv_sigma,m_th=mahalanobis_separation)<=1))
+          break;
         i <- i + 1
       }
       if(i>=1000) stop("Unable to find set of clusters with sufficient separation!")
-      mu <- mu_tmp
+      mu <- rbind(mu,centroid)
       mu_index <- mu_index + 1
     }
-
-    #mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
-    #if(verbose) message("Estimating cluster centers, round=1")
-
-    #if(separation_type=="Euclidean" && separation>0) {
-    #  i <- 1L
-    #  while(any(dist(mu)<separation)){
-    #    mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
-    #    if(verbose) message(paste0("Estimating cluster centers, round="),(i+1))
-    #    i <- i + 1L
-    #    if(i>9999L) stop("Unable to find centers with sufficient Euclidean separation!")
-    #  }
-    #} else if(separation_type=="Mahalanobis" && mahalanobis_separation>0) {
-    #  i <- 1L
-    #  while(any(mahaDist(mu,sigma,m_th=mahalanobis_separation)<=1)){
-    #    mu <- matrix(runif(d*k, min=lim[1], max=lim[2]), ncol=d)
-    #    if(verbose) message(paste0("Estimating cluster centers, round="),(i+1))
-    #    i <- i + 1L
-    #    if(i>9999L) stop("Unable to find centers with sufficient Mahalanobis separation!")
-    #  }
-    #}
   } else {
     mu <- as.matrix(mu)
   }
@@ -121,7 +110,6 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
   if(missing(outs) || is.null(outs) || missing(out_positions) || is.null(out_positions)) {
     outs <- NULL
     out_positions <- NULL
-    out_virtual_sigma <- diag(outlier_virtual_variance, d, d)
     if(o>0) {
       outs <- matrix(nrow=0,ncol=d)
       outs_index <- 1
@@ -131,14 +119,15 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
         while(i<1000){
           out <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
           if(verbose) message(paste("... try",i,"outlier [",paste(out,collapse=","),"]"))
-          outs_tmp <- rbind(outs,out)
-          if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(outs_tmp,mu))<separation)) break;
+          if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(rbind(outs,out),mu))<separation))
+            break;
           if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
-             !any(mahaDist(mu,sigma,outs_tmp,out_virtual_sigma,mahalanobis_separation)<=1)) break;
+             !any(mahaDist(out,-1,mu,inv_sigma,outs,inv_out_sigma,mahalanobis_separation)<=1))
+            break;
           i <- i + 1
         }
         if(i>=1000) stop("Unable to find a set of clusters and outliers with sufficient separation!")
-        outs <- outs_tmp
+        outs <- rbind(outs,out)
         outs_index <- outs_index + 1
       }
       out_positions <- sample(1:outlier_horizon,o)
@@ -265,29 +254,23 @@ reset_stream.DSD_Gaussians <- function(dsd, pos=1) {
   dsd$env$pos <- pos
 }
 
-mahaDist <- function(mu, sigma, out_mu=NULL, out_sigma=NULL, m_th=4) {
-  if(!requireNamespace("MASS")) stop("To use mahalanobis separation in DSD_Gaussians, you need MASS package")
-  if(!is.null(out_mu) && is.null(out_sigma)) stop("virtual covariance for outliers is missing")
-  inv_sigma <- list()
-  for(i in 1:length(sigma)) inv_sigma[[i]] <- MASS::ginv(sigma[[i]])
-  if(!is.null(out_sigma)) inv_out_sigma <- MASS::ginv(out_sigma)
+mahaDist <- function(t_mu, t_sigma_i, mu, inv_sigma, out_mu=NULL, inv_out_sigma=NULL, m_th=4) {
+  if(!is.null(out_mu) && is.null(inv_out_sigma)) stop("Inverted virtual covariance for outliers is missing")
+  if(t_sigma_i>0) inv_test_sigma <- inv_sigma[[t_sigma_i]]
+  else inv_test_sigma <- inv_out_sigma
   v <- nrow(mu)
   if(!is.null(out_mu)) v <- v + nrow(out_mu)
-  mx <- matrix(rep(-1,length(v)^2),ncol=v,nrow=v)
+  mx <- matrix(rep(-1,length(v)),ncol=v,nrow=1)
   if(is.null(out_mu)) tmu <- mu
   else tmu <- rbind(mu, out_mu)
   if(v>1)
-    for(i in 1:(v-1)) {
-      for(j in (i+1):v) {
-        if(i<=nrow(mu)) Si <- inv_sigma[[i]]
-        else Si <- inv_out_sigma
-        if(j<=nrow(mu)) Sj <- inv_sigma[[j]]
-        else Sj <- inv_out_sigma
-        md <- c(sqrt(stats::mahalanobis(tmu[j,],tmu[i,],Si,inverted=T)), sqrt(stats::mahalanobis(tmu[i,],tmu[j,],Sj,inverted=T)))
-        p <- rep(m_th,2) / md
-        if(sum(p)==0) mx[i,j] <- mx[j,i] <- 0
-        else mx[i,j] <- mx[j,i] <- 1/sum(p)
-      }
+    for(i in 1:v) {
+      if(i<=nrow(mu)) Si <- inv_sigma[[i]]
+      else Si <- inv_out_sigma
+      md <- c(stats::mahalanobis(t_mu,tmu[i,],Si,inverted=T), stats::mahalanobis(tmu[i,],t_mu,inv_test_sigma,inverted=T))
+      p <- rep(m_th,2) / sqrt(md)
+      if(sum(p)==0) mx[1,i] <- 0
+      else mx[1,i] <- 1/sum(p)
     }
   mx[mx<0] <- 10000
   mx
