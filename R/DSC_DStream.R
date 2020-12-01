@@ -422,7 +422,7 @@ plot.DSC_DStream <- function(x, dsd=NULL, n=500,
 
   ### get varnames from data stream
   if(!is.null(dsd)) {
-    ps <- get_points(dsd, n=n, cluster=TRUE)
+    ps <- get_points(dsd, n=n, cluster=TRUE, outlier=TRUE)
     varnames <- colnames(ps)
   }
 

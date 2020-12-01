@@ -125,7 +125,7 @@ E-mail: \email{jforrest@microsoft.com}
 
 
 {\bf Note:} A previous version of this manuscript was published in the
-\emph{Journal of Statistical Software} \citep{stream:Hahsler:2017}.
+\emph{Journal of Statistical Software} \citep{stream:Hahsler:2017}.\\
 
 %\maketitle
 
@@ -138,8 +138,6 @@ E-mail: \email{jforrest@microsoft.com}
 <<echo=FALSE>>=
 options(width = 75, digits = 3, prompt = 'R> ', scipen = 3)
 @
-
-
 
 \section{Introduction}
 Typical statistical and data mining methods (e.g.,
@@ -474,6 +472,36 @@ Details of these methods as well as other data stream clustering algorithms
 are discussed in
 the survey by \cite{stream:Silva:2013}.
 
+\subsection{Outlier detection} \label{sec:background:outlier_dtct}
+
+The outlier detection in data streams is a popular task, often used for risk management, e.g.,
+fraud and intrusion detection. From the end-user point of view, outliers are important and
+meaningful data points that are standing out from the usual populations (clusters) that can
+be found in data streams \citep{stream:Silva:2013}. This differentiation between clusters and outliers
+can be statistically or density-based.\\
+
+We build special outlier detectors to detect them in big data streams. Detecting small statistical
+(or density) differences between clusters and outliers is the key feature of a good outlier detector.
+Outlier detectors that can detect outlier smaller statistical or density variations are
+better. This leads us to the outlier detector breaking point, which is the smaller statistical or
+density variation for which the outlier detector still can detect some outlier.\\
+
+End-user interest in outliers requires that detected outliers get reported back to the user
+in a limited time frame, which is directly correlated with data stream velocity.\\
+
+Such a time requirement requires a more fine-grained approach than the previously described two-stage approach.
+For outlier detectors, such as Continuous Outlier Detection (COD), Micro-cluster Continuous Outlier Detection (MCOD) (\cite{kontaki2016efficient}), and Statistical Hierarchical Clustering (SHC) (\cite{krleza2020shc}),
+this means processing each data point retrieved from the input data stream in two steps.
+In the first step, outlier detectors are trying to classify the input data point. If the input data
+point does not belong to any known cluster (population), the outlier detector must decide whether the
+data point represents a new outlier.\\
+
+The evolving nature of the input data stream causes outliers to become inliers, which represents
+an issue while trying to assess the outlier detection correctness. In such cases, outlier detectors
+must have outlier tracking capabilities, which allows users to re-check each outlier individually and
+determine whether a previously detected outlier is still an outlier, or it evolved into an inlier
+in the meantime.
+
 \subsection{Other popular data stream mining tasks} \label{sec:background:dscl}
 %\subsection{Classification} \label{sec:background:dscl}
 
@@ -755,7 +783,7 @@ The package~\pkg{stream} provides currently the following set of DSD implementat
 and two Gaussians clusters with different density.
 \item \code{DSD_Gaussians} generates randomly placed
 static clusters with random multivariate
-Gaussian distributions.
+Gaussian distributions. Allows generating and marking outliers for outlier detectors.
 \item\code{DSD_mlbenchData} provides streaming access to machine learning benchmark data sets found in the \code{mlbench} package~\citep{stream:Leisch:2010}.
 \item\code{DSD_mlbenchGenerator} interfaces the generators for artificial data sets defined in the \code{mlbench} package.
 \item\code{DSD_Target} generates a ball in circle data set.
@@ -857,7 +885,7 @@ like \code{print()}, \code{plot()} and \code{write_stream()},
 to save a part of a data stream to disk, are provided by \pkg{stream}
 for class \code{DSD} and are available for all data stream sources.
 Different data stream implementations might have additional functions
-implemented. For example, \code{DSD_Memory} and \code{DSD_ReadCSV}
+implemented. For example, \code{DSD_Gaussians}, \code{DSD_Memory} and \code{DSD_ReadCSV}
 provide \code{reset_stream()} to reset the position in the
 stream to its beginning.
 
@@ -955,15 +983,13 @@ plot(stream, n = 500, method = "pc")
 
 \begin{figure}
 \centering
-\includegraphics[width=.5\linewidth]{stream-static_pc}
+\includegraphics[width=.4\linewidth]{stream-static_pc}
 \caption{Plotting 500 data points from the data stream projected onto its first two
 principal components.}
 \label{figure:static_pc}
 \end{figure}
 
-
-Figures~\ref{figure:static_pc} show
-the projected data.
+Figures~\ref{figure:static_pc} show the projected data.
 
 Stream also supports data streams which contain concept drift. Several examples
 of such data stream generators are collected in \code{DSD_Benchmark}.
@@ -1014,16 +1040,17 @@ arrows(.15,.15,.85,.85, col=rgb(.8,.8,.8,.6), lwd=10)
 @
 
 \begin{figure}
-\begin{minipage}{.48\linewidth} \centering
+\centering
+\begin{minipage}{.45\linewidth} \centering
 \includegraphics[width=\linewidth]{stream-moa1} \\(a) Position 1
 \end{minipage}
-\begin{minipage}{.48\linewidth} \centering
+\begin{minipage}{.45\linewidth} \centering
 \includegraphics[width=\linewidth]{stream-moa2} \\(b) Position 1650
 \end{minipage} \\
-\begin{minipage}{.48\linewidth} \centering
+\begin{minipage}{.45\linewidth} \centering
 \includegraphics[width=\linewidth]{stream-moa3} \\(c) Position 3300
 \end{minipage}
-\begin{minipage}{.48\linewidth} \centering
+\begin{minipage}{.45\linewidth} \centering
 \includegraphics[width=\linewidth]{stream-moa4} \\(d) Position 4950
 \end{minipage}
 \caption{Data points from \code{DSD\_Benchmark(1)} at different positions
@@ -1068,6 +1095,170 @@ package~\pkg{animation}.
 %To see the life animation, we refer the reader to the example code in
 %the manual page for \code{animate_data}.
 
+\subsection{Example: Outlier generating data streams} \label{examples:outlier_gen}
+
+We can use \code{DSD_Gaussians} to generate and mark outliers as well. We define
+a data stream consisting of 10000 data points.
+<<>>=
+library("stream")
+set.seed(1000)
+stream <- DSD_Gaussians(k = 3, d = 2, outliers = 4,
+                        outlier_options = list(outlier_horizon = 10000),
+                        separation = 0.3, space_limit = c(0,1))
+@
+Next, we plot 10000 points from the data stream, which can be seen in Figure \ref{figure:dsd_outliers}.
+<<out1, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream, 10000, xlim = c(0, 1), ylim = c(0, 1))
+@
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\linewidth]{stream-out1}
+\caption{Plotting 10000 data instances from the data stream comprising outliers.}
+\label{figure:dsd_outliers}
+\end{figure}
+
+We can obtain data points from the stream, asking for the outlier marks.
+<<>>=
+reset_stream(stream)
+p <- get_points(stream, n = 10000, outlier = TRUE)
+head(p)
+@
+
+Outlier marks can be retrieved from the \code{outlier} attribute.
+<<>>=
+out_marks <- attr(p, "outlier")
+sum(out_marks)
+@
+We can see that four data points were marked as outliers. These outliers were generated at positions
+<<>>=
+which(out_marks)
+@
+and can be seen also in Figure \ref{figure:dsd_outliers}. Such data stream generators can
+be used in outlier detector assessment, since they generate the ground truth for the true
+positive outliers.
+
+\subsection{Example: Advanced statistical data streams} \label{examples:advanced_stat}
+
+\code{DSD_Gaussians} has capabilities to generate more complex statistical data streams.
+In the previous examples, we used simple cluster and outlier generating capabilities and
+Euclidean distance for their separation.
+\subsubsection{Maximal variance and space limitations}
+In case we do not predefine covariance matrices by using \code{sigma} parameter, \code{DSD_Gaussians}
+can randomly generate covariance matrices. Maximal variance used to generate covariance
+matrices can be limited, which comes together with space limitation to fit clusters.
+<<>>=
+library("stream")
+set.seed(1000)
+stream1 <- DSD_Gaussians(k = 3, d = 2, variance_limit = 0.2,
+                         space_limit = c(0, 5))
+stream2 <- DSD_Gaussians(k = 3, d = 2, variance_limit = 2,
+                         space_limit = c(0, 5))
+@
+Next, we plot 1000 points from the data stream, which can be seen in Figure \ref{figure:dsd_gauss_limits}.
+<<dsd-lim1, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream1, 1000)
+@
+<<dsd-lim2, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream2, 1000)
+@
+\begin{figure}
+\begin{minipage}{.48\linewidth} \centering
+\includegraphics[width=\linewidth]{stream-dsd-lim1} \\(a) Maximal variance = 0.2
+\end{minipage}
+\begin{minipage}{.48\linewidth} \centering
+\includegraphics[width=\linewidth]{stream-dsd-lim2} \\(b) Maximal variance = 2
+\end{minipage}
+\caption{Data points from \code{DSD\_Gaussians} having maximal variance limit and space limits.}
+\label{figure:dsd_gauss_limits}
+\end{figure}
+As seen in Figure \ref{figure:dsd_gauss_limits}b, we can experience overlapping of clusters due
+to high maximal variance limit.
+
+\subsubsection{Keeping clusters sufficiently separated}
+
+To keep cluster from overlapping we can use two separation distance measures: Euclidean and
+Mahalanobis (the statistical distance). While Euclidean distance can be used to some extent,
+it might not keep clusters cleanly separated at all times, since cluster size highly depend
+on the related covariance matrix. This is the reason why we want do use statistical distance
+(Mahalanobis) to control cluster separation.
+<<>>=
+library("stream")
+set.seed(1000)
+stream1 <- DSD_Gaussians(k = 5, d = 2, variance_limit = 0.2,
+                         space_limit = c(0, 7),
+                         separation_type = "Mahalanobis",
+                         separation = 4)
+@
+<<>>=
+set.seed(1000)
+stream2 <- DSD_Gaussians(k = 5, d = 2, variance_limit = 0.2,
+                         space_limit = c(0, 15),
+                         separation_type = "Mahalanobis",
+                         separation = 10)
+@
+Plots comprising 1000 points from the data stream can be seen in Figure \ref{figure:dsd_gauss_mahasep}.
+<<dsd-ms1, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream1, 1000)
+@
+<<dsd-ms2, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream2, 1000)
+@
+\begin{figure}
+\begin{minipage}{.48\linewidth} \centering
+\includegraphics[width=\linewidth]{stream-dsd-ms1} \\(a) Mahalanobis separation = 4
+\end{minipage}
+\begin{minipage}{.48\linewidth} \centering
+\includegraphics[width=\linewidth]{stream-dsd-ms2} \\(b) Mahalanobis separation = 10
+\end{minipage}
+\caption{Data points from \code{DSD\_Gaussians} having distinct Mahalanobis separation values.}
+\label{figure:dsd_gauss_mahasep}
+\end{figure}
+
+\subsubsection{Adding outliers}
+
+For assessment of outlier detectors, we want to generate some number of outliers in the data stream.
+Each data point (\code{o} in total) that represents an outlier need to be marked and statistically just enough
+separated from clusters so that outlier detectors could pick this separation. In
+\code{DSD_Gaussians}, a concept of virtual covariance (\cite{krleza2020shc}) is used to
+create a statistically significant free area around outliers. This can be controlled through
+\code{outlier_virtual_variance} parameter.
+<<>>=
+library("stream")
+set.seed(1000)
+stream1 <- DSD_Gaussians(k = 5, d = 2, outliers = 5, variance_limit = 0.2,
+                         space_limit = c(0, 15), separation = 4,
+                         separation_type = "Mahalanobis",
+                         outlier_options = list(
+                             outlier_virtual_variance = 0.3))
+@
+<<>>=
+set.seed(1000)
+stream2 <- DSD_Gaussians(k = 5, d = 2, outliers = 5, variance_limit = 0.2,
+                         space_limit = c(0, 40), separation = 4,
+                         separation_type = "Mahalanobis",
+                         outlier_options = list(
+                             outlier_virtual_variance = 3))
+@
+Plots comprising 1000 points from the data stream can be seen in Figure \ref{figure:dsd_gauss_mahasep}.
+<<dsd-mso1, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream1, 1000)
+@
+<<dsd-mso2, fig=TRUE, include=FALSE, echo=FALSE>>=
+plot(stream2, 1000)
+@
+\begin{figure}
+\begin{minipage}{.48\linewidth} \centering
+\includegraphics[width=\linewidth]{stream-dsd-mso1} \\(a) Outlier virt. variance = 0.3
+\end{minipage}
+\begin{minipage}{.48\linewidth} \centering
+\includegraphics[width=\linewidth]{stream-dsd-mso2} \\(b) Outlier virt. variance = 3
+\end{minipage}
+\caption{Data points from \code{DSD\_Gaussians} having distinct outlier virtual variances.}
+\label{figure:dsd_gauss_outsep}
+\end{figure}
+The separation of outliers is clear when comparing Figures \ref{figure:dsd_gauss_outsep}a and \ref{figure:dsd_gauss_outsep}b.
+\newpage
 \subsection{Example: Reading and writing data streams} \label{examples:disk}
 
 Although data streams are potentially unbounded by definition and thus
@@ -1099,7 +1290,7 @@ write_stream(stream, "data.csv", n = 100, sep = ",")
 a DSD object, and then
 either a connection or a file name.
 The instruction above creates a new file called
-\code{dsd\_data.cvs}.
+\code{dsd\_data.csv}.
 The \code{sep} parameter defines how the dimensions in each
 data point (row) are separated.
 Here a comma is used to create a comma separated values file.
@@ -1110,6 +1301,10 @@ from the stream and
 then written to the connection. This way the only restriction for the
 size of the written stream are limitations
 at the receiving end (e.g., the available storage).
+
+Finally, parameters \code{class} and \code{write_outliers} can be used to control
+writing of the class information and outlier marks. These two details are stored
+in fields named "class" and "outlier" respectively, and can be read again.
 
 The \code{DSD_ReadCSV} object is used to read a stream from
 a connection or a file.
@@ -1129,10 +1324,11 @@ stream_file <- DSD_ReadCSV(gzfile(file),
 stream_file
 @
 
-Using \code{take} and \code{class} we define which columns should be used
-as data and which column contains the ground truth assignment. We also specify
-the true number of clusters $k$. Ground truth and number of clusters do not
-need to be specified if they are not available or no evaluation is planned. Note that at this point no data has been read in.
+Using \code{take}, \code{class}, and \code{outlier} we define which columns should be used
+as data, which column contains the ground truth assignment, and which column contains
+outlier marks. We also specify the true number of clusters $k$ and outliers $o$.
+Ground truth and number of clusters do not need to be specified if they are not
+available or no evaluation is planned. Note that at this point no data has been read in.
 Reading only occurs when \code{get_points} is called.
 
 %\code{DSD_ReadCSV} objects are just like any other DSD object in that you
@@ -1155,7 +1351,7 @@ get_points(stream_scaled, n = 5)
 %resetting the position in the \code{DSD_ReadCSV} to the file's beginning
 %is possible with \code{reset_stream()}
 %and will described in the next example.
-
+\newpage
 \subsection{Example: Replaying a data stream} \label{examples:replay}
 
 An important feature of \pkg{stream} is the ability to replay portions of a
@@ -1256,15 +1452,6 @@ data stream operators (DSO),
 clustering (DSC), classification (DSClass) or frequent pattern mining (DSFPM) are typically quite different and the benefit of sharing methods
 would be minimal.
 
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{dst_uml}
-\caption{Overview of the data stream task (DST) class structure with subclasses
-for data stream operators (DSO), clustering (DSC),
-classification (DSClass) and frequent pattern mining (DSFPM).}
-\label{figure:dst} \end{figure}
-
-
 DST classes implement mutable objects which
 can be changed without creating a copy. This is more
 efficient, since otherwise
@@ -1277,6 +1464,14 @@ package~\pkg{methods} by the \cite{stream:R:2005}).
 Alternatively, pointers to external data
 structures in \proglang{Java} or \proglang{C/C++} can be used to create
 mutable objects.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{dst_uml}
+\caption{Overview of the data stream task (DST) class structure with subclasses
+for data stream operators (DSO), clustering (DSC),
+classification (DSClass) and frequent pattern mining (DSFPM).}
+\label{figure:dst} \end{figure}
 
 We will restrict the following discussion to data stream clustering (DSC)
 since \pkg{stream} currently focuses on this task.
@@ -1302,10 +1497,9 @@ To implement the typical two-stage process in data stream clustering,
 \pkg{stream} provides \code{DSC_TwoStage} which can be used to
 combine any available micro and macro-clustering algorithm.
 
-The following function can be used for objects of subclasses of DSC:
+The following functions can be used for objects of subclasses of DSC:
 
 \begin{itemize}
-
 
 \item A creator function which creates an empty clustering. Creator function names
 by definition start with the prefix \code{DSC_}.
@@ -1368,9 +1562,9 @@ available for the used DSC implementation.
 \item
 
 \code{plot(x, dsd = NULL, ..., method = "pairs", dim = NULL,}\\
-\code{type = c("auto", "micro", "macro", "both")}
+\code{type = c("auto", "micro", "macro", "both", "outliers", "all")}\\
 (see manual page for more available parameters) plots the centers
-of the clusters. There are 3 available plot methods: \code{"pairs"},
+of the clusters and marks detected outliers. There are 3 available plot methods: \code{"pairs"},
 \code{"scatter"}, \code{"pc"}. Method \code{"pairs"} is the default method and produces a
 matrix of scatter plots that plots all attributes against one another (this
 method defaults to a regular scatter plot for \code{d = 2}). Method \code{"scatter"} takes the
@@ -1378,7 +1572,9 @@ attributes specified in \code{dim} (the first two if \code{dim} is unspecified)
 and plots them in a scatter
 plot. Lastly, method \code{"pc"} performs Principle Component Analysis (PCA) on the data
 and projects the data onto a 2-dimensional plane for plotting.
-Parameter \code{type} controls if micro-, macro-clusters or both are plotted.
+Parameter \code{type} controls plotting of cluster and outlier markings. User can select to
+plot micro- (\code{micro}), macro-clusters (\code{macro}), both micro and macro clusters
+(\code{both}), outliers (\code{outliers}), and everything (\code{all}).
 If a DSD object is provides as \code{dsd}, then some example data points are plotted in
 the background in light gray.
 
@@ -1386,6 +1582,43 @@ the background in light gray.
 \code{print(x, ...)} prints common attributes of the
 DSC object. This includes a short description of the underlying algorithm
 and the number of clusters that have been calculated.
+\end{itemize}
+
+We can add \code{DSC_Outlier} abstract class anywhere between \code{DSC} abstract class and a concrete
+clusterer implementation class. This means that the clusterer has additional outlier detection
+capabilities. The following functions can be used for objects of subclasses of \code{DSC_Outlier}:
+\begin{itemize}
+  \item
+    \code{clean_outliers(x, ...)} instructs the outlier detector to clean up the outlier
+    list.
+  \item
+    \code{get_outlier_positions(x, ...)} returns positions of currently detected outliers.
+  \item
+    \code{recheck_outlier(x, outlier_correlated_id, ...)} invokes re-checking whether previously
+    detected outlier identifier by \code{outlier_correlated_id} is still an outlier (TRUE) or has become
+    an inlier in the meantime (FALSE).
+  \item
+    \code{noutlier(x, ...)} returns the number of current outliers.
+  \item
+    \code{print(x, ...)} prints out DSC object details that include detected outliers.
+  \item
+    \code{get_assignment(x, points, type=c("auto", "micro", "macro"),}\\
+    \code{method=c("auto", "nn", "model"), outlier_threshold=0.05, ...)}
+    returns a data frame comprising cluster assignments for related data point
+    in \code{points} argument. As an addition, attributes \code{outliers} and \code{outliers_corrid} are
+    returned with assignment data frame. Attribute \code{outliers} comprises outlier marks, while
+    attribute \code{outliers_corrid} comprises outlier identifiers.
+\end{itemize}
+
+All single-pass clusterers must have abstract class \code{DSC_SinglePass} anywhere between
+abstract class \code{DSC} and a concrete clusterer class. \code{DSC_SinglePass} abstract class
+indicates that the clusterer does automatic model update automatically when processing each
+data point retrieved from the input data stream (\code{DSD}). It is necessary that single-pass
+clusterers override implementations of the following methods:
+\begin{itemize}
+    \item \code{update(dsc, dsd, n = 1, verbose = FALSE, ...)}
+    \item \code{get_assignment(dsc, points, type=c("auto", "micro", "macro"),}\\
+          \code{method=c("auto", "nn", "model"), ...)}
 \end{itemize}
 
 \begin{figure}
@@ -1420,6 +1653,29 @@ in \code{micro} are used as pseudo-points by the \code{DSC_macro} object \code{m
 After reclustering the macro-clusters can be inspected (using \code{get_centers()}, etc.) and
 the assignment of micro-clusters to macro-clusters is available via
 \code{microToMacro()}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{interaction_singlepass}
+\caption{Interaction between the DSD and single-pass / outlier detector DSC classes.}
+\label{figure:interaction_singlepass}
+\end{figure}
+
+Figure \ref{figure:interaction_singlepass} shows interaction for single-pass clusterers
+(\code{DSC_SinglePass}) and outlier detectors (\code{DSC_Outlier}). Single-pass clusterers
+not necessarily need to be outlier detectors. The interaction is slightly modified from the
+default interaction in Figure \ref{figure:interaction}. Since single-pass clusterers perform
+model updates for each data point retrieved from the input data stream, using
+\code{update} to update models before classification becomes unnecessary. However, \code{update}
+method can still be used when we do not care about cluster assignments. Usual way of using
+single-pass clusterers is to call \code{get_assignment} method, which updates the clusterer
+model and returns cluster assignments. In outlier detectors (\code{DSC_Outlier}),
+\code{get_assignment} returns outlier marks and identifiers as well. After that, we can use the
+same methods as in Figure \ref{figure:interaction} on the clusterer instance. For outlier detectors
+there are additional methods, such as \code{get_outlier_positions}, which returns outlier
+spatial positions. Anytime after calling \code{update} or \code{get_assignment}, we can re-check
+outlier validity by calling \code{recheck_outlier} method on the outlier detector instance.
+
 The following data stream clustering algorithms
 are currently available:
 
@@ -1500,7 +1756,19 @@ this concept is related to hierarchical
 clustering with single linkage and the dendrogram cut at he height of epsilon.
 \end{itemize}
 
-Some data clustering algorithms create small clusters for noise or
+For outlier detection, the following clustering algorithms
+are currently available as subclasses of \code{DSC_SinglePass} and \code{DSC_Outlier}:
+\begin{itemize}
+\item \code{DSC_MCOD} (\pkg{streamMOA}) interfaces the
+    MOA implementation of the \emph{MCOD} algorithm by \cite{kontaki2016efficient}. This
+    is a micro-clusterer and outlier detector algorithm. For the macro-clustering it needs
+    an additional macro-clusterer algorithm, to improve clustering results.
+\end{itemize}
+All single-pass and outlier examples are given in the \pkg{streamMOA} package, since
+\code{DSC_MCOD} is currently the only algorithm that was implemented to support such
+functionalities.
+
+Some non-outlier detecting data clustering algorithms create small clusters for noise or
 outliers in the data.
 \pkg{stream} provides \code{prune_clusters(dsc, threshold = .05, weight = TRUE)} to remove
 a given percentage (given by \code{threshold}) of the clusters with the least weight.
@@ -1605,8 +1873,8 @@ points. The size of the micro-clusters indicates the weight, i.e., the number of
 data points represented by each micro-cluster. In Figure~\ref{figure:cluster}(b)
 the micro-clusters are shown as dense grid cells (density is coded with gray values).
 
-
 %\pagebreak[4]
+\newpage
 \section{Evaluation of data stream clustering}\label{sec:evaluation}
 \subsection{Introduction}
 Evaluation of data stream mining is an important issue.
@@ -1791,7 +2059,26 @@ The F1 measure is the harmonic mean of precision and recall.
     (\pkg{clue})
 	  %\item  \code{"corrected.rand"} corrected Rand index (\pkg{fpc}),
 	  \item  \code{"vi"} 	Variation of Information (VI) index (\pkg{fpc})
-\end{itemize}
+  \end{itemize}
+\item Outlier evaluation measures.
+  \begin{itemize}
+		\item \code{"OutlierJaccard"}. A variant of the Jaccard index that can be applied
+		assess the outlier detection correctness \citep{krleza2020shc}. It can be applied
+		only to data streams that mark outliers (for example \code{DSD_Gaussians}).
+		The most sensible use of this measure is with outlier detectors, e.g., those clusterers
+		that inherit \code{DSC_Outlier}.
+		However, the \code{OutlierJaccard} can be calculated for all those clusterers that
+		enclose outliers in small clusters, which are were \textbf{not} pruned by
+		\code{prune_clusters}.
+		A true positive (TP) decision is made for outliers that were both marked by the input
+		data stream generator and found by the clusterer instance,
+		A false positive (FP) decision is made for data points that were \textbf{not} marked
+		by the input data stream generator, yet the clusterer instance marked it is an outlier.
+		A undetected (UND) decision is made for outliers that were marked by the input
+		data stream generator, yet the clusterer instance failed to recognized it as an outlier.
+		The \code{OutlierJaccard} index is calculated as follows:
+		$$\mathrm{OJI} = \frac{\mathrm{TP}}{\mathrm{TP}+\mathrm{FP}+\mathrm{UND}}$$
+  \end{itemize}
 \end{itemize}
 
 
@@ -1847,6 +2134,58 @@ This prequential evaluation strategy is implemented in \pkg{stream} as function
 and
 %in addition to the methods sum of squared (\code{"SSQ"}) and purity (\code{"purity"})
 all evaluation measures for \code{evaluate()} described above can be used.
+
+\subsection{Evaluation of clustering done by single-pass clusterers}
+
+The single-pass clusterers and outlier detectors are doing classification and model update
+for every data point retrieved from the input data stream. This makes then more fine-grained.
+Evaluation of single-pass clusterers is a special case of evaluation for dynamic data streams
+having $horizon=1$. For \code{evaluate_cluster(..., horizon=1000, ...)} this means that a
+single-pass clusterer processes the batch of 1000 data points each data point
+individually, which includes both the model update and returning the assignment. From the caller
+point of view, such evaluation is the same as for all other clustering algorithms in the
+\pkg{stream} package.
+
+\subsection{Evaluation of clustering using callbacks}
+
+While most of the well-known clustering indices are already supported by the \pkg{stream}
+package (or by the \pkg{clue} package), some clusterers have available other performance and memory
+indicators that users can use for assessment and tuning. This implies creation of a custom
+code that can be executed within the evaluation procedures, right after the assessment
+(\code{get_assessment}) of data points retrieved from the input data stream. For this
+purpose there is an abstract class \code{EvalCallback} that can be used to write classes
+that implement ad-hoc evaluation measures. Each evaluation callback object is instantiated
+using classes that inherit \code{EvalCallback}, which must implement the following fields:
+\begin{itemize}
+    \item \code{all_measures} - The vector of measures this callback class contributes to the
+    evaluation procedure.
+    \item \code{internal_measures} - The subset of all measures that are considered for internal
+    measures.
+    \item \code{external_measures} - The subset of all measures that are considered for external
+    measures.
+    \item \code{outlier_measures} - The subset of all measures that are considered for outlier
+    measures.
+\end{itemize}
+and the following method:
+\begin{itemize}
+    \item \code{evaluate_callback(cb_obj, dsc, measure, points, actual, predict,}\\
+    \code{outliers, predict_outliers, predict_outliers_corrid, centers, noise)}\\
+    This is the method that comprises the custom code required to calculate all measures this
+    callback contributes to the evaluation procedure.
+\end{itemize}
+
+Evaluating using additional callback objects can be done through:
+\begin{itemize}
+    \item \code{evaluate_with_callbacks(dsc, dsd, measure, callbacks=NULL,}\\
+    \code{n = 100, type=c("auto", "micro", "macro"), assign="micro",}\\
+    \code{assignmentMethod=c("auto","model", "nn"), noise = c("class", "exclude"),}\\
+    \code{...)}
+    \item \code{evaluate_cluster_with_callbacks(dsc, dsd, measure,}\\
+    \code{callbacks=NULL, n=1000, type=c("auto", "micro", "macro"),}\\
+    \code{assign="micro", assignmentMethod =  c("auto", "model", "nn"),}\\
+    \code{horizon=100, verbose=FALSE,noise = c("class", "exclude"), ...)}
+\end{itemize}
+where \code{callbacks} parameter is a named list of callback objects.
 
 %%% FIXME: CMM
 %%% short overview in Silva:2013
@@ -2130,6 +2469,13 @@ points <- get_points(stream, n = 100)
 assignment <- get_assignment(dstream, points, type = "macro")
 assignment
 @
+\begin{figure}
+\centering
+\includegraphics[width=.5\linewidth]{stream-silhouette}
+\caption{Silhouette plot for D-Stream clustering with two macro-clusters and
+a cluster ($j=0$) representing the unassigned points.}
+\label{figure:silhouette}
+\end{figure}
 
 Note that D-Stream uses a grid for assignment and that points which do not fall
 inside a dense (or connected transitional) cell are not assigned to a cluster
@@ -2145,14 +2491,6 @@ library("cluster")
 plot(silhouette(assignment, dist = dist(points)))
 @
 
-\begin{figure}
-\centering
-\includegraphics[width=.5\linewidth]{stream-silhouette}
-\caption{Silhouette plot for D-Stream clustering with two macro-clusters and
-a cluster ($j=0$) representing the unassigned points.}
-\label{figure:silhouette}
-\end{figure}
-
 Figure~\ref{figure:silhouette} shows the silhouette plot for the
 macro-clusters produced by D-Stream. The top cluster ($j=0$) represents
 the points not assigned to any cluster by the algorithm (predicted noise) and
@@ -2161,6 +2499,57 @@ Cluster $j=2$ comprises the two overlapping real clusters and thus
 has lower silhouette values than cluster $j=1$. Other visual evaluation methods
 can be used in a similar way.
 
+\subsection{Example: Evaluating with callbacks}\label{examples:evaluate_with_callbacks}
+
+For custom evaluation using callbacks, we create a class that inherits \code{EvalCallback}.
+<<>>=
+library("stream")
+CustomCallback <- function() {
+  env <- environment()
+  all_measures <- c("LowestWeightPercentage")
+  internal_measures <- c()
+  external_measures <- all_measures
+  outlier_measures <- c()
+  this <- list(description = "Custom evaluation callback",
+               env = environment())
+  class(this) <- c("CustomCallback", "EvalCallback")
+  this
+}
+@
+
+In the new class, we define all evaluation measures that are contributed. In our case this is
+\code{LowestWeightPercentage}. Next, we define the callback code, i.e., the code that
+performs calculation of our custom evaluation measure.
+
+<<>>=
+evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
+                                             actual, predict, outliers,
+                                             predict_outliers,
+                                             predict_outliers_corrid,
+                                             centers, noise) {
+    r <- list()
+    if("LowestWeightPercentage" %in% measure)
+        r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
+    r
+}
+@
+
+Since \code{DSC_Kmeans} clusterer returns the number of data points assignment to each
+macro-cluster, we use this to calculate population percentage for the minimally populated
+cluster.
+
+We take \code{DSD_Gaussians} data stream generator i and generate 3 clusters, each with his
+own probablity. Distinct probablities direct how many data points is going to be generated
+for each cluster. We expect the smallest cluster to have around 20\% of generated data points.
+
+<<>>=
+stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
+km <- DSC_Kmeans(3)
+update(km, stream, n=500)
+evaluate_with_callbacks(km, stream, type="macro", n=500,
+                        measure = c("crand","LowestWeightPercentage"),
+                        callbacks = list(cc=CustomCallback()))
+@
 
 %\section{Extending the stream framework} \label{sec:extension}
 %
@@ -2313,7 +2702,7 @@ can be used in a similar way.
 %
 %\pagebreak[1]
 %
-
+\newpage
 \section{Example applications} \label{sec:example}
 \subsection{Experimental comparison of different algorithms}
 Providing a framework for rapid prototyping new data stream mining algorithms
@@ -2715,7 +3104,7 @@ In comparison, $k$-means clustering using \code{kmeans}
 (in package \pkg{stats}) with eight clusters (number of classes)
 took 186 seconds and used at its peek 80\% of 8GB of the available main memory
 (the whole dataset is stored in memory).
-
+\newpage
 \section{Conclusion and future work} \label{sec:conclusion}
 
 Package \pkg{stream} is a data stream modeling framework for \proglang{R} that
@@ -2748,7 +3137,7 @@ This approach makes it easy to experiment with a multitude
 of algorithms in a consistent way.
 
 Currently, \pkg{stream} focuses on the data stream
-clustering task, but we are working on incorporating
+clustering and outlier detection tasks, but we are working on incorporating
 classification (incorporating the algorithms interfaced by \pkg{RMOA}~\citep{stream:Wijffels:2014})
 and frequent pattern mining algorithms
 as an extension of the base DST class.

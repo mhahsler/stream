@@ -5,7 +5,7 @@ import(proxy)
 
 importFrom(methods, "is", "new")
 importFrom(utils, "head", "read.table", "write.table")
-importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit")
+importFrom(stats, "runif", "complete.cases", "rnorm", "prcomp", "na.omit", "mahalanobis")
 importFrom(graphics, "plot", "par", "layout", "title", "pairs", "points",
   "lines", "image")
 importFrom(grDevices, "gray", "gray.colors", "rgb", "col2rgb")
@@ -30,6 +30,8 @@ export(
   DSC_R,
   DSC_Micro,
   DSC_Macro,
+  DSC_Outlier,
+  DSC_SinglePass,
 
   DSC_BIRCH,
   DSC_DStream,
@@ -48,6 +50,9 @@ export(
   DSC_TwoStage,
 
   DSC_Static,
+
+  EvalCallback,
+  DefaultEvalCallback,
 
   # DSD
 	DSD,
@@ -105,13 +110,17 @@ export(
 	get_weights,
 	get_assignment,
 	get_copy,
+  clean_outliers,
 	nclusters,
 #	merge_DSC,
 	prune_clusters,
 	microToMacro,
 
 	evaluate,
+  evaluate_callback,
+  evaluate_with_callbacks,
 	evaluate_cluster,
+  evaluate_cluster_with_callbacks,
 
 	animate_cluster,
 	animate_data,
@@ -129,6 +138,9 @@ export(
   get_microweights,
   get_macroclusters,
   get_macroweights,
+  get_outlier_positions,
+  recheck_outlier,
+  noutliers,
 
   saveDSC,
   readDSC,
@@ -161,6 +173,7 @@ S3method(reset_stream, DSD)
 S3method(reset_stream, DSD_Memory)
 S3method(reset_stream, DSD_ReadCSV)
 S3method(reset_stream, DSD_ScaleStream)
+S3method(reset_stream, DSD_Gaussians)
 
 ### DSO Methods
 S3method(print, DSO)
@@ -184,6 +197,7 @@ S3method(get_assignment, DSC)
 S3method(get_assignment, DSC_DBSTREAM)
 S3method(get_assignment, DSC_DStream)
 S3method(get_assignment, DSC_TwoStage)
+S3method(get_assignment, DSC_SinglePass)
 
 S3method(get_centers, DSC_Macro)
 S3method(get_centers, DSC_Micro)
@@ -199,6 +213,14 @@ S3method(microToMacro, DSC_R)
 S3method(microToMacro, DSC_DBSTREAM)
 S3method(microToMacro, DSC_DStream)
 S3method(microToMacro, DSC_TwoStage)
+
+S3method(clean_outliers, DSC_Outlier)
+S3method(get_outlier_positions, DSC_Outlier)
+S3method(recheck_outlier, DSC_Outlier)
+S3method(noutliers, DSC_Outlier)
+S3method(print, DSC_Outlier)
+S3method(get_outlier_positions, DSC_TwoStage)
+S3method(recheck_outlier, DSC_TwoStage)
 
 S3method(get_copy, DSC_R)
 

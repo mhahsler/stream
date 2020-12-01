@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,24 +19,24 @@
 
 
 DSD_mlbenchGenerator <- function(method, ...) {
-  
+
   methods <- c("2dnormals","cassini","circle","cuboids","friedman1",
     "friedman2","friedman3","hypercube", "peak","ringnorm",
     "shapes","simplex","smiley","spirals","threenorm",
     "twonorm","waveform","xor")
- 
+
   ### FIXME: It would be nice if we know k and d
-   
+
   if(missing(method)) {
     cat("Available generators are:\n")
     print(methods)
     return()
   }
-  
+
   #finds index of partial match in array of methods
-  m <- pmatch(tolower(method), methods) 
+  m <- pmatch(tolower(method), methods)
   if(is.na(m)) stop("DSD_mlbenchGenerator: Invalid data generator")
-  
+
   # creating the DSD object
   l <- list(description = paste("mlbench:", method),
     method = methods[m],
@@ -46,26 +46,26 @@ DSD_mlbenchGenerator <- function(method, ...) {
   l
 }
 
-get_points.DSD_mlbenchGenerator <- function(x, n=1, 
-  outofpoints=c("stop", "warn", "ignore"), 
-  cluster = FALSE, class = FALSE, ...) {
+get_points.DSD_mlbenchGenerator <- function(x, n=1,
+  outofpoints=c("stop", "warn", "ignore"),
+  cluster = FALSE, class = FALSE, outlier=FALSE,...) {
   .nodots(...)
 
   d <- do.call(paste("mlbench.", x$method,sep=""), c(list(n), x$variables))
   if(is.null(d$classes)) d$classes <- rep(NA_integer_, times = n)
-  
+
   ## the data order needs to be scrambled...
   if(n > 1) {
     o <- sample(nrow(d$x))
     d$x <- d$x[o, , drop=FALSE]
     d$classes <- d$classes[o]
   }
-  
-  df <- as.data.frame(d$x)  
+
+  df <- as.data.frame(d$x)
   names(df) <- paste("V", 1:ncol(df), sep = "")
   if(cluster) attr(df, "cluster") <- as.integer(d$classes)
   if(class) df <- cbind(df, class = as.integer(d$classes))
-  
+
   df
 }
 

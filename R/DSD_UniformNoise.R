@@ -25,7 +25,7 @@ DSD_UniformNoise <- function(d=2, range=NULL) {
 
 get_points.DSD_UniformNoise <- function(x, n=1,
   outofpoints=c("stop", "warn", "ignore"),
-  cluster=FALSE, class=FALSE, ...) {
+  cluster=FALSE, class=FALSE, outlier=FALSE,...) {
   .nodots(...)
 
   # outofpoints is ignored

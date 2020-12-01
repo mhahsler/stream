@@ -9,7 +9,8 @@ A DSD class that reads a data stream from a file or any R connection.
 }
 
 \usage{
-DSD_ReadCSV(file, k=NA, take=NULL, class=NULL, loop=FALSE, 
+DSD_ReadCSV(file, k=NA, o=NA,
+  take=NULL, class=NULL, outlier=NULL, loop=FALSE,
   sep=",", header=FALSE, skip=0, colClasses = NA, ...)
 close_stream(dsd)
 }
@@ -17,9 +18,13 @@ close_stream(dsd)
 \arguments{
 	\item{file}{A file/URL or an open connection.}
 	\item{k}{Number of true clusters, if known.}
+	\item{o}{Number of outliers, if known.}
 	\item{take}{indices of columns to extract from the file.}
 	\item{class}{column index for the class attribute/cluster label.
 	  If \code{take} is specified then it needs to also include the class/label
+	  column.}
+	\item{outlier}{column index for the outlier mark.
+	  If \code{take} is specified then it needs to also include the outlier
 	  column.}
 	\item{loop}{If enabled, the object will loop through the stream when
 	  the end has been reached. If disabled, the object will warn the user
@@ -27,11 +32,11 @@ close_stream(dsd)
 	\item{sep}{The character string that separates dimensions in data
 	  points in the stream.}
 	\item{header}{Does the first line contain variable names?}
-	\item{skip}{the number of lines of the data file to skip before               
+	\item{skip}{the number of lines of the data file to skip before
     beginning to read data.}
 	\item{colClasses}{A vector of classes to be assumed for the columns
-	  passed on to \code{read.table}.}               
-	\item{...}{Further arguments are passed on to \code{read.table}. 
+	  passed on to \code{read.table}.}
+	\item{...}{Further arguments are passed on to \code{read.table}.
 	  This can for example be used for encoding, quotes, etc.}
 	\item{dsd}{A object of class \code{DSD_ReadCSV}.}
 }
@@ -43,10 +48,10 @@ is currently being read from. In general, the connections will consist of files
 stored on disk but have many other possibilities (see \code{\link{connection}}).
 
 The implementation tries to gracefully deal with slightly corrupted data by
-dropping points with inconsistent reading and producing a warning. 
+dropping points with inconsistent reading and producing a warning.
 However, this might not always be possible resulting in an error instead.
 
-The position in the file can be reset to the beginning using 
+The position in the file can be reset to the beginning using
 \code{reset_stream()}. The connection can be closed using \code{close_stream()}.
 }
 
@@ -62,21 +67,24 @@ The position in the file can be reset to the beginning using
 }
 
 \author{
-    Michael Hahsler
+    Michael Hahsler, Dalibor Krleža
 }
 
 \examples{
 # creating data and writing it to disk
-stream <- DSD_Gaussians(k=3, d=5)
-write_stream(stream, "data.txt", n=10, header = TRUE, sep=",")
+stream <- DSD_Gaussians(k=3, d=5, outliers=1, space_limit=c(0,2),
+  outlier_options = list(outlier_horizon=10))
+write_stream(stream, "data.txt", n=10, header = TRUE, sep=",", class=TRUE, write_outliers=TRUE)
 
 # reading the same data back (as a loop)
-stream2 <- DSD_ReadCSV("data.txt", sep=",", header = TRUE, loop=TRUE)
+stream2 <- DSD_ReadCSV(k=3, o=1, "data.txt", sep=",", header = TRUE, loop=TRUE, class="class",
+                       outlier="outlier")
 stream2
 
 # get points (fist a single point and then 20 using loop)
 get_points(stream2)
-get_points(stream2, n=20)
+p <- get_points(stream2, n=20, outlier=TRUE)
+message(paste("Outliers",sum(attr(p,"outlier"))))
 
 # clean up
 close_stream(stream2)

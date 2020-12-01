@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-DSD_Target <- function(center_sd =.05, center_weight=.5, 
+DSD_Target <- function(center_sd =.05, center_weight=.5,
 	ring_r=.2, ring_sd=0.02, noise=0) {
 
     # creating the DSD object
@@ -34,17 +34,17 @@ DSD_Target <- function(center_sd =.05, center_weight=.5,
     l
 }
 
-get_points.DSD_Target <- function(x, n=1, 
-    outofpoints=c("stop", "warn", "ignore"), 
-    cluster = FALSE, class=FALSE, ...) {
+get_points.DSD_Target <- function(x, n=1,
+    outofpoints=c("stop", "warn", "ignore"),
+    cluster = FALSE, class=FALSE, outlier=FALSE,...) {
     .nodots(...)
 
 
     ### choose point type
-    type <- sample(c(NA, 1:2), n, replace=TRUE, 
+    type <- sample(c(NA, 1:2), n, replace=TRUE,
 	    prob=c(x$noise, (1-x$noise)*x$center_weight,
 		    (1-x$noise)*(1-x$center_weight)))
-    
+
     p <- sapply(type, FUN=function(tp) {
 
 		if(is.na(tp)) { ### noise
@@ -62,9 +62,9 @@ get_points.DSD_Target <- function(x, n=1,
 
 	p<- as.data.frame(t(p))
 	colnames(p) <- c("x", "y")
-	
+
 	if(cluster) attr(p,"cluster") <- type
 	if(class) p <- cbind(p, class = type)
-	
+
 	p
     }
