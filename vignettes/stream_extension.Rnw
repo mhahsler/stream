@@ -49,7 +49,7 @@
 \author{
 Michael Hahsler\\Southern Methodist University
 \And
-Matthew Bola\~nos\\Research Now
+Matthew Bola\~nos\\Microsoft Corporation
 \AND
 John Forrest\\Microsoft Corporation
 }
@@ -244,7 +244,8 @@ The resulting plot is shown in Figure~\ref{figure:dsd_example}.
 For the outlier data stream generator, we can take \code{DSD_Gaussians}. If
 we generate one cluster and one outlier for the horizon of 10 data points
 <<>>=
-stream <- DSD_Gaussians(k = 1, d = 2, o = 1, outlier_horizon = 10, lim = c(0,0.5))
+stream <- DSD_Gaussians(k = 1, d = 2, outliers = 1, space_limit = c(0,0.5),
+                        outlier_options = list(outlier_horizon = 5))
 @
 we can obtain the first 10 data points, simultaneously looking for the cluster
 and outlier information. The data points obtained from the data stream are
@@ -408,8 +409,9 @@ anywhere between the abstract class \code{DSC} and the concrete final class, as 
 previous code example. Besides all the method enumerated previously, outlier detectors
 must return additional structures from their \code{get_assignment()} method. For example:
 <<eval=FALSE>>=
-stream <- DSD_Gaussians(k = 1, d = 2,o = 1, outlier_horizon = 20,
-                        lim = c(0, 1), variance_lim = .01)
+stream <- DSD_Gaussians(k = 1, d = 2, outliers = 1,
+                        space_limit = c(0, 1), variance_limit = .01,
+                        outlier_options = list(outlier_horizon = 20))
 points <- get_points(stream, n=20, cluster = TRUE, outlier = TRUE)
 dsc <- DSC_MyClusterer()
 assigns <- get_assignment(dsc, points, type="micro")

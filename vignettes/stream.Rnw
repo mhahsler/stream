@@ -1102,8 +1102,9 @@ a data stream consisting of 10000 data points.
 <<>>=
 library("stream")
 set.seed(1000)
-stream <- DSD_Gaussians(k = 3, d = 2, o = 4, outlier_horizon = 10000,
-                        separation = 0.3, lim = c(0,1))
+stream <- DSD_Gaussians(k = 3, d = 2, outliers = 4,
+                        outlier_options = list(outlier_horizon = 10000),
+                        separation = 0.3, space_limit = c(0,1))
 @
 Next, we plot 10000 points from the data stream, which can be seen in Figure \ref{figure:dsd_outliers}.
 <<out1, fig=TRUE, include=FALSE, echo=FALSE>>=
@@ -1149,8 +1150,10 @@ matrices can be limited, which comes together with space limitation to fit clust
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 3, d = 2, variance_lim = 0.2, lim = c(0, 5))
-stream2 <- DSD_Gaussians(k = 3, d = 2, variance_lim = 2, lim = c(0, 5))
+stream1 <- DSD_Gaussians(k = 3, d = 2, variance_limit = 0.2,
+                         space_limit = c(0, 5))
+stream2 <- DSD_Gaussians(k = 3, d = 2, variance_limit = 2,
+                         space_limit = c(0, 5))
 @
 Next, we plot 1000 points from the data stream, which can be seen in Figure \ref{figure:dsd_gauss_limits}.
 <<dsd-lim1, fig=TRUE, include=FALSE, echo=FALSE>>=
@@ -1182,15 +1185,17 @@ on the related covariance matrix. This is the reason why we want do use statisti
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 5, d = 2, variance_lim = 0.2, lim = c(0, 7),
+stream1 <- DSD_Gaussians(k = 5, d = 2, variance_limit = 0.2,
+                         space_limit = c(0, 7),
                          separation_type = "Mahalanobis",
-                         mahalanobis_separation = 4)
+                         separation = 4)
 @
 <<>>=
 set.seed(1000)
-stream2 <- DSD_Gaussians(k = 5, d = 2, variance_lim = 0.2, lim = c(0, 15),
+stream2 <- DSD_Gaussians(k = 5, d = 2, variance_limit = 0.2,
+                         space_limit = c(0, 15),
                          separation_type = "Mahalanobis",
-                         mahalanobis_separation = 10)
+                         separation = 10)
 @
 Plots comprising 1000 points from the data stream can be seen in Figure \ref{figure:dsd_gauss_mahasep}.
 <<dsd-ms1, fig=TRUE, include=FALSE, echo=FALSE>>=
@@ -1221,15 +1226,19 @@ create a statistically significant free area around outliers. This can be contro
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 5, d = 2, o = 5, variance_lim = 0.2,
-                         lim = c(0, 15), separation_type = "Mahalanobis",
-                         outlier_virtual_variance = 0.3)
+stream1 <- DSD_Gaussians(k = 5, d = 2, outliers = 5, variance_limit = 0.2,
+                         space_limit = c(0, 15), separation = 4,
+                         separation_type = "Mahalanobis",
+                         outlier_options = list(
+                             outlier_virtual_variance = 0.3))
 @
 <<>>=
 set.seed(1000)
-stream2 <- DSD_Gaussians(k = 5, d = 2, o = 5, variance_lim = 0.2,
-                         lim = c(0, 40), separation_type = "Mahalanobis",
-                         outlier_virtual_variance = 3)
+stream2 <- DSD_Gaussians(k = 5, d = 2, outliers = 5, variance_limit = 0.2,
+                         space_limit = c(0, 40), separation = 4,
+                         separation_type = "Mahalanobis",
+                         outlier_options = list(
+                             outlier_virtual_variance = 3))
 @
 Plots comprising 1000 points from the data stream can be seen in Figure \ref{figure:dsd_gauss_mahasep}.
 <<dsd-mso1, fig=TRUE, include=FALSE, echo=FALSE>>=

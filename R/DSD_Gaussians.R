@@ -25,15 +25,22 @@
 
 DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
                           separation_type=c("auto","Euclidean","Mahalanobis"), separation=0.2,
-                          mahalanobis_separation=4, outlier_virtual_variance=1,
-                          o = 0, lim = c(0.2,0.8), variance_lim = 0.01, outlier_horizon=500,
-                          outs, out_positions, verbose=FALSE) {
+                          space_limit = c(0.2, 0.8), variance_limit = 0.01,
+                          outliers = 0, outlier_options = NULL, verbose=FALSE) {
 
   separation_type <- match.arg(separation_type, c("auto","Euclidean","Mahalanobis"))
   if(separation_type=="auto") separation_type="Euclidean"
 
   if(separation_type=="Mahalanobis" && !requireNamespace("MASS"))
-      stop("To use mahalanobis separation in DSD_Gaussians, you need MASS package")
+    stop("To use mahalanobis separation in DSD_Gaussians, you need MASS package")
+  if(outliers>0) {
+    if((missing(outlier_options) || is.null(outlier_options)))
+      outlier_options <- list(outlier_horizon = 500, outlier_virtual_variance = 1)
+    if(is.null(outlier_options$outlier_horizon))
+      outlier_options$outlier_horizon <- 500
+    if(is.null(outlier_options$outlier_virtual_variance))
+      outlier_options$outlier_virtual_variance <- 1
+  }
 
   # if p isn't defined, we give all the clusters equal probability
   if (missing(p)) {
@@ -45,7 +52,7 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
     if(separation_type=="Euclidean") {
       sigma <- replicate(k,clusterGeneration::genPositiveDefMat(
         "unifcorrmat",
-        rangeVar=c(0.001,variance_lim),
+        rangeVar=c(0.001,variance_limit),
         dim=d)$Sigma,
         simplify=F)
     }
@@ -58,7 +65,7 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
             if(i!=j) tmpS[i,j] <- tmpS[j,i] <- runif(1, min=0, max=0.5)*sqrt(tmpS[i,i])*sqrt(tmpS[j,j])
         tmpS
       }
-      sigma <- replicate(k, genRandomSigma(d, variance_lim), simplify=F)
+      sigma <- replicate(k, genRandomSigma(d, variance_limit), simplify=F)
     }
   }
 
@@ -66,7 +73,8 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
   if(separation_type=="Mahalanobis") {
     inv_sigma <- list()
     for(i in 1:length(sigma)) inv_sigma[[i]] <- MASS::ginv(sigma[[i]])
-    inv_out_sigma <- MASS::ginv(diag(outlier_virtual_variance, d, d))
+    if(outliers>0)
+      inv_out_sigma <- MASS::ginv(diag(outlier_options$outlier_virtual_variance, d, d))
   }
   # for each d, random value between 0 and 1
   # we create a matrix of d columns and k rows
@@ -77,12 +85,12 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
       if(verbose) message(paste("Estimating cluster centers",mu_index))
       i <- 1
       while(i<1000){
-        centroid <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
+        centroid <- matrix(runif(d, min=space_limit[1], max=space_limit[2]), ncol=d)
         if(verbose) message(paste("... try",i,"cluster centroid [",paste(centroid,collapse=","),"]"))
         if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(mu,centroid))<separation))
           break;
-        if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
-           !any(mahaDist(centroid,mu_index,mu,inv_sigma,m_th=mahalanobis_separation)<=1))
+        if(separation_type=="Mahalanobis" && separation>0 &&
+           !any(mahaDist(centroid,mu_index,mu,inv_sigma,m_th=separation)<=1))
           break;
         i <- i + 1
       }
@@ -105,24 +113,25 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
     }
   }
 
-  if(noise>0 && o>0)
+  if(noise>0 && outliers>0)
     stop("outliers cannot be generated with noise!")
-  if(missing(outs) || is.null(outs) || missing(out_positions) || is.null(out_positions)) {
+  if(is.null(outlier_options$predefined_outlier_space_positions) ||
+     is.null(outlier_options$predefined_outlier_stream_positions)) {
     outs <- NULL
     out_positions <- NULL
-    if(o>0) {
+    if(outliers>0) {
       outs <- matrix(nrow=0,ncol=d)
       outs_index <- 1
-      while(outs_index<=o) {
+      while(outs_index<=outliers) {
         if(verbose) message(paste("Estimating outlier",outs_index))
         i <- 1L
         while(i<1000){
-          out <- matrix(runif(d, min=lim[1], max=lim[2]), ncol=d)
+          out <- matrix(runif(d, min=space_limit[1], max=space_limit[2]), ncol=d)
           if(verbose) message(paste("... try",i,"outlier [",paste(out,collapse=","),"]"))
           if(separation_type=="Euclidean" && separation>0 && !any(dist(rbind(rbind(outs,out),mu))<separation))
             break;
-          if(separation_type=="Mahalanobis" && mahalanobis_separation>0 &&
-             !any(mahaDist(out,-1,mu,inv_sigma,outs,inv_out_sigma,mahalanobis_separation)<=1))
+          if(separation_type=="Mahalanobis" && separation>0 &&
+             !any(mahaDist(out,-1,mu,inv_sigma,outs,inv_out_sigma,separation)<=1))
             break;
           i <- i + 1
         }
@@ -130,11 +139,13 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
         outs <- rbind(outs,out)
         outs_index <- outs_index + 1
       }
-      out_positions <- sample(1:outlier_horizon,o)
+      out_positions <- sample(1:outlier_options$outlier_horizon, outliers)
     }
   } else {
+    outs <- outlier_options$predefined_outlier_space_positions
+    out_positions <- outlier_options$predefined_outlier_stream_positions
     if(length(outs)!=length(out_positions))
-      stop("The number of outlier spatial positions (outs) must be the same as the number of outlier stream positions (out_positions).")
+      stop("The number of outlier spatial positions must be the same as the number of outlier stream positions.")
   }
 
 
@@ -147,7 +158,7 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
 
   if (ncol(mu) != d || nrow(mu) != k)
     stop("invalid size of the mu matrix")
-  if (o>0 && (ncol(outs) != d || nrow(outs) != o))
+  if (outliers>0 && (ncol(outs) != d || nrow(outs) != outliers))
     stop("invalid size of the outlier matrix")
 
   ## TODO: error checking on sigma
@@ -163,7 +174,7 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
   l <- list(description = "Mixture of Gaussians",
             k = k,
             d = d,
-            o = o,
+            o = outliers,
             mu = mu,
             sigma = sigma,
             p = p,
@@ -171,7 +182,7 @@ DSD_Gaussians <- function(k=2, d=2, mu, sigma, p, noise = 0, noise_range,
             noise_range = noise_range,
             outs = outs,
             outs_pos = out_positions,
-            outs_vv = outlier_virtual_variance,
+            outs_vv = outlier_options$outlier_virtual_variance,
             env = e1)
   class(l) <- c("DSD_Gaussians","DSD_R", "DSD_data.frame", "DSD")
   l

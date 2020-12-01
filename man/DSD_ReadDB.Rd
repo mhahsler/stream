@@ -47,8 +47,9 @@ data base connection.
 library("RSQLite")
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
-points <- get_points(DSD_Gaussians(k=3, d=2, o=1, outlier_horizon=600), 600,
-                     class = TRUE, outlier = TRUE)
+points <- get_points(DSD_Gaussians(k=3, d=2, outliers=1,
+  outlier_options=list(outlier_horizon=600)), 600,
+  class = TRUE, outlier = TRUE)
 points <- cbind(points, outlier=attr(points,"outlier"))
 head(points)
 

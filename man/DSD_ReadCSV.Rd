@@ -72,7 +72,8 @@ The position in the file can be reset to the beginning using
 
 \examples{
 # creating data and writing it to disk
-stream <- DSD_Gaussians(k=3, d=5, o=1, lim=c(0,2), outlier_horizon=10)
+stream <- DSD_Gaussians(k=3, d=5, outliers=1, space_limit=c(0,2),
+  outlier_options = list(outlier_horizon=10))
 write_stream(stream, "data.txt", n=10, header = TRUE, sep=",", class=TRUE, write_outliers=TRUE)
 
 # reading the same data back (as a loop)

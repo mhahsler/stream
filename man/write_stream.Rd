@@ -47,7 +47,8 @@ There is no value returned from this operation.
 
 \examples{
 # creating data and writing it to disk
-stream <- DSD_Gaussians(k=3, d=5, o=1, outlier_horizon=10)
+stream <- DSD_Gaussians(k=3, d=5, outliers=1,
+  outlier_options=list(outlier_horizon=10))
 write_stream(stream, file="data.txt", n=10, class=TRUE, write_outliers=TRUE)
 
 #file.show("data.txt")
