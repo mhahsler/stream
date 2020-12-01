@@ -4,11 +4,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
-%\usepackage{a4wide} 
+%\usepackage{a4wide}
 %\setlength{\parskip}{0.5ex plus0.1ex minus0.1ex}
 %\setlength{\parindent}{0em}
 
-%\usepackage[round,longnamesfirst]{natbib} 
+%\usepackage[round,longnamesfirst]{natbib}
 %\usepackage{hyperref}
 
 %%% for tabulars
@@ -18,8 +18,8 @@
 %%% for hanging paragraph
 %\usepackage{hanging}
 
-%%% double spacing 
-% \usepackage{setspace} 
+%%% double spacing
+% \usepackage{setspace}
 % \doublespacing
 
 %\newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
@@ -33,7 +33,7 @@
 
 \DeclareTextFontCommand{\emph}{\normalfont}
 
-%\usepackage{Sweave} 
+%\usepackage{Sweave}
 %\VignetteIndexEntry{Extending the stream Framework}
 
 %% publication information
@@ -48,34 +48,32 @@
 
 \author{
 Michael Hahsler\\Southern Methodist University
-\And 
-Matthew Bola\~nos\\Research Now
-\AND 
+\And
+Matthew Bola\~nos\\Microsoft Corporation
+\AND
 John Forrest\\Microsoft Corporation
 }
 
 \title{Extending the \pkg{stream} Framework}
 
-\Plainauthor{Michael Hahsler, Matthew Bolanos, John Forrest} 
+\Plainauthor{Michael Hahsler, Matthew Bolanos, John Forrest}
 \Plaintitle{Extending the stream Framework}
 \Shorttitle{Extending the \pkg{stream} Framework}
 
 %% an abstract and keywords
-\Abstract{
-This document describes how to add new data stream sources \code{DSD} and
-data stream tasks \code{DST} to the \pkg{stream} framework.
-} 
+\Abstract{This document describes how to add new data stream sources \code{DSD} and
+data stream tasks \code{DST} to the \pkg{stream} framework.}
 
-\Keywords{data streams, data mining, clustering} 
-\Plainkeywords{data streams, data mining, clustering} 
+\Keywords{data streams, data mining, clustering}
+\Plainkeywords{data streams, data mining, clustering}
 
-\Address{Michael Hahsler\\ 
-Engineering Management, Information, and Systems\\ 
-Lyle School of Engineering\\ 
-Southern Methodist University\\ 
-P.O. Box 750122 \\ 
-Dallas, TX 75275-0122\\ 
-E-mail: \email{mhahsler@lyle.smu.edu}\\ 
+\Address{Michael Hahsler\\
+Engineering Management, Information, and Systems\\
+Lyle School of Engineering\\
+Southern Methodist University\\
+P.O. Box 750122 \\
+Dallas, TX 75275-0122\\
+E-mail: \email{mhahsler@lyle.smu.edu}\\
 URL: \url{http://lyle.smu.edu/~mhahsler}
 
 Matthew Bola\~nos\\
@@ -93,7 +91,6 @@ E-mail: \email{jforrest@microsoft.com}
 
 \begin{document}
 \vfill
-
 
 
 %\maketitle
@@ -114,14 +111,14 @@ options(width = 75, digits = 3, prompt = 'R> ', scipen = 3)
 
 Since stream mining is a relatively young field and many advances are
 expected in the near future,
-the object oriented framework in \pkg{stream} is developed with easy 
+the object oriented framework in \pkg{stream} is developed with easy
 extensibility in mind. Implementations for data streams (DSD) and
 data stream mining tasks (DST) can be easily added by implementing a small
-number of core functions. The actual implementation can be written 
+number of core functions. The actual implementation can be written
 in either \proglang{R}, \proglang{Java},
 \proglang{C}/\proglang{C++} or any other programming language
 which can be interfaced by \proglang{R}.
-In the following we discuss how to extend \pkg{stream} with new DSD and DST 
+In the following we discuss how to extend \pkg{stream} with new DSD and DST
 implementations.
 %In the following we discuss how to extend DSD, DST and how to interface
 %algorithms from other frameworks in \pkg{stream}.
@@ -129,65 +126,68 @@ implementations.
 \subsection{Adding a new data stream source (DSD)}
 DSD objects can be a management layer on top of
 a real data stream, a wrapper for data stored in memory or on disk, or a generator which
-simulates a data stream with know properties for controlled experiments. 
-Figure~\ref{figure:dsd} shows the relationship (inheritance hierarchy) of 
+simulates a data stream with know properties for controlled experiments.
+Figure~\ref{figure:dsd} shows the relationship (inheritance hierarchy) of
 the DSD
-classes as a UML class diagram~\citep{stream:Fowler:2003}. 
-All DSD classes extend the abstract 
+classes as a UML class diagram~\citep{stream:Fowler:2003}.
+All DSD classes extend the abstract
 base class~\code{DSD}.
 There are currently two types of DSD implementations,
 classes which implement \proglang{R}-based data streams~(\code{DSD_R})
 and MOA-based stream generators~(\code{DSD_MOA}) provided in \pkg{streamMOA}.
-Note that abstract classes define interfaces and only implement common 
-functionality. Only implementation classes can be used 
-to create objects (instances). This mechanism is not enforced by S3, but is 
-implemented in \pkg{stream} by providing for all abstract classes 
+Note that abstract classes define interfaces and only implement common
+functionality. Only implementation classes can be used
+to create objects (instances). This mechanism is not enforced by S3, but is
+implemented in \pkg{stream} by providing for all abstract classes
 constructor functions which create
 an error.
 
 The class hierarchy in Figure~\ref{figure:dsd}
-is implemented 
-using the S3 class system~\citep{stream:Chambers:1992}. 
+is implemented
+using the S3 class system~\citep{stream:Chambers:1992}.
 Class membership and the inheritance hierarchy is
 represented by a vector
 of class names stored as the object's class attribute. For example, an object of
 class \code{DSD_Gaussians} will have the class attribute vector
 \code{c("DSD_Gaussians", "DSD_R", "DSD")} indicating that
-the object is an \proglang{R} implementation of DSD. This allows 
+the object is an \proglang{R} implementation of DSD. This allows
 the framework to implement all common functionality as functions at the level
 of \code{DSD} and \code{DSD_R} and only a minimal set of functions
 is required to implement a new data stream source.
 Note that the class attribute has to contain a vector of all parent classes
 in the class diagram in bottom-up order.
 
-\begin{figure} 
-\centering 
-\includegraphics[width=\linewidth]{dsd_uml} 
-\caption{Overview of the data stream data (DSD) class structure.} 
-\label{figure:dsd} 
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{dsd_uml}
+\caption{Overview of the data stream data (DSD) class structure.}
+\label{figure:dsd}
 \end{figure}
 
 
 For a new DSD implementation only the following two functions need to be
 implemented:
 \begin{enumerate}
-\item A creator function (with a name starting with the prefix \code{DSD_}) and 
+\item A creator function (with a name starting with the prefix \code{DSD_}) and
 \item the \code{get_points()} method.
 \end{enumerate}
 The creator function creates an object of the appropriate
 \code{DSD} subclass. Typically this S3 object contains a list of all parameters,
-an open \proglang{R} connection and/or an environment or a reference class 
+an open \proglang{R} connection and/or an environment or a reference class
 for storing state information (e.g., the current position in the stream).
 Standard parameters are \code{d} and \code{k} for the number of dimensions of
-the created data and the true number of clusters, respectively. 
+the created data and the true number of clusters, respectively.
 In addition an element called \code{"description"} should be provided. This element
 is used by \code{print()}.
 
 The implemented \code{get_points()} needs to dispatch for the class
 and create as the output a data frame  containing the new data points as
-rows. Also, if the ground truth (true cluster assignment as an integer vector; 
-noise is represented by \code{NA}) is available, then this can be attached to 
-the data frame as an attribute called \code{"assignment"}.
+rows. Also, if the ground truth (true cluster assignment as an integer vector;
+noise is represented by \code{NA}) is available, then this can be attached to
+the data frame as an attribute called \code{"cluster"}. If the new DSD
+implementation is capable of generating outliers, all outliers in the output
+data frame should be marked in a logical vector added as an attribute called
+\code{"outlier"}.
 
 For a very simple example, we show here the implementation of
 \code{DSD_UniformNoise} available in the package's source code
@@ -200,31 +200,31 @@ library("stream")
 
 <<>>=
 DSD_UniformNoise <- function(d = 2, range = NULL) {
-  if(is.null(range)) range <- matrix(c(0, 1), ncol = 2, nrow = d, 
+  if(is.null(range)) range <- matrix(c(0, 1), ncol = 2, nrow = d,
     byrow = TRUE)
-  structure(list(description = "Uniform Noise Data Stream", d = d, 
+  structure(list(description = "Uniform Noise Data Stream", d = d,
     k = NA_integer_, range = range),
         class = c("DSD_UniformNoise", "DSD_R", "DSD"))
   }
-  
-get_points.DSD_UniformNoise <- function(x, n = 1, 
+
+get_points.DSD_UniformNoise <- function(x, n = 1,
   assignment = FALSE, ...) {
-    data <- as.data.frame(t(replicate(n, 
+    data <- as.data.frame(t(replicate(n,
       runif(x$d, min = x$range[ , 1], max = x$range[ , 2]))))
     if(assignment) attr(data, "assignment") <- rep(NA_integer_, n)
     data
 }
 @
 
-The constructor only stores the description, the dimensionality and the range 
+The constructor only stores the description, the dimensionality and the range
 of the data.
 For this data generator \code{k}, the number of true clusters, is not applicable.
-Since all data is random, there is also no need to store a state. The 
+Since all data is random, there is also no need to store a state. The
 \code{get_points()} implementation creates $n$ random points and if
-assignments are needed attaches a vector with the appropriate 
+assignments are needed attaches a vector with the appropriate
 number of \code{NA}s indicating that the data points are all noise.
 
-Now the new stream type can already be used. 
+Now the new stream type can already be used.
 
 <<dsd_example, fig=TRUE, include=FALSE>>=
 stream <- DSD_UniformNoise()
@@ -241,101 +241,193 @@ The resulting plot is shown in Figure~\ref{figure:dsd_example}.
 \label{figure:dsd_example}
 \end{figure}
 
-Several more complicated examples are available in the package's source code 
+For the outlier data stream generator, we can take \code{DSD_Gaussians}. If
+we generate one cluster and one outlier for the horizon of 10 data points
+<<>>=
+stream <- DSD_Gaussians(k = 1, d = 2, outliers = 1, space_limit = c(0,0.5),
+                        outlier_options = list(outlier_horizon = 5))
+@
+we can obtain the first 10 data points, simultaneously looking for the cluster
+and outlier information. The data points obtained from the data stream are
+<<>>=
+points <- get_points(stream, n = 10, cluster = TRUE, outlier = TRUE)
+points
+@
+we can extract cluster information as
+<<>>=
+attr(points, "cluster")
+@
+and outlier marks as
+<<>>=
+attr(points, "outlier")
+@
+
+Several more complicated examples are available in the package's source code
 directory in files starting with \code{DSD_}.
 
 \subsection{Adding a new data stream tasks (DST)}
 DST refers to any data mining task that can be applied to data streams.  The design
 is flexible enough for future extensions including even currently unknown tasks.
 Figure~\ref{figure:dst} shows the class hierarchy for DST.
-It is important to note that the DST base class is shown merely 
-for conceptual purpose and is not directly visible in the code. The reason is that 
-the actual implementations of 
+It is important to note that the DST base class is shown merely
+for conceptual purpose and is not directly visible in the code. The reason is that
+the actual implementations of
 data stream operators (DSO),
 clustering (DSC), classification (DSClass) or frequent pattern mining (DSFPM) are typically quite different and the benefit of sharing methods
-would be minimal.    
+would be minimal.
 
-\begin{figure} 
-\centering 
-\includegraphics[width=\linewidth]{dst_uml} 
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{dst_uml}
 \caption{Overview of the data stream task (DST) class structure with subclasses
 for data stream operators (DSO), clustering (DSC),
 classification (DSClass) and frequent pattern mining (DSFPM).}
-\label{figure:dst} 
+\label{figure:dst}
 \end{figure}
 
 DST classes implement mutable objects which
-can be changed without creating a copy. This is more 
-efficient, since otherwise 
-a new copy of all 
+can be changed without creating a copy. This is more
+efficient, since otherwise
+a new copy of all
 data structures used by the algorithm would be created
 for processing each data point.
 Mutable objects can be implemented in \proglang{R} using environments
-or the recently introduced reference class construct (see 
+or the recently introduced reference class construct (see
 package~\pkg{methods} by the \cite{stream:R:2005}).
-Alternatively, pointers to external data 
-structures in \proglang{Java} or \proglang{C/C++} can be used to create 
+Alternatively, pointers to external data
+structures in \proglang{Java} or \proglang{C/C++} can be used to create
 mutable objects.
 
-To add a new data stream mining tasks (e.g., frequent pattern mining), 
+To add a new data stream mining tasks (e.g., frequent pattern mining),
 a new package with
-a subclass hierarchy 
+a subclass hierarchy
 similar to the hierarchy in Figure~\ref{figure:dst} for data stream
-clustering (DSC) can be easily added. This new package can take full 
-advantage of the already existing infrastructure in \pkg{stream}. 
-An example is the package~\pkg{streamMOA}~\cite{stream:streamMOA:2014}, 
+clustering (DSC) can be easily added. This new package can take full
+advantage of the already existing infrastructure in \pkg{stream}.
+An example is the package~\pkg{streamMOA}~\cite{stream:streamMOA:2014},
 which can be used as a model
 to develop a new package.
-We plan 
-to provide more add-on packages to \pkg{stream} for frequent pattern mining 
+We plan
+to provide more add-on packages to \pkg{stream} for frequent pattern mining
 and data stream classification in the near future.
 
 In the following we discuss how to interface an existing algorithm with \pkg{stream}.
 We concentrate again on clustering, but interfacing algorithms
 for other types of tasks is similar.
-To interface an existing clustering algorithm with \pkg{stream}, 
+To interface an existing clustering algorithm with \pkg{stream},
 \begin{enumerate}
-\item a creator function (typically named after the algorithm and 
+\item a creator function (typically named after the algorithm and
   starting with \code{DSC_}) which created the clustering object,
 \item an implementation of the actual cluster algorithm, and
 \item accessors for the clustering
 \end{enumerate}
 are needed. The implementation depends on the interface that is used.
-Currently an \code{R} interface is available as \code{DSC_R} and 
-a MOA interface is implemented in \code{DSC_MOA} (in \pkg{streamMOA}). 
+Currently an \code{R} interface is available as \code{DSC_R} and
+a MOA interface is implemented in \code{DSC_MOA} (in \pkg{streamMOA}).
 The implementation for
 \code{DSC_MOA} takes care of all MOA-based clustering algorithms and we will
-concentrate here on the \proglang{R} interface. 
+concentrate here on the \proglang{R} interface.
 
 For the \proglang{R} interface, the clustering class needs to contain
 the elements \code{"description"} and \code{"RObj"}. The description needs
 to contain a character string describing the algorithm. RObj is expected to be
-a reference class object and 
+a reference class object and
 contain the following methods:
 \begin{enumerate}
 \item \code{cluster(newdata, ...)}, where \code{newdata} is a data frame
-with
-new data points.
+with new data points.
+\item \code{get_assignment(dsc, points, ...)}, where the clusterer \code{dsc}
+returns cluster assignments, outlier marks, and outlier identifiers for the
+input \code{points} data frame.
 \item For micro-clusters: \code{get_microclusters(...)} and
  \code{get_microweights(...)}
-\item 
+\item
 For macro-clusters: \code{get_macroclusters(...)}, \code{get_macroweights}
 and \\ \code{microToMacro(micro, ...)} which does micro- to macro-cluster
 matching.
+\item
+For outlier detectors:
+  \begin{itemize}
+    \item \code{clean_outliers(dsc, ...)} instructing the outlier detector to clean
+    up the list of outliers
+    \item \code{get_outlier_positions(dsc, ...)} retrieving spatial positions of all
+    current outliers
+    \item \code{recheck_outlier(dsc, outlier_id, ...)} re-checking the validity of the
+    outlier by using its identifier, i.e., whether the outlier became an inlier in the meantime.
+    This function must return \code{TRUE} if the outlier is still valid, and \code{FALSE} if
+    the outlier has become an inlier in the meantime. Some outlier detectors allow outliers
+    to decay (or fade), which rises an open question about whether a decayed outlier remains an outlier.
+    \item \code{noutliers(dsc, ...)} returns the number of current outliers.
+  \end{itemize}
 \end{enumerate}
 
 Note that these are methods for reference classes and do not contain the
 called object in the parameter list. Neither of these methods are called directly
 by the user.
-Figure~\ref{figure:interaction} (on page~\pageref{figure:interaction})
-shows that the function \code{update()} 
+Figure~\ref{figure:interaction} shows that the function \code{update()}
 is used to cluster data points, and \code{get_centers()} and \code{get_weights()}
 are used to obtain the clustering. These user facing functions call internally
-the methods in RObj via the \proglang{R} interface in class \code{DSC_R}. 
+the methods in RObj via the \proglang{R} interface in class \code{DSC_R}.
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{interaction}
+\caption{Interaction between the DSD and DSC classes.}
+\label{figure:interaction}
+\end{figure}
 
-For a comprehensive example of a clustering algorithm implemented in \proglang{R}, 
-we refer the reader to \code{DSC_DStream} (in file \code{DSC_DStream.R}) in the 
+\subsubsection{Single-pass clusterers and outlier detectors}
+
+Single-pass clusterers are processing input each data point separately. Processing
+is done in two steps. In the first step clusterer makes the classification and assessment.
+This classification is taken as the output result. In the second step, the clusterer
+makes necessary model updates using the input data point. Single-pass clusterers need to
+use the abstract class \code{DSC_SinglePass} anywhere between the abstract class \code{DSC}
+and the final clusterer class. For example:
+<<eval=FALSE,error=TRUE>>=
+DSC_MyClusterer <- function(x) {
+  structure(
+    list(
+      description = "My new clusterer",
+      RObj = x
+    ), class = c("DSC_MyClusterer", "DSC_SinglePass", "DSC_Outlier",
+                 "DSC_Micro", "DSC_R", "DSC")
+  )
+}
+@
+Figure~\ref{figure:interaction_singlepass} shows the interaction in case of single-pass
+clusterers. Obviously, since the model update is done at the end of processing for each
+data point, there is no need to perform \code{update()} before \code{get_assignment()}.
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{interaction_singlepass}
+\caption{Interaction between the DSD and DSC classes for single-pass clusterers.}
+\label{figure:interaction_singlepass}
+\end{figure}
+
+Outlier detectors are the clusterers that inherit the abstract class \code{DSC_Outlier}, placed
+anywhere between the abstract class \code{DSC} and the concrete final class, as seen in the
+previous code example. Besides all the method enumerated previously, outlier detectors
+must return additional structures from their \code{get_assignment()} method. For example:
+<<eval=FALSE>>=
+stream <- DSD_Gaussians(k = 1, d = 2, outliers = 1,
+                        space_limit = c(0, 1), variance_limit = .01,
+                        outlier_options = list(outlier_horizon = 20))
+points <- get_points(stream, n=20, cluster = TRUE, outlier = TRUE)
+dsc <- DSC_MyClusterer()
+assigns <- get_assignment(dsc, points, type="micro")
+@
+<<echo=FALSE>>=
+assigns <- readRDS("outlier_assignment.RDS")
+@
+
+All outlier must have present their identifiers in the \code{attr(assigns, "outlier_corrid")}.
+Using these identifiers, calling the method \code{recheck_outlier(dsc, outlier_id, ...)} we can
+re-check the outlier validity.
+
+For a comprehensive example of a clustering algorithm implemented in \proglang{R},
+we refer the reader to \code{DSC_DStream} (in file \code{DSC_DStream.R}) in the
 package's \code{R} directory.
+
 %
 %%\subsection{Interfacing Algorithms from Other Frameworks}
 %%TODO

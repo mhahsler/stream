@@ -1,12 +1,16 @@
 \name{write_stream}
 \alias{write_stream}
+\alias{write_stream.DSD}
 \title{Write a Data Stream to a File}
-\description{Writes points from a data stream DSD object to a file or a 
+\description{Writes points from a data stream DSD object to a file or a
 connection.}
 
 \usage{
-	write_stream(dsd, file, n=100, block=100000L, 
+write_stream(dsd, file, n=100, block=100000L,
 	class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, ...)
+\method{write_stream}{DSD}(dsd, file, n=100, block=100000L,
+	class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE,
+	write_outliers=FALSE, ...)
 }
 
 \arguments{
@@ -17,9 +21,10 @@ connection.}
 	\item{class}{Save the class/cluster labels of the points as the last column.}
 	\item{sep}{The character that will separate attributes in a data point.}
 	\item{append}{Append the data to an existing file.}
-	\item{header}{A flag that determines if column names will be output 
+	\item{header}{A flag that determines if column names will be output
 	  (equivalent to \code{col.names} in \code{write.table()}).}
 	\item{row.names}{A flag that determines if row names will be output.}
+	\item{write_outliers}{A flag that determines if outliers will be output.}
 	\item{...}{Additional parameters that are passed to \code{write.table()}.}
 }
 
@@ -36,14 +41,15 @@ There is no value returned from this operation.
 }
 
 \author{
-    Michael Hahsler
+    Michael Hahsler, Dalibor Krleža
 }
 
 
 \examples{
 # creating data and writing it to disk
-stream <- DSD_Gaussians(k=3, d=5)
-write_stream(stream, file="data.txt", n=10, class=TRUE)
+stream <- DSD_Gaussians(k=3, d=5, outliers=1,
+  outlier_options=list(outlier_horizon=10))
+write_stream(stream, file="data.txt", n=10, class=TRUE, write_outliers=TRUE)
 
 #file.show("data.txt")
 

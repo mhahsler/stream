@@ -34,16 +34,16 @@ DSD_R <- function(...) stop("DSD_R is an abstract class and cannot be instantiat
 get_points <- function(x, n=1, outofpoints=c("stop", "warn", "ignore"), ...)
   UseMethod("get_points")
 get_points.default <- function(x, n=1,
-  outofpoints=c("stop", "warn", "ignore"), ...) {
+                               outofpoints=c("stop", "warn", "ignore"), ...) {
   stop(gettextf("get_points not implemented for class '%s'.",
-    paste(class(x), collapse=", ")))
+                paste(class(x), collapse=", ")))
 }
 
 ### in case the stream can be reset (e.g., a stream from a file)
 reset_stream <- function(dsd, pos=1) UseMethod("reset_stream")
 reset_stream.DSD <- function(dsd, pos=1) {
   stop(gettextf("reset_stream not implemented for class '%s'.",
-    paste(class(dsd), collapse=", ")))
+                paste(class(dsd), collapse=", ")))
 }
 
 
@@ -53,25 +53,27 @@ reset_stream.DSD <- function(dsd, pos=1) {
 print.DSD <- function(x, ...) {
   .nodots(...)
 
-  k <- x[["k"]]
+  k <- x$k
   if(is.null(k)) k <- NA
-  d <- x[["d"]]
+  d <- x$d
   if(is.null(d)) d <- NA
+  o <- x$o
+  if(is.null(o)) o <- NA
 
   cat(.line_break(x$description))
   cat("Class:", paste(class(x), collapse=", "), "\n")
-  cat(paste('With', k, 'clusters', 'in', d, 'dimensions', '\n'))
+  cat(paste('With', k, 'clusters', 'and', o, 'outliers', 'in', d, 'dimensions', '\n'))
 }
 
 summary.DSD <- function(object, ...) print(object)
 
 plot.DSD <- function(x, n = 500, col= NULL, pch= NULL,
-  ..., method="pairs", dim=NULL, alpha=.6) {
+                     ..., method="pairs", dim=NULL, alpha=.6) {
   ## method can be pairs, plot or pc (projection with PCA)
-  
-  d <- get_points(x, n, cluster = !is.null(x$class))
+
+  d <- get_points(x, n, cluster = TRUE, outlier = TRUE)
   assignment <- attr(d, "cluster")
-  
+
   ### stream has no assignments!
   if(length(assignment)==0) assignment <- rep(1L, nrow(d))
 
@@ -92,6 +94,7 @@ plot.DSD <- function(x, n = 500, col= NULL, pch= NULL,
   if(is.null(pch)) {
     #pch <- rep(1, n)
     pch <- as.integer(assignment)
+    pch <- pch %% 25
     pch[noise] <- .noise_pch
   }
 
@@ -105,11 +108,11 @@ plot.DSD <- function(x, n = 500, col= NULL, pch= NULL,
 
     plot(p$x, col=col, pch=pch, ...)
     title(sub = paste("Explains ",
-      round(sum(p$sdev[1:2]) / sum(p$sdev)* 100, 2),
-      "% of the point variability", sep=""))
+                      round(sum(p$sdev[1:2]) / sum(p$sdev)* 100, 2),
+                      "% of the point variability", sep=""))
   } else if(ncol(d) == 1) {
     plot(d[[1]], rep(0, length(d[[1]])), col = assignment, pch= pch,
-      ylab = "", xlab = colnames(d)[1], ...)
+         ylab = "", xlab = colnames(d)[1], ...)
   } else {
     if(ncol(d)>2) d <- d[,1:2, drop = FALSE]
     plot(d, col=col, pch=pch, ...)
