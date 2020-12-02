@@ -31,8 +31,9 @@ stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 1000)
 ## online algorithm
 dbstream <- DSC_DBSTREAM(r=0.1)
 
-## offline algorithm
-EA <- DSC_EA(k=3, generations=1000)
+## offline algorithm (note: we use a small number of generations
+##                          to make this run faster.)
+EA <- DSC_EA(k=3, generations=100)
 
 ## create pipeline and insert observations
 two <- DSC_TwoStage(dbstream, EA)
@@ -44,7 +45,7 @@ plot(two, stream, type="both")
 
 ## if we have time, evaluate additional generations. This can be
 ## called at any time, also between observations.
-two$macro_dsc$RObj$recluster(2000)
+two$macro_dsc$RObj$recluster(100)
 
 ## plot improved result
 reset_stream(stream)
@@ -57,8 +58,6 @@ update(dbstream, stream, n = 1000)
 recluster(EA, dbstream)
 reset_stream(stream)
 plot(EA, stream)
-
-
 }
 \references{
 Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary Stream Clustering Utilizing Idle Times", Big Data Research.
