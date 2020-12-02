@@ -1,4 +1,4 @@
-# stream 1.4-0 (10/20/20)
+# stream 1.4-0 (12/01/20)
 
 ## New Features
 * Added additional features to the DSD_Gaussians, now capable of using Mahalanobis distance and
