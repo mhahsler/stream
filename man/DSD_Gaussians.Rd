@@ -84,7 +84,7 @@ stream1 <- DSD_Gaussians(k=3, d=3)
 plot(stream1)
 
 
-# create data stream with specified clusterpositions,
+# create data stream with specified cluster positions,
 # 20% noise in a given bounding box and
 # with different densities (1 to 9 between the two clusters)
 stream2 <- DSD_Gaussians(k=2, d=2,
@@ -93,37 +93,28 @@ stream2 <- DSD_Gaussians(k=2, d=2,
     p=c(.1,.9))
 plot(stream2)
 
-# create 2 clusters and 2 outliers separated by the Euclidean measure
-# space limits are X=[0,1] and Y=[0,1]
-stream3 <- DSD_Gaussians(k=2, outliers=2, d=2,
+# create 2 clusters and 2 outliers. Clusters and outliers
+# are separated by Euclidean distance of 0.5 or more.
+stream3 <- DSD_Gaussians(k=2, d=2,
     separation_type="Euclidean", separation=0.5,
-    space_limit=c(0,1))
+    space_limit=c(0,1),
+    outliers=2)
 plot(stream3)
 
-# create 2 clusters and 2 outliers separated by the Euclidean measure
-# space limits are X=[0,10] and Y=[0,10]
-# maximal variance for clusters is 2
-# mahalanobis separation is 6
-stream4 <- DSD_Gaussians(k=2, outliers=2, d=2,
+# create 2 clusters and 2 outliers separated by a Mahalanobis
+# distance of 6 or more.
+stream4 <- DSD_Gaussians(k=2, d=2,
   separation_type="Mahalanobis", separation=6,
-  space_limit=c(0,25), variance_limit=2)
+  space_limit=c(0,25), variance_limit=2,
+  outliers=2)
 plot(stream4)
 
 # spread outliers over 20000 data instances
-stream5 <- DSD_Gaussians(k=2, outliers=20, d=2,
+stream5 <- DSD_Gaussians(k=2, d=2,
   separation_type="Mahalanobis", separation=6,
   space_limit=c(0,45), variance_limit=2,
-  outlier_options=list(
+  outliers=20, outlier_options=list(
     outlier_horizon=20000,
     outlier_virtual_variance = 0.3))
 plot(stream5, n=20000)
-
-# big example with generation printout
-stream6 <- DSD_Gaussians(k=40, outliers=40, d=2,
-  separation_type="Mahalanobis", separation=4,
-  space_limit=c(0,200), variance_limit=8,
-  verbose=TRUE, outlier_options=list(
-    outlier_horizon=20000
-  ))
-plot(stream6, n=20000)
 }

@@ -28,7 +28,7 @@ Calculates assignments and outlier marks for the \code{points} data frame. Point
 }
 }}
 \description{
-The abstract class for all outlier detection clusterers. Cannot be instantiated. Must be inherited.
+The abstract class for all outlier detection clusterers. Cannot be instantiated. Must be inherited. An implementation is available in package \pkg{streamMOA}.
 }
 \author{
 Dalibor Krleža
