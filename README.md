@@ -11,7 +11,7 @@ implementations of **BICO**, **BIRCH**, **D-Stream**, **DBSTREAM**, and **evoStr
 
 Additional packages in the stream family are: 
 
-* [streamMOA](http://github.com/mhahsler/streamMOA): Interface to clustering
+* [streamMOA](https://github.com/mhahsler/streamMOA): Interface to clustering
   algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
   Includes implementations of **DenStream**, **ClusTree** and **CluStream**.
 * [subspaceMOA](https://cran.r-project.org/package=subspaceMOA):
