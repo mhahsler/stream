@@ -1873,6 +1873,16 @@ points. The size of the micro-clusters indicates the weight, i.e., the number of
 data points represented by each micro-cluster. In Figure~\ref{figure:cluster}(b)
 the micro-clusters are shown as dense grid cells (density is coded with gray values).
 
+\pkg{stream} provides implementation for many data stream clustering algorithms. The algorithms can be found using the registry \code{DSC_registry}.
+
+<<>>=
+DSC_registry
+
+head(DSC_registry$get_entries(), n = 3)
+@
+
+The field \code{name} contains the function name to create the clusterer. More information on the algorithm can be found using help with \code{?} and the function name. \code{DSC_Micro} and \code{DSC_Macro} indicate if the algorithm implements a stream clustering algorithm that creates micro-clusters or if it is used for reclustering.
+
 %\pagebreak[4]
 \newpage
 \section{Evaluation of data stream clustering}\label{sec:evaluation}

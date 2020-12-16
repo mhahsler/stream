@@ -89,7 +89,7 @@ DSC_evoStream <- function(r, lambda=0.001, tgap=100, k=2, crossoverRate=.8, muta
 
   structure(
     list(
-      description = "evoStream",
+      description = "evoStream - Evolutionary Stream Clustering",
       RObj = evoStream
     ), class = c("DSC_evoStream", "DSC_Micro", "DSC_R", "DSC")
   )
@@ -155,4 +155,8 @@ evoStream_R$methods(
     .self$C$recluster(generations)
   }
 )
+
+DSC_registry$set_entry(name = "DSC_evoStream",
+  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  description = "evoStream - Evolutionary Stream Clustering")
 

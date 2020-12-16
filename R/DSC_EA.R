@@ -79,7 +79,7 @@ DSC_EA <- function(k, generations=2000, crossoverRate=.8, mutationRate=.001, pop
 
   structure(
     list(
-      description = "EA",
+      description = "EA - Reclustering using an evolutionary algorithm",
       RObj = EA
     ), class = c("DSC_EA", "DSC_Macro", "DSC_R", "DSC")
   )
@@ -141,3 +141,9 @@ EA_R$methods(
 
   recluster = function(generations=1){.self$C$recluster(generations)}
 )
+
+
+DSC_registry$set_entry(name = "DSC_EA",
+  DSC_Micro = FALSE, DSC_Macro = TRUE,
+  description = "EA - Reclustering using an evolutionary algorithm")
+

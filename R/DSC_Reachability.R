@@ -30,3 +30,8 @@ DSC_Reachability <- function(epsilon, min_weight=NULL, description=NULL) {
   class(l) <- c("DSC_Reachability", "DSC_Hierarchical", "DSC_Macro", "DSC_R", "DSC")
   l
 }
+
+DSC_registry$set_entry(name = "DSC_Reachability",
+  DSC_Micro = FALSE, DSC_Macro = TRUE,
+  description = "Reachability reclustering")
+

@@ -2,6 +2,7 @@ useDynLib(stream, .registration = TRUE)
 
 import(Rcpp)
 import(proxy)
+import(registry)
 
 importFrom(methods, "is", "new")
 importFrom(utils, "head", "read.table", "write.table")
@@ -145,7 +146,9 @@ export(
   saveDSC,
   readDSC,
 
-  description
+  description,
+
+  DSC_registry
 )
 
 ### update

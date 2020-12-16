@@ -21,7 +21,7 @@ DSC_BIRCH <- function(treshold, branching, maxLeaf, maxMem = 0, outlierThreshold
 
   structure(
     list(
-      description = "BIRCH",
+      description = "BIRCH - Balanced Iterative Reducing Clustering using Hierarchies",
       RObj = birch$new(treshold = treshold, branching=branching, maxLeaf=maxLeaf, maxMem=maxMem, outlierThreshold=outlierThreshold)
     ), class = c("DSC_BIRCH", "DSC_Micro", "DSC_R", "DSC")
   )
@@ -73,4 +73,9 @@ birch$methods(
   get_microweights = function(x,...){
     .self$C$getWeights()
   })
+
+
+DSC_registry$set_entry(name = "DSC_BIRCH",
+  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  description = "BIRCH - Balanced Iterative Reducing Clustering using Hierarchies")
 

@@ -23,7 +23,7 @@ DSC_BICO <- function(k=5, space=10, p=10, iterations=10) {
 
   structure(
     list(
-      description = "BICO",
+      description = "BICO - Fast computation of k-means coresets",
       RObj = BICO
     ), class = c("DSC_BICO", "DSC_Micro", "DSC_R", "DSC")
   )
@@ -85,3 +85,8 @@ BICO_R$methods(
     structure(assignment[micro], names=micro)
   }
 )
+
+DSC_registry$set_entry(name = "DSC_BICO",
+  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  description = "BICO - Fast computation of k-means coresets")
+

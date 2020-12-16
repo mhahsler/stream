@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,14 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-### interface for DSO_Window (see DSO_Window.R)
-DSC_Window <- function(horizon = 100, lambda=0) 
-  structure(list(description = if(lambda>0) "Damped sliding window" else "Sliding window",
-    RObj = WindowDSC$new(horizon = as.integer(horizon), lambda=lambda)),
-    class = c("DSC_Window","DSC_Micro","DSC_R","DSC"))
 
+## DSC
+DSC_registry <- registry(registry_class="DSC_registry",
+  entry_class="DSC_")
 
-DSC_registry$set_entry(name = "DSC_Window",
-  DSC_Micro = TRUE, DSC_Macro = FALSE,
-  description = "Sliding window")
-                                       
+DSC_registry$set_field("name", type = "character",
+  is_key = TRUE, index_FUN = match_regexp, ignore.case = TRUE)
+DSC_registry$set_field("description", type = "character",
+  is_key = FALSE)
+DSC_registry$set_field("DSC_Micro", type = "logical",
+  is_key = TRUE)
+DSC_registry$set_field("DSC_Macro", type = "logical",
+  is_key = TRUE)

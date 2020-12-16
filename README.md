@@ -60,6 +60,14 @@ recluster(kmeans, sample)
 plot(kmeans, stream, type="both")
 ```
 
+A list of all available clustering methods can be obtained with
+
+```
+DSC_registry$get_entries()
+```
+
+
+
 ## References
 
 * Michael Hahsler, Matthew Bolaños, and John Forrest. [stream: An extensible framework for data stream clustering research with R.](http://dx.doi.org/10.18637/jss.v076.i14) _Journal of Statistical Software,_ 76(14), February 2017. 

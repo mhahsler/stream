@@ -5,28 +5,29 @@
 \alias{get_microweights}
 \alias{get_macroclusters}
 \alias{get_macroweights}
+\alias{DSC_registry}
 \title{Data Stream Clusterer Base Classes}
 \description{Abstract base classes for all DSC (Data Stream
-Clusterer) and DSC_R classes.}
+Clusterer) and DSC_R classes. Implementations can be found in via the registry \code{DSC_registry}.}
 
 \details{
-The \code{DSC} and \code{DSC_R} classes cannot be instantiated 
-(calling \code{DSC()} or \code{DSC_R()} produces errors), 
-but they serve as a base class from which other DSC classes 
-inherit. 
+The \code{DSC} and \code{DSC_R} classes cannot be instantiated
+(calling \code{DSC()} or \code{DSC_R()} produces errors),
+but they serve as a base class from which other DSC classes
+inherit. Implementations can be found using the DSC registry \code{DSC_registry} (See Examples section).
 
-Class \code{DSC} provides several generic functions that can 
-operate on all DSC subclasses: 
+Class \code{DSC} provides several generic functions that can
+operate on all DSC subclasses:
 \code{print()}, \code{plot()}, \code{nclusters()} to
-get the current number of clusters, 
+get the current number of clusters,
 \code{get_centers()} to get the cluster centers,
-and \code{get_weights()} to get the cluster weights 
+and \code{get_weights()} to get the cluster weights
 (if implemented). \code{get_centers()} and \code{get_weights()}
-are typically overwritten by subclasses of \code{DSC}. \code{DSC_R} 
+are typically overwritten by subclasses of \code{DSC}. \code{DSC_R}
 provides these functions for R-based DSC implementations.
 
 Since \code{DSC} objects often contain external pointers, regular saving
-and reading operations will fail. Use \code{saveDSC()} and \code{readDSC()} 
+and reading operations will fail. Use \code{saveDSC()} and \code{readDSC()}
 which will serialize the objects first appropriately.
 }
 
@@ -50,4 +51,18 @@ which will serialize the objects first appropriately.
 \author{
     Michael Hahsler
 }
+\examples{
+DSC_registry
 
+# available micro clusterers
+DSC_registry$get_entries(DSC_Micro = TRUE)
+
+# available macro clusterers for reclustering
+DSC_registry$get_entries(DSC_Macro = TRUE)
+
+# currently number of available clusterers
+DSC_registry$get_entries(DSC_Micro = TRUE)
+
+# find DSC by name
+DSC_registry$get_entries("EVO")
+}

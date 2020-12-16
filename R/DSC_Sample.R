@@ -22,3 +22,7 @@ DSC_Sample <- function(k = 100, biased = FALSE)
       if(biased) "Reservoir sampling (biased)" else "Reservoir sampling",
     RObj = SampleDSC$new(k = k, biased = biased)),
     class = c("DSC_Sample","DSC_Micro","DSC_R","DSC"))
+
+DSC_registry$set_entry(name = "DSC_Sample",
+    DSC_Micro = TRUE, DSC_Macro = FALSE,
+    description = "Reservoir sampling")

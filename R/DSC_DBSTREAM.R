@@ -29,7 +29,7 @@ DSC_DBSTREAM <- function(r,
 
   structure(
     list(
-      description = "DBSTREAM",
+      description = "DBSTREAM - density-based stream clustering with shared-density-based reclustering",
       RObj = dbstream,
       macro = macro
     ), class = c("DSC_DBSTREAM", "DSC_Micro", "DSC_R", "DSC")
@@ -442,3 +442,8 @@ get_cluster_assignments <- function(x) {
 
   structure(last, ids = ids)
 }
+
+
+DSC_registry$set_entry(name = "DSC_DBSTREAM",
+  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  description = "DBSTREAM - density-based stream clustering with shared-density-based reclustering.")

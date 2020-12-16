@@ -111,3 +111,7 @@ DBSCAN$methods(
   }
 )
 
+DSC_registry$set_entry(name = "DSC_DBSCAN",
+  DSC_Micro = FALSE, DSC_Macro = TRUE,
+  description = "DBSCAN Reclustering")
+

@@ -1,3 +1,8 @@
+# stream 1.4-0.1 (xx/xx/20)
+
+## New Features
+* DSC implementations are now registered using DSC_registry.
+
 # stream 1.4-0 (12/01/20)
 
 ## New Features
