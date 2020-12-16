@@ -2,7 +2,7 @@
 
 [![CRAN version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
-[![Travis-CI Build Status](https://travis-ci.org/mhahsler/stream.svg?branch=master)](https://travis-ci.org/mhahsler/stream)
+[![R-CMD-check](https://github.com/mhahsler/stream/workflows/R-CMD-check/badge.svg)](https://github.com/mhahsler/stream/actions)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mhahsler/stream?branch=master&svg=true)](https://ci.appveyor.com/project/mhahsler/stream)
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
