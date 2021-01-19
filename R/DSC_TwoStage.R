@@ -119,7 +119,7 @@ get_assignment.DSC_TwoStage <- function(dsc, points, type=c("auto", "micro", "ma
   } else {
     if(dsc$macro$newdata) {
       recluster(dsc$macro_dsc, dsc$micro_dsc)
-      x$macro$newdata <- FALSE
+      dsc$macro$newdata <- FALSE
     }
     get_assignment(dsc$macro_dsc, points, type, method, ...)
   }
