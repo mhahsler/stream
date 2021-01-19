@@ -5,7 +5,7 @@
 
 ## Bug Fixes
 * Fixed get_assignment.DSC_TwoStage when new data is avaialble (reported by 
-Dalibor Krleza).
+ozlempoyraz).
 
 # stream 1.4-0 (12/01/20)
 
