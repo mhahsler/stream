@@ -17,12 +17,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-DSC_BIRCH <- function(treshold, branching, maxLeaf, maxMem = 0, outlierThreshold = 0.25) {
+DSC_BIRCH <- function(threshold, branching, maxLeaf, maxMem = 0, outlierThreshold = 0.25) {
 
   structure(
     list(
       description = "BIRCH - Balanced Iterative Reducing Clustering using Hierarchies",
-      RObj = birch$new(treshold = treshold, branching=branching, maxLeaf=maxLeaf, maxMem=maxMem, outlierThreshold=outlierThreshold)
+      RObj = birch$new(threshold = threshold, branching=branching, maxLeaf=maxLeaf, maxMem=maxMem, outlierThreshold=outlierThreshold)
     ), class = c("DSC_BIRCH", "DSC_Micro", "DSC_R", "DSC")
   )
 }
@@ -32,14 +32,14 @@ birch <- setRefClass("BIRCH", fields = list(
 ))
 
 #  CF-Tree creation: Initializes an empty CF-Tree.
-# param treshold Specifies the treshold used to check whether a new datapoint can be absorbed or not.
+# param threshold Specifies the threshold used to check whether a new datapoint can be absorbed or not.
 # param branching Specifies the branching factor (maximum amount of child nodes for a nonleaf node) of the CF-Tree.
 # param maxLeaf Specifies the maximum number of entries within a leaf node.
 # param maxMemory Specifies the memory limitation for the whole CFTree in bytes. Default is 0, indicating no memory restriction.
 # param outlierThreshold Specifies the threshold for identifying outliers when rebuilding the CF-Tree.
 birch$methods(
-  initialize = function(treshold,branching,maxLeaf,maxMem,outlierThreshold){
-    C <<- new(BIRCH,treshold,branching,maxLeaf,maxMem,outlierThreshold) ## Exposed C class
+  initialize = function(threshold,branching,maxLeaf,maxMem,outlierThreshold){
+    C <<- new(BIRCH,threshold,branching,maxLeaf,maxMem,outlierThreshold) ## Exposed C class
     .self
   })
 

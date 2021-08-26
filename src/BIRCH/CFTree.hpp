@@ -14,7 +14,7 @@ namespace CF{
     class CFTree {
 
     public:
-        CFTree(double treshold, int branchingFactor, int maxLeafEntries, int maxMemory, float outlierThreshold);
+        CFTree(double threshold, int branchingFactor, int maxLeafEntries, int maxMemory, float outlierThreshold);
 
         ~CFTree();
 
@@ -28,11 +28,11 @@ namespace CF{
 
         void insert(ClusteringFeature *feature,CF::CFNode *node);
 
-        void rebuild(double treshold);
+        void rebuild(double threshold);
 
         void deleteTree(CFNode* node, int deleteLeafs);
 
-        void resetTreeWithNewTreshold(double treshold);
+        void resetTreeWithNewThreshold(double threshold);
 
         void removeOutliers(std::vector<CF::ClusteringFeature*>* cfs);
 
@@ -48,19 +48,19 @@ namespace CF{
 
         int getUsedMem();
 
-        double findNewTreshold(CFNode* node);
+        double findNewThreshold(CFNode* node);
 
-        double getTreshold();
+        double getThreshold();
 
     private:
         CFNode* root;
-        double treshold;
+        double threshold;
         unsigned int branchingFactor;
         int maxLeafEntries;
         int treeHeight;
         int usedMem;
         int maxMemory;
-        float outlierTreshold;
+        float outlierThreshold;
         std::vector<CF::ClusteringFeature*>* features;
         std::vector<CF::ClusteringFeature*>* outlier;
     };
