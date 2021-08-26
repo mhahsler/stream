@@ -5,7 +5,7 @@
 #include "CFTree.hpp"
 namespace CF {
 
-CFTree::CFTree(double treshold, int branchingFactor, int maxLeafEntries, int maxMemory, float outlierThreshold) : treshold(treshold), branchingFactor(branchingFactor),maxLeafEntries(maxLeafEntries),treeHeight(0),usedMem(0),maxMemory(maxMemory),outlierTreshold(outlierThreshold) {
+CFTree::CFTree(double threshold, int branchingFactor, int maxLeafEntries, int maxMemory, float outlierThreshold) : threshold(threshold), branchingFactor(branchingFactor),maxLeafEntries(maxLeafEntries),treeHeight(0),usedMem(0),maxMemory(maxMemory),outlierThreshold(outlierThreshold) {
   // Rcpp::Rcout<<"Constructor called"<<std::endl;
   this->root = NULL;
   this->outlier = new std::vector<CF::ClusteringFeature*>();
@@ -52,9 +52,9 @@ void CFTree::insert(ClusteringFeature *feature,CF::CFNode *node){
   if(this->getUsedMem()>this->maxMemory && maxMemory != 0){
     // CFNonLeafNode *d = dynamic_cast<CFNonLeafNode *>(this->getRoot());
 
-    //Rcpp::Rcout<<"Start rebuilding with new treshold "<<(this->findNewTreshold(this->getRoot()))<<std::endl;
+    //Rcpp::Rcout<<"Start rebuilding with new threshold "<<(this->findNewThreshold(this->getRoot()))<<std::endl;
    // this->printTree(this->root);
-    this->rebuild((this->findNewTreshold(this->getRoot())));
+    this->rebuild((this->findNewThreshold(this->getRoot())));
   }
 
 }
@@ -78,9 +78,9 @@ std::pair<CF::ClusteringFeature*,CF::CFNode*>* CFTree::insertCF(ClusteringFeatur
     ClusteringFeature *entry = d->findClosestEntry(feature);
 
 
-    //If the closest entry can absorb the new CF (treshold), update
+    //If the closest entry can absorb the new CF (threshold), update
 
-    if(entry->canAbsorb(feature,false,this->getTreshold())){
+    if(entry->canAbsorb(feature,false,this->getThreshold())){
      // Rcpp::Rcout<<"We can absorb it"<<std::endl;
       entry->add(feature);
       //Incoming feature deleted because it was merged before
@@ -296,8 +296,8 @@ void CFTree::deleteTree(CFNode* node, int deleteLeafs){
   this->root = NULL;
 }
 
-void CFTree::resetTreeWithNewTreshold(double treshold){
-  this->treshold=treshold;
+void CFTree::resetTreeWithNewThreshold(double threshold){
+  this->threshold=threshold;
   this->usedMem =0;
   this->treeHeight=0;
   this->root=NULL;
@@ -315,8 +315,8 @@ int CFTree::getBranchingFactor(){
   return this->branchingFactor;
 }
 
-double CFTree::getTreshold(){
-  return this->treshold;
+double CFTree::getThreshold(){
+  return this->threshold;
 }
 
 int CFTree::getUsedMem(){
@@ -347,7 +347,7 @@ void CFTree::printTree(CF::CFNode *node){
   }
 }
 
-void CFTree::rebuild(double treshold){
+void CFTree::rebuild(double threshold){
 
   //First we get all leaf CF and
   std::vector<CF::ClusteringFeature*>* cfs = this->getAllLeafCF(this->getRoot());
@@ -356,13 +356,13 @@ void CFTree::rebuild(double treshold){
   this->deleteTree(this->getRoot(), 0);
 
   //Set everything else to zero
-  this->resetTreeWithNewTreshold(treshold);
+  this->resetTreeWithNewThreshold(threshold);
 
 
   //Remove outliers
   this->removeOutliers(cfs);
 
-  //Insert into tree with new treshold
+  //Insert into tree with new threshold
   for(unsigned int i = 0; i<(*cfs).size();i++){
    // Rcpp::Rcout<<"Inserting entry "<<std::endl;
     this->insert((*cfs)[i],this->getRoot());
@@ -370,7 +370,7 @@ void CFTree::rebuild(double treshold){
   //Rcpp::Rcout<<"Rebuilding done!!";
 }
 
-double CFTree::findNewTreshold(CFNode* node){
+double CFTree::findNewThreshold(CFNode* node){
   if(typeid(*node) == typeid(CFNonLeafNode)){
     CFNonLeafNode *d = dynamic_cast<CFNonLeafNode *>(node);
     int max = 0;
@@ -378,11 +378,11 @@ double CFTree::findNewTreshold(CFNode* node){
       if((*d->getEntries())[i].first->getN()>=max)
         max = i;
     }
-    return findNewTreshold((*d->getEntries())[max].second);
+    return findNewThreshold((*d->getEntries())[max].second);
   }
   else{
     if(node->getLength()>=2){
-    //Rcpp::Rcout<<"current treshold: "<< this->getTreshold();
+    //Rcpp::Rcout<<"current threshold: "<< this->getThreshold();
     CFLeafNode *d = dynamic_cast<CFLeafNode *>(node);
     double distance =(*d->getEntries())[0]->getInterClusterMetric((*d->getEntries())[1]);
     //For all entries we have to compare them with all other entries
@@ -393,8 +393,8 @@ double CFTree::findNewTreshold(CFNode* node){
         }
       }
 
-    if(this->getTreshold()>=distance)
-      return this->getTreshold()*2;
+    if(this->getThreshold()>=distance)
+      return this->getThreshold()*2;
     else
       return distance;
     }
@@ -454,7 +454,7 @@ void CFTree::removeOutliers(std::vector<CF::ClusteringFeature*>* cfs){
   //and add them to our outliers
   unsigned int i =0;
  while(i<cfs->size()){
-    if((*cfs)[i]->getN()<avg*this->outlierTreshold){
+    if((*cfs)[i]->getN()<avg*this->outlierThreshold){
       this->outlier->push_back((*cfs)[i]);
       cfs->erase(cfs->begin()+i);
     }

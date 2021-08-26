@@ -9,13 +9,13 @@ public:
   CF::CFTree *tree = NULL;
 
   //' @title CF-Tree creation
-  //' @param treshold Specifies the treshold used to check whether a new datapoint can be absorbed or not.
+  //' @param threshold Specifies the threshold used to check whether a new datapoint can be absorbed or not.
   //' @param branching Specifies the branching factor (maximum amount of child nodes for a nonleaf node) of the CF-Tree.
   //' @param maxLeaf Specifies the maximum number of entries within a leaf node.
   //' @param maxMemory Specifies the memory limitation for the whole CFTree in bytes. Default is 0, indicating no memory restriction.
   //' @param outlierThreshold Specifies the threshold for identifying outliers when rebuilding the CF-Tree.
-  BIRCH(double treshold, int branching, int maxLeafEntries, int maxMemory, float outlierThreshold){
-    this->tree = new CF::CFTree(treshold,branching,maxLeafEntries,maxMemory,outlierThreshold);
+  BIRCH(double threshold, int branching, int maxLeafEntries, int maxMemory, float outlierThreshold){
+    this->tree = new CF::CFTree(threshold,branching,maxLeafEntries,maxMemory,outlierThreshold);
   }
 
   void insert(NumericVector v){
@@ -83,8 +83,8 @@ public:
 
   //' @title CF-Tree threshold
   //' @description Returns the current threshold of a CF-Tree
-  double getTreshold(){
-    return this->tree->getTreshold();
+  double getThreshold(){
+    return this->tree->getThreshold();
   }
 
   //' @title Deletes the whole tree structure
@@ -119,7 +119,7 @@ RCPP_EXPOSED_CLASS(BIRCH)
     .method("getCentroids", &BIRCH::getCentroids)
     .method("getWeights", &BIRCH::getWeights)
     .method("printTree", &BIRCH::printTree)
-    .method("getTreshold", &BIRCH::getTreshold)
+    .method("getThreshold", &BIRCH::getThreshold)
     .method("deleteTree", &BIRCH::deleteTree)
     ;
 
