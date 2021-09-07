@@ -18,9 +18,7 @@
 
 
 ### DSC - Data Stream Clusterer interface
-
 DSC <- function(...) stop("DSC is an abstract class and cannot be instantiated!")
-
 
 ### all DSC classes have these interface methods
 get_centers <- function(x, type = c("auto", "micro", "macro"), ...)

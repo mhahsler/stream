@@ -8,7 +8,7 @@
 \alias{DSC_registry}
 \title{Data Stream Clusterer Base Classes}
 \description{Abstract base classes for all DSC (Data Stream
-Clusterer) and DSC_R classes. Implementations can be found in via the registry \code{DSC_registry}.}
+Clusterer) and DSC_R classes. Concrete implementations can be found in the registry \code{DSC_registry} (See Examples Section).}
 
 \details{
 The \code{DSC} and \code{DSC_R} classes cannot be instantiated
@@ -54,15 +54,15 @@ which will serialize the objects first appropriately.
 \examples{
 DSC_registry
 
+# all clusterers
+DSC_registry$get_entries()
+
 # available micro clusterers
 DSC_registry$get_entries(DSC_Micro = TRUE)
 
 # available macro clusterers for reclustering
 DSC_registry$get_entries(DSC_Macro = TRUE)
 
-# currently number of available clusterers
-DSC_registry$get_entries(DSC_Micro = TRUE)
-
 # find DSC by name
-DSC_registry$get_entries("EVO")
+DSC_registry$get_entries("DBSTREAM")
 }
