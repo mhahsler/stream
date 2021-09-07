@@ -7,7 +7,7 @@
 
 namespace CF {
 
-bool ClusteringFeature::canAbsorb(CF::ClusteringFeature *newCF,bool diameter, double treshold){
+bool ClusteringFeature::canAbsorb(CF::ClusteringFeature *newCF,bool diameter, double threshold){
   ClusteringFeature f(newCF->getLs().size());
   f.add(newCF);
 
@@ -19,14 +19,14 @@ bool ClusteringFeature::canAbsorb(CF::ClusteringFeature *newCF,bool diameter, do
  // Rcpp::Rcout<<"InsertionCF n:"<<f.getN()<<std::endl;
  // Rcpp::Rcout<<"InsertionCF ss:"<<f.getSs()<<std::endl;
   if(diameter){
-    Rcpp::Rcout<<"Diameter: "<<f.getDiameter()<<" and Treshold: "<<treshold<<std::endl;
-    if(f.getDiameter()< treshold)
+    Rcpp::Rcout<<"Diameter: "<<f.getDiameter()<<" and Threshold: "<<threshold<<std::endl;
+    if(f.getDiameter()< threshold)
       return true;
     else return false;
   }
   else{
-    //Rcpp::Rcout<<"Radius: "<<f.getRadius()<<" and Treshold: "<<treshold<<std::endl;
-    if(f.getRadius()< treshold)
+    //Rcpp::Rcout<<"Radius: "<<f.getRadius()<<" and Threshold: "<<threshold<<std::endl;
+    if(f.getRadius()< threshold)
       return true;
       else return false;
   }

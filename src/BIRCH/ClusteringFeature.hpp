@@ -20,7 +20,7 @@ namespace CF{
         ClusteringFeature(short dim);
     public:
 
-        bool canAbsorb(CF::ClusteringFeature *newCF,bool diameter, double treshold);
+        bool canAbsorb(CF::ClusteringFeature *newCF,bool diameter, double threshold);
 
         void add(CF::ClusteringFeature *feature);
 

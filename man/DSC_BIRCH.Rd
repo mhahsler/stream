@@ -4,10 +4,10 @@
 \alias{birch}
 \title{Balanced Iterative Reducing Clustering using Hierarchies}
 \usage{
-DSC_BIRCH(treshold, branching, maxLeaf, maxMem = 0, outlierThreshold = 0.25)
+DSC_BIRCH(threshold, branching, maxLeaf, maxMem = 0, outlierThreshold = 0.25)
 }
 \arguments{
-\item{treshold}{treshold used to check whether a new datapoint can be absorbed or not}
+\item{threshold}{threshold used to check whether a new datapoint can be absorbed or not}
 
 \item{branching}{branching factor (maximum amount of child nodes for a nonleaf node) of the CF-Tree.}
 
@@ -22,12 +22,12 @@ BIRCH builds a balanced-tree of Clustering Features (CFs) to summarize the strea
 A CF is a tuple (n, LS, SS) which represents a cluster by storing the number of elements (n), their linear sum (LS) and their squared sum (SS).
 Each new observation descends the tree by following its closest CF until a leaf node is reached.
 It is either merged into its closest leaf-CF or inserted as a new one.
-All leaf-CFs form the micro-clusters. Rebuilding the tree is realized by inserting all leaf-CF nodes into a new tree structure with an increased treshold.
+All leaf-CFs form the micro-clusters. Rebuilding the tree is realized by inserting all leaf-CF nodes into a new tree structure with an increased threshold.
 }
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 2)
 
-BIRCH <- DSC_BIRCH(treshold = .1, branching = 8, maxLeaf = 20)
+BIRCH <- DSC_BIRCH(threshold = .1, branching = 8, maxLeaf = 20)
 update(BIRCH, stream, n = 500)
 
 plot(BIRCH,stream)
