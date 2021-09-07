@@ -1,3 +1,8 @@
+# stream 1.5-0.1 (xx/xx/21)
+
+## Bug Fixes
+* Fixed typo in BIRCH interface: treshold -> threshold (by dinarior)
+
 # stream 1.5-0 (09/07/21)
 
 ## New Features
