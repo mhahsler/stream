@@ -29,3 +29,7 @@ DSC_registry$set_field("DSC_Micro", type = "logical",
   is_key = TRUE)
 DSC_registry$set_field("DSC_Macro", type = "logical",
   is_key = TRUE)
+DSC_registry$set_field("DSC_Outlier", type = "logical",
+  is_key = TRUE)
+DSC_registry$set_field("DSC_SinglePass", type = "logical",
+  is_key = TRUE)

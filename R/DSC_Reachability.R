@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
 
 # Reachability and single-link hierarchical clustering are equivalent
 
-### creator    
+### creator
 DSC_Reachability <- function(epsilon, min_weight=NULL, description=NULL) {
-  
-  hierarchical <- hierarchical$new( 
+
+  hierarchical <- hierarchical$new(
     h=epsilon, method="single", min_weight=min_weight)
-  
+
   if(is.null(description)) description <- "Reachability"
-  
+
   l <- list(description = description, RObj = hierarchical)
   class(l) <- c("DSC_Reachability", "DSC_Hierarchical", "DSC_Macro", "DSC_R", "DSC")
   l
 }
 
 DSC_registry$set_entry(name = "DSC_Reachability",
-  DSC_Micro = FALSE, DSC_Macro = TRUE,
+  DSC_Micro = FALSE, DSC_Macro = TRUE, DSC_Outlier = FALSE, DSC_SinglePass = FALSE,
   description = "Reachability reclustering")
 

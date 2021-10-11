@@ -1,6 +1,8 @@
 CXX_STD = CXX11
-
-OBJECTS = evoStream.o BIRCH.o BICO.o DBSTREAM.o DStream.o init.o kmeansw.o NumericVector.o RcppExports.o BICO/l2metric.o BICO/point.o BICO/pointcentroid.o BICO/realspaceprovider.o BICO/squaredl2metric.o BIRCH/CFLeafNode.o BIRCH/CFNode.o BIRCH/CFNonLeafNode.o BIRCH/CFTree.o BIRCH/ClusteringFeature.o BIRCH/Util.o
+PKG_CXXFLAGS = -I./SHC
+OBJECTS.SHC = SHC/SHC.o SHC/SHC_Component.o SHC/SHC_ComponentConnection.o SHC/SHC_Container.o SHC/SHC_Decay.o SHC/SHC_Utils.o SHC/SigmaIndex.o SHC/SigmaIndexProxy.o SHC/SHC_DeltaLogger.o
+OBJECTS.SHC.root = SHC_R.o SHC_Module.o Utils.o
+OBJECTS = evoStream.o BIRCH.o BICO.o DBSTREAM.o DStream.o init.o kmeansw.o NumericVector.o RcppExports.o BICO/l2metric.o BICO/point.o BICO/pointcentroid.o BICO/realspaceprovider.o BICO/squaredl2metric.o BIRCH/CFLeafNode.o BIRCH/CFNode.o BIRCH/CFNonLeafNode.o BIRCH/CFTree.o BIRCH/ClusteringFeature.o BIRCH/Util.o $(OBJECTS.SHC) $(OBJECTS.SHC.root)
 
 all: $(SHLIB)
 
