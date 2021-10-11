@@ -157,6 +157,6 @@ evoStream_R$methods(
 )
 
 DSC_registry$set_entry(name = "DSC_evoStream",
-  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  DSC_Micro = TRUE, DSC_Macro = FALSE, DSC_Outlier = FALSE, DSC_SinglePass = FALSE,
   description = "evoStream - Evolutionary Stream Clustering")
 

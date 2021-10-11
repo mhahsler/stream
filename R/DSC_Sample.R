@@ -24,5 +24,5 @@ DSC_Sample <- function(k = 100, biased = FALSE)
     class = c("DSC_Sample","DSC_Micro","DSC_R","DSC"))
 
 DSC_registry$set_entry(name = "DSC_Sample",
-    DSC_Micro = TRUE, DSC_Macro = FALSE,
+    DSC_Micro = TRUE, DSC_Macro = FALSE, DSC_Outlier = FALSE, DSC_SinglePass = FALSE,
     description = "Reservoir sampling")

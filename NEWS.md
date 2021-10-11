@@ -1,3 +1,8 @@
+# stream 1.5-1.0 (10/11/21)
+
+## New Features
+* Added DSC_SHC. Code and Interface by Dalibor Krleža.
+
 # stream 1.5-0.1 (xx/xx/21)
 
 ## Bug Fixes

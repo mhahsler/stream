@@ -148,7 +148,16 @@ export(
 
   description,
 
-  DSC_registry
+  DSC_registry,
+
+  SHCAgglomerationType,
+  SHCDriftType,
+  DSC_SHC.behavioral,
+  DSC_SHC.man,
+  SHCEvalCallback,
+  stream.SHC,
+  stream.SHC.clone,
+  stream.SHC.man
 )
 
 ### update
@@ -247,3 +256,18 @@ S3method(add_keyframe, MGC_Linear)
 S3method(get_keyframes, MGC_Linear)
 S3method(remove_keyframe, MGC_Linear)
 
+S3method(get_stats, DSC_SHC)
+S3method(get_microclusters, DSC_SHC)
+S3method(get_microweights, DSC_SHC)
+S3method(get_macroclusters, DSC_SHC)
+S3method(get_macroweights, DSC_SHC)
+S3method(microToMacro, DSC_SHC)
+S3method(get_assignment, DSC_SHC)
+S3method(get_outlier_positions, DSC_SHC)
+S3method(recheck_outlier, DSC_SHC)
+S3method(clean_outliers, DSC_SHC)
+S3method(plot, DSC_SHC)
+S3method(getHistogram, DSC_SHC)
+S3method(clearEigenMPSupport, DSC_SHC)
+
+S3method(evaluate_callback, SHCEvalCallback)

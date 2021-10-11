@@ -482,6 +482,6 @@ get_assignment.DSC_DStream <- function(dsc, points, type=c("auto", "micro", "mac
 }
 
 DSC_registry$set_entry(name = "DSC_DStream",
-  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  DSC_Micro = TRUE, DSC_Macro = FALSE, DSC_Outlier = FALSE, DSC_SinglePass = FALSE,
   description = "DStream")
 

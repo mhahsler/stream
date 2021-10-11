@@ -87,6 +87,6 @@ BICO_R$methods(
 )
 
 DSC_registry$set_entry(name = "DSC_BICO",
-  DSC_Micro = TRUE, DSC_Macro = FALSE,
+  DSC_Micro = TRUE, DSC_Macro = FALSE, DSC_Outlier = FALSE, DSC_SinglePass = FALSE,
   description = "BICO - Fast computation of k-means coresets")
 

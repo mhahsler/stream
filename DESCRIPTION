@@ -1,6 +1,6 @@
 Package: stream
-Version: 1.5-0.1
-Date: 2021-xx-xx
+Version: 1.5-1.0
+Date: 2021-10-11
 Encoding: UTF-8
 Title: Infrastructure for Data Stream Mining
 Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
@@ -14,8 +14,9 @@ Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
 Description: A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893 and NIH R21HG005912. Hahsler et al (2017) <doi:10.18637/jss.v076.i14>.
 Depends: R (>= 3.5.0), methods, registry, proxy (>= 0.4-7)
 Imports: clue, cluster, clusterGeneration, dbscan (>= 1.0-0), fpc, graphics, grDevices, MASS, mlbench, Rcpp (>= 0.11.4), stats, utils
-Suggests: animation, DBI, rJava, RSQLite, testthat
+Suggests: animation, DBI, rJava, RSQLite, testthat, ggplot2
 URL: https://github.com/mhahsler/stream
 BugReports: https://github.com/mhahsler/stream/issues
-LinkingTo: Rcpp, BH
+LinkingTo: Rcpp, BH, RcppEigen
+RcppModules: SHCModule, SigmaIndexModule
 License: GPL-3
