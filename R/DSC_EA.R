@@ -143,7 +143,3 @@ EA_R$methods(
 )
 
 
-DSC_registry$set_entry(name = "DSC_EA",
-  DSC_Micro = FALSE, DSC_Macro = TRUE,
-  description = "EA - Reclustering using an evolutionary algorithm")
-

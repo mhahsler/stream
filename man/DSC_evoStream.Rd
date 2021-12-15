@@ -31,7 +31,11 @@ DSC_evoStream(r, lambda = 0.001, tgap = 100, k = 2,
 \item{reclusterGenerations}{number of EA generations performed during reclustering}
 }
 \description{
+Micro Clusterer with reclustering.
+    
 Stream clustering algorithm based on evolutionary optimization.
+}
+\details{
 The online component uses a simplified version of \code{DBSTREAM} to generate micro-clusters.
 The micro-clusters are then incrementally reclustered using an evloutionary algorithm.
 Evolutionary algorithms create slight variations by combining and randomly modifying existing solutions.

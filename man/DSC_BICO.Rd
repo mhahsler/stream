@@ -16,6 +16,8 @@ DSC_BICO(k = 5, space = 10, p = 10, iterations = 10)
 \item{iterations}{number of repetitions for the kmeans++ procedure in the offline component}
 }
 \description{
+Micro Clusterer.
+
 BICO maintains a tree which is inspired by the clustering tree of BIRCH,
 a SIGMOD Test of Time award-winning clustering algorithm.
 Each node in the tree represents a subset of these points. Instead of

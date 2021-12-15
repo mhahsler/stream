@@ -7,6 +7,8 @@
 \alias{change_alpha}
 \title{DBSTREAM clustering algorithm}
 \description{
+Micro Clusterer with reclustering.
+
     Implements a simple density-based stream clustering algorithm that assigns data points
   to micro-clusters with a given radius and implements shared-density-based reclustering.}
 

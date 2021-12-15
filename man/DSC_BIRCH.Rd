@@ -18,8 +18,11 @@ DSC_BIRCH(threshold, branching, maxLeaf, maxMem = 0, outlierThreshold = 0.25)
 \item{maxMem}{memory limitation for the whole CFTree in bytes. Default is 0, indicating no memory restriction.}
 }
 \description{
-BIRCH builds a balanced-tree of Clustering Features (CFs) to summarize the stream.
-A CF is a tuple (n, LS, SS) which represents a cluster by storing the number of elements (n), their linear sum (LS) and their squared sum (SS).
+Micro Clusterer.
+
+BIRCH builds a balanced tree of Clustering Features (CFs) to summarize the stream.}
+\details{
+A CF in the calanced tree is a tuple (n, LS, SS) which represents a cluster by storing the number of elements (n), their linear sum (LS) and their squared sum (SS).
 Each new observation descends the tree by following its closest CF until a leaf node is reached.
 It is either merged into its closest leaf-CF or inserted as a new one.
 All leaf-CFs form the micro-clusters. Rebuilding the tree is realized by inserting all leaf-CF nodes into a new tree structure with an increased threshold.

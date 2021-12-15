@@ -174,7 +174,7 @@ The following outlier measures are available:
   }
 Outlier measures are taken as external measures, and can be applied only for
 DSD that can mark outliers (see \code{\link{DSD_Gaussians}}) and outlier
-detection clusterers that inherits \code{\link{DSC_Outlier}} class.
+detection clusterers that inherits \code{\link{DSOutlier}} class.
 
 \code{evaluate_cluster()} is used to evaluate an evolving data stream using
 the method described by Wan et al. (2009). Of the \code{n} data points

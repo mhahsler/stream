@@ -132,7 +132,3 @@ kmeans_refClass$methods(
 )
 
 
-DSC_registry$set_entry(name = "DSC_Kmeans",
-  DSC_Micro = FALSE, DSC_Macro = TRUE,
-  description = "K-means reclustering")
-

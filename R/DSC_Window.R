@@ -22,8 +22,4 @@ DSC_Window <- function(horizon = 100, lambda=0)
     RObj = WindowDSC$new(horizon = as.integer(horizon), lambda=lambda)),
     class = c("DSC_Window","DSC_Micro","DSC_R","DSC"))
 
-
-DSC_registry$set_entry(name = "DSC_Window",
-  DSC_Micro = TRUE, DSC_Macro = FALSE,
-  description = "Sliding window")
                                        

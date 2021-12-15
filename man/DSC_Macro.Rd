@@ -15,8 +15,3 @@ results in an error.
 \author{
     Michael Hahsler
 }
-
-\examples{
-# available macro clusterers for reclustering
-DSC_registry$get_entries(DSC_Macro = TRUE)
-}

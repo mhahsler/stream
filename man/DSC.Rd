@@ -5,16 +5,16 @@
 \alias{get_microweights}
 \alias{get_macroclusters}
 \alias{get_macroweights}
-\alias{DSC_registry}
 \title{Data Stream Clusterer Base Classes}
 \description{Abstract base classes for all DSC (Data Stream
-Clusterer) and DSC_R classes. Concrete implementations can be found in the registry \code{DSC_registry} (See Examples Section).}
+Clusterer) and DSC_R classes.
+Concrete implementations are functions starting with \code{DSC_}.}
 
 \details{
 The \code{DSC} and \code{DSC_R} classes cannot be instantiated
 (calling \code{DSC()} or \code{DSC_R()} produces errors),
 but they serve as a base class from which other DSC classes
-inherit. Implementations can be found using the DSC registry \code{DSC_registry} (See Examples section).
+inherit. 
 
 Class \code{DSC} provides several generic functions that can
 operate on all DSC subclasses:
@@ -50,19 +50,4 @@ which will serialize the objects first appropriately.
 
 \author{
     Michael Hahsler
-}
-\examples{
-DSC_registry
-
-# all clusterers
-DSC_registry$get_entries()
-
-# available micro clusterers
-DSC_registry$get_entries(DSC_Micro = TRUE)
-
-# available macro clusterers for reclustering
-DSC_registry$get_entries(DSC_Macro = TRUE)
-
-# find DSC by name
-DSC_registry$get_entries("DBSTREAM")
 }

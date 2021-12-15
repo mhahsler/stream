@@ -2,7 +2,6 @@ useDynLib(stream, .registration = TRUE)
 
 import(Rcpp)
 import(proxy)
-import(registry)
 
 importFrom(methods, "is", "new")
 importFrom(utils, "head", "read.table", "write.table")
@@ -26,12 +25,11 @@ importFrom(clusterGeneration, "genPositiveDefMat")
 importFrom(clue, "as.cl_hard_partition", "cl_agreement", "cl_ensemble")
 
 export(
-	# DSC
+	# DSC ... Data Stream Clusterer
   DSC,
   DSC_R,
   DSC_Micro,
   DSC_Macro,
-  DSC_Outlier,
   DSC_SinglePass,
 
   DSC_BIRCH,
@@ -55,7 +53,10 @@ export(
   EvalCallback,
   DefaultEvalCallback,
 
-  # DSD
+  # DSOutlier ... Data Stream Outlier Detector
+  DSOutlier,
+
+  # DSD ... Data Stream Data
 	DSD,
   DSD_R,
 
@@ -74,7 +75,7 @@ export(
   DSD_BarsAndGaussians,
   DSD_Benchmark,
 
-  # DSO
+  # DSO ... Data Stream Operator
   DSO_Window,
   DSO_Sample,
 
@@ -111,7 +112,6 @@ export(
 	get_weights,
 	get_assignment,
 	get_copy,
-  clean_outliers,
 	nclusters,
 #	merge_DSC,
 	prune_clusters,
@@ -134,21 +134,21 @@ export(
   ### DSC_DStream
   get_attraction,
 
+  ### DSOutlier
+  recheck_outlier,
+  get_outlier_positions,
+  noutliers,
+
   ### generics internally used
   get_microclusters,
   get_microweights,
   get_macroclusters,
   get_macroweights,
-  get_outlier_positions,
-  recheck_outlier,
-  noutliers,
 
   saveDSC,
   readDSC,
 
-  description,
-
-  DSC_registry
+  description
 )
 
 ### update
@@ -217,13 +217,10 @@ S3method(microToMacro, DSC_DBSTREAM)
 S3method(microToMacro, DSC_DStream)
 S3method(microToMacro, DSC_TwoStage)
 
-S3method(clean_outliers, DSC_Outlier)
-S3method(get_outlier_positions, DSC_Outlier)
-S3method(recheck_outlier, DSC_Outlier)
-S3method(noutliers, DSC_Outlier)
-S3method(print, DSC_Outlier)
-S3method(get_outlier_positions, DSC_TwoStage)
-S3method(recheck_outlier, DSC_TwoStage)
+S3method(recheck_outlier, DSOutlier)
+S3method(get_outlier_positions, DSOutlier)
+S3method(noutliers, DSOutlier)
+S3method(print, DSOutlier)
 
 S3method(get_copy, DSC_R)
 

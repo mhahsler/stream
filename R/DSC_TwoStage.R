@@ -28,22 +28,15 @@ DSC_TwoStage <- function(micro, macro) {
     macro = state
   )
   czs <- c("DSC_Macro", "DSC")
-  if(is(micro,"DSC_Outlier")) {
-    czs <- c("DSC_Outlier", czs)
-    l$recheck_outliers <- micro$recheck_outliers
-  }
-  if(is(micro,"DSC_SinglePass")) czs <- c("DSC_SinglePass", czs)
+### MFH: this should be its own DSOutlier class
+#  if(is(micro,"DSOutlier")) {
+#    czs <- c("DSOutlier", czs)
+#    l$recheck_outliers <- micro$recheck_outliers
+#  }
+#  if(is(micro,"DSC_SinglePass")) czs <- c("DSC_SinglePass", czs)
   czs <- c("DSC_TwoStage", czs)
 
   structure(l,class = czs)
-}
-
-get_outlier_positions.DSC_TwoStage <- function(x, ...) {
-  get_outlier_positions(x$micro_dsc)
-}
-
-recheck_outlier.DSC_TwoStage <- function(x, outlier_correlated_id, ...) {
-  recheck_outlier(x$micro_dsc, outlier_correlated_id)
 }
 
 ### TwoStage has its own interface (does not use DSC_R)

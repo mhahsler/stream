@@ -2,7 +2,9 @@
 \alias{DSC_Kmeans}
 \title{Kmeans Macro-clusterer}
 \description{
-    Class implements the k-means algorithm for reclustering a set of micro-clusters.
+Macro Clusterer.
+
+Class implements the k-means algorithm for reclustering a set of micro-clusters.
     }
 
 \usage{

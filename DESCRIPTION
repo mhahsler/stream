@@ -5,14 +5,14 @@ Encoding: UTF-8
 Title: Infrastructure for Data Stream Mining
 Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
                 email = "mhahsler@lyle.smu.edu"),
-            person("Matthew", "Bolanos", role = c("aut", "cph")),
+            person("Matthew", "Bolanos", role = c("aut")),
             person("John", "Forrest", role = c("ctb")),
             person("Matthias", "Carnein", role = c("ctb")),
             person("Dennis", "Assenmacher", role = c("ctb")),
             person("Dalibor", "Krleža", role = c("ctb"))
             )
 Description: A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893 and NIH R21HG005912. Hahsler et al (2017) <doi:10.18637/jss.v076.i14>.
-Depends: R (>= 3.5.0), methods, registry, proxy (>= 0.4-7)
+Depends: R (>= 3.5.0), methods, proxy (>= 0.4-7)
 Imports: clue, cluster, clusterGeneration, dbscan (>= 1.0-0), fpc, graphics, grDevices, MASS, mlbench, Rcpp (>= 0.11.4), stats, utils
 Suggests: animation, DBI, rJava, RSQLite, testthat
 URL: https://github.com/mhahsler/stream

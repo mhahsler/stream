@@ -112,7 +112,7 @@ plot.DSC <- function(x, dsd = NULL, n = 500,
                      ...) {
 
   type <- match.arg(type)
-  if(type == "outliers" && !is(x, "DSC_Outlier"))
+  if(type == "outliers" && !is(x, "DSCOutlier"))
     stop("The clusterer is not an outlier detector, cannot draw outliers")
 
   if(is.null(col_points)) col_points <- .points_col
@@ -156,7 +156,7 @@ plot.DSC <- function(x, dsd = NULL, n = 500,
     centers_mi <- get_centers(x, type="micro")
     centers_ma <- get_centers(x, type="macro")
     centers_out <- data.frame()
-    if(type=="all" && is(x, "DSC_Outlier")) centers_out <- get_outlier_positions(x)
+    if(type=="all" && is(x, "DSOutlier")) centers_out <- get_outlier_positions(x)
     k_mi <- nrow(centers_mi)
     k_ma <- nrow(centers_ma)
     k_out <- nrow(centers_out)
@@ -225,89 +225,4 @@ plot.DSC <- function(x, dsd = NULL, n = 500,
     plot(centers, col=col, cex=cex_clusters, pch=mpch, lwd=lwd, ...)
   }
 
-}
-
-DSC_Outlier <- function(...) stop("DSC_Outlier is an abstract class and cannot be instantiated!")
-clean_outliers <- function(x, ...)
-  UseMethod("clean_outliers")
-clean_outliers.default <- function(x, ...) {
-  stop(gettextf("clean_outliers not implemented for class '%s'.", paste(class(x), collapse=", ")))
-}
-clean_outliers.DSC_Outlier <- function(x, ...) {
-  stop(gettextf("No clean outliers available for class '%s'.", paste(class(x), collapse=", ")))
-}
-get_outlier_positions <- function(x, ...)
-  UseMethod("get_outlier_positions")
-get_outlier_positions.default <- function(x, ...) {
-  stop(gettextf("get_outlier_positions not implemented for class '%s'.", paste(class(x), collapse=", ")))
-}
-get_outlier_positions.DSC_Outlier <- function(x, ...) {
-  stop(gettextf("No outlier getter method available for class '%s'.", paste(class(x), collapse=", ")))
-}
-recheck_outlier <- function(x, outlier_correlated_id, ...)
-  UseMethod("recheck_outlier")
-recheck_outlier.default <- function(x, outlier_correlated_id, ...) {
-  stop(gettextf("recheck_outlier not implemented for class '%s'.", paste(class(x), collapse=", ")))
-}
-recheck_outlier.DSC_Outlier <- function(x, outlier_correlated_id, ...) {
-  stop(gettextf("No outlier rechecking method available for class '%s'.", paste(class(x), collapse=", ")))
-}
-noutliers <- function(x, ...) UseMethod("noutliers")
-noutliers.default <- function(x, ...) {
-  stop(gettextf("noutliers not implemented for class '%s'.", paste(class(x), collapse=", ")))
-}
-noutliers.DSC_Outlier <- function(x, ...) {
-  nrow(get_outlier_positions(x))
-}
-print.DSC_Outlier <- function(x, ...) {
-  cat(.line_break(paste(x$description)))
-  cat("Class:", paste(class(x), collapse=", "), "\n")
-  if(!is(nc <- try(nclusters(x, type="micro"), silent=TRUE), "try-error"))
-    cat(paste('Number of micro-clusters:', nc, '\n'))
-  if(!is(nc <- try(nclusters(x, type="macro"), silent=TRUE), "try-error"))
-    cat(paste('Number of macro-clusters:', nc, '\n'))
-  if(!is(no <- try(noutliers(x), silent=TRUE), "try-error"))
-    cat(paste('Number of outliers:', no, '\n'))
-}
-get_assignment.DSC_Outlier <- function(x, points, type=c("auto", "micro", "macro"),
-                                       method=c("auto", "nn", "model"), outlier_threshold=0.05, ...) {
-
-  method <- match.arg(method)
-  if(method=="auto") method <- "nn"
-
-  if(method=="model") {
-    warning("method model not implemented! using Euclidean nearest neighbor instead!")
-    method <- "nn"
-  }
-
-  c1 <- get_centers(x, type=type, ...)
-  c2 <- get_outlier_positions(x, ...)
-  c <- rbind(c1, c2)
-
-  if(nrow(c)>0L) {
-    dist <- dist(points, c, method="Euclidean")
-    # Find the minimum distance and save the class
-    predict <- apply(dist, 1L, which.min)
-    outliers <- predict > nrow(c1)
-    outliers[apply(dist, 1L, min) > outlier_threshold] <- FALSE
-
-    to_noise <- predict > nrow(c1)
-    to_noise[apply(dist, 1L, min) <= outlier_threshold] <- FALSE
-    predict[to_noise] <- NA_integer_
-  } else {
-    warning("There are no clusters and outliers!")
-    predict <- rep(NA_integer_, nrow(points))
-    outliers <- rep(FALSE, nrow(points))
-  }
-
-  attr(predict, "method") <- method
-  attr(predict, "outliers") <- outliers
-
-  predict
-}
-
-DSC_SinglePass <- function(...) stop("DSC_SinglePass is an abstract class and cannot be instantiated!")
-get_assignment.DSC_SinglePass <- function(dsc, points, type=c("auto", "micro", "macro"),
-                                          method=c("auto", "nn", "model"), ...) {
-  stop(gettextf("No assignments and update available for class '%s'.", paste(class(dsc), collapse=", ")))
 }

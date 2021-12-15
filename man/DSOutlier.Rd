@@ -1,6 +1,6 @@
 \docType{class}
-\name{DSC_Outlier-class}
-\alias{DSC_Outlier}
+\name{DSOutlier-class}
+\alias{DSOutlier}
 \alias{get_outlier_positions}
 \alias{noutliers}
 \alias{recheck_outlier}

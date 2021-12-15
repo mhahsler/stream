@@ -16,16 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-## DSC
-DSC_registry <- registry(registry_class="DSC_registry",
-  entry_class="DSC_")
-
-DSC_registry$set_field("name", type = "character",
-  is_key = TRUE, index_FUN = match_regexp, ignore.case = TRUE)
-DSC_registry$set_field("description", type = "character",
-  is_key = FALSE)
-DSC_registry$set_field("DSC_Micro", type = "logical",
-  is_key = TRUE)
-DSC_registry$set_field("DSC_Macro", type = "logical",
-  is_key = TRUE)
+DSC_SinglePass <- function(...) stop("DSC_SinglePass is an abstract class and cannot be instantiated!")
+get_assignment.DSC_SinglePass <- function(dsc, points, type=c("auto", "micro", "macro"),
+                                          method=c("auto", "nn", "model"), ...) {
+  stop(gettextf("No assignments and update available for class '%s'.", paste(class(dsc), collapse=", ")))
+}

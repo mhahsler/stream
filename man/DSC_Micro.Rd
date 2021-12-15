@@ -16,8 +16,3 @@ results in an error.
     Michael Hahsler
 }
 
-\examples{
-# available micro clusterers
-DSC_registry$get_entries(DSC_Micro = TRUE)
-}
-

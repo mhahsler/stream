@@ -2,13 +2,10 @@
 \alias{DSC_Reachability}
 \title{Reachability Micro-Cluster Reclusterer}
 \description{
+Macro Clusterer.
+
     Implementation of reachability clustering (based on DBSCAN's concept of
     reachability) to recluster a set of micro-clusters.
-    Two micro-clusters are directly reachable
-    if they are within each other's epsilon-neighborhood (i.e., the distance between
-    the centers is less then epsilon). Two micro-clusters are reachable if
-    they are connected by a chain of pairwise directly reachable micro-clusters.
-    All mutually reachable micro-clusters are put in the same cluster.
 }
 
 \usage{
@@ -24,7 +21,14 @@
 }
 
 \details{
-Reachability uses internally \code{DSC_Hierarchical} with single link.
+
+    Two micro-clusters are directly reachable
+    if they are within each other's epsilon-neighborhood (i.e., the distance between
+    the centers is less then epsilon). Two micro-clusters are reachable if
+    they are connected by a chain of pairwise directly reachable micro-clusters.
+    All mutually reachable micro-clusters are put in the same cluster.
+
+    Reachability uses internally \code{DSC_Hierarchical} with single link.
 
 Note that this clustering cannot be updated iteratively and every time
 it is used for (re)clustering, the old clustering is deleted.

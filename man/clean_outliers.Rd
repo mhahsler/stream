@@ -1,6 +1,6 @@
 \name{clean_outliers}
 \alias{clean_outliers}
-\alias{clean_outliers.DSC_Outlier}
+\alias{clean_outliers.DSOutlier}
 \title{Clean Outliers from the Outlier Detecting Clusterer}
 
 \description{
@@ -9,7 +9,7 @@ Removes all outliers from the outlier detecting clusterer.
 
 \usage{
 clean_outliers(x, ...)
-\method{clean_outliers}{DSC_Outlier}(x, ...)
+\method{clean_outliers}{DSOutlier}(x, ...)
 }
 \arguments{
 	\item{x}{The DSC object.}
@@ -21,7 +21,7 @@ Removes all outliers from the outlier detecting clusterer.
 }
 
 \seealso{
-\code{\link{DSC_Outlier}}
+\code{\link{DSOutlier}}
 }
 
 \author{

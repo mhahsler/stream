@@ -2,6 +2,8 @@
 \alias{DSC_Sample}
 \title{Extract a Fixed-size Sample from a Data Stream}
 \description{
+Micro Clusterer.
+
     Extracts a sample form a data stream using Reservoir Sampling.
     The sample is stored
     as a set of micro-clusters to be compatible with other

@@ -2,8 +2,10 @@
 \alias{DSC_DBSCAN}
 \title{DBSCAN Macro-clusterer}
 \description{
-    Implements the DBSCAN algorithm for reclustering
-         micro-clusterings.
+Macro Clusterer.
+
+Implements the DBSCAN algorithm for reclustering
+micro-clusterings.
 }
 
 \usage{

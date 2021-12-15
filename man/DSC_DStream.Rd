@@ -6,7 +6,9 @@
 \alias{get_attraction}
 \title{D-Stream Data Stream Clustering Algorithm}
 \description{
-    Implements the D-Stream data stream clustering algorithm.
+Micro Clusterer with reclustering.
+    
+Implements the grid-based D-Stream data stream clustering algorithm.
 }
 \usage{
 DSC_DStream(gridsize, lambda = 1e-3, gaptime=1000L,

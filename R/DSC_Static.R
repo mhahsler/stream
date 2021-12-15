@@ -108,9 +108,5 @@ Static$methods(
   }
 )
 
-DSC_registry$set_entry(name = "DSC_Static",
-  DSC_Micro = TRUE, DSC_Macro = TRUE,
-  description = "Static Copy of a Clustering")
-
 
 

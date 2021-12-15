@@ -152,7 +152,3 @@ hierarchical$methods(
   }
 )
 
-DSC_registry$set_entry(name = "DSC_Hierarchical",
-  DSC_Micro = FALSE, DSC_Macro = TRUE,
-  description = "Hierarchical reclustering")
-

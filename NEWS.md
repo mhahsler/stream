@@ -1,5 +1,10 @@
 # stream 1.5-0.1 (xx/xx/21)
 
+## Changes
+* Removed registry in favor of using R Studio auto-complete.
+* Outlier detector are now in class DSOutlier class.
+
+
 ## Bug Fixes
 * Fixed typo in BIRCH interface: treshold -> threshold (by dinarior)
 

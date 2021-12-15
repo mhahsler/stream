@@ -75,7 +75,3 @@ birch$methods(
   })
 
 
-DSC_registry$set_entry(name = "DSC_BIRCH",
-  DSC_Micro = TRUE, DSC_Macro = FALSE,
-  description = "BIRCH - Balanced Iterative Reducing Clustering using Hierarchies")
-

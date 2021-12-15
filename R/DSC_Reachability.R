@@ -31,7 +31,3 @@ DSC_Reachability <- function(epsilon, min_weight=NULL, description=NULL) {
   l
 }
 
-DSC_registry$set_entry(name = "DSC_Reachability",
-  DSC_Micro = FALSE, DSC_Macro = TRUE,
-  description = "Reachability reclustering")
-

@@ -2,7 +2,9 @@
 \alias{DSC_Hierarchical}
 \title{Hierarchical Micro-Cluster Reclusterer}
 \description{
-    Implementation of hierarchical clustering to recluster a set of micro-clusters.
+Macro Clusterer.
+    
+Implementation of hierarchical clustering to recluster a set of micro-clusters.
     }
 
 \usage{

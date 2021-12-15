@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSC_EA.R
 \name{DSC_EA}
 \alias{DSC_EA}
-\title{Evolutionary Algorithm}
+\title{Reclustering using an Evolutionary Algorithm}
 \usage{
 DSC_EA(k, generations = 2000, crossoverRate = 0.8,
   mutationRate = 0.001, populationSize = 100)
@@ -19,8 +19,12 @@ DSC_EA(k, generations = 2000, crossoverRate = 0.8,
 \item{populationSize}{number of solutions that the evolutionary algorithm maintains}
 }
 \description{
+Macro Clusterer.
+
 Reclustering using an evolutionary algorithm.
 This approach was designed for \code{evoStream} but can also be used for other micro-clustering algorithms.
+}
+\details{
 The evolutionary algorithm uses existing clustering solutions and creates small variations of them by combining and randomly modfiying them.
 The modified solutions can yield better partitions and thus can improve the clustering over time.
 The evolutionary algorithm is incremental, which allows to improve existing macro-clusters instead of recomputing them every time.
