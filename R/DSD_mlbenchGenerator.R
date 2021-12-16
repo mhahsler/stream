@@ -18,6 +18,38 @@
 
 
 
+
+
+#' mlbench Data Stream Generator
+#' 
+#' A data stream generator class that interfaces data generators found in
+#' mlbench.
+#' 
+#' The \code{DSD_mlbenchGenerator} class is designed to be a wrapper class for
+#' data created by data generators in the mlbench library.
+#' 
+#' Call \code{DSD_mlbenchGenerator} with missing method to get a list of
+#' available methods.
+#' 
+#' @param method The name of the mlbench data generator.
+#' @param ... Parameters for the mlbench data generator.
+#' @return Returns a \code{DSD_mlbenchGenerator} object (subclass of
+#' \code{DSD_R}, \code{DSD}) which is a list of the defined parameters. The
+#' parameters are either passed in from the function or created internally.
+#' They include:
+#' 
+#' \item{description}{The name of the class of the DSD object.}
+#' \item{method}{The name of the mlbench data generator.} \item{variables}{The
+#' variables for the mlbench data generator.}
+#' @author John Forrest
+#' @seealso \code{\link{DSD}}
+#' @examples
+#' 
+#' stream <- DSD_mlbenchGenerator(method="cassini")
+#' 
+#' plot(stream, n=500)
+#' 
+#' @export DSD_mlbenchGenerator
 DSD_mlbenchGenerator <- function(method, ...) {
 
   methods <- c("2dnormals","cassini","circle","cuboids","friedman1",

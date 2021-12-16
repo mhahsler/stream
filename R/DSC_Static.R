@@ -17,6 +17,50 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' Create as Static Copy of a Clustering
+#' 
+#' This representation cannot perform clustering anymore, but it also does not
+#' need the supporting data structures. It only stores the cluster centers and
+#' weights.
+#' 
+#' 
+#' @param x The clustering (a DSD object) to copy.
+#' @param type which clustering to copy.
+#' @param k_largest only copy the k largest (highest weight) clusters.
+#' @param min_weight only copy clusters with a weight larger or equal to
+#' \code{min_weight}.
+#' @return An object of class \code{DSC_Static} (sub class of \code{DSC},
+#' \code{DSC_R}). The list also contains either \code{DSC_Micro} or
+#' \code{DSC_Macro} depending on what type of clustering was copied.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC}}, \code{\link{DSC_Micro}}, \code{\link{DSC_Macro}}
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k=3, noise=0.05)
+#' 
+#' dstream <- DSC_DStream(gridsize=0.05)
+#' update(dstream, stream, 500)
+#' dstream
+#' plot(dstream, stream)
+#'   
+#' # create a static copy of the clustering
+#' static <- DSC_Static(dstream)
+#' static
+#' plot(static, stream)
+#'   
+#' # copy only the 5 largest clusters
+#' static2 <- DSC_Static(dstream, k_largest=5)
+#' static2
+#' plot(static2, stream)
+#' 
+#' # copy all clusters with a weight of at least .3
+#' static3 <- DSC_Static(dstream, min_weight=.3)
+#' static3
+#' plot(static3, stream)
+#' 
+#' @export DSC_Static
 DSC_Static <- function(x, type=c("auto", "micro", "macro"), 
   k_largest=NULL, min_weight=NULL) {
   

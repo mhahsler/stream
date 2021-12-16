@@ -17,6 +17,60 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' Read a Data Stream from an open DB Query
+#' 
+#' A DSD class that reads a data stream from an open DB result set from a
+#' relational database with using R's data base interface (DBI).
+#' 
+#' This class provides a streaming interface for result sets from a data base
+#' with via \pkg{DBI}. You need to connect to the data base and submit a SQL
+#' query using \code{dbGetQuery()} to obtain a result set. Make sure that your
+#' query only includes the columns that should be included in the stream
+#' (including class and outlier marking columns). Do not forget to close the
+#' result set and the data base connection.
+#' 
+#' @param result An open DBI result set.
+#' @param k Number of true clusters, if known.
+#' @param o Number of outliers, if known.
+#' @param class column index for the class/cluster assignment.
+#' @param outlier column index for the outlier mark.
+#' @param description a character string describing the data.
+#' @return An object of class \code{DSD_ReadDB} (subclass of \code{DSD_R},
+#' \code{DSD}).
+#' @author Michael Hahsler, Dalibor Krleža
+#' @seealso \code{\link{DSD}}, \code{\link[DBI]{dbGetQuery}}
+#' @examples
+#' 
+#' ### create a data base with a table with 3 Gaussians
+#' library("RSQLite")
+#' con <- dbConnect(RSQLite::SQLite(), ":memory:")
+#' 
+#' points <- get_points(DSD_Gaussians(k=3, d=2, outliers=1,
+#'   outlier_options=list(outlier_horizon=600)), 600,
+#'   class = TRUE, outlier = TRUE)
+#' points <- cbind(points, outlier=attr(points,"outlier"))
+#' head(points)
+#' 
+#' dbWriteTable(con, "gaussians", points)
+#' 
+#' ### prepare a query result set
+#' res <- dbSendQuery(con, "SELECT X1, X2, class, outlier FROM gaussians")
+#' res
+#' 
+#' ### create a stream interface to the result set
+#' stream <- DSD_ReadDB(res, k=3, o=1, class = 3, outlier = 4)
+#' 
+#' ### get points
+#' get_points(stream, 5, class = TRUE, outlier=TRUE)
+#' plot(stream)
+#' 
+#' ### clean up
+#' dbClearResult(res)
+#' dbDisconnect(con)
+#' 
+#' @export DSD_ReadDB
 DSD_ReadDB <- function(result, k=NA, o=NA,
                        class=NULL, outlier=NULL, description=NULL) {
 

@@ -16,30 +16,134 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-### creator
-DSD_MG<- function(dimension = 2, ..., labels=NULL, description=NULL) {
+#' DSD Moving Generator
+#'
+#' Creates an evolving DSD that consists of several \code{MGC}s.
+#'
+#' This DSD is able to generate complex datasets that are able to evolve over a
+#' period of time.  Its behavior is determined by the \code{MGC}s it is
+#' composed of.
+#'
+#' @aliases DSD_MG DSD_MovingGenerator MovingGenerator add_cluster get_clusters
+#' remove_cluster
+#' @param dimension the dimension of the DSD object
+#' @param ... initial set of \code{MGC}s
+#' @param x A \code{DSD_MG} object.
+#' @param c The cluster that should be added to the \code{DSD_MG} object.
+#' @param i The index of the cluster that should be removed from the
+#' \code{DSD_MG} object.
+#' @param label,labels integer representing the cluster label. \code{NA}
+#' represents noise.  If labels are not specified, then each new cluster gets a
+#' new label.
+#' @param description An optional string used by \code{print} to describe the
+#' data generator.
+#' @author Matthew Bolanos
+#' @seealso \code{\link{MGC_Function}}, \code{\link{MGC_Linear}},
+#' \code{\link{MGC_Noise}}, \code{\link{MGC_Random}} for details on the
+#' different \code{MGC} objects.
+#' @examples
+#'
+#' ### create an empty DSD_MG
+#' stream <- DSD_MG(dim = 2)
+#' stream
+#'
+#' ### add two clusters
+#' c1 <- MGC_Random(density=50, center=c(50,50), parameter=1, randomness = )
+#' add_cluster(stream, c1)
+#' stream
+#'
+#' c2 <- MGC_Noise(density=1, range=rbind(c(-20,120), c(-20,120)))
+#' add_cluster(stream, c2)
+#' stream
+#'
+#' get_clusters(stream)
+#' plot(stream, xlim=c(-20,120), ylim=c(-20,120))
+#'
+#' \dontrun{
+#' animate_data(stream, n=5000, xlim=c(-20,120), ylim=c(-20,120))
+#' }
+#'
+#' ### remove cluster 1
+#' remove_cluster(stream,1)
+#'
+#' get_clusters(stream)
+#' plot(stream, xlim=c(-20,120), ylim=c(-20,120))
+#'
+#' ### create a more complicated cluster structure (using 2 clusters with the same
+#' ### label to form an L shape)
+#' stream <- DSD_MG(dim=2,
+#'   MGC_Static(density=10, center=c(.5,.2), par=c(.4,.2), shape=MGC_Shape_Block),
+#'   MGC_Static(density=10, center=c(.6,.5), par=c(.2,.4), shape=MGC_Shape_Block),
+#'   MGC_Static(density=5, center=c(.39,.53), par=c(.16,.35), shape=MGC_Shape_Block),
+#'   MGC_Noise(density=1, range=rbind(c(0,1), c(0,1))),
+#'   labels= c(1, 1, 2, NA)
+#'   )
+#'
+#' plot(stream, xlim=c(0,1), ylim=c(0,1))
+#'
+#'
+#' ### simulate the clustering of a splitting cluster
+#' c1 <- MGC_Linear(dim = 2, keyframelist = list(
+#'   keyframe(time = 1,  dens = 20, center = c(0,0),   param = 10),
+#'   keyframe(time = 50, dens = 10, center = c(50,50), param = 10),
+#'   keyframe(time = 100,dens = 10, center = c(50,100),param = 10)
+#' ))
+#'
+#' ### Note: Second cluster appearch at time=50
+#' c2 <- MGC_Linear(dim = 2, keyframelist = list(
+#'   keyframe(time = 50, dens = 10, center = c(50,50), param = 10),
+#'   keyframe(time = 100,dens = 10, center = c(100,50),param = 10)
+#' ))
+#'
+#' stream <- DSD_MG(dim = 2, c1, c2)
+#' stream
+#'
+#' dbstream <- DSC_DBSTREAM(r=10, lambda=0.1)
+#'
+#' \dontrun{
+#' purity <- animate_cluster(dbstream, stream, n=2500, type="both",
+#'   xlim=c(-10,120), ylim=c(-10,120), evaluationMeasure="purity", horizon=100)
+#' }
+#'
+#' @export DSD_MG
+DSD_MG <-
+  function(dimension = 2,
+    ...,
+    labels = NULL,
+    description = NULL) {
+    if (is.null(description))
+      description <- "Moving Data Generator"
 
-  if(is.null(description)) description <- "Moving Data Generator"
+    x <- structure(
+      list(description = description,
+        RObj = dsd_MG_refClass$new(d = dimension)),
+      class = c("DSD_MG", "DSD_R", "DSD_data.frame", "DSD")
+    )
 
-  x <- structure(list(description = description,
-    RObj = dsd_MG_refClass$new(d = dimension)),
-    class = c("DSD_MG", "DSD_R", "DSD_data.frame", "DSD"))
-
-  l <- list(...)
-  if(length(l) > 0) {
-    for(i in 1:length(l)) {
-      add_cluster(x, l[[i]], labels[i])
+    l <- list(...)
+    if (length(l) > 0) {
+      for (i in 1:length(l)) {
+        add_cluster(x, l[[i]], labels[i])
+      }
     }
+
+    x
   }
 
-  x
-}
+#' @rdname DSD_MG
+add_cluster <- function(x, c, label = NULL)
+  UseMethod("add_cluster")
 
-add_cluster <- function(x, c, label=NULL) UseMethod("add_cluster")
-get_clusters <- function(x) UseMethod("get_clusters")
-remove_cluster <- function(x, i) UseMethod("remove_cluster")
+#' @rdname DSD_MG
+get_clusters <- function(x)
+  UseMethod("get_clusters")
 
-dsd_MG_refClass <- setRefClass("dsd_MG",
+#' @rdname DSD_MG
+remove_cluster <- function(x, i)
+  UseMethod("remove_cluster")
+
+dsd_MG_refClass <- setRefClass(
+  "dsd_MG",
   fields = list(
     t = "numeric",
     dimension = "numeric",
@@ -58,112 +162,153 @@ dsd_MG_refClass <- setRefClass("dsd_MG",
   ),
 )
 
+
+
 dsd_MG_refClass$methods(
-  add_cluster = function(c, label=NULL) {
-    if(c$RObj$dimension != dimension) stop("Cluster dimensions do not match!")
+  add_cluster = function(c, label = NULL) {
+    if (c$RObj$dimension != dimension)
+      stop("Cluster dimensions do not match!")
     clusters <<- append(clusters, list(c))
 
-    if(is.null(label)) {
-      if(length(labels) == 0) label <- 1L
-      else label <- max(labels, na.rm=TRUE) + 1L
-      } else label <- as.integer(label)
+    if (is.null(label)) {
+      if (length(labels) == 0)
+        label <- 1L
+      else
+        label <- max(labels, na.rm = TRUE) + 1L
+    } else
+      label <- as.integer(label)
     labels <<- append(labels, label)
-    },
+  },
 
-  get_points = function(n, cluster = FALSE, outlier = FALSE) {
-    if(length(clusters)==0) stop("DSD_MG does not contain any clusters!")
 
-    if(cluster) a <- integer(n)
-    data <- matrix(NA_real_, nrow=n, ncol=dimension)
+
+
+  get_points = function(n,
+    cluster = FALSE,
+    outlier = FALSE) {
+    if (length(clusters) == 0)
+      stop("DSD_MG does not contain any clusters!")
+
+    if (cluster)
+      a <- integer(n)
+    data <- matrix(NA_real_, nrow = n, ncol = dimension)
 
     j <- 0L
-    while(j < n) {
-
+    while (j < n) {
       density <- unlist(sapply(clusters,
-        function(x) x$RObj$get_attributes(t, "density")))
+        function(x)
+          x$RObj$get_attributes(t, "density")))
 
       density[is.na(density)] <- 0
-      if(all(density==0)) stop("No MGC is producing points for this time point.")
+      if (all(density == 0))
+        stop("No MGC is producing points for this time point.")
 
       pointsPerSecond <- sum(density)
-      pointsLeftInSecond <- pointsPerSecond - (t - floor(t))*pointsPerSecond
-      if((j + pointsLeftInSecond) <= n) k <- pointsLeftInSecond
-      else k <- n-j
+      pointsLeftInSecond <-
+        pointsPerSecond - (t - floor(t)) * pointsPerSecond
+      if ((j + pointsLeftInSecond) <= n)
+        k <- pointsLeftInSecond
+      else
+        k <- n - j
 
       ### got to next timestep...
-      if(pointsLeftInSecond<1) {
+      if (pointsLeftInSecond < 1) {
         t <<- ceiling(t)
         next
       }
 
       k <- floor(k)
 
-      if(k>=1) {
-        clusterOrder <- sample(x=1:length(clusters), size=k, replace=TRUE,
-          prob=density/sum(density))
+      if (k >= 1) {
+        clusterOrder <- sample(
+          x = 1:length(clusters),
+          size = k,
+          replace = TRUE,
+          prob = density / sum(density)
+        )
 
-        data[(j+1):(j+k),] <- t(sapply(clusterOrder, FUN = function(i) {
-          clusters[[i]]$RObj$get_points(t)
-        }))
+        data[(j + 1):(j + k), ] <-
+          t(sapply(
+            clusterOrder,
+            FUN = function(i) {
+              clusters[[i]]$RObj$get_points(t)
+            }
+          ))
 
-        if(cluster) {
-          a[(j+1):(j+k)] <- labels[clusterOrder]
+        if (cluster) {
+          a[(j + 1):(j + k)] <- labels[clusterOrder]
         }
       }
 
-      t <<- t + k/pointsPerSecond
-      j <- j+k
+      t <<- t + k / pointsPerSecond
+      j <- j + k
     }
 
     data <- data.frame(data)
 
-    if(cluster) attr(data,"cluster") <- a
+    if (cluster)
+      attr(data, "cluster") <- a
 
     data
   }
 )
 
-
-
-get_points.DSD_MG <- function(x, n=1,
-  outofpoints=c("stop", "warn", "ignore"),
-  cluster = FALSE, class = FALSE, outlier = FALSE, ...) {
+get_points.DSD_MG <- function(x,
+  n = 1,
+  outofpoints = c("stop", "warn", "ignore"),
+  cluster = FALSE,
+  class = FALSE,
+  outlier = FALSE,
+  ...) {
   .nodots(...)
 
-  d <- x$RObj$get_points(n, cluster=TRUE)
+  d <- x$RObj$get_points(n, cluster = TRUE)
 
   a <- attr(d, "cluster")
-  if(!cluster) attr(d, "cluster") <- NULL
+  if (!cluster)
+    attr(d, "cluster") <- NULL
 
-  if(class) d <- cbind(d, class = a)
+  if (class)
+    d <- cbind(d, class = a)
 
   d
 
 }
 
-add_cluster.DSD_MG <- function(x, c, label=NULL) {
+add_cluster.DSD_MG <- function(x, c, label = NULL) {
   ### name noise NA unless specified otherwise
-  if(is.null(label) && is(c, "MGC_Noise")) label <- NA
+  if (is.null(label) && is(c, "MGC_Noise"))
+    label <- NA
   x$RObj$add_cluster(c, label)
 }
 
-reset_stream.DSD_MG <- function(dsd, pos=1) {
+reset_stream.DSD_MG <- function(dsd, pos = 1) {
   dsd$RObj$t <- pos
 }
 
 print.DSD_MG <- function(x, ...) {
   #NextMethod()
   cat(.line_break(paste(x$description)))
-  cat("Class:", paste(class(x), collapse=", "), "\n")
-  cat(paste('With', length(na.omit(unique(x$RObj$labels))), 'clusters', 'in',
-    x$RObj$dimension, 'dimensions. Time is', round(x$RObj$t, 3), '\n'))
+  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat(
+    paste(
+      'With',
+      length(na.omit(unique(x$RObj$labels))),
+      'clusters',
+      'in',
+      x$RObj$dimension,
+      'dimensions. Time is',
+      round(x$RObj$t, 3),
+      '\n'
+    )
+  )
 }
 
 get_clusters.DSD_MG <- function(x) {
   x$RObj$clusters
 }
 
-remove_cluster.DSD_MG  <- function(x,i) {
+remove_cluster.DSD_MG  <- function(x, i) {
   x$RObj$clusters[[i]] <- NULL
   x$RObj$labels <- x$RObj$labels[-i]
 }

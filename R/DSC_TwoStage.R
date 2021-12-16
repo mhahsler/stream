@@ -16,6 +16,42 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+
+
+#' TwoStage Clustering Process
+#' 
+#' Combines a micro and a macro clustering algorithm into a single process.
+#' 
+#' \code{update()} runs the micro-clustering stage and only when macro cluster
+#' centers/weights are requested, then the offline stage reclustering is
+#' automatically performed.
+#' 
+#' @param micro Clustering algorithm used in the online stage
+#' (\code{DSC_micro})
+#' @param macro Clustering algorithm used for reclustering in the offline stage
+#' (\code{DSC_macro})
+#' @return An object of class \code{DSC_TwoStage} (subclass of \code{DSC},
+#' \code{DSC_Macro}).
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k=3)
+#' 
+#' # Create a clustering process that uses a window for the online stage and
+#' # k-means for the offline stage (reclustering)
+#' win_km <- DSC_TwoStage(
+#'   micro=DSC_Window(horizon=100),
+#'   macro=DSC_Kmeans(k=3)
+#'   )
+#' win_km
+#' 
+#' update(win_km, stream, 200)
+#' win_km
+#' plot(win_km, stream, type="both")
+#' evaluate(win_km, stream, assign="macro")
+#' 
+#' @export DSC_TwoStage
 DSC_TwoStage <- function(micro, macro) {
 
   state <- new.env()

@@ -16,6 +16,27 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+
+
+#' Data Stream Generator for Benchmark Data
+#' 
+#' A data stream generator that generates several dynamic streams indented to
+#' be benchmarks to compare data stream clustering algorithms.
+#' 
+#' Currently available benchmarks are 1 and 2.
+#' 
+#' @param i number of the benchmark.
+#' @return Returns a \code{DSD} object.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSD}}
+#' @examples
+#' 
+#' stream <- DSD_Benchmark(i=1)
+#' \dontrun{
+#' animate_data(stream, n=10000, horizon=100, xlim=c(0,1), ylim=c(0,1)) 
+#' }
+#' 
+#' @export DSD_Benchmark
 DSD_Benchmark <- function(i=1) {
   if(i==1) {
     return(DSD_MG(dimension = 2,

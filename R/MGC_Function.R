@@ -1,6 +1,6 @@
 #######################################################################
 # Moving Generator -  Infrastructure for Moving Streams
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,15 +16,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-MGC_Function_refClass <- setRefClass("MGC_Function", 
+MGC_Function_refClass <- setRefClass("MGC_Function",
   fields = list(
     dimension = "numeric",
     density = "function",
     center= "function",
     parameter = "function",
     shape = "function"
-  ), 
-  
+  ),
+
   methods = list(
     initialize = function(den, cen, par, sha) {
       dimension <<- length(cen(1))
@@ -34,30 +34,31 @@ MGC_Function_refClass <- setRefClass("MGC_Function",
       shape <<- sha
       .self
     }
-    
+
   ),
 )
 
 MGC_Function_refClass$methods(
   get_attributes = function(time, attributes=NULL) {
-    att <- list(density = density(time), parameter=parameter(time), 
+    att <- list(density = density(time), parameter=parameter(time),
       center = center(time))
     if(!is.null(attributes)) att <- att[attributes]
     att
   },
-  
-  
+
+
   get_points = function(time) {
     shape(center=center(time), parameter=parameter(time))
   }
 )
 
-### creator    
+#' @rdname MGC
+#' @export MGC_Function
 MGC_Function<- function(density, center, parameter, shape = NULL) {
   if(is.null(shape)) shape <- MGC_Shape_Gaussian
-  
+
   structure(list(description = "Functional Moving Generator Cluster",
-    RObj = MGC_Function_refClass$new(den = density, cen = center, 
+    RObj = MGC_Function_refClass$new(den = density, cen = center,
       par = parameter, sha = shape)),
     class = c("MGC_Function","MGC"))
 }

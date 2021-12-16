@@ -21,6 +21,90 @@
 
 # accepts an open connection
 # ... goes to read.table
+
+
+#' Read a Data Stream from File
+#'
+#' A DSD class that reads a data stream from a file or any R connection.
+#'
+#' \code{DSD_ReadCSV} uses \code{read.table()} to read in data from an R
+#' connection. The connection is responsible for maintaining where the stream
+#' is currently being read from. In general, the connections will consist of
+#' files stored on disk but have many other possibilities (see
+#' \code{\link{connection}}).
+#'
+#' The implementation tries to gracefully deal with slightly corrupted data by
+#' dropping points with inconsistent reading and producing a warning. However,
+#' this might not always be possible resulting in an error instead.
+#'
+#' The position in the file can be reset to the beginning using
+#' \code{reset_stream()}. The connection can be closed using
+#' \code{close_stream()}.
+#'
+#' @aliases DSD_ReadCSV close_stream scale_stream
+#' @param file A file/URL or an open connection.
+#' @param k Number of true clusters, if known.
+#' @param o Number of outliers, if known.
+#' @param take indices of columns to extract from the file.
+#' @param class column index for the class attribute/cluster label.  If
+#' \code{take} is specified then it needs to also include the class/label
+#' column.
+#' @param outlier column index for the outlier mark.  If \code{take} is
+#' specified then it needs to also include the outlier column.
+#' @param loop If enabled, the object will loop through the stream when the end
+#' has been reached. If disabled, the object will warn the user upon reaching
+#' the end.
+#' @param sep The character string that separates dimensions in data points in
+#' the stream.
+#' @param header Does the first line contain variable names?
+#' @param skip the number of lines of the data file to skip before beginning to
+#' read data.
+#' @param colClasses A vector of classes to be assumed for the columns passed
+#' on to \code{read.table}.
+#' @param ... Further arguments are passed on to \code{read.table}.  This can
+#' for example be used for encoding, quotes, etc.
+#' @param dsd A object of class \code{DSD_ReadCSV}.
+#' @return An object of class \code{DSD_ReadCSV} (subclass of \code{DSD_R},
+#' \code{DSD}).
+#' @author Michael Hahsler, Dalibor Krleža
+#' @seealso \code{\link{DSD}}, \code{\link{reset_stream}},
+#' \code{\link{read.table}}.
+#' @examples
+#'
+#' # creating data and writing it to disk
+#' stream <- DSD_Gaussians(k=3, d=5, outliers=1, space_limit=c(0,2),
+#'   outlier_options = list(outlier_horizon=10))
+#' write_stream(stream, "data.txt", n=10, header = TRUE, sep=",", class=TRUE, write_outliers=TRUE)
+#'
+#' # reading the same data back (as a loop)
+#' stream2 <- DSD_ReadCSV(k=3, o=1, "data.txt", sep=",", header = TRUE, loop=TRUE, class="class",
+#'                        outlier="outlier")
+#' stream2
+#'
+#' # get points (fist a single point and then 20 using loop)
+#' get_points(stream2)
+#' p <- get_points(stream2, n=20, outlier=TRUE)
+#' message(paste("Outliers",sum(attr(p,"outlier"))))
+#'
+#' # clean up
+#' close_stream(stream2)
+#' file.remove("data.txt")
+#'
+#' # example with a part of the kddcup1999 data (take only cont. variables)
+#' file <- system.file("examples", "kddcup10000.data.gz", package="stream")
+#' stream <- DSD_ReadCSV(gzfile(file),
+#'         take=c(1, 5, 6, 8:11, 13:20, 23:42), class=42, k=7)
+#' stream
+#'
+#' get_points(stream, 5, class = TRUE)
+#'
+#'
+#' # plot 100 points (projected on the first two principal components)
+#' plot(stream, n=100, method="pc")
+#'
+#' close_stream(stream)
+#'
+#' @export DSD_ReadCSV
 DSD_ReadCSV <- function(file, k=NA, o=NA,
                         take=NULL, class=NULL, outlier=NULL, loop=FALSE,
                         sep=",", header=FALSE, skip=0, colClasses = NA, ...) {
@@ -251,6 +335,7 @@ reset_stream.DSD_ReadCSV <- function(dsd, pos=1) {
   invisible(NULL)
 }
 
+#' @rdname DSD_ReadCSV
 close_stream <- function(dsd) {
   if(!is(dsd, "DSD_ReadCSV"))
     stop("'dsd' is not of class 'DSD_ReadCSV'")

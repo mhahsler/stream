@@ -19,6 +19,37 @@
 
 ### get rid of clusters with low weight
 
+
+
+#' Prune Clusters from a Clustering
+#' 
+#' Creates a (static) copy of a clustering where a fraction of the weight or
+#' the number of clusters with the lowest weights were pruned.
+#' 
+#' 
+#' @param dsc The DSC object to be pruned.
+#' @param threshold The numeric vector of probabilities for the quantile.
+#' @param weight should a fraction of the total weight in the clustering be
+#' pruned? Otherwise a fraction of clusters is pruned.
+#' @return Returns an object of class \code{DSC_Static}.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC_Static}}
+#' @examples
+#' 
+#' # 3 clusters with 10% noise
+#' stream <- DSD_Gaussians(k=3, noise=0.1)
+#' 
+#' dbstream <- DSC_DBSTREAM(r=0.1)
+#' update(dbstream, stream, 500)
+#' dbstream
+#' plot(dbstream, stream)
+#' 
+#' # prune lightest micro-clusters for 20% of the weight of the clustering
+#' static <- prune_clusters(dbstream, threshold=0.2)
+#' static
+#' plot(static, stream)
+#' 
+#' @export prune_clusters
 prune_clusters <- function(dsc, threshold=.05, weight=TRUE) {
 
     ### make a static copy first

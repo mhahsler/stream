@@ -17,6 +17,53 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' Sampling from a Data Stream (Data Stream Operator)
+#' 
+#' Extracts a sample form a data stream using Reservoir Sampling.
+#' 
+#' If \code{biased=FALSE} then the reservoir sampling algorithm by McLeod and
+#' Bellhouse (1983) is used. This sampling makes sure that each data point has
+#' the same chance to be sampled. All sampled points will have a weight of 1.
+#' Note that this might not be ideal for an evolving stream since very old data
+#' points have the same chance to be in the sample as newer points.
+#' 
+#' If \code{bias=TRUE} then sampling prefers newer points using the modified
+#' reservoir sampling algorithm 2.1 by Aggarwal (2006). New points are always
+#' added. They replace a random point in thre reservoir with a probability of
+#' reservoir size over \code{k}. This an exponential bias function of
+#' \eqn{2^{-lambda}} with \eqn{lambda=1/k}.
+#' 
+#' @param k the number of points to be sampled from the stream.
+#' @param biased if \code{FALSE} then a regular (unbiased) reservoir sampling
+#' is used. If true then the sample is biased towards keeping more recent data
+#' points (see Details section).
+#' @return An object of class \code{DSO_Sample} (subclass of \code{DSO}).
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSO}}
+#' @references Vitter, J. S. (1985): Random sampling with a reservoir. ACM
+#' Transactions on Mathematical Software, 11(1), 37-57.
+#' 
+#' McLeod, A.I., Bellhouse, D.R. (1983): A Convenient Algorithm for Drawing a
+#' Simple Random Sample. Applied Statistics, 32(2), 182-184.
+#' 
+#' Aggarwal C. (2006) On Biased Reservoir Sampling in the Presence of Stream
+#' Evolution. International Conference on Very Large Databases (VLDB'06).
+#' 607-618.
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k=3, noise=0.05)
+#' 
+#' sample <- DSO_Sample(k=20)
+#' 
+#' update(sample, stream, 500)
+#' sample
+#' 
+#' # plot points in sample
+#' plot(get_points(sample))
+#' 
+#' @export DSO_Sample
 DSO_Sample <- function(k = 100, biased = FALSE) 
   structure(list(description = 
       if(biased) "Reservoir sampling (biased)" else "Reservoir sampling",
@@ -72,6 +119,46 @@ SampleDSO <- setRefClass("SampleDSO",
     ### Reservoir sampling: 
     ### unbiased: all values in the stream have the same prob. to be sampled
     ### biased: more recent values have a higher probability
+
+
+#' Update a Data Stream Clustering Model
+#' 
+#' Update a clustering model by clustering a number of input points from a data
+#' stream into a clustering object.
+#' 
+#' \code{update} takes n times a single data points out of the DSD updates the
+#' model in \code{object}.  Note that update directly modifies the object
+#' (which is a reference class) and thus the result does not need to be
+#' reassigned to the object name.
+#' 
+#' %\code{cluster} is the low level implementation of updating a %data stream
+#' clustering model and is called by \code{update}.
+#' 
+#' @aliases update update.DSC_R update.DSC_TwoStage update.DSO_Sample
+#' update.DSO_Window
+#' @param object an object of a subclass of DST (data stream mining task).
+#' @param dsd a DSD object (data stream).
+#' @param n number of points to cluster.
+#' @param verbose report progress.
+#' @param block maximal number of data points passed on at once to the
+#' algorithm.  This only is used since R loops are very slow.
+#' @param ... extra arguments for clusterer.
+#' @return The updated model is returned invisibly for reassignment (however,
+#' this is not necessary).
+#' 
+#' To obtain the updated model for a \code{DSC} (data stream clustering model),
+#' call \code{get_centers()} on the DSC object.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC}}, \code{\link{DSD}}, and \code{\link{animation}}
+#' for producing an animation of the clustering process.
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k=3)
+#' dstream <- DSC_DStream(gridsize=.05)  
+#' 
+#' update(dstream, stream, 500)
+#' plot(dstream, stream)
+#' 
     update = function(x, ...) {
       if(!is(data, class(x)) && !is.null(data)) 
         stop("Data stream data type not compatible!")    

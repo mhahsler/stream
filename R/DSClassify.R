@@ -1,5 +1,5 @@
 #######################################################################
-# Moving Generator -  Infrastructure for Moving Streams
+# stream -  Infrastructure for Data Stream Mining
 # Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,23 +16,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#' @rdname MGC
-MGC_Static <- function(density = 1, center, parameter,
-  shape = NULL) {
-    if(is.null(shape)) shape <- MGC_Shape_Gaussian
-
-    x <- MGC_Function(
-      density = function(t) density,
-      parameter = function(t) parameter,
-      center= function(t) center,
-      shape = shape
-    )
-
-  x$description <- "Static Cluster"
-
-  class(x) <- c("MGC_Static", class(x))
-  x
-}
-
-
-
+#' Abstract Class for Data Stream Classifiers
+#'
+#' Abstract class for data stream classifiers. Currently, \pkg{stream} does not
+#' implement classification algorithms.
+#'
+#' @param ... Further arguments.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DST}}
+#' @examples
+#' DSClassify()
+DSClassify <- abstract_class_generator("DSClassify")

@@ -17,6 +17,75 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' A Data Stream Interface for Data Stored in Memory
+#' 
+#' This class provides a data stream interface for data stored in memory as
+#' matrix-like objects (including data frames). All or a portion of the stored
+#' data can be replayed several times.
+#' 
+#' In addition to regular data.frames other matrix-like objects that provide
+#' subsetting with the bracket operator can be used. This includes \code{ffdf}
+#' (large data.frames stored on disk) from package \pkg{ff} and
+#' \code{big.matrix} from \pkg{bigmemory}.
+#' 
+#' @param x A matrix-like object containing the data.  If \code{x} is a DSD
+#' object then a data frame for \code{n} data points from this DSD is created.
+#' @param n Number of points used if \code{x} is a DSD object. If \code{x} is a
+#' matrix-like object then \code{n} is ignored.
+#' @param k Optional: The known number of clusters in the data
+#' @param loop Should the stream start over when it reaches the end?
+#' @param class Vector with the class/cluster label (only used if \code{x} is
+#' not a DSD object).
+#' @param outlier A logical vector with outlier marks (only used if \code{x} is
+#' not a DSD object). FALSE = the correspnding data instance in the \code{x}
+#' data frame is not an outlier, TRUE = the corresponding data instance in the
+#' \code{x} data frame is an outlier.
+#' @param description character string with a description.
+#' @return Returns a \code{DSD_Memory} object (subclass of \code{DSD_R},
+#' \code{DSD}).
+#' @author Michael Hahsler, Dalibor Krleža
+#' @seealso \code{\link{DSD}}, \code{\link{reset_stream}}
+#' @examples
+#' 
+#' # store 1000 points from a stream
+#' stream <- DSD_Gaussians(k=3, d=2)
+#' replayer <- DSD_Memory(stream, k=3, n=1000)
+#' replayer
+#' plot(replayer)
+#' 
+#' # creating 2 clusterers of different algorithms
+#' dsc1 <- DSC_DBSTREAM(r=0.1)
+#' dsc2 <- DSC_DStream(gridsize=0.1, Cm=1.5)
+#' 
+#' # clustering the same data in 2 DSC objects
+#' reset_stream(replayer) # resetting the replayer to the first position
+#' update(dsc1, replayer, 500)
+#' reset_stream(replayer)
+#' update(dsc2, replayer, 500)
+#' 
+#' # plot the resulting clusterings
+#' reset_stream(replayer)
+#' plot(dsc1, replayer, main="DBSTREAM")
+#' reset_stream(replayer)
+#' plot(dsc2, replayer, main="D-Stream")
+#' 
+#' ### use a data.frame to create a stream (3rd col. contains the assignment)
+#' df <- data.frame(x=runif(100), y=runif(100),
+#'   class=sample(1:3, 100, replace=TRUE))
+#' head(df)
+#' ### add some outliers
+#' out <- runif(100) >.95
+#' ### re-assign classes for outliers
+#' df[which(out),"class"]<-sample(4:(4+sum(out)-1),sum(out),replace=FALSE)
+#' 
+#' stream <- DSD_Memory(df[,c("x", "y")], class=df[,"class"], outlier=out)
+#' stream
+#' reset_stream(stream)
+#' plot(stream, n=100)
+#' 
+#' @export DSD_Memory
 DSD_Memory <- function(x, n, k=NA, loop=FALSE,
                        class = NULL, outlier = NULL, description=NULL) {
 

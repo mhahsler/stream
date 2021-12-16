@@ -28,9 +28,87 @@
 ##
 ## See DSD_Gaussian_Static.R for an example
 
-DSD <- function(...) stop("DSD is an abstract class and cannot be instantiated!")
-DSD_R <- function(...) stop("DSD_R is an abstract class and cannot be instantiated!")
 
+
+#' Data Stream Data Generator Base Classes
+#'
+#' Abstract base classes for DSD (Data Stream Data Generator).
+#'
+#' The `DSD` class cannot be instantiated, but it serves as a abstract
+#' base class from which all DSD objects inherit.
+#'
+#' `DSD` provides common functionality like:
+#'
+#' * [get_points]
+#' * `print`
+#' * [plot]
+#' * [reset_stream] (if available)
+#'
+#' `DSD_R` inherits form `DSD` and is the abstract parent class for
+#' DSD implemented in R. To create a new R-based implementation there are only
+#' two function that needs to be implemented for a new `DSD` subclass
+#' called `Foo` would be:
+#'
+#' 1. A creator function `DSD_Foo()` and
+#' 2. a method `get_points.DSD_Foo()` for that class.
+#'
+#'
+#' @param ... further arguments.
+#' @aliases DSD DSD_R description description DSD_R DSD_R
+#' @author Michael Hahsler
+#' @seealso [animate],
+#' [update], [evaluate], [get_points],
+#' [plot]
+#' [write_stream.DSD], [reset_stream]
+#' @examples
+#'
+#' DSD()
+#'
+#' # create data stream with three clusters in 3-dimensional space
+#' stream <- DSD_Gaussians(k=3, d=3)
+#'
+#' # get points from stream
+#' get_points(stream, n=5)
+#'
+#' # get points with true cluster assignment
+#' p <- get_points(stream, n=5, cluster=TRUE)
+#' attr(p, "cluster")
+#'
+#' # plotting the data (scatter plot matrix, first and third dimension, and first
+#' #  two principal components)
+#' plot(stream)
+#' plot(stream, dim=c(1,3))
+#' plot(stream, method="pc")
+#'
+#' @export DSD
+DSD <- abstract_class_generator("DSD")
+DSD_R <- abstract_class_generator("DSD")
+
+#' Get Points from a Data Stream Generator
+#'
+#' Gets points from a DSD object.
+#'
+#' Each DSD object has a unique way for returning data points, but they all are
+#' called through the generic function, `get_points`. This is done by
+#' using the S3 class system. See the man page for the specific DSD class on
+#' the semantics for each implementation of `get_points`.
+#'
+#' @param x The DSD object.
+#' @param n Request up to $n$ points from the stream.
+#' @param outofpoints Action taken if less than $n$ data points are
+#' available. The default is to stop with an error.  For warn and ignore all
+#' available (possibly zero) points are returned.
+#' @param ... Additional parameters to pass to `get_points`
+#' implementations.
+#' @return Returns a matrix of `x$d` columns and `n` rows.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSD}}
+#' @examples
+#'
+#' stream <- DSD_Gaussians()
+#' get_points(stream, 100)
+#'
+#' @export get_points
 get_points <- function(x, n=1, outofpoints=c("stop", "warn", "ignore"), ...)
   UseMethod("get_points")
 get_points.default <- function(x, n=1,
@@ -40,6 +118,44 @@ get_points.default <- function(x, n=1,
 }
 
 ### in case the stream can be reset (e.g., a stream from a file)
+
+
+#' Reset a Data Stream to its Beginning
+#'
+#' Resets the counter in a DSD object to the beginning or any other position in
+#' the stream.
+#'
+#' Resets the counter of the stream object. For example, for [DSD_Memory],
+#' the counter stored in the environment variable is moved back to 1. For
+#' [DSD_ReadCSV] objects, this is done by calling `seek()` on the
+#' underlying connection.
+#'
+#' @param dsd An object of class a subclass of [DSD] which implements a
+#' reset function.
+#' @param pos Position in the stream (the beginning of the stream is position
+#' 1).
+#' @author Michael Hahsler
+#' @seealso [DSD_ReadCSV], [DSD_MG],
+#' [DSD_ScaleStream], [DSD_Memory]
+#' @examples
+#'
+#' # initializing the objects
+#' stream <- DSD_Gaussians(k=3, d=2)
+#' replayer <- DSD_Memory(stream, 100)
+#' replayer
+#'
+#' p <- get_points(replayer, 50)
+#' replayer
+#'
+#' # reset replayer to the begining of the stream
+#' reset_stream(replayer)
+#' replayer
+#'
+#' # set replayer to position 21
+#' reset_stream(replayer, pos=21)
+#' replayer
+#'
+#' @export reset_stream
 reset_stream <- function(dsd, pos=1) UseMethod("reset_stream")
 reset_stream.DSD <- function(dsd, pos=1) {
   stop(gettextf("reset_stream not implemented for class '%s'.",
@@ -67,6 +183,7 @@ print.DSD <- function(x, ...) {
 
 summary.DSD <- function(object, ...) print(object)
 
+#' @rdname plot.DSC
 plot.DSD <- function(x, n = 500, col= NULL, pch= NULL,
                      ..., method="pairs", dim=NULL, alpha=.6) {
   ## method can be pairs, plot or pc (projection with PCA)

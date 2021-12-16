@@ -17,6 +17,57 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ### DSCs may overwrite get_assignment
+
+
+#' Assignment Data Points to Clusters
+#' 
+#' Get the assignment of data points to clusters in a \code{DSC} using the
+#' model's assignment rules or nearest neighbor assignemnt. The clustering is
+#' not modified.
+#' 
+#' Each data point is assigned either using the original model's assignment
+#' rule or Euclidean nearest neighbor assignment. If the user specifies the
+#' model's assignment strategy, but is not available, then nearest neighbor
+#' assignment is used and a warning is produced.
+#' 
+#' @param dsc The DSC object with the clusters for assignment.
+#' @param points The points to be assigned as a data.frame.
+#' @param type Use micro- or macro-clusters in DSC for assignment. Auto used
+#' the class of dsc to decide.
+#' @param method assignment method \itemize{ \item \code{"model"} uses the
+#' assignment method of the underlying algorithm (unassigned points return
+#' \code{NA}). Not all algorithms implement this option.  \item \code{"nn"}
+#' performs nearest neighbor assignment using Euclidean distance.  \item
+#' \code{"auto"} uses the model assignment method. If this method is not
+#' implemented/available then nn assignment is used instead. }
+#' @param ... Additional arguments are passed on.
+#' @return A vector containing the assignment of each point. \code{NA} means
+#' that a data point was not assigned to a cluster.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC}}
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
+#' 
+#' dbstream <- DSC_DBSTREAM(r = .1)
+#' update(dbstream, stream, n = 100)
+#' 
+#' # find the assignment for the next 100 points to
+#' # micro-clusters in dsc. This uses the model's assignemnt function
+#' points <- get_points(stream, n = 100)
+#' a <- get_assignment(dbstream, points)
+#' a
+#' 
+#' # show the MC assignment areas. Assigned points as blue circles and
+#' # the unassigned points as red dots
+#' plot(dbstream, stream, assignment = TRUE, type = "none")
+#' points(points[!is.na(a),], col = "blue")
+#' points(points[is.na(a),], col = "red", pch = 20)
+#' 
+#' # use nearest neighbor assignment instead
+#' get_assignment(dbstream, points, method = "nn")
+#' 
+#' @export get_assignment
 get_assignment <- function(dsc, points, type=c("auto", "micro", "macro"), 
   method="auto", ...) 
   UseMethod("get_assignment")

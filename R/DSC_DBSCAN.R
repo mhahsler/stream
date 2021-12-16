@@ -16,20 +16,82 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-### creator
-DSC_DBSCAN <- function(eps, MinPts = 5, weighted = TRUE, description=NULL) {
+#' DBSCAN Macro-clusterer
+#'
+#' Macro Clusterer.
+#' Implements the DBSCAN algorithm for reclustering micro-clusterings.
+#'
+#' DBSCAN is a weighted extended version of the implementation in \pkg{fpc}
+#' where each micro-cluster center considered a pseudo point. For weighting we
+#' use in the MinPts comparison the sum of weights of the micro-cluster instead
+#' of the number.
+#'
+#' DBSCAN first finds core points based on the number of other points in its
+#' eps-neighborhood. Then core points are joined into clusters using
+#' reachability (overlapping eps-neighborhoods).
+#'
+#' Note that this clustering cannot be updated iteratively and every time it is
+#' used for (re)clustering, the old clustering is deleted.
+#'
+#' @param eps radius of the eps-neighborhood.
+#' @param MinPts minimum number of points required in the eps-neighborhood.
+#' @param weighted logical indicating if a weighted version of DBSCAN should be
+#' used.
+#' @param description optional character string to describe the clustering
+#' method.
+#' @return An object of class \code{DSC_DBSCAN} (a subclass of \code{DSC},
+#' \code{DSC_R}, \code{DSC_Macro}).
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
+#' @references Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
+#' (1996). A density-based algorithm for discovering clusters in large spatial
+#' databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
+#' \emph{Proceedings of the Second International Conference on Knowledge
+#' Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
+#' @examples
+#'
+#' # 3 clusters with 5% noise
+#' stream <- DSD_Gaussians(k=3, d=2, noise=0.05)
+#'
+#' # Use DBSCAN to recluster micro clusters (a sample)
+#' sample <- DSC_Sample(k=101)
+#' update(sample, stream, 500)
+#'
+#' dbscan <- DSC_DBSCAN(eps = .05)
+#' recluster(dbscan, sample)
+#' plot(dbscan, stream, type="both")
+#'
+#' # For comparison we can cluster some data with DBSCAN directly
+#' # Note: DBSCAN is not suitable for data streams since it passes over the data
+#' # several times.
+#' dbscan <- DSC_DBSCAN(eps = .05)
+#' update(dbscan, stream, 500)
+#' plot(dbscan, stream)
+#'
+#' @export DSC_DBSCAN
+DSC_DBSCAN <-
+  function(eps,
+    MinPts = 5,
+    weighted = TRUE,
+    description = NULL) {
+    DBSCAN <- DBSCAN$new(eps = eps,
+      MinPts = MinPts,
+      weighted = weighted)
+    if (!is.null(description))
+      desc <- description
+    else if (weighted)
+      desc <- "DBSCAN (weighted)"
+    else
+      desc <- "DBSCAN"
 
-  DBSCAN <- DBSCAN$new(eps=eps, MinPts = MinPts, weighted = weighted)
-  if(!is.null(description)) desc <- description
-  else if(weighted) desc <- "DBSCAN (weighted)" else desc <- "DBSCAN"
-
-  l <- list(description = desc, RObj = DBSCAN)
-  class(l) <- c("DSC_DBSCAN","DSC_Macro","DSC_R","DSC")
-  l
-}
+    l <- list(description = desc, RObj = DBSCAN)
+    class(l) <- c("DSC_DBSCAN", "DSC_Macro", "DSC_R", "DSC")
+    l
+  }
 
 
-DBSCAN <- setRefClass("DBSCAN",
+DBSCAN <- setRefClass(
+  "DBSCAN",
   fields = list(
     eps	        = "numeric",
     MinPts	    = "numeric",
@@ -43,8 +105,9 @@ DBSCAN <- setRefClass("DBSCAN",
   ),
 
   methods = list(
-    initialize = function(eps = .1, MinPts	= 5, weighted = TRUE) {
-
+    initialize = function(eps = .1,
+      MinPts	= 5,
+      weighted = TRUE) {
       eps     <<- eps
       MinPts  <<- MinPts
       weighted <<- weighted
@@ -65,49 +128,74 @@ DBSCAN$methods(
     #if(nrow(x)==1)
     #  warning("DSC_DBSCAN does not support iterative updating! Old data is overwritten.")
 
-    if(is.null(weight)) weights <<- rep(1,nrow(x))
+    if (is.null(weight))
+      weights <<- rep(1, nrow(x))
     else {
-      if(length(weight)!=nrow(x)) stop("number of weights does not match number of points")
+      if (length(weight) != nrow(x))
+        stop("number of weights does not match number of points")
       weights <<- weight
     }
 
     data <<- x
 
-    if(!weighted) weight <- NULL
+    if (!weighted)
+      weight <- NULL
 
-    DBSCAN <- dbscan::dbscan(data, eps = eps, minPts = MinPts, weights = weight)
+    DBSCAN <-
+      dbscan::dbscan(data,
+        eps = eps,
+        minPts = MinPts,
+        weights = weight)
 
     assignment <<- DBSCAN$cluster
 
     ### FIXME: we currently remove unassigned data!
-    row_sub <- unlist(lapply(assignment, function(x) all(x !=0 )))
-    data <<- data[row_sub, , drop=FALSE]
+    row_sub <- unlist(lapply(assignment, function(x)
+      all(x != 0)))
+    data <<- data[row_sub, , drop = FALSE]
     assignment <<- assignment[row_sub]
     details <<- DBSCAN
 
 
-    if(length(assignment>0)) {
+    if (length(assignment > 0)) {
       k <- max(assignment)
-      clusterCenters <<- as.data.frame(t(sapply(1:k, FUN=
-          function(i) colMeans(data[assignment==i,, drop=FALSE]))))
-      clusterWeights <<- sapply(1:k, FUN =
-          function(i) sum(weights[assignment==i], na.rm=TRUE))
-    }else{ ### no clusters found
+      clusterCenters <<- as.data.frame(t(sapply(
+        1:k,
+        FUN =
+          function(i)
+            colMeans(data[assignment == i, , drop = FALSE])
+      )))
+      clusterWeights <<- sapply(
+        1:k,
+        FUN =
+          function(i)
+            sum(weights[assignment == i], na.rm = TRUE)
+      )
+    } else{
+      ### no clusters found
       k <- 0
       clusterCenters <<- data.frame()
       clusterWeights <<- numeric(0)
     }
   },
 
-  get_microclusters = function(...) { data },
-  get_microweights = function(...) { weights },
+  get_microclusters = function(...) {
+    data
+  },
+  get_microweights = function(...) {
+    weights
+  },
 
-  get_macroclusters = function(...) { clusterCenters },
-  get_macroweights = function(...) { clusterWeights },
+  get_macroclusters = function(...) {
+    clusterCenters
+  },
+  get_macroweights = function(...) {
+    clusterWeights
+  },
 
-  microToMacro = function(micro=NULL, ...){
-    if(is.null(micro)) micro <- 1:nrow(data)
-    structure(assignment[micro], names=micro)
+  microToMacro = function(micro = NULL, ...) {
+    if (is.null(micro))
+      micro <- 1:nrow(data)
+    structure(assignment[micro], names = micro)
   }
 )
-

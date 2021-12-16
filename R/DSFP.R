@@ -16,8 +16,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-DSC_SinglePass <- function(...) stop("DSC_SinglePass is an abstract class and cannot be instantiated!")
-get_assignment.DSC_SinglePass <- function(dsc, points, type=c("auto", "micro", "macro"),
-                                          method=c("auto", "nn", "model"), ...) {
-  stop(gettextf("No assignments and update available for class '%s'.", paste(class(dsc), collapse=", ")))
-}
+#' Abstract Class for Frequent Pattern Mining Algorithms for Data Streams
+#'
+#' Abstract class for frequent pattern mining algorithms for data streams.
+#' Currently, \pkg{stream} does not implement frequent pattern mining
+#' algorithms.
+#'
+#' @param ... Further arguments.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DST}}
+#' @examples
+#' DSFP()
+#' @export DSFP
+DSFP <- abstract_class_generator("DSFP")

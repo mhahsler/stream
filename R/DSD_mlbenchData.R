@@ -17,6 +17,40 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' Stream Interface for Data Sets From mlbench
+#' 
+#' Provides a convenient stream interface for data sets from the mlbench
+#' package.
+#' 
+#' The \code{DSD_mlbenchData} class is designed to be a wrapper class for data
+#' that is held in memory in either a data frame or matrix form. It is a
+#' subclass of \code{DSD_Memory}.
+#' 
+#' Call \code{DSD_mlbenchData} with a missing value for data to get a list of
+#' all available data sets.
+#' 
+#' @param data The name of the dataset from mlbench. If missing then a list of
+#' all available data sets is shown and returned.
+#' @param loop A flag that tells the stream to loop or not to loop over the
+#' data frame.
+#' @param random A flag that determines if the data should be in a random
+#' order.
+#' @param scale A flag that determines if the data should be scaled.
+#' @return Returns a \code{DSD_mlbenchData} object which is also of class
+#' \code{DSD_Memory}.
+#' @author Michael Hahsler and Matthew Bolanos
+#' @seealso \code{\link{DSD}}, \code{\link{DSD_Memory}},
+#' \code{\link{reset_stream}}
+#' @examples
+#' 
+#' stream <- DSD_mlbenchData("Shuttle")
+#' stream
+#' 
+#' plot(stream, n=100)
+#' 
+#' @export DSD_mlbenchData
 DSD_mlbenchData <- function(data=NULL, loop=FALSE, random=FALSE, scale = FALSE) {
   
   datasets <- c("BostonHousing", "BostonHousing2", "BreastCancer", 

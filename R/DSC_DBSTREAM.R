@@ -17,6 +17,119 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' DBSTREAM clustering algorithm
+#'
+#' Micro Clusterer with reclustering.
+#' Implements a simple density-based stream clustering algorithm that assigns
+#' data points to micro-clusters with a given radius and implements
+#' shared-density-based reclustering.
+#'
+#' The DBSTREAM algorithm checks for each new data point in the incoming
+#' stream, if it is below the threshold value of dissimilarity value of any
+#' existing micro-clusters, and if so, merges the point with the micro-cluster.
+#' Otherwise, a new micro-cluster is created to accommodate the new data point.
+#'
+#' Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters and
+#' weights are available.
+#'
+#' \code{get_cluster_assignments()} can be used to extract the MC assignment
+#' for each data point clustered during the last update operation (note: update
+#' needs to be called with \code{assignments = TRUE} and the block size needs
+#' to be large enough). The function returns the MC index (in the current set
+#' of MCs obtained with, e.g., \code{get_centers()}) and as an attribute the
+#' permanent MC ids.
+#'
+#' \code{plot()} for DSC_DBSTREAM has two extra logical parameters called
+#' \code{assignment} and \code{shared_density} which show the assignment area
+#' and the shared density graph, respectively.
+#'
+#' @aliases DSC_DBSTREAM DBSTREAM dbstream
+#' @param r The radius of micro-clusters.
+#' @param lambda The lambda used in the fading function.
+#' @param gaptime weak micro-clusters (and weak shared density entries) are
+#' removed every \code{gaptime} points.
+#' @param Cm minimum weight for a micro-cluster.
+#' @param metric metric used to calculate distances.
+#' @param shared_density Record shared density information. If set to
+#' \code{TRUE} then shared density is used for reclustering, otherwise
+#' reachability is used (overlapping clusters with less than \eqn{r*(1-alpha)}
+#' distance are clustered together).
+#' @param k The number of macro clusters to be returned if macro is true.
+#' @param alpha For shared density: The minimum proportion of shared points
+#' between to clusters to warrant combining them (a suitable value for 2D data
+#' is .3).  For reachability clustering it is a distance factor.
+#' @param minweight The proportion of the total weight a macro-cluster needs to
+#' have not to be noise (between 0 and 1).
+#' @param x A DSC_DBSTREAM object to get the shared density information from.
+#' @param use_alpha only return shared density if it exceeds alpha.
+#' @return An object of class \code{DSC_DBSTREAM} (subclass of \code{DSC},
+#' \code{DSC_R}, \code{DSC_Micro}).
+#' @author Michael Hahsler and Matthew Bolanos
+#' @seealso \code{\link{DSC}}, \code{\link{DSC_Micro}}
+#' @references Michael Hahsler and Matthew Bolanos. Clustering data streams
+#' based on shared density between micro-clusters. \emph{IEEE Transactions on
+#' Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
+#' @examples
+#'
+#' set.seed(0)
+#' stream <- DSD_Gaussians(k = 3, noise = 0.05)
+#'
+#' # create clusterer with r = 0.05
+#' dbstream <- DSC_DBSTREAM(r = .05)
+#' update(dbstream, stream, 1000)
+#' dbstream
+#'
+#' # check micro-clusters
+#' nclusters(dbstream)
+#' head(get_centers(dbstream))
+#' plot(dbstream, stream)
+#'
+#' # plot macro-clusters
+#' plot(dbstream, stream, type = "both")
+#'
+#' # plot micro-clusters with assignment area
+#' plot(dbstream, stream, type = "both", assignment = TRUE)
+#'
+#'
+#' # DBSTREAM with shared density
+#' dbstream <- DSC_DBSTREAM(r = .05, shared_density = TRUE, Cm=5)
+#' update(dbstream, stream, 1000)
+#' dbstream
+#' plot(dbstream, stream, type = "both")
+#' # plot the shared density graph (several options)
+#' plot(dbstream, stream, type = "both", shared_density = TRUE)
+#' plot(dbstream, stream, type = "micro", shared_density = TRUE)
+#' plot(dbstream, stream, type = "micro", shared_density = TRUE, assignment = TRUE)
+#' plot(dbstream, stream, type = "none", shared_density = TRUE, assignment = TRUE)
+#'
+#' # see how micro and macro-clusters relate
+#' # each microcluster has an entry with the macro-cluster id
+#' # Note: unassigned micro-clusters (noise) have an NA
+#' microToMacro(dbstream)
+#'
+#' # do some evaluation
+#' evaluate(dbstream, stream, measure="purity")
+#' evaluate(dbstream, stream, measure="cRand", type="macro")
+#'
+#' # use DBSTREAM for conventional clustering (with assignments = TRUE so we can
+#' # later retrieve the cluster assignments for each point)
+#' data("iris")
+#' dbstream <- DSC_DBSTREAM(r = 1)
+#' update(dbstream, iris[,-5], assignments = TRUE)
+#' dbstream
+#'
+#' cl <- get_cluster_assignments(dbstream)
+#' cl
+#'
+#' # micro-clusters
+#' plot(iris[,-5], col = cl, pch = cl)
+#'
+#' # macro-clusters
+#' plot(iris[,-5], col = microToMacro(dbstream, cl))
+#'
+#' @export DSC_DBSTREAM
 DSC_DBSTREAM <- function(r,
   lambda = 1e-3,  gaptime=1000L, Cm=3, metric = "Euclidean",
   shared_density = FALSE, alpha = 0.1, k = 0, minweight = 0) {
@@ -212,6 +325,9 @@ dbstream$methods(list(
   get_macro_clustering = function() {
     mcs <- get_microclusters()
     w <- get_microweights()
+
+
+
     nclusters <- nrow(mcs)
 
     if(nclusters < 1L)
@@ -283,8 +399,6 @@ dbstream$methods(list(
     macro
   }
 ))
-
-
 
 get_macroclusters.DSC_DBSTREAM <- function(x) {
   if(x$macro$newdata) {
@@ -417,16 +531,19 @@ get_assignment.DSC_DBSTREAM <- function(dsc, points,
 
 ### DBSTREAM specific functions
 
+#' @rdname DSC_DBSTREAM
 get_shared_density <- function(x, use_alpha=TRUE)
   x$RObj$get_shared_density(use_alpha=use_alpha)
 
 
+#' @rdname DSC_DBSTREAM
 change_alpha <- function(x, alpha) {
   x$RObj$alpha <- alpha
   x$RObj$micro$alpha <- alpha
   x$macro$newdata <- TRUE ### so macro clustering is redone
 }
 
+#' @rdname DSC_DBSTREAM
 get_cluster_assignments <- function(x) {
   if(length(x$RObj$micro$last) < 1)
     stop("Run update with assignments = TRUE first.")

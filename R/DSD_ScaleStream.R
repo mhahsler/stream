@@ -18,6 +18,36 @@
 
 
 # accepts an open connection
+
+
+#' Scale a Stream from a DSD
+#' 
+#' Make an unscaled data stream into a scaled data stream.
+#' 
+#' \code{scale_stream()} estimates the values for centering and scaling (see
+#' \code{scale} in \pkg{base}) using \code{n} points from the stream.
+#' 
+#' @param dsd A object of class \code{DSD} that will be scaled.
+#' @param center,scale logical or a numeric vector of length equal to the
+#' number of columns used for centering/scaling (see function \code{scale}).
+#' @param n The number of points used to creating the centering/scaling
+#' @param reset Try to reset the stream to its beginning after taking \code{n}
+#' points for scaling.
+#' @return An object of class \code{DSD_ScaleStream} (subclass of \code{DSD_R},
+#' \code{DSD}).
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSD}}, \code{\link{reset_stream}}, \code{\link{scale}}
+#' in \pkg{base},
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k=3, d=3)
+#' plot(stream)
+#' 
+#' # scale stream using 100 points
+#' stream_scaled <- DSD_ScaleStream(stream, n=100)
+#' plot(stream_scaled)
+#' 
+#' @export DSD_ScaleStream
 DSD_ScaleStream <- function(dsd, center=TRUE, scale=TRUE, n=1000, reset=FALSE) {
 
   # creating the DSD object

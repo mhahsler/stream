@@ -1,5 +1,5 @@
 #######################################################################
-# Moving Generator -  Infrastructure for Moving Streams
+# stream -  Infrastructure for Data Stream Mining
 # Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,23 +16,21 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#' @rdname MGC
-MGC_Static <- function(density = 1, center, parameter,
-  shape = NULL) {
-    if(is.null(shape)) shape <- MGC_Shape_Gaussian
-
-    x <- MGC_Function(
-      density = function(t) density,
-      parameter = function(t) parameter,
-      center= function(t) center,
-      shape = shape
-    )
-
-  x$description <- "Static Cluster"
-
-  class(x) <- c("MGC_Static", class(x))
-  x
+#' Conceptual Base Class for All Data Stream Mining Tasks
+#'
+#' Conceptual base class for all data stream mining tasks. Current tasks are data
+#' stream clustering [DSC], outlier detection [DSOutlier], classification on data streams
+#' [DSClassify] and frequent pattern mining on data streams [DSFP].
+#'
+#' @param ... Further arguments.
+#' @author Michael Hahsler
+#' @examples
+#' DST()
+#' @export DST
+DST <- function(...) {
+  message("DST is an abstract class and cannot be instantiated!\n",
+    "Available subclasses are:\n\t",
+    paste(setdiff(grep("^DS[^_]*$", ls("package:stream"), value = TRUE), "DST"),
+      collapse=",\n\t"))
+  invisible(NULL)
 }
-
-
-

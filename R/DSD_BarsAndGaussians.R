@@ -17,6 +17,29 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
+
+
+#' Data Stream Generator for Bars and Gaussians
+#' 
+#' A data stream generator which creates the shape of two bars and two
+#' Gaussians clusters with different density.
+#' 
+#' 
+#' @param angle rotation in degrees. \code{NULL} will produce a random
+#' rotation.
+#' @param noise The amount of noise that should be added to the output.
+#' @return Returns a \code{DSD_BarsAndGaussians} object.
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSD}}
+#' @examples
+#' 
+#' # create data stream with three clusters in 2D
+#' stream <- DSD_BarsAndGaussians(noise=0.1)
+#' 
+#' # plotting the data
+#' plot(stream)
+#' 
+#' @export DSD_BarsAndGaussians
 DSD_BarsAndGaussians <- function(angle = NULL, noise = 0) {
 
   if(is.null(angle)) angle <- runif(1, 1, 360)

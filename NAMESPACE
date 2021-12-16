@@ -25,12 +25,14 @@ importFrom(clusterGeneration, "genPositiveDefMat")
 importFrom(clue, "as.cl_hard_partition", "cl_agreement", "cl_ensemble")
 
 export(
-	# DSC ... Data Stream Clusterer
+  # Data Stream Tasks
+  DST,
+
+	# Data Stream Clusterer
   DSC,
   DSC_R,
   DSC_Micro,
   DSC_Macro,
-  DSC_SinglePass,
 
   DSC_BIRCH,
   DSC_DStream,
@@ -53,10 +55,10 @@ export(
   EvalCallback,
   DefaultEvalCallback,
 
-  # DSOutlier ... Data Stream Outlier Detector
+  # Data Stream Outlier Detector
   DSOutlier,
 
-  # DSD ... Data Stream Data
+  # Data Stream Data
 	DSD,
   DSD_R,
 
@@ -75,12 +77,14 @@ export(
   DSD_BarsAndGaussians,
   DSD_Benchmark,
 
-  # DSO ... Data Stream Operator
+  # Data Stream Operator
+  DSO,
   DSO_Window,
   DSO_Sample,
 
-  # MGCs
+  # Moving cluster data generators
   DSD_MG,
+  MGC,
   MGC_Linear,
   MGC_Function,
   MGC_Random,
@@ -88,6 +92,12 @@ export(
   MGC_Static,
   MGC_Shape_Gaussian,
   MGC_Shape_Block,
+
+  # Frequent pattern mining
+  DSFP,
+
+  # Classification
+  DSClassify,
 
   # functions
 	# DSD
@@ -136,6 +146,7 @@ export(
 
   ### DSOutlier
   recheck_outlier,
+  clean_outliers,
   get_outlier_positions,
   noutliers,
 
@@ -200,7 +211,6 @@ S3method(get_assignment, DSC)
 S3method(get_assignment, DSC_DBSTREAM)
 S3method(get_assignment, DSC_DStream)
 S3method(get_assignment, DSC_TwoStage)
-S3method(get_assignment, DSC_SinglePass)
 
 S3method(get_centers, DSC_Macro)
 S3method(get_centers, DSC_Micro)
@@ -217,6 +227,7 @@ S3method(microToMacro, DSC_DBSTREAM)
 S3method(microToMacro, DSC_DStream)
 S3method(microToMacro, DSC_TwoStage)
 
+S3method(clean_outliers, DSOutlier)
 S3method(recheck_outlier, DSOutlier)
 S3method(get_outlier_positions, DSOutlier)
 S3method(noutliers, DSOutlier)

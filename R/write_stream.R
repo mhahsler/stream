@@ -18,12 +18,48 @@
 
 ### write data from a stream to a file
 
+
+
+#' Write a Data Stream to a File
+#'
+#' Writes points from a data stream DSD object to a file or a connection.
+#'
+#'
+#' @aliases write_stream write_stream.DSD
+#' @param dsd The DSD object that will generate the data points for output.
+#' @param file A file name or a R connection to be written to.
+#' @param n The number of data points to be written.
+#' @param block Write stream in blocks to improve file I/O speed.
+#' @param class Save the class/cluster labels of the points as the last column.
+#' @param sep The character that will separate attributes in a data point.
+#' @param append Append the data to an existing file.
+#' @param header A flag that determines if column names will be output
+#' (equivalent to \code{col.names} in \code{write.table()}).
+#' @param row.names A flag that determines if row names will be output.
+#' @param write_outliers A flag that determines if outliers will be output.
+#' @param ... Additional parameters that are passed to \code{write.table()}.
+#' @return There is no value returned from this operation.
+#' @author Michael Hahsler, Dalibor Krleža
+#' @seealso \code{\link{write.table}}, \code{\link{DSD}}
+#' @examples
+#'
+#' # creating data and writing it to disk
+#' stream <- DSD_Gaussians(k=3, d=5, outliers=1,
+#'   outlier_options=list(outlier_horizon=10))
+#' write_stream(stream, file="data.txt", n=10, class=TRUE, write_outliers=TRUE)
+#'
+#' #file.show("data.txt")
+#'
+#' # clean up
+#' file.remove("data.txt")
+#'
+#' @export write_stream
 write_stream <- function(dsd, file, n=100, block=100000L,
                          class=FALSE, append = FALSE, sep=",",
-                         header=FALSE, row.names=FALSE, ...) UseMethod("write_stream")
+                         header=FALSE, row.names=FALSE, write_outliers=FALSE, ...) UseMethod("write_stream")
 
 write_stream.default <- function(dsd, file, n=100, block=100000L,
-                                 class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, ...) {
+                                 class=FALSE, append = FALSE, sep=",", header=FALSE, row.names=FALSE, write_outliers=FALSE, ...) {
   stop(gettextf("write_stream not implemented for class '%s'.", class(dsd)))
 }
 

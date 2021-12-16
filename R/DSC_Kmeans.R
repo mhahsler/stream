@@ -16,7 +16,55 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-### creator    
+
+#' Kmeans Macro-clusterer
+#' 
+#' Macro Clusterer.
+#' Class implements the k-means algorithm for reclustering a set of
+#' micro-clusters.
+#' 
+#' Please refer to function \code{kmeans} in \pkg{stats} for more details on
+#' the algorithm.
+#' 
+#' Note that this clustering cannot be updated iteratively and every time it is
+#' used for (re)clustering, the old clustering is deleted.
+#' 
+#' @param k either the number of clusters, say k, or a set of initial
+#' (distinct) cluster centers. If a number, a random set of (distinct) rows in
+#' x is chosen as the initial centers.
+#' @param weighted use a weighted k-means (algorithm is ignored).
+#' @param iter.max the maximum number of iterations allowed.
+#' @param nstart if centers is a number, how many random sets should be chosen?
+#' @param algorithm character: may be abbreviated.
+#' @param min_weight micro-clusters with a weight less than this will be
+#' ignored for reclustering.
+#' @param description optional character string to describe the clustering
+#' method.
+#' @return An object of class \code{DSC_Kmeans} (subclass of \code{DSC},
+#' \code{DSC_R}, \code{DSC_Macro})
+#' @author Michael Hahsler
+#' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
+#' @examples
+#' 
+#' stream <- DSD_Gaussians(k=3, noise=0)
+#' 
+#' # create micro-clusters via sampling
+#' sample <- DSC_Sample(k=20)
+#' update(sample, stream, 500)
+#' sample
+#'   
+#' # recluster micro-clusters
+#' kmeans <- DSC_Kmeans(k=3)
+#' recluster(kmeans, sample)
+#' plot(kmeans, stream, type="both")
+#' 
+#' # For comparison we use k-means directly to cluster data
+#' # Note: k-means is not a data stream clustering algorithm
+#' kmeans <- DSC_Kmeans(k=3)
+#' update(kmeans, stream, 500)
+#' plot(kmeans, stream)
+#' 
+#' @export DSC_Kmeans
 DSC_Kmeans <- function(k, weighted = TRUE, iter.max = 10, nstart = 1,
   algorithm = c("Hartigan-Wong", "Lloyd", "Forgy",
     "MacQueen"), 

@@ -1,6 +1,6 @@
 #######################################################################
 # Moving Generator -  Infrastructure for Moving Streams
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,11 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-MGC_Shape_Gaussian <- function(center, parameter) rnorm(length(center), 
+
+#' @rdname MGC
+MGC_Shape_Gaussian <- function(center, parameter) rnorm(length(center),
   mean=center, sd=parameter)
-MGC_Shape_Block <- function(center, parameter) runif(length(center), 
+
+#' @rdname MGC
+MGC_Shape_Block <- function(center, parameter) runif(length(center),
   min=-parameter/2, max=parameter/2)+center

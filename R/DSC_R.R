@@ -24,7 +24,7 @@
 ###  * get_microclusters(...), get_microweights(...)
 ###  * get_macroclusters(...), get_macroweights(...), microToMacro(micro, ...)
 
-DSC_R <- function(...) stop("DSC_R is an abstract class and cannot be instantiated!")
+DSC_R <- abstract_class_generator("DSC")
 
 
 ### cluster worker

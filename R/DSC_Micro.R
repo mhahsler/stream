@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,8 +24,19 @@
 # get_microweights(x)
 ########
 
-DSC_Micro <- function(...) stop("DSC_Micro is an abstract class and cannot be instantiated!")
 
+
+#' Abstract Class for Micro Clusterers
+#'
+#' Abstract class for all DSC Micro Clusterers.
+#'
+#' `DSC_Micro` cannot be instantiated.
+#'
+#' @param ... further arguments.
+#' @author Michael Hahsler
+#' @seealso [DSC]
+#' @export DSC_Micro
+DSC_Micro <- abstract_class_generator("DSC")
 
 get_centers.DSC_Micro <- function(x, type=c("auto", "micro", "macro"), ...) {
     type <- match.arg(type)
@@ -45,12 +56,12 @@ get_weights.DSC_Micro <- function(x, type=c("auto", "micro", "macro"),
     else w <- get_microweights(x, ...)
 
 
-    if(!is.null(scale)) { 
+    if(!is.null(scale)) {
 	if(length(unique(w)) ==1)  w <- rep(mean(scale), length(w))
-	else w <- map(w, range=scale, from.range=c(0,  
-			    max(w, na.rm=TRUE))) 
+	else w <- map(w, range=scale, from.range=c(0,
+			    max(w, na.rm=TRUE)))
     }
-    
+
     w
 }
 

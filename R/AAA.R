@@ -49,4 +49,24 @@
 .installed <- function(pkg) !is(try(utils::installed.packages()[pkg,],
   silent=TRUE), "try-error")
 
+abstract_class_generator <- function(prefix) {
+  function(...) {
+
+  message(prefix, " is an abstract class and cannot be instantiated!")
+
+  stream_pks <- sort(grep('^package:stream', search(), value = TRUE))
+  for(p in stream_pks) {
+    implementations <- grep(paste0('^', prefix, '_'), ls(p),
+      value = TRUE)
+    if(length(implementations) == 0) implementations <- "*None*"
+    message("\nAvailable subclasses in ", sQuote(p), " are:\n\t",
+    paste(implementations, collapse=",\n\t"))
+  }
+
+  message("\nTo get more information in R Studio, type ", sQuote(paste0(prefix, '_')),
+    " and hit the Tab key.")
+
+  invisible(NULL)
+  }
+}
 
