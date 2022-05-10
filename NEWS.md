@@ -1,4 +1,4 @@
-# stream 1.5-0.1 (xx/xx/21)
+# stream 1.5-1 (05/09/22)
 
 ## Changes
 * Removed registry in favor of using R Studio auto-complete.

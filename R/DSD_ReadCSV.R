@@ -178,7 +178,7 @@ DSD_ReadCSV <- function(file, k=NA, o=NA,
     if(!is.null(take)) outlier <- match(outlier, take)
     if(is.na(outlier)) stop("Invalid outlier column index!")
   }
-  if(!is.null(outlier) && class(point[1,outlier])!="logical")
+  if(!is.null(outlier) && !is.logical(point[,outlier]))
     stop("Outlier column must have logical values!")
 
   # creating the DSD object
