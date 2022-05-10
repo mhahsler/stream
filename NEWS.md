@@ -2,9 +2,9 @@
 
 ## Changes
 * Removed registry in favor of using R Studio auto-complete.
-* Outlier detector are now in class DSOutlier class.
+* Outlier detectors are now in class DSOutlier class.
 * We use now roxygen2 for man pages.
-* Abstract classes have now constructors.
+* Abstract classes now have constructors.
 
 ## Bug Fixes
 * Fixed typo in BIRCH interface: treshold -> threshold (by dinarior)
