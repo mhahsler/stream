@@ -1,0 +1,67 @@
+---
+title: "R package stream - Infrastructure for Data Stream Mining"
+output: github_document
+---
+
+```{r echo=FALSE}
+options(digits = 2)
+knitr::opts_chunk$set(tidy = TRUE, message = FALSE, fig.path = 'inst/README_files/')
+```
+
+[![CRAN version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
+[![R-CMD-check](https://github.com/mhahsler/stream/workflows/R-CMD-check/badge.svg)](https://github.com/mhahsler/stream/actions)
+
+The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
+experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides
+implementations of **BICO**, **BIRCH**, **D-Stream**, **DBSTREAM**, and **evoStream**.
+
+Additional packages in the stream family are:
+
+* [streamMOA](https://github.com/mhahsler/streamMOA): Interface to clustering
+  algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
+  Includes implementations of **DenStream**, **ClusTree** and **CluStream**.
+
+The development of the stream package was supported in part by NSF IIS-0948893 and NIH R21HG005912.
+
+## Installation
+
+__Stable CRAN version:__ install from within R with
+
+```{r eval=FALSE}
+install.packages("stream")
+```
+__Current development version:__ Install from GitHub (needs devtools and a installed R development environment).
+
+```{r eval=FALSE}
+devtools::install_github("mhahsler/stream")
+```
+
+
+
+## Usage
+
+Load the package and a random data stream with 3 Gaussian clusters ans 10\% noise.
+
+```{r}
+library("stream")
+set.seed(2000)
+
+stream <- DSD_Gaussians(k = 3, noise= .1)
+plot(stream)
+```
+
+Cluster a stream of 1000 points using DStream.
+
+```{r Dstream}
+dstream <- DSC_DStream(gridsize = .1)
+update(dstream, stream, 1000)
+plot(dstream, stream, type="both", grid = TRUE)
+```
+
+
+## References
+
+* Michael Hahsler, Matthew Bolaños, and John Forrest. [stream: An extensible framework for data stream clustering research with R.](https://dx.doi.org/10.18637/jss.v076.i14) _Journal of Statistical Software,_ 76(14), February 2017.
+* [stream package vignette](https://cran.r-project.org/package=stream/vignettes/stream.pdf) with complete examples.
+* [stream reference manual](https://cran.r-project.org/package=stream/stream.pdf)
