@@ -51,7 +51,7 @@ stream <- DSD_Gaussians(k = 3, noise= .1)
 plot(stream)
 ```
 
-Cluster a stream of 1000 points using DStream.
+Cluster a stream of 1000 points using D-Stream.
 
 ```{r Dstream}
 dstream <- DSC_DStream(gridsize = .1)

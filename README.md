@@ -55,7 +55,7 @@ plot(stream)
 
 ![](inst/README_files/unnamed-chunk-4-1.png)<!-- -->
 
-Cluster a stream of 1000 points using DStream.
+Cluster a stream of 1000 points using D-Stream.
 
 ``` r
 dstream <- DSC_DStream(gridsize = 0.1)
