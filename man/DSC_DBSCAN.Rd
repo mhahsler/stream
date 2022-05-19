@@ -2,6 +2,8 @@
 % Please edit documentation in R/DSC_DBSCAN.R
 \name{DSC_DBSCAN}
 \alias{DSC_DBSCAN}
+\alias{DBSCAN}
+\alias{dbscan}
 \title{DBSCAN Macro-clusterer}
 \usage{
 DSC_DBSCAN(eps, MinPts = 5, weighted = TRUE, description = NULL)
@@ -57,7 +59,6 @@ plot(dbscan, stream, type="both")
 dbscan <- DSC_DBSCAN(eps = .05)
 update(dbscan, stream, 500)
 plot(dbscan, stream)
-
 }
 \references{
 Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
@@ -68,7 +69,35 @@ Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 }
 \seealso{
 \code{\link{DSC}}, \code{\link{DSC_Macro}}
+
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{animate}},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSC}

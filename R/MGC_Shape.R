@@ -18,9 +18,11 @@
 
 
 #' @rdname MGC
+#' @export
 MGC_Shape_Gaussian <- function(center, parameter) rnorm(length(center),
   mean=center, sd=parameter)
 
 #' @rdname MGC
+#' @export
 MGC_Shape_Block <- function(center, parameter) runif(length(center),
   min=-parameter/2, max=parameter/2)+center

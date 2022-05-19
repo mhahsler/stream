@@ -47,6 +47,7 @@ MGC_Noise_refClass$methods(
 )
 
 #' @rdname MGC
+#' @export
 MGC_Noise<- function(density, range) {
   structure(list(description = "Noise Moving Generator Cluster",
     RObj = MGC_Noise_refClass$new(density, range)),

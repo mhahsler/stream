@@ -37,8 +37,27 @@ get_points(stream, 100)
 
 }
 \seealso{
-\code{\link{DSD}}
+Other DSD: 
+\code{\link{DSD_BarsAndGaussians}()},
+\code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Cubes}()},
+\code{\link{DSD_Gaussians}()},
+\code{\link{DSD_MG}()},
+\code{\link{DSD_Memory}()},
+\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ScaleStream}()},
+\code{\link{DSD_Target}()},
+\code{\link{DSD_UniformNoise}()},
+\code{\link{DSD_mlbenchData}()},
+\code{\link{DSD_mlbenchGenerator}()},
+\code{\link{DSD}()},
+\code{\link{animate}},
+\code{\link{plot}()},
+\code{\link{reset_stream}()},
+\code{\link{write_stream}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSD}

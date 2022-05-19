@@ -57,8 +57,11 @@ Evolution. International Conference on Very Large Databases (VLDB'06).
 607-618.
 }
 \seealso{
-\code{\link{DSO}}
+Other DSO: 
+\code{\link{DSO_Window}()},
+\code{\link{DSO}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSO}

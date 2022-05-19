@@ -24,8 +24,8 @@
 #' period of time.  Its behavior is determined by the \code{MGC}s it is
 #' composed of.
 #'
-#' @aliases DSD_MG DSD_MovingGenerator MovingGenerator add_cluster get_clusters
-#' remove_cluster
+#' @family DSD
+#'
 #' @param dimension the dimension of the DSD object
 #' @param ... initial set of \code{MGC}s
 #' @param x A \code{DSD_MG} object.
@@ -37,10 +37,8 @@
 #' new label.
 #' @param description An optional string used by \code{print} to describe the
 #' data generator.
+#' @seealso [MGC] for types of moving clusters.
 #' @author Matthew Bolanos
-#' @seealso \code{\link{MGC_Function}}, \code{\link{MGC_Linear}},
-#' \code{\link{MGC_Noise}}, \code{\link{MGC_Random}} for details on the
-#' different \code{MGC} objects.
 #' @examples
 #'
 #' ### create an empty DSD_MG
@@ -105,7 +103,7 @@
 #'   xlim=c(-10,120), ylim=c(-10,120), evaluationMeasure="purity", horizon=100)
 #' }
 #'
-#' @export DSD_MG
+#' @export
 DSD_MG <-
   function(dimension = 2,
     ...,
@@ -131,14 +129,17 @@ DSD_MG <-
   }
 
 #' @rdname DSD_MG
+#' @export
 add_cluster <- function(x, c, label = NULL)
   UseMethod("add_cluster")
 
 #' @rdname DSD_MG
+#' @export
 get_clusters <- function(x)
   UseMethod("get_clusters")
 
 #' @rdname DSD_MG
+#' @export
 remove_cluster <- function(x, i)
   UseMethod("remove_cluster")
 
@@ -227,7 +228,7 @@ dsd_MG_refClass$methods(
           prob = density / sum(density)
         )
 
-        data[(j + 1):(j + k), ] <-
+        data[(j + 1):(j + k),] <-
           t(sapply(
             clusterOrder,
             FUN = function(i) {
@@ -253,6 +254,7 @@ dsd_MG_refClass$methods(
   }
 )
 
+#' @export
 get_points.DSD_MG <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
@@ -275,6 +277,8 @@ get_points.DSD_MG <- function(x,
 
 }
 
+#' @rdname DSD_MG
+#' @export
 add_cluster.DSD_MG <- function(x, c, label = NULL) {
   ### name noise NA unless specified otherwise
   if (is.null(label) && is(c, "MGC_Noise"))
@@ -282,10 +286,12 @@ add_cluster.DSD_MG <- function(x, c, label = NULL) {
   x$RObj$add_cluster(c, label)
 }
 
+#' @export
 reset_stream.DSD_MG <- function(dsd, pos = 1) {
   dsd$RObj$t <- pos
 }
 
+#' @export
 print.DSD_MG <- function(x, ...) {
   #NextMethod()
   cat(.line_break(paste(x$description)))
@@ -304,10 +310,12 @@ print.DSD_MG <- function(x, ...) {
   )
 }
 
+#' @export
 get_clusters.DSD_MG <- function(x) {
   x$RObj$clusters
 }
 
+#' @export
 remove_cluster.DSD_MG  <- function(x, i) {
   x$RObj$clusters[[i]] <- NULL
   x$RObj$labels <- x$RObj$labels[-i]

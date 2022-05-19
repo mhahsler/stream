@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,23 +20,25 @@
 
 
 #' Reachability Micro-Cluster Reclusterer
-#' 
+#'
 #' Macro Clusterer.
 #' Implementation of reachability clustering (based on DBSCAN's concept of
 #' reachability) to recluster a set of micro-clusters.
-#' 
-#' 
+#'
+#'
 #' Two micro-clusters are directly reachable if they are within each other's
 #' epsilon-neighborhood (i.e., the distance between the centers is less then
 #' epsilon). Two micro-clusters are reachable if they are connected by a chain
 #' of pairwise directly reachable micro-clusters.  All mutually reachable
 #' micro-clusters are put in the same cluster.
-#' 
+#'
 #' Reachability uses internally \code{DSC_Hierarchical} with single link.
-#' 
+#'
 #' Note that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
-#' 
+#'
+#' @family DSC
+#'
 #' @param epsilon radius of the epsilon-neighborhood.
 #' @param min_weight micro-clusters with a weight less than this will be
 #' ignored for reclustering.
@@ -44,7 +46,7 @@
 #' method.
 #' @return An object of class \code{DSC_Reachability}. The object contains the
 #' following items:
-#' 
+#'
 #' \item{description}{The name of the algorithm in the DSC object.}
 #' \item{RObj}{The underlying R object.}
 #' @author Michael Hahsler
@@ -55,18 +57,18 @@
 #' \emph{Proceedings of the Second International Conference on Knowledge
 #' Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 #' @examples
-#' 
+#'
 #' stream <- DSD_mlbenchGenerator("cassini")
-#' 
+#'
 #' # Recluster micro-clusters from DSC_Sample with reachability
 #' sample <- DSC_Sample(k = 200)
 #' update(sample, stream, 1000)
-#' 
+#'
 #' reach <- DSC_Reachability(epsilon=0.3)
 #' recluster(reach, sample)
-#' 
+#'
 #' plot(reach, stream, type="both")
-#' 
+#'
 #' # For comparison we using reachability clustering directly on data points
 #' # Note: reachability is not a data stream clustering algorithm taking O(n^2)
 #' # time and space.
@@ -74,15 +76,15 @@
 #' update(reach, stream, 500)
 #' reach
 #' plot(reach, stream)
-#' 
-#' @export DSC_Reachability
+#'
+#' @export
 DSC_Reachability <- function(epsilon, min_weight=NULL, description=NULL) {
-  
-  hierarchical <- hierarchical$new( 
+
+  hierarchical <- hierarchical$new(
     h=epsilon, method="single", min_weight=min_weight)
-  
+
   if(is.null(description)) description <- "Reachability"
-  
+
   l <- list(description = description, RObj = hierarchical)
   class(l) <- c("DSC_Reachability", "DSC_Hierarchical", "DSC_Macro", "DSC_R", "DSC")
   l

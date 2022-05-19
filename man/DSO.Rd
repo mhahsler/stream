@@ -2,12 +2,27 @@
 % Please edit documentation in R/DSO.R
 \name{DSO}
 \alias{DSO}
+\alias{update.DSO}
+\alias{get_points.DSO}
+\alias{get_weights.DSO}
 \title{Data Stream Operator Base Classes}
 \usage{
 DSO(...)
+
+\method{update}{DSO}(object, dsd, n = 1, ...)
+
+\method{get_points}{DSO}(x, ...)
+
+\method{get_weights}{DSO}(x, ...)
 }
 \arguments{
 \item{...}{Further arguments.}
+
+\item{dsd}{a data stream object.}
+
+\item{n}{the number of data points used for the update.}
+
+\item{x, object}{a concrete implementation of DSO}
 }
 \description{
 Abstract base classes for all DSO (Data Stream Operator) classes.
@@ -24,9 +39,11 @@ and \link{get_weights} (if available).
 DSO()
 }
 \seealso{
-\code{\link{DSO_Window}},
-\code{\link{DSO_Sample}}
+Other DSO: 
+\code{\link{DSO_Sample}()},
+\code{\link{DSO_Window}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSO}

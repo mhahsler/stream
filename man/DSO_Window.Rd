@@ -44,8 +44,11 @@ Monitoring of Thousands of Data Streams in Real Time, Intl. Conference of
 Very Large Data Bases (VLDB'02).
 }
 \seealso{
-\link{DSO}
+Other DSO: 
+\code{\link{DSO_Sample}()},
+\code{\link{DSO}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSO}

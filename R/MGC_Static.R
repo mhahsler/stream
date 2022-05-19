@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #' @rdname MGC
+#' @export
 MGC_Static <- function(density = 1, center, parameter,
   shape = NULL) {
     if(is.null(shape)) shape <- MGC_Shape_Gaussian

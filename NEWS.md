@@ -1,3 +1,8 @@
+# stream 1.5-1.1 (xx/xx/22)
+
+## Changes
+* The NAMESPACE is now managed using roxygen.
+
 # stream 1.5-1 (05/09/22)
 
 ## Changes

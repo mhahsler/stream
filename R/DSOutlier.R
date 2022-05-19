@@ -37,61 +37,79 @@
 #' @examples
 #' DSOutlier()
 #' @author Dalibor Krleža
+#' @export
 DSOutlier <- abstract_class_generator("DSOutlier")
 
-#' @describeIn DSOutlier Clean Outliers from the Outlier Detecting Clusterer
-#' @export clean_outliers
+#' @describeIn DSOutlier Clean Outliers from the Outlier Detecting Clusterer.
+#' @export
 clean_outliers <- function(x, ...)
   UseMethod("clean_outliers")
+
 clean_outliers.default <- function(x, ...) {
   stop(gettextf(
     "clean_outlier not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
+
+#' @rdname DSOutlier
+#' @export
 clean_outliers.DSOutlier <- clean_outliers.default
 
 #' @describeIn DSOutlier Re-checks the outlier having `outlier_correlated_id`.
 #' If this object is still an outlier, the method
 #' returns TRUE.
-#' @export recheck_outlier
+#' @export
 recheck_outlier <- function(x, outlier_correlated_id, ...)
   UseMethod("recheck_outlier")
+
 recheck_outlier.default <- function(x, outlier_correlated_id, ...) {
   stop(gettextf(
     "recheck_outlier not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
+
+#' @rdname DSOutlier
+#' @export
 recheck_outlier.DSOutlier <- recheck_outlier.default
 
 #' @describeIn DSOutlier Returns spatial positions of all current outliers.
-#' @export get_outlier_position
+#' @export
 get_outlier_positions <- function(x, ...)
   UseMethod("get_outlier_positions")
+
 get_outlier_positions.default <- function(x, ...) {
   stop(gettextf(
     "check_outlier not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
+
+#' @rdname DSOutlier
+#' @export
 get_outlier_positions.DSOutlier <- get_outlier_positions.default
 
 #' @describeIn DSOutlier Returns the current number
 #' of outliers.
-#' @export noutliers
+#' @export
 noutliers <- function(x, ...)
   UseMethod("noutliers")
+
 noutliers.default <- function(x, ...) {
   stop(gettextf(
     "noutliers not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
+
+#' @rdname DSOutlier
+#' @export
 noutliers.DSOutlier <- function(x, ...) {
   nrow(get_outlier_positions(x))
 }
 
+#' @export
 print.DSOutlier <- function(x, ...) {
   cat(.line_break(paste(x$description)))
   cat("Class:", paste(class(x), collapse = ", "), "\n")

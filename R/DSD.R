@@ -29,7 +29,6 @@
 ## See DSD_Gaussian_Static.R for an example
 
 
-
 #' Data Stream Data Generator Base Classes
 #'
 #' Abstract base classes for DSD (Data Stream Data Generator).
@@ -52,14 +51,10 @@
 #' 1. A creator function `DSD_Foo()` and
 #' 2. a method `get_points.DSD_Foo()` for that class.
 #'
+#' @family DSD
 #'
 #' @param ... further arguments.
-#' @aliases DSD DSD_R description description DSD_R DSD_R
 #' @author Michael Hahsler
-#' @seealso [animate],
-#' [update], [evaluate], [get_points],
-#' [plot]
-#' [write_stream.DSD], [reset_stream]
 #' @examples
 #'
 #' DSD()
@@ -82,6 +77,9 @@
 #'
 #' @export DSD
 DSD <- abstract_class_generator("DSD")
+
+#' @rdname DSD
+#' @export
 DSD_R <- abstract_class_generator("DSD")
 
 #' Get Points from a Data Stream Generator
@@ -93,6 +91,8 @@ DSD_R <- abstract_class_generator("DSD")
 #' using the S3 class system. See the man page for the specific DSD class on
 #' the semantics for each implementation of `get_points`.
 #'
+#' @family DSD
+#'
 #' @param x The DSD object.
 #' @param n Request up to $n$ points from the stream.
 #' @param outofpoints Action taken if less than $n$ data points are
@@ -102,19 +102,27 @@ DSD_R <- abstract_class_generator("DSD")
 #' implementations.
 #' @return Returns a matrix of `x$d` columns and `n` rows.
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSD}}
 #' @examples
 #'
 #' stream <- DSD_Gaussians()
 #' get_points(stream, 100)
 #'
-#' @export get_points
-get_points <- function(x, n=1, outofpoints=c("stop", "warn", "ignore"), ...)
-  UseMethod("get_points")
-get_points.default <- function(x, n=1,
-                               outofpoints=c("stop", "warn", "ignore"), ...) {
-  stop(gettextf("get_points not implemented for class '%s'.",
-                paste(class(x), collapse=", ")))
+#' @export
+get_points <-
+  function(x,
+    n = 1,
+    outofpoints = c("stop", "warn", "ignore"),
+    ...)
+    UseMethod("get_points")
+
+get_points.default <- function(x,
+  n = 1,
+  outofpoints = c("stop", "warn", "ignore"),
+  ...) {
+  stop(gettextf(
+    "get_points not implemented for class '%s'.",
+    paste(class(x), collapse = ", ")
+  ))
 }
 
 ### in case the stream can be reset (e.g., a stream from a file)
@@ -130,13 +138,13 @@ get_points.default <- function(x, n=1,
 #' [DSD_ReadCSV] objects, this is done by calling `seek()` on the
 #' underlying connection.
 #'
+#' @family DSD
+#'
 #' @param dsd An object of class a subclass of [DSD] which implements a
 #' reset function.
 #' @param pos Position in the stream (the beginning of the stream is position
 #' 1).
 #' @author Michael Hahsler
-#' @seealso [DSD_ReadCSV], [DSD_MG],
-#' [DSD_ScaleStream], [DSD_Memory]
 #' @examples
 #'
 #' # initializing the objects
@@ -155,83 +163,51 @@ get_points.default <- function(x, n=1,
 #' reset_stream(replayer, pos=21)
 #' replayer
 #'
-#' @export reset_stream
-reset_stream <- function(dsd, pos=1) UseMethod("reset_stream")
-reset_stream.DSD <- function(dsd, pos=1) {
-  stop(gettextf("reset_stream not implemented for class '%s'.",
-                paste(class(dsd), collapse=", ")))
+#' @export
+reset_stream <- function(dsd, pos = 1)
+  UseMethod("reset_stream")
+reset_stream.DSD <- function(dsd, pos = 1) {
+  stop(gettextf(
+    "reset_stream not implemented for class '%s'.",
+    paste(class(dsd), collapse = ", ")
+  ))
 }
 
 
 ### end of interface
 #############################################################
 ### helper
+
+#' @export
 print.DSD <- function(x, ...) {
   .nodots(...)
 
   k <- x$k
-  if(is.null(k)) k <- NA
+  if (is.null(k))
+    k <- NA
   d <- x$d
-  if(is.null(d)) d <- NA
+  if (is.null(d))
+    d <- NA
   o <- x$o
-  if(is.null(o)) o <- NA
+  if (is.null(o))
+    o <- NA
 
   cat(.line_break(x$description))
-  cat("Class:", paste(class(x), collapse=", "), "\n")
-  cat(paste('With', k, 'clusters', 'and', o, 'outliers', 'in', d, 'dimensions', '\n'))
+  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat(paste(
+    'With',
+    k,
+    'clusters',
+    'and',
+    o,
+    'outliers',
+    'in',
+    d,
+    'dimensions',
+    '\n'
+  ))
 }
 
-summary.DSD <- function(object, ...) print(object)
-
-#' @rdname plot.DSC
-plot.DSD <- function(x, n = 500, col= NULL, pch= NULL,
-                     ..., method="pairs", dim=NULL, alpha=.6) {
-  ## method can be pairs, plot or pc (projection with PCA)
-
-  d <- get_points(x, n, cluster = TRUE, outlier = TRUE)
-  assignment <- attr(d, "cluster")
-
-  ### stream has no assignments!
-  if(length(assignment)==0) assignment <- rep(1L, nrow(d))
-
-  noise <- is.na(assignment)
-
-  ### assignment is not numeric
-  if(!is.numeric(assignment)) assignment <- as.integer(as.factor(assignment))
-
-  ### add alpha shading to color
-  if(is.null(col)) {
-    col <- rgb(cbind(t(col2rgb(assignment)/255)), alpha=alpha)
-  }else{
-    if(length(col)==1L) col <- rep(col, length(assignment))
-  }
-
-  col[noise] <-  .noise_col
-
-  if(is.null(pch)) {
-    #pch <- rep(1, n)
-    pch <- as.integer(assignment)
-    pch <- pch %% 25
-    pch[noise] <- .noise_pch
-  }
-
-  if(!is.null(dim)) d <- d[,dim, drop = FALSE]
-
-  if(ncol(d)>2 && method=="pairs") {
-    pairs(d, col=col, pch=pch, ...)
-  } else if(ncol(d)>2 && method=="pc") {
-    ## we assume Euclidean here
-    p <- prcomp(d)
-
-    plot(p$x, col=col, pch=pch, ...)
-    title(sub = paste("Explains ",
-                      round(sum(p$sdev[1:2]) / sum(p$sdev)* 100, 2),
-                      "% of the point variability", sep=""))
-  } else if(ncol(d) == 1) {
-    plot(d[[1]], rep(0, length(d[[1]])), col = assignment, pch= pch,
-         ylab = "", xlab = colnames(d)[1], ...)
-  } else {
-    if(ncol(d)>2) d <- d[,1:2, drop = FALSE]
-    plot(d, col=col, pch=pch, ...)
-  }
-}
+#' @export
+summary.DSD <- function(object, ...)
+  print(object)

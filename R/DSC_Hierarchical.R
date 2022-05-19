@@ -18,17 +18,19 @@
 
 
 #' Hierarchical Micro-Cluster Reclusterer
-#' 
+#'
 #' Macro Clusterer.
 #' Implementation of hierarchical clustering to recluster a set of
 #' micro-clusters.
-#' 
+#'
 #' Please refer to \code{hclust} for more details on the behavior of the
 #' algorithm.
-#' 
+#'
 #' Note that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
-#' 
+#'
+#' @family DSC
+#'
 #' @param k The number of desired clusters.
 #' @param h Height where to cut the dendrogram.
 #' @param method the agglomeration method to be used. This should be (an
@@ -40,39 +42,39 @@
 #' method.
 #' @return A list of class \code{DSC}, \code{DSC_R}, \code{DSC_Macro}, and
 #' \code{DSC_Hierarchical}. The list contains the following items:
-#' 
+#'
 #' \item{description}{The name of the algorithm in the DSC object.}
 #' \item{RObj}{The underlying R object.}
 #' @author Michael Hahsler
 #' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
 #' @examples
-#' 
+#'
 #' # Cassini dataset
 #' stream <- DSD_mlbenchGenerator("cassini")
-#' 
+#'
 #' # Use hierarchical clustering to recluster micro-clusters
 #' dbstream <- DSC_DBSTREAM(r = .05)
 #' update(dbstream, stream, 500)
-#' 
+#'
 #' # reclustering using single-link and specifying k
 #' hc <- DSC_Hierarchical(k = 3, method = "single")
 #' recluster(hc, dbstream)
 #' hc
 #' plot(hc, stream, type = "both")
-#' 
+#'
 #' # reclustering by specifying height
 #' hc <- DSC_Hierarchical(h = .2, method = "single")
 #' recluster(hc, dbstream)
 #' hc
 #' plot(hc, stream, type = "both")
-#' 
+#'
 #' # For comparison we use hierarchical clustering directly on the data
 #' # Note: hierarchical clustering is not a data stream clustering algorithm!
 #' hc <- DSC_Hierarchical(k = 3, method = "single")
 #' update(hc, stream, 500)
 #' plot(hc, stream)
-#' 
-#' @export DSC_Hierarchical
+#'
+#' @export
 DSC_Hierarchical <- function(k=NULL, h=NULL, method = "complete",
   min_weight=NULL, description=NULL) {
 

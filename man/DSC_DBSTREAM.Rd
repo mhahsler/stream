@@ -7,6 +7,7 @@
 \alias{get_shared_density}
 \alias{change_alpha}
 \alias{get_cluster_assignments}
+\alias{plot.DSC_DBSTREAM}
 \title{DBSTREAM clustering algorithm}
 \usage{
 DSC_DBSTREAM(
@@ -26,6 +27,20 @@ get_shared_density(x, use_alpha = TRUE)
 change_alpha(x, alpha)
 
 get_cluster_assignments(x)
+
+\method{plot}{DSC_DBSTREAM}(
+  x,
+  dsd = NULL,
+  n = 500,
+  col_points = NULL,
+  dim = NULL,
+  method = "pairs",
+  type = c("auto", "micro", "macro", "both", "none"),
+  shared_density = FALSE,
+  use_alpha = TRUE,
+  assignment = FALSE,
+  ...
+)
 }
 \arguments{
 \item{r}{The radius of micro-clusters.}
@@ -56,6 +71,22 @@ have not to be noise (between 0 and 1).}
 \item{x}{A DSC_DBSTREAM object to get the shared density information from.}
 
 \item{use_alpha}{only return shared density if it exceeds alpha.}
+
+\item{dsd}{a data stream object.}
+
+\item{n}{number of plots taken from the dsd to plot.}
+
+\item{col_points}{color used for plotting.}
+
+\item{dim}{an integer vector with the dimensions to plot. If NULL then for methods "pairs" and "pc" all dimensions are used and for "scatter" the first two dimensions are plotted.}
+
+\item{method}{plot method.}
+
+\item{type}{Plot micro clusters (\code{type="micro"}), macro clusters (\code{type="macro"}), both micro and macro clusters (\code{type="both"}), outliers(\code{type="outliers"}), or everything together (\code{type="all"}). \code{type="auto"} leaves to the class of DSC to decide.}
+
+\item{assignment}{logical; show assignment area of micro-clusters.}
+
+\item{...}{further arguments are passed on to plot or pairs in graphics.}
 }
 \value{
 An object of class \code{DSC_DBSTREAM} (subclass of \code{DSC},
@@ -152,8 +183,34 @@ based on shared density between micro-clusters. \emph{IEEE Transactions on
 Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Micro}}
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{animate}},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler and Matthew Bolanos
 }
+\concept{DSC}

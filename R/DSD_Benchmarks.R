@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,24 +19,26 @@
 
 
 #' Data Stream Generator for Benchmark Data
-#' 
+#'
 #' A data stream generator that generates several dynamic streams indented to
 #' be benchmarks to compare data stream clustering algorithms.
-#' 
+#'
 #' Currently available benchmarks are 1 and 2.
-#' 
+#'
+#' @family DSD
+#'
 #' @param i number of the benchmark.
 #' @return Returns a \code{DSD} object.
 #' @author Michael Hahsler
 #' @seealso \code{\link{DSD}}
 #' @examples
-#' 
+#'
 #' stream <- DSD_Benchmark(i=1)
 #' \dontrun{
-#' animate_data(stream, n=10000, horizon=100, xlim=c(0,1), ylim=c(0,1)) 
+#' animate_data(stream, n=10000, horizon=100, xlim=c(0,1), ylim=c(0,1))
 #' }
-#' 
-#' @export DSD_Benchmark
+#'
+#' @export
 DSD_Benchmark <- function(i=1) {
   if(i==1) {
     return(DSD_MG(dimension = 2,
@@ -54,9 +56,9 @@ DSD_Benchmark <- function(i=1) {
       labels = c(1,2,NA),
       description = "Benchmark 1: Two clusters moving diagonally from left to right, meeting in the center (5% noise)."
       ))
-  }  
-  
-  
+  }
+
+
   if(i==2) {
       return(DSD_MG(dimension = 2,
         MGC_Static(density=1, parameter=.1, center=c(0,0)),

@@ -4,20 +4,32 @@
 \name{DSOutlier}
 \alias{DSOutlier}
 \alias{clean_outliers}
+\alias{clean_outliers.DSOutlier}
 \alias{recheck_outlier}
+\alias{recheck_outlier.DSOutlier}
 \alias{get_outlier_positions}
+\alias{get_outlier_positions.DSOutlier}
 \alias{noutliers}
+\alias{noutliers.DSOutlier}
 \title{Abstract Class for Outlier Detection Clusterers}
 \usage{
 DSOutlier(...)
 
 clean_outliers(x, ...)
 
+\method{clean_outliers}{DSOutlier}(x, ...)
+
 recheck_outlier(x, outlier_correlated_id, ...)
+
+\method{recheck_outlier}{DSOutlier}(x, outlier_correlated_id, ...)
 
 get_outlier_positions(x, ...)
 
+\method{get_outlier_positions}{DSOutlier}(x, ...)
+
 noutliers(x, ...)
+
+\method{noutliers}{DSOutlier}(x, ...)
 }
 \arguments{
 \item{...}{further arguments.}
@@ -33,7 +45,7 @@ instantiated. An implementation is available in package
 }
 \section{Functions}{
 \itemize{
-\item \code{clean_outliers}: Clean Outliers from the Outlier Detecting Clusterer
+\item \code{clean_outliers}: Clean Outliers from the Outlier Detecting Clusterer.
 
 \item \code{recheck_outlier}: Re-checks the outlier having \code{outlier_correlated_id}.
 If this object is still an outlier, the method

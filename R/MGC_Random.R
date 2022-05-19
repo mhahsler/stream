@@ -63,6 +63,7 @@ MGC_Random_refClass$methods(
 )
 
 #' @rdname MGC
+#' @export
 MGC_Random<- function(density, center, parameter, randomness=1, shape=NULL) {
   if(is.null(shape)) shape <- MGC_Shape_Gaussian
 

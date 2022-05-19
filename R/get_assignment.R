@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,16 +20,18 @@
 
 
 #' Assignment Data Points to Clusters
-#' 
+#'
 #' Get the assignment of data points to clusters in a \code{DSC} using the
 #' model's assignment rules or nearest neighbor assignemnt. The clustering is
 #' not modified.
-#' 
+#'
 #' Each data point is assigned either using the original model's assignment
 #' rule or Euclidean nearest neighbor assignment. If the user specifies the
 #' model's assignment strategy, but is not available, then nearest neighbor
 #' assignment is used and a warning is produced.
-#' 
+#'
+#' @family DSC
+#'
 #' @param dsc The DSC object with the clusters for assignment.
 #' @param points The points to be assigned as a data.frame.
 #' @param type Use micro- or macro-clusters in DSC for assignment. Auto used
@@ -46,58 +48,61 @@
 #' @author Michael Hahsler
 #' @seealso \code{\link{DSC}}
 #' @examples
-#' 
+#'
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
-#' 
+#'
 #' dbstream <- DSC_DBSTREAM(r = .1)
 #' update(dbstream, stream, n = 100)
-#' 
+#'
 #' # find the assignment for the next 100 points to
 #' # micro-clusters in dsc. This uses the model's assignemnt function
 #' points <- get_points(stream, n = 100)
 #' a <- get_assignment(dbstream, points)
 #' a
-#' 
+#'
 #' # show the MC assignment areas. Assigned points as blue circles and
 #' # the unassigned points as red dots
 #' plot(dbstream, stream, assignment = TRUE, type = "none")
 #' points(points[!is.na(a),], col = "blue")
 #' points(points[is.na(a),], col = "red", pch = 20)
-#' 
+#'
 #' # use nearest neighbor assignment instead
 #' get_assignment(dbstream, points, method = "nn")
-#' 
-#' @export get_assignment
-get_assignment <- function(dsc, points, type=c("auto", "micro", "macro"), 
-  method="auto", ...) 
+#'
+#' @export
+get_assignment <- function(dsc, points, type=c("auto", "micro", "macro"),
+  method="auto", ...)
   UseMethod("get_assignment")
 
 ### default method is Euclidean nearest neighbor "nn"
-get_assignment.DSC <- function(dsc, points, type=c("auto", "micro", "macro"), 
+
+#' @rdname get_assignment
+#' @export
+get_assignment.DSC <- function(dsc, points, type=c("auto", "micro", "macro"),
   method=c("auto", "nn", "model"), ...) {
-  
+
   method <- match.arg(method)
   if(method=="auto") method <- "nn"
-  
+
   if(method=="model") {
     warning("method model not implemented! using Euclidean nearest neighbor instead!")
     method <- "nn"
   }
-  
+
   c <- get_centers(dsc, type=type, ...)
-  
+
   if(nrow(c)>0L) {
     dist <- dist(points, c, method="Euclidean")
     # Find the minimum distance and save the class
     predict <- apply(dist, 1L, which.min)
-    
+
   } else {
-    warning("There are no clusters!")
+    #warning("There are no clusters!")
     predict <- rep(NA_integer_, nrow(points))
   }
-  
+
   attr(predict, "method") <- method
-  
-  predict	
+
+  predict
 }
 

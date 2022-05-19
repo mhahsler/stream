@@ -2,9 +2,12 @@
 % Please edit documentation in R/recluster.R
 \name{recluster}
 \alias{recluster}
+\alias{recluster.DSC_Macro}
 \title{Re-clustering micro-clusters}
 \usage{
 recluster(macro, micro, type = "auto", ...)
+
+\method{recluster}{DSC_Macro}(macro, micro, type = "auto", ...)
 }
 \arguments{
 \item{macro}{a macro clustering algorithm (class "DSC_Macro")}
@@ -36,7 +39,7 @@ stream <- DSD_Gaussians(k=3, d=3)
 sample <- DSC_Sample(k=50)
 update(sample, stream, 500)
 sample
-  
+
 ### recluster using k-means
 kmeans <- DSC_Kmeans(k=3)
 recluster(kmeans, sample)
@@ -45,6 +48,35 @@ recluster(kmeans, sample)
 plot(kmeans, stream, main="Macro-clusters (Sampling + k-means)")
 
 }
+\seealso{
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{animate}},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}}
+}
 \author{
 Michael Hahsler
 }
+\concept{DSC}

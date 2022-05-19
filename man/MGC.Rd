@@ -185,7 +185,6 @@ add_cluster(stream, noise)
 animate_data(stream, n=2000*3.1, xlim=c(-.2,1.2), ylim=c(-.2,1.2), horiz=200)
 }
 
-#' @export MGC
 }
 \seealso{
 \link{DSD_MG} for details on how to use an \code{MGC} within

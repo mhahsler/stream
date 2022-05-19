@@ -31,15 +31,39 @@
 #' [DSD] stream. The result of the operator can be obtained via [get_points]
 #' and [get_weights] (if available).
 #'
+#' @family DSO
+#'
+#' @param x,object a concrete implementation of DSO
+#' @param dsd a data stream object.
+#' @param n the number of data points used for the update.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSO_Window}},
-#' \code{\link{DSO_Sample}}
 #' @examples
 #' DSO()
 #' @export DSO
 DSO <- abstract_class_generator("DSO")
 
+#' @rdname DSO
+#' @export
+update.DSO <- function(object, dsd, n = 1, ...) {
+  stop("No implementation for update found!")
+}
+
+#' @rdname DSO
+#' @export
+get_points.DSO <- function(x, ...) {
+  stop("Implementation is missing!")
+}
+
+#' @rdname DSO
+#' @export
+get_weights.DSO <- function(x, ...) {
+  stop("Implementation is missing!")
+}
+
+
+
+#' @export
 print.DSO <- function(x, ...) {
   cat(.line_break(paste(x$description)))
   cat("Class:", paste(class(x), collapse=", "), "\n")

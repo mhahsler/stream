@@ -17,13 +17,35 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-### Implement a new clusterer
-### Create an S3 class with elements description and RObj
-### RObj needs to be a reference class with methods
-###  * cluster(newdata, ...)
-###  * get_microclusters(...), get_microweights(...)
-###  * get_macroclusters(...), get_macroweights(...), microToMacro(micro, ...)
 
+#' Abstract Class for Implementing R-based Clusterers
+#'
+#' Abstract class for implementing R-based clusterers.
+#'
+#' To implement a new clusterer you need to create an S3 class with elements `description` and
+#' `RObj`. `RObj` needs to be a reference class with methods:
+#'
+#' * `cluster(newdata, ...)`
+#' * `get_microclusters(...)`
+#' * `get_microweights(...)`
+#' * `get_macroclusters(...)`
+#' * `get_macroweights(...)`
+#' * `microToMacro(micro, ...)`
+#'
+#' See [DSC] for details and parameters.
+#'
+#' `DSC_R` cannot be instantiated.
+#'
+#' @family DSC
+#'
+#' @param object a DSC object.
+#' @param dsd a data stream object.
+#' @param n number of data points taken from the stream.
+#' @param verbose logical; show progress?
+#' @param block process blocks of data to improve speed.
+#' @param ... further arguments.
+#' @author Michael Hahsler
+#' @export
 DSC_R <- abstract_class_generator("DSC")
 
 
@@ -31,6 +53,9 @@ DSC_R <- abstract_class_generator("DSC")
 ### geting a block of data improves performance the R implementation
 ### needs to make sure that points are processed sequencially
 ### (make especially BIRCH faster by passing block data points at once)
+
+#' @rdname DSC_R
+#' @export
 update.DSC_R <- function(object, dsd, n=1, verbose=FALSE,
   block=10000L, ...) {
   ### object contains an RObj which is  a reference object with a cluster method
@@ -69,14 +94,24 @@ update.DSC_R <- function(object, dsd, n=1, verbose=FALSE,
 }
 
 ### accessors
+#' @export
 get_microclusters.DSC_R <- function(x, ...) x$RObj$get_microclusters(...)
+
+#' @export
 get_microweights.DSC_R <- function(x, ...) x$RObj$get_microweights(...)
+
+#' @export
 get_macroclusters.DSC_R <- function(x, ...) x$RObj$get_macroclusters(...)
+
+#' @export
 get_macroweights.DSC_R <- function(x, ...) x$RObj$get_macroweights(...)
+
+#' @export
 microToMacro.DSC_R <- function(x, micro=NULL, ...)  x$RObj$microToMacro(micro, ...)
 
 
 ### make a deep copy of the reference class in RObj
+#' @export
 get_copy.DSC_R <- function(x) {
 	temp <- x
 

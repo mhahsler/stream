@@ -19,8 +19,9 @@
 #' Save and Read DSC objects safely (serializes the underlying data structure).
 #' This also works for \pkg{streamMOA} DSC objects.
 #'
-#' @name saveDSC
-#' @aliases save saveDSC readDSC
+#' @family DSC
+#'
+#' @name read_saveDSC
 #' @param object a DSC object.
 #' @param file filename.
 #' @param ... further arguments.
@@ -42,7 +43,9 @@
 #'
 #' ## cleanup
 #' unlink("dbstream.Rds")
-#'
+
+#' @rdname read_saveDSC
+#' @export
 saveDSC <- function(object, file, ...) {
   ### for MOA based objects from streamMOA (rJava)
     if(!is.null(object$javaObj)) rJava::.jcache(object$javaObj)
@@ -58,7 +61,8 @@ saveDSC <- function(object, file, ...) {
     saveRDS(object, file=file, ...)
 }
 
-#' @rdname saveDSC
+#' @rdname read_saveDSC
+#' @export
 readDSC <- function(file) {
     d <- readRDS(file)
 

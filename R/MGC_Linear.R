@@ -128,7 +128,7 @@ MGC_Linear_refClass$methods(
 
 
 #' @rdname MGC
-#' @export MGC_Linear
+#' @export
 MGC_Linear <-
   function(dimension = 2,
     keyframelist = NULL,
@@ -173,6 +173,7 @@ add_keyframe <-
   function(x, time, density, center, parameter, reset = FALSE)
     UseMethod("add_keyframe")
 
+#' @export
 add_keyframe.MGC_Linear <-
   function(x, time, density, center, parameter,
     reset = FALSE) {
@@ -186,20 +187,22 @@ add_keyframe.MGC_Linear <-
   }
 
 #' @rdname MGC
-#' @export get_keyframes
+#' @export
 get_keyframes <- function(x)
   UseMethod("get_keyframes")
 
+#' @export
 get_keyframes.MGC_Linear <- function(x) {
   x$RObj$keyframes
 }
 
 
 #' @rdname MGC
-#' @export remove_keyframe
+#' @export
 remove_keyframe <- function(x, time)
   UseMethod("remove_keyframe")
 
+#' @export
 remove_keyframe.MGC_Linear <- function(x, time) {
   x$RObj$keyframes <-
     x$RObj$keyframes[which(x$RObj$keyframes$time != time), ]
@@ -207,6 +210,7 @@ remove_keyframe.MGC_Linear <- function(x, time) {
 
 
 
+#' @export
 print.MGC_Linear <- function(x, ...) {
   cat(paste(
     x$description,

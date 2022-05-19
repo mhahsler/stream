@@ -22,8 +22,16 @@
 #' stream clustering [DSC], outlier detection [DSOutlier], classification on data streams
 #' [DSClassify] and frequent pattern mining on data streams [DSFP].
 #'
+#' The method `update()` is used to update the data stream task with new datapoints coming from a data stream.
+#'
+#' @aliases update
+#'
+#' @param x,object an object of a concrete implementation of a DST.
+#' @param dsd a data stream.
+#' @param n the number of data points used for the update.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
+#' @seealso [DSC], [DSOutlier], [DSClassify], [DSFP], [DSO]
 #' @examples
 #' DST()
 #' @export DST
@@ -34,3 +42,9 @@ DST <- function(...) {
       collapse=",\n\t"))
   invisible(NULL)
 }
+
+#' @rdname DST
+#' @export
+update.DST <- function(object, dsd, n = 1, ...) {
+  stop("No implementaiton for update found!")
+  }

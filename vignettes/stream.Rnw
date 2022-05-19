@@ -135,7 +135,7 @@ E-mail: \email{jforrest@microsoft.com}
 %\sloppy
 
 
-<<echo=FALSE>>=
+<<options, echo=FALSE>>=
 options(width = 75, digits = 3, prompt = 'R> ', scipen = 3)
 @
 
@@ -673,13 +673,13 @@ simulated data sets to get reproducible results.
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=.5\linewidth]{stream-initial_example}
+\includegraphics[width=.5\linewidth]{stream-simple_kmeans_reclustering}
 \caption{Data stream clustering result of D-Stream on a simple simulated data set with three random Gaussians. Micro-clusters are shown as circles and macro-clusters are shown as crosses (size represents weight).}
-\label{figure:initial_example}
+\label{figure:simple_kmeans_reclustering}
 \end{figure}
 
 
-<<>>=
+<<init>>=
 library("stream")
 set.seed(1000)
 stream <- DSD_Gaussians(k = 3, d = 2)
@@ -691,14 +691,14 @@ D-Stream which uses grid cells as micro-clusters. We
 specify the grid cell size (\code{gridsize}) as .1 and require that the density of a grid cell (\code{Cm}) needs to be at least
 1.2 times the average cell density to become a micro-cluster.
 Then we update the model with the next 500 data points from the stream.
-<<>>=
+<<simple_DStream>>=
 dstream <- DSC_DStream(gridsize = .1, Cm = 1.2)
 update(dstream, stream, n = 500)
 @
 
 Finally, we perform reclustering using $k$-means with three clusters
-and plot the resulting micro and macro clusters (see Figure~\ref{figure:initial_example}).
-<<initial_example, fig=TRUE, include=FALSE>>=
+and plot the resulting micro and macro clusters (see Figure~\ref{figure:simple_kmeans_reclustering}).
+<<simple_kmeans_reclustering, fig=TRUE, include=FALSE>>=
 km <- DSC_Kmeans(k = 3)
 recluster(km, dstream)
 plot(km, stream, type = "both")
@@ -909,7 +909,7 @@ necessary for replication.
 %In this example, we focus on implementations of the DSD class to model
 %data streams.
 
-<<>>=
+<<Create_DSD>>=
 library("stream")
 set.seed(1000)
 
@@ -935,7 +935,7 @@ $d$-dimensional uniform
 distribution.
 The following instruction requests $n=5$ new data points.
 
-<<>>=
+<<get_points>>=
 p <- get_points(stream, n = 5)
 p
 @
@@ -948,7 +948,7 @@ truth (class or cluster label) if they are called with \code{class = TRUE}.
 %\code{"assignment"} and can be accessed in the following way:
 
 
-<<>>=
+<<get_points_with_class>>=
 p <- get_points(stream, n = 100, class = TRUE)
 head(p, n = 10)
 @

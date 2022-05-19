@@ -41,7 +41,8 @@
 #' \code{reset_stream()}. The connection can be closed using
 #' \code{close_stream()}.
 #'
-#' @aliases DSD_ReadCSV close_stream scale_stream
+#' @family DSD
+#'
 #' @param file A file/URL or an open connection.
 #' @param k Number of true clusters, if known.
 #' @param o Number of outliers, if known.
@@ -67,8 +68,7 @@
 #' @return An object of class \code{DSD_ReadCSV} (subclass of \code{DSD_R},
 #' \code{DSD}).
 #' @author Michael Hahsler, Dalibor Krleža
-#' @seealso \code{\link{DSD}}, \code{\link{reset_stream}},
-#' \code{\link{read.table}}.
+#' @seealso \code{\link{read.table}}.
 #' @examples
 #'
 #' # creating data and writing it to disk
@@ -104,86 +104,120 @@
 #'
 #' close_stream(stream)
 #'
-#' @export DSD_ReadCSV
-DSD_ReadCSV <- function(file, k=NA, o=NA,
-                        take=NULL, class=NULL, outlier=NULL, loop=FALSE,
-                        sep=",", header=FALSE, skip=0, colClasses = NA, ...) {
+#' @export
+DSD_ReadCSV <- function(file,
+  k = NA,
+  o = NA,
+  take = NULL,
+  class = NULL,
+  outlier = NULL,
+  loop = FALSE,
+  sep = ",",
+  header = FALSE,
+  skip = 0,
+  colClasses = NA,
+  ...) {
   env <- environment()
-  if(is.na(o) && !is.null(outlier))
+  if (is.na(o) && !is.null(outlier))
     stop("The outlier column is defined, but the number of outliers is not supplied")
-  if(!is.na(o) && is.null(outlier))
+  if (!is.na(o) && is.null(outlier))
     stop("The number of outliers is supplied, but the outlier column was not supplied")
   # if the user passes a string, create a new connection and open it
-  if (is(file, "character")) file <- file(file)
+  if (is(file, "character"))
+    file <- file(file)
 
   # error if no string or connection is passed
-  if (!is(file, "connection")) stop("Please pass a valid connection!")
+  if (!is(file, "connection"))
+    stop("Please pass a valid connection!")
 
   # open the connection if its closed
-  if (!isOpen(file)) open(file)
+  if (!isOpen(file))
+    open(file)
 
   # filename
   filename <- basename(summary(file)$description)
 
   # seekable?
-  if(loop && !isSeekable(file)) stop("Loop only allowed for seekable connections!")
+  if (loop &&
+      !isSeekable(file))
+    stop("Loop only allowed for seekable connections!")
 
   # read first point to figure out structure!
-  if(skip>0) readLines(file, n=skip)
-  point <- read.table(text=readLines(con=file, n=1+header),
-                      sep=sep, header=header, colClasses = colClasses, ...)
+  if (skip > 0)
+    readLines(file, n = skip)
+  point <- read.table(
+    text = readLines(con = file, n = 1 + header),
+    sep = sep,
+    header = header,
+    colClasses = colClasses,
+    ...
+  )
 
   # reset stream if possible (otherwise first point is lost)
-  if(isSeekable(file)) {
-    seek(file, where=0)
-    if(skip>0) readLines(file, n=skip)
-    if(header) readLines(file, n=1)
+  if (isSeekable(file)) {
+    seek(file, where = 0)
+    if (skip > 0)
+      readLines(file, n = skip)
+    if (header)
+      readLines(file, n = 1)
   }
 
   # select columns take
-  if(!is.null(take)) {
-    if(is.character(take)) take <- pmatch(take, colnames(point))
-    if(any(is.na(take))) stop("Invalid column name specified in take!")
-    point <- point[,take]
+  if (!is.null(take)) {
+    if (is.character(take))
+      take <- pmatch(take, colnames(point))
+    if (any(is.na(take)))
+      stop("Invalid column name specified in take!")
+    point <- point[, take]
   }
 
   # dimensions
-  d <- ncol(point) - !is.null(class)
+  d <- ncol(point) -!is.null(class)
 
   # header?
-  if(header) header <- colnames(point)
-  else header <- NULL
+  if (header)
+    header <- colnames(point)
+  else
+    header <- NULL
 
   # data types?
-  colClasses <- sapply(point[1,], class)
+  colClasses <- sapply(point[1, ], class)
   ### integer -> numeric, factor -> character
   colClasses[colClasses == "integer"] <- "numeric"
   colClasses[colClasses == "factor"] <- "character"
 
   # class?
-  if(is.character(class)) {
-    if(is.null(header)) stop("Only numeric column index allowed if no headers are available!")
+  if (is.character(class)) {
+    if (is.null(header))
+      stop("Only numeric column index allowed if no headers are available!")
     class <- pmatch(class, header)
-    if(is.na(class)) stop("No matching column name for class!")
-  } else if(!is.null(class)) {
-    if(!is.null(take)) class <- match(class, take)
-    if(is.na(class)) stop("Invalid class column index!")
+    if (is.na(class))
+      stop("No matching column name for class!")
+  } else if (!is.null(class)) {
+    if (!is.null(take))
+      class <- match(class, take)
+    if (is.na(class))
+      stop("Invalid class column index!")
   }
   # outlier?
-  if(is.character(outlier)) {
-    if(is.null(header)) stop("Only numeric column index allowed if no headers are available!")
+  if (is.character(outlier)) {
+    if (is.null(header))
+      stop("Only numeric column index allowed if no headers are available!")
     outlier <- pmatch(outlier, header)
-    if(is.na(outlier)) stop("No matching column name for outlier indicators!")
-  } else if(!is.null(outlier)) {
-    if(!is.null(take)) outlier <- match(outlier, take)
-    if(is.na(outlier)) stop("Invalid outlier column index!")
+    if (is.na(outlier))
+      stop("No matching column name for outlier indicators!")
+  } else if (!is.null(outlier)) {
+    if (!is.null(take))
+      outlier <- match(outlier, take)
+    if (is.na(outlier))
+      stop("Invalid outlier column index!")
   }
-  if(!is.null(outlier) && !is.logical(point[,outlier]))
+  if (!is.null(outlier) && !is.logical(point[, outlier]))
     stop("Outlier column must have logical values!")
 
   # creating the DSD object
   l <- list(
-    description = paste('File Data Stream (', filename, ')', sep=''),
+    description = paste('File Data Stream (', filename, ')', sep = ''),
     d = d,
     k = k,
     o = o,
@@ -197,33 +231,45 @@ DSD_ReadCSV <- function(file, k=NA, o=NA,
     outlier = outlier,
     loop = loop,
     skip = skip,
-    env = env)
+    env = env
+  )
   class(l) <- c("DSD_ReadCSV", "DSD_R", "DSD_data.frame", "DSD")
 
   l
 }
 
 ## it is important that the connection is OPEN
-get_points.DSD_ReadCSV <- function(x, n=1,
-                                   outofpoints=c("stop", "warn", "ignore"),
-                                   cluster = FALSE, class = FALSE, outlier=FALSE, ...) {
+
+#' @export
+get_points.DSD_ReadCSV <- function(x,
+  n = 1,
+  outofpoints = c("stop", "warn", "ignore"),
+  cluster = FALSE,
+  class = FALSE,
+  outlier = FALSE,
+  ...) {
   .nodots(...)
 
   .DEBUG <- TRUE
   #.DEBUG <- FALSE
 
   outofpoints <- match.arg(outofpoints)
-  noop <- function(...) {}
-  msg <- switch(outofpoints,
-                "stop" = stop,
-                "warn" = warning,
-                "ignore" = noop
+  noop <- function(...) {
+  }
+  msg <- switch(
+    outofpoints,
+    "stop" = stop,
+    "warn" = warning,
+    "ignore" = noop
   )
 
   n <- as.integer(n)
 
   ## remember position
-  if(!isSeekable(x$file)) pos <- NA else pos <- seek(x$file)
+  if (!isSeekable(x$file))
+    pos <- NA
+  else
+    pos <- seek(x$file)
 
   d <- NULL
   eof <- FALSE
@@ -236,41 +282,65 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   #      silent = TRUE))
   #}
 
-  try(lines <- readLines(con=x$file, n=n), silent = !.DEBUG)
+  try(lines <- readLines(con = x$file, n = n), silent = !.DEBUG)
 
   ## EOF?
-  if(length(lines) < 1) eof <- TRUE
+  if (length(lines) < 1)
+    eof <- TRUE
   else {
-    suppressWarnings(
-      try(d <- do.call(read.table,
-                       c(list(text=lines, sep=x$sep, nrows=n,
-                              colClasses=x$colClasses), x$read.table.args)),
-          silent = !.DEBUG))
+    suppressWarnings(try(d <- do.call(read.table,
+      c(
+        list(
+          text = lines,
+          sep = x$sep,
+          nrows = n,
+          colClasses = x$colClasses
+        ),
+        x$read.table.args
+      )),
+      silent = !.DEBUG)
+    )
   }
 
-  if(eof) msg("The stream is at its end (EOF)!")
+  if (eof)
+    msg("The stream is at its end (EOF)!")
   ## loop?
-  if(is.null(d) || nrow(d) < n || eof) {
-    if(!x$loop) {
+  if (is.null(d) || nrow(d) < n || eof) {
+    if (!x$loop) {
       ## try to undo read in case of stop
-      if(outofpoints == "stop" && !is.na(pos)) seek(x$file, pos)
-      if(!eof) msg("Not enough points in the stream!")
-    } else { ## looping
-      while(nrow(d) < n) {
+      if (outofpoints == "stop" && !is.na(pos))
+        seek(x$file, pos)
+      if (!eof)
+        msg("Not enough points in the stream!")
+    } else {
+      ## looping
+      while (nrow(d) < n) {
         reset_stream(x)
-        try(lines <- readLines(con=x$file, n=n-nrow(d)), silent = !.DEBUG)
+        try(lines <-
+            readLines(con = x$file, n = n - nrow(d)),
+          silent = !.DEBUG)
 
         ## EOF?
-        if(length(lines) == 0) eof <- TRUE
+        if (length(lines) == 0)
+          eof <- TRUE
         else {
           d2 <- NULL
-          suppressWarnings(
-            try(d2 <- do.call(read.table,
-                              c(list(text=lines, sep=x$sep, nrows=n,
-                                     colClasses=x$colClasses), x$read.table.args)),
-                silent = !.DEBUG))
-          if(!is.null(d2) && nrow(d2 > 0)) d <- rbind(d, d2)
-          else msg("Read failed (use smaller n for unreliable sources)!")
+          suppressWarnings(try(d2 <- do.call(read.table,
+            c(
+              list(
+                text = lines,
+                sep = x$sep,
+                nrows = n,
+                colClasses = x$colClasses
+              ),
+              x$read.table.args
+            )),
+            silent = !.DEBUG)
+          )
+          if (!is.null(d2) && nrow(d2 > 0))
+            d <- rbind(d, d2)
+          else
+            msg("Read failed (use smaller n for unreliable sources)!")
         }
 
       }
@@ -278,66 +348,80 @@ get_points.DSD_ReadCSV <- function(x, n=1,
   }
 
   ## no data!
-  if(is.null(d)) {
-    if(!eof) msg("Read failed (use smaller n for unreliable sources)!")
+  if (is.null(d)) {
+    if (!eof)
+      msg("Read failed (use smaller n for unreliable sources)!")
 
     ## create conforming data.frame with 0 rows
     d <- data.frame()
-    for(i in 1:length(x$colClasses))
+    for (i in 1:length(x$colClasses))
       d[[i]] <- do.call(x$colClasses[i], list(0))
   } else {
     ## take columns
-    if(!is.null(x$take)) d <- d[,x$take, drop=FALSE]
+    if (!is.null(x$take))
+      d <- d[, x$take, drop = FALSE]
   }
 
   ## remove additional columns from a bad line
-  if(ncol(d) > x$d+!is.null(class)) d <- d[, 1:(x$d+!is.null(class)), drop=FALSE]
+  if (ncol(d) > x$d+!is.null(class))
+    d <- d[, 1:(x$d+!is.null(class)), drop = FALSE]
 
-  if(nrow(d)>0) {
-    if(!is.null(x$header)) colnames(d) <- x$header
+  if (nrow(d) > 0) {
+    if (!is.null(x$header))
+      colnames(d) <- x$header
 
     removals <- c()
     ### handle missing cluster/class info
-    if(!is.null(x$class)) {
-      cl <- d[,x$class]
+    if (!is.null(x$class)) {
+      cl <- d[, x$class]
       removals <- c(x$class)
-    }else{
-      if(cluster || class) {
+    } else{
+      if (cluster || class) {
         cl <- rep(NA_integer_, nrow(d))
       }
     }
     ### handle outlier info
-    if(!is.null(x$outlier)) {
-      out <- d[,x$outlier]
+    if (!is.null(x$outlier)) {
+      out <- d[, x$outlier]
       removals <- c(removals, x$outlier)
-    }else{
+    } else{
       out <- rep(FALSE, nrow(d))
     }
-    if(length(removals)>0) d <- d[,-removals, drop=FALSE]
+    if (length(removals) > 0)
+      d <- d[, -removals, drop = FALSE]
 
-    if(class) d <- cbind(d, class = cl)
-    if(cluster) attr(d, "cluster") <- cl
-    if(outlier) attr(d, "outlier") <- out
+    if (class)
+      d <- cbind(d, class = cl)
+    if (cluster)
+      attr(d, "cluster") <- cl
+    if (outlier)
+      attr(d, "outlier") <- out
   }
 
   d
 }
 
-reset_stream.DSD_ReadCSV <- function(dsd, pos=1) {
+#' @export
+reset_stream.DSD_ReadCSV <- function(dsd, pos = 1) {
   pos <- as.integer(pos)
 
-  if(!isSeekable(dsd$file)) stop("Underlying conneciton does not support seek!")
-  seek(dsd$file, where=0)
+  if (!isSeekable(dsd$file))
+    stop("Underlying conneciton does not support seek!")
+  seek(dsd$file, where = 0)
 
-  if(dsd$skip>0) readLines(dsd$file, n=dsd$skip)
-  if(!is.null(dsd$header)) readLines(dsd$file, n=1)
-  if(pos>1) readLines(dsd$file, n=pos-1L)
+  if (dsd$skip > 0)
+    readLines(dsd$file, n = dsd$skip)
+  if (!is.null(dsd$header))
+    readLines(dsd$file, n = 1)
+  if (pos > 1)
+    readLines(dsd$file, n = pos - 1L)
   invisible(NULL)
 }
 
 #' @rdname DSD_ReadCSV
+#' @export
 close_stream <- function(dsd) {
-  if(!is(dsd, "DSD_ReadCSV"))
+  if (!is(dsd, "DSD_ReadCSV"))
     stop("'dsd' is not of class 'DSD_ReadCSV'")
   close(dsd$file)
 }

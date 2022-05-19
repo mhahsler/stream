@@ -17,8 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
-
 #' BICO - Fast computation of k-means coresets in a data stream
 #'
 #' Micro Clusterer.
@@ -39,6 +37,8 @@
 #' by using the \code{kmeans++} algorithm on the coreset.
 #'
 #' @aliases DSC_BICO BICO bico
+#' @family DSC
+#'
 #' @param k number of centres
 #' @param space coreset size
 #' @param p number of random projections used for nearest neighbour search in
@@ -59,7 +59,7 @@
 #' update(BICO, stream, n = 500)
 #' plot(BICO,stream, type = "both")
 #'
-#' @export DSC_BICO
+#' @export
 DSC_BICO <- function(k = 5,
   space = 10,
   p = 10,

@@ -18,7 +18,7 @@ algorithms.
 DSFP()
 }
 \seealso{
-\code{\link{DST}}
+\link{DST}
 }
 \author{
 Michael Hahsler

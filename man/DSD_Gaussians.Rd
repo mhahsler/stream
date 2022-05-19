@@ -67,18 +67,24 @@ find them in data streams. For more details, read the "Introduction to
 \pkg{stream}" vignette.}
 
 \item{outlier_options}{Effective only when \code{outliers>0}. Comprises the
-following list of options: \itemize{
+following list of options:
+\itemize{
 \item\code{predefined_outlier_space_positions} - (Default=NULL) A predefined
 list of outlier spatial positions. Similar to \code{mu}.
+
 \item\code{predefined_outlier_stream_positions} - (Default=NULL) A
 predefined list of outlier stream positions. Must have the same number of
 elements as \code{predefined_outlier_space_positions}.
+
 \item\code{outlier_horizon} - (Default=500) A horizon in the generated data
 stream measured in data points that will contain requested number of
-outliers.  \item\code{outlier_virtual_variance} - (Default=1) A variance
+outliers.
+
+\item\code{outlier_virtual_variance} - (Default=1) A variance
 used to create the virtual covariance matrices for outliers. Such virtual
 statistical distribution helps to define an empty space around outliers that
-separates them from other constructs, both clusters and outliers.  }}
+separates them from other constructs, both clusters and outliers.
+}}
 
 \item{verbose}{Printout of the cluster and outlier generation process.}
 }
@@ -87,13 +93,29 @@ Returns a \code{DSD_Gaussians} object (subclass of \code{DSD_R},
 \code{DSD}) which is a list of the defined params. The params are either
 passed in from the function or created internally. They include:
 
-\item{description}{A brief description of the DSD object.} \item{k}{The
-number of clusters.} \item{d}{The number of dimensions.} \item{mu}{The
-matrix of means of the dimensions in each cluster.} \item{sigma}{The
-covariance matrix.} \item{p}{The probability vector for the clusters.}
+\item{description}{A brief description of the DSD object.}
+
+\item{k}{The
+number of clusters.}
+
+\item{d}{The number of dimensions.}
+
+\item{mu}{The
+matrix of means of the dimensions in each cluster.}
+
+\item{sigma}{The
+covariance matrix.}
+
+\item{p}{The probability vector for the clusters.}
+
 \item{noise}{A flag that determines if or if not noise is generated.}
-\item{outs}{Outlier spatial positions.} \item{outs_pos}{Outlier stream
-positions.} \item{outs_vv}{Outlier virtual variance.}
+
+\item{outs}{Outlier spatial positions.}
+
+\item{outs_pos}{Outlier stream
+positions.}
+
+\item{outs_vv}{Outlier virtual variance.}
 }
 \description{
 A data stream generator that produces a data stream with a mixture of static
@@ -165,8 +187,27 @@ Jain and Dubes(1988) Algorithms for clustering data,
 Prentice-Hall, Inc., Upper Saddle River, NJ, USA.
 }
 \seealso{
-\code{\link{DSD}}
+Other DSD: 
+\code{\link{DSD_BarsAndGaussians}()},
+\code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Cubes}()},
+\code{\link{DSD_MG}()},
+\code{\link{DSD_Memory}()},
+\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ScaleStream}()},
+\code{\link{DSD_Target}()},
+\code{\link{DSD_UniformNoise}()},
+\code{\link{DSD_mlbenchData}()},
+\code{\link{DSD_mlbenchGenerator}()},
+\code{\link{DSD}()},
+\code{\link{animate}},
+\code{\link{get_points}()},
+\code{\link{plot}()},
+\code{\link{reset_stream}()},
+\code{\link{write_stream}()}
 }
 \author{
 Michael Hahsler, Dalibor Krleža
 }
+\concept{DSD}

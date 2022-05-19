@@ -205,6 +205,7 @@ DefaultEvalCallback <- function() {
   class(this) <- c("DefaultEvalCallback", "EvalCallback")
   this
 }
+
 evaluate_callback.DefaultEvalCallback <-
   function(cb_obj,
     dsc,
@@ -374,8 +375,9 @@ evaluate_callback.DefaultEvalCallback <-
 #' (\pkg{fpc}) \item \code{"wb.ratio"} average.within/average.between
 #' (\pkg{fpc}) }
 #'
-#' The following external evaluation measures are available: \itemize{ \item
-#' \code{"precision"}, \code{"recall"}, \code{"F1"} F1.  A true positive (TP)
+#' The following external evaluation measures are available: \itemize{
+#'
+#' \item \code{"precision"}, \code{"recall"}, \code{"F1"} F1.  A true positive (TP)
 #' decision assigns two points in the same true cluster also to the same
 #' cluster, a true negative (TN) decision assigns two points from two different
 #' true clusters to two different clusters.  A false positive (FP) decision
@@ -391,23 +393,49 @@ evaluate_callback.DefaultEvalCallback <-
 #'
 #' \item \code{"purity"} Average purity of clusters. The purity of each cluster
 #' is the proportion of the points of the majority true group assigned to it
-#' (see Cao et al. (2006)) % \item \code{"classPurity"} (of real clusters; see
-#' Wan et al (2009)), % \item \code{"fpr"} false positive rate, \item
+#' (see Cao et al. (2006)) %
+#'
+#' \item \code{"classPurity"} (of real clusters; see
+#' Wan et al (2009)), %
+#'
+#' \item \code{"fpr"} false positive rate, \item
 #' \code{"Euclidean"} Euclidean dissimilarity of the memberships (see
-#' Dimitriadou, Weingessel and Hornik (2002)) (\pkg{clue}) \item
-#' \code{"Manhattan"} Manhattan dissimilarity of the memberships (\pkg{clue})
-#' \item \code{"Rand"} Rand index (see Rand (1971)) (\pkg{clue}) \item
-#' \code{"cRand"} Adjusted Rand index (see Hubert and Arabie (1985))
-#' (\pkg{clue}) \item \code{"NMI"} Normalized Mutual Information (see Strehl
-#' and Ghosh (2002)) (\pkg{clue}) \item \code{"KP"} Katz-Powell index (see Katz
-#' and Powell (1953)) (\pkg{clue}) \item \code{"angle"} maximal cosine of the
-#' angle between the agreements (\pkg{clue}) \item \code{"diag"} maximal
-#' co-classification rate (\pkg{clue}) \item \code{"FM"} Fowlkes and Mallows's
-#' index (see Fowlkes and Mallows (1983)) (\pkg{clue}) \item \code{"Jaccard"}
-#' Jaccard index (\pkg{clue}) \item \code{"PS"} Prediction Strength (see
-#' Tibshirani and Walter (2005)) (\pkg{clue}) % \item \code{"corrected.rand"}
-#' corrected Rand index (\pkg{fpc}) \item \code{"vi"} variation of information
-#' (VI) index (\pkg{fpc}) }
+#' Dimitriadou, Weingessel and Hornik (2002)) (\pkg{clue})
+#'
+#' \item \code{"Manhattan"} Manhattan dissimilarity of the memberships (\pkg{clue})
+#'
+#' \item \code{"Rand"} Rand index (see Rand (1971)) (\pkg{clue})
+#'
+#' \item \code{"cRand"} Adjusted Rand index (see Hubert and Arabie (1985))
+#' (\pkg{clue})
+#'
+#' \item \code{"NMI"} Normalized Mutual Information (see Strehl
+#' and Ghosh (2002)) (\pkg{clue})
+#'
+#' \item \code{"KP"} Katz-Powell index (see Katz
+#' and Powell (1953)) (\pkg{clue})
+#'
+#' \item \code{"angle"} maximal cosine of the
+#' angle between the agreements (\pkg{clue})
+#'
+#' \item \code{"diag"} maximal
+#' co-classification rate (\pkg{clue})
+#'
+#' \item \code{"FM"} Fowlkes and Mallows's
+#' index (see Fowlkes and Mallows (1983)) (\pkg{clue})
+#'
+#' \item \code{"Jaccard"}
+#' Jaccard index (\pkg{clue})
+#'
+#' \item \code{"PS"} Prediction Strength (see
+#' Tibshirani and Walter (2005)) (\pkg{clue}) %
+#'
+#' \item \code{"corrected.rand"}
+#' corrected Rand index (\pkg{fpc})
+#'
+#' \item \code{"vi"} variation of information
+#' (VI) index (\pkg{fpc})
+#' }
 #'
 #' Many measures are the average over all clusters. For example, purity is the
 #' average purity over all clusters.
@@ -449,8 +477,8 @@ evaluate_callback.DefaultEvalCallback <-
 #' callbacks are done through objects inheriting the \code{\link{EvalCallback}}
 #' class.
 #'
-#' @aliases evaluate evaluate_with_callbacks evaluate_cluster
-#' evaluate_cluster_with_callbacks print.stream_eval
+#' @family DSC
+#'
 #' @param dsc The DSC object that the evaluation measure is being requested
 #' from.
 #' @param dsd The DSD object that holds the initial training data for the DSC.
@@ -588,7 +616,7 @@ evaluate_callback.DefaultEvalCallback <-
 #'                         measure = c("crand","LowestWeightPercentage"),
 #'                         callbacks = list(cc=CustomCallback()))
 #'
-#' @export evaluate
+#' @export
 evaluate <-
   function (dsc,
     dsd,
@@ -613,6 +641,7 @@ evaluate <-
   }
 
 #' @rdname evaluate
+#' @export
 evaluate_with_callbacks <-
   function (dsc,
     dsd,
@@ -754,6 +783,7 @@ evaluate_with_callbacks <-
       class = "stream_eval")
   }
 
+#' @export
 print.stream_eval <-  function(x, ...) {
   cat("Evaluation results for ",
     attr(x, "type"),
@@ -770,6 +800,7 @@ print.stream_eval <-  function(x, ...) {
 }
 
 #' @rdname evaluate
+#' @export
 evaluate_cluster <-
   function(dsc,
     dsd,
@@ -799,6 +830,7 @@ evaluate_cluster <-
   }
 
 #' @rdname evaluate
+#' @export
 evaluate_cluster_with_callbacks <-
   function(dsc,
     dsd,
@@ -885,7 +917,7 @@ evaluate_cluster_with_callbacks <-
           assignmentMethod,
           noise = noise,
           ...)
-      evaluation[i, ] <- c(i * horizon, r)
+      evaluation[i,] <- c(i * horizon, r)
 
 
       if (!is(dsc, "DSC_SinglePass")) {
@@ -895,7 +927,7 @@ evaluate_cluster_with_callbacks <-
       }
 
       if (verbose)
-        print(evaluation[i, ])
+        print(evaluation[i,])
     }
 
     evaluation
@@ -1001,7 +1033,7 @@ recall <- function(actual, predict) {
   FN <- sum(sapply(
     1:(nrow(conf) - 1L),
     FUN = function(i)
-      conf[i, ] * colSums(conf[-(1:i), , drop = FALSE])
+      conf[i,] * colSums(conf[-(1:i), , drop = FALSE])
   ))
 
   #TN <- N - FN
@@ -1107,7 +1139,7 @@ ssq <- function(points, actual, predict, centers) {
 
   ## do nn assignment of non noise points
   if (!is.null(actual))
-    points <- points[actual != 0L, ]
+    points <- points[actual != 0L,]
 
   assign_dist <- apply(dist(points, centers), 1, min)
   sum(assign_dist ^ 2)
@@ -1120,7 +1152,7 @@ silhouette <- function(points, actual, predict) {
   else
     noise <- predict == 0
 
-  points <- points[!noise, ]
+  points <- points[!noise,]
   predict <- predict[!noise]
 
   #  if(any(predict==0)) warning("silhouette: ", sum(predict==0), " non-noise points were predicted noise incorrectly and form their own cluster.")
@@ -1185,13 +1217,15 @@ outlierJaccard <-
       # we estimate whether the actual class resides in a predicted class that has only one appearance
       # this is for clusterers that have no explicit outlier recognition
       conf <- table(predict, actual) # coincidence matrix
-      undet_outliers <- tmp_outliers <- actual[which(outliers == TRUE)]
+      undet_outliers <-
+        tmp_outliers <- actual[which(outliers == TRUE)]
       for (rindex in 1:nrow(conf)) {
-        if (sum(conf[rindex, ]) == 1) {
+        if (sum(conf[rindex,]) == 1) {
           # This is a detected outlier
           for (cindex in 1:ncol(conf)) {
             # pass over generated classes and check which one has this outlier
-            if (conf[rindex, cindex] == 1 && sum(conf[, cindex] == 1)) {
+            if (conf[rindex, cindex] == 1 &&
+                sum(conf[, cindex] == 1)) {
               # this is obviously one data instance in its own actual and predicted class
               actual_out <- colnames(conf)[[cindex]]
               if (actual_out %in% tmp_outliers) {

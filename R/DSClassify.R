@@ -23,7 +23,8 @@
 #'
 #' @param ... Further arguments.
 #' @author Michael Hahsler
-#' @seealso \code{\link{DST}}
+#' @seealso [DST]
 #' @examples
 #' DSClassify()
+#' @export
 DSClassify <- abstract_class_generator("DSClassify")

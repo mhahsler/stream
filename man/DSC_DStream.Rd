@@ -6,6 +6,7 @@
 \alias{d-stream}
 \alias{D-Stream}
 \alias{get_attraction}
+\alias{plot.DSC_DStream}
 \title{D-Stream Data Stream Clustering Algorithm}
 \usage{
 DSC_DStream(
@@ -22,6 +23,17 @@ DSC_DStream(
 )
 
 get_attraction(x, relative = FALSE, grid_type = "dense", dist = FALSE)
+
+\method{plot}{DSC_DStream}(
+  x,
+  dsd = NULL,
+  n = 500,
+  type = c("micro", "macro", "both"),
+  grid = FALSE,
+  grid_type = "used",
+  assignment = FALSE,
+  ...
+)
 }
 \arguments{
 \item{gridsize}{Size of grid cells.}
@@ -70,6 +82,18 @@ weight).}
 \item{grid_type}{the attraction between what grid types should be returned?}
 
 \item{dist}{make attraction symmetric and transform into a distance.}
+
+\item{dsd}{a data stream object.}
+
+\item{n}{number of plots taken from the dsd to plot.}
+
+\item{type}{Plot micro clusters (\code{type="micro"}), macro clusters (\code{type="macro"}), both micro and macro clusters (\code{type="both"}), outliers(\code{type="outliers"}), or everything together (\code{type="all"}). \code{type="auto"} leaves to the class of DSC to decide.}
+
+\item{grid}{logical; show the D-Stream grid instead of circles for micro-clusters.}
+
+\item{assignment}{logical; show assignment area of micro-clusters.}
+
+\item{...}{further argument are passed on.}
 }
 \value{
 An object of class \code{DSC_DStream} (subclass of \code{DSC},
@@ -161,8 +185,34 @@ attraction. \emph{ACM Transactions on Knowledge Discovery from Data,} 3(3),
 Article 12 (July 2009), 27 pages.
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Micro}}
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{animate}},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSC}

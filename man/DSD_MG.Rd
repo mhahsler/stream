@@ -2,11 +2,10 @@
 % Please edit documentation in R/DSD_MG.R
 \name{DSD_MG}
 \alias{DSD_MG}
-\alias{DSD_MovingGenerator}
-\alias{MovingGenerator}
 \alias{add_cluster}
 \alias{get_clusters}
 \alias{remove_cluster}
+\alias{add_cluster.DSD_MG}
 \title{DSD Moving Generator}
 \usage{
 DSD_MG(dimension = 2, ..., labels = NULL, description = NULL)
@@ -16,6 +15,8 @@ add_cluster(x, c, label = NULL)
 get_clusters(x)
 
 remove_cluster(x, i)
+
+\method{add_cluster}{DSD_MG}(x, c, label = NULL)
 }
 \arguments{
 \item{dimension}{the dimension of the DSD object}
@@ -110,10 +111,29 @@ purity <- animate_cluster(dbstream, stream, n=2500, type="both",
 
 }
 \seealso{
-\code{\link{MGC_Function}}, \code{\link{MGC_Linear}},
-\code{\link{MGC_Noise}}, \code{\link{MGC_Random}} for details on the
-different \code{MGC} objects.
+\link{MGC} for types of moving clusters.
+
+Other DSD: 
+\code{\link{DSD_BarsAndGaussians}()},
+\code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Cubes}()},
+\code{\link{DSD_Gaussians}()},
+\code{\link{DSD_Memory}()},
+\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ScaleStream}()},
+\code{\link{DSD_Target}()},
+\code{\link{DSD_UniformNoise}()},
+\code{\link{DSD_mlbenchData}()},
+\code{\link{DSD_mlbenchGenerator}()},
+\code{\link{DSD}()},
+\code{\link{animate}},
+\code{\link{get_points}()},
+\code{\link{plot}()},
+\code{\link{reset_stream}()},
+\code{\link{write_stream}()}
 }
 \author{
 Matthew Bolanos
 }
+\concept{DSD}

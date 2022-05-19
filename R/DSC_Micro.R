@@ -32,12 +32,15 @@
 #'
 #' `DSC_Micro` cannot be instantiated.
 #'
+#' @family DSC
+#'
 #' @param ... further arguments.
 #' @author Michael Hahsler
 #' @seealso [DSC]
-#' @export DSC_Micro
+#' @export
 DSC_Micro <- abstract_class_generator("DSC")
 
+#' @export
 get_centers.DSC_Micro <- function(x, type=c("auto", "micro", "macro"), ...) {
     type <- match.arg(type)
     if(type=="auto") type <- "micro"
@@ -46,7 +49,7 @@ get_centers.DSC_Micro <- function(x, type=c("auto", "micro", "macro"), ...) {
     else return(get_microclusters(x, ...))
 }
 
-
+#' @export
 get_weights.DSC_Micro <- function(x, type=c("auto", "micro", "macro"),
 	scale=NULL, ...) {
     type <- match.arg(type)

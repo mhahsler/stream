@@ -24,8 +24,8 @@
 #'
 #' @param ... Further arguments.
 #' @author Michael Hahsler
-#' @seealso \code{\link{DST}}
+#' @seealso [DST]
 #' @examples
 #' DSFP()
-#' @export DSFP
+#' @export
 DSFP <- abstract_class_generator("DSFP")

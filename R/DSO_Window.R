@@ -30,12 +30,13 @@
 #' model (Zhu and Shasha, 2002).  The weight for points in the window follows
 #' \eqn{2^(-lambda*t)} where \eqn{t} is the age of the point.
 #'
+#' @family DSO
+#'
 #' @param horizon the window length.
 #' @param lambda decay factor damped window model. `lambda=0` means no
 #' dampening.
 #' @return An object of class `DSO_Window` (subclass of [DSO].
 #' @author Michael Hahsler
-#' @seealso [DSO]
 #' @references Zhu, Y. and Shasha, D. (2002). StatStream: Statistical
 #' Monitoring of Thousands of Data Streams in Real Time, Intl. Conference of
 #' Very Large Data Bases (VLDB'02).
@@ -52,7 +53,7 @@
 #' # plot points in window
 #' plot(get_points(window))
 #'
-#' @export DSO_Window
+#' @export
 DSO_Window <- function(horizon = 100, lambda=0)
   structure(list(
     description =
@@ -61,6 +62,7 @@ DSO_Window <- function(horizon = 100, lambda=0)
     class = c("DSO_Window", "DSO")
   )
 
+#' @export
 update.DSO_Window <- function(object, dsd, n=1, verbose=FALSE, ...) {
 
   ### some matrix to be processed in one go
@@ -73,10 +75,12 @@ update.DSO_Window <- function(object, dsd, n=1, verbose=FALSE, ...) {
   object$RObj$update(get_points(dsd, n=n), verbose=verbose, ...)
 }
 
+#' @export
 get_points.DSO_Window <- function(x, ...) {
   x$RObj$get_points(...)
 }
 
+#' @export
 get_weights.DSO_Window <- function(x, ...) {
   x$RObj$get_weights(...)
 }

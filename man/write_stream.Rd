@@ -18,6 +18,20 @@ write_stream(
   write_outliers = FALSE,
   ...
 )
+
+\method{write_stream}{DSD}(
+  dsd,
+  file,
+  n = 100,
+  block = 100000L,
+  class = FALSE,
+  append = FALSE,
+  sep = ",",
+  header = FALSE,
+  row.names = FALSE,
+  write_outliers = FALSE,
+  ...
+)
 }
 \arguments{
 \item{dsd}{The DSD object that will generate the data points for output.}
@@ -63,8 +77,29 @@ file.remove("data.txt")
 
 }
 \seealso{
-\code{\link{write.table}}, \code{\link{DSD}}
+\code{\link{write.table}}
+
+Other DSD: 
+\code{\link{DSD_BarsAndGaussians}()},
+\code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Cubes}()},
+\code{\link{DSD_Gaussians}()},
+\code{\link{DSD_MG}()},
+\code{\link{DSD_Memory}()},
+\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ScaleStream}()},
+\code{\link{DSD_Target}()},
+\code{\link{DSD_UniformNoise}()},
+\code{\link{DSD_mlbenchData}()},
+\code{\link{DSD_mlbenchGenerator}()},
+\code{\link{DSD}()},
+\code{\link{animate}},
+\code{\link{get_points}()},
+\code{\link{plot}()},
+\code{\link{reset_stream}()}
 }
 \author{
 Michael Hahsler, Dalibor Krleža
 }
+\concept{DSD}

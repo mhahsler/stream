@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSC.R
 \name{DSC}
 \alias{DSC}
-\alias{DSC_R}
+\alias{update.DSC}
 \alias{get_centers}
 \alias{get_weights}
 \alias{get_copy}
@@ -14,6 +14,8 @@
 \title{Data Stream Clusterer Base Classes}
 \usage{
 DSC(...)
+
+\method{update}{DSC}(object, dsd, n = 1, ...)
 
 get_centers(x, type = c("auto", "micro", "macro"), ...)
 
@@ -34,7 +36,11 @@ nclusters(x, type = c("auto", "micro", "macro"), ...)
 \arguments{
 \item{...}{further parameter}
 
-\item{x}{a DSC object.}
+\item{dsd}{a data stream object.}
+
+\item{n}{number of data points taken from the stream.}
+
+\item{x, object}{a DSC object.}
 
 \item{type}{Return weights of micro- or macro-clusters in x.  Auto uses the
 class of x to decide.}
@@ -47,7 +53,8 @@ Abstract base classes for all DSC (Data Stream Clusterer) and DSC_R classes.
 Concrete implementations are functions starting with \code{DSC_} (R Studio use auto-completion with Tab to select one).
 }
 \details{
-The \verb{DSC\} and }DSC_R\verb{classes cannot be instantiated (calling}DSC()\code{or}DSC_R()` produces only a message listing the available implementations),
+The \code{DSC} and \code{DSC_R} classes cannot be instantiated (calling
+\code{DSC()} or \code{DSC_R()} produces only a message listing the available implementations),
 but they serve as a base
 class from which other DSC classes inherit.
 
@@ -61,7 +68,7 @@ Additional, separately documented functions are:
 }
 
 \code{get_centers} and \code{get_weights} are typically overwritten by
-subclasses of \code{DSC}. \code{DSC_R} provides these functions for R-based
+subclasses of \code{DSC}. \link{DSC_R} provides these functions for R-based
 DSC implementations.
 
 Since \code{DSC} objects often contain external pointers, regular saving and
@@ -108,15 +115,36 @@ get_weights(dstream)
 # D-Stream also has macro-clusters
 get_weights(dstream, type="macro")
 
-
 }
 \seealso{
-\link{DSC_Micro}, \link{DSC_Macro}, \link{animate_cluster}, \link{update},
-\link{evaluate}, \link{get_assignment},
-\link{microToMacro},
-\link{plot}, \link{prune_clusters},
-\link{recluster}, \link{readDSC}, \link{saveDSC}
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{animate}},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSC}

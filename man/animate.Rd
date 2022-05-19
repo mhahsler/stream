@@ -92,13 +92,61 @@ animate_cluster(dbstream, stream, horizon=100, n=5000,
   measure="crand", type="macro", assign="micro", noise = "exclude",
   plot.args = list(xlim=c(0,1), ylim=c(0,1), shared = TRUE))
 }
-
 }
 \seealso{
 \code{\link{evaluate_cluster}} for stream evaluation without
 animation.  See \code{\link[animation]{ani.replay}} for replaying and saving
 animations.
+
+Other DSD: 
+\code{\link{DSD_BarsAndGaussians}()},
+\code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Cubes}()},
+\code{\link{DSD_Gaussians}()},
+\code{\link{DSD_MG}()},
+\code{\link{DSD_Memory}()},
+\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ScaleStream}()},
+\code{\link{DSD_Target}()},
+\code{\link{DSD_UniformNoise}()},
+\code{\link{DSD_mlbenchData}()},
+\code{\link{DSD_mlbenchGenerator}()},
+\code{\link{DSD}()},
+\code{\link{get_points}()},
+\code{\link{plot}()},
+\code{\link{reset_stream}()},
+\code{\link{write_stream}()}
+
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSC}
+\concept{DSD}

@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,16 +18,35 @@
 
 ## extract the description field for stream objects
 
+
+#' @describeIn DST Get a description of the task.
+#' @export
+description <- function(x, ...)
+  UseMethod("description")
+
+description.default <- function(x, ...)
+  stop("description() not implemented for this class")
+
+
 .desc <- function(x) {
-  if(is.list(x) && !is.null(x$description) && is.character(x$description))
+  if (is.list(x) &&
+      !is.null(x$description) && is.character(x$description))
     x$description
-  else stop("This object does not have a description field!")
+  else
+    stop("This object does not have a description field!")
 }
 
-description <- function(x, ...) UseMethod("description")
+#' @rdname DST
+#' @export
+description.DSC <- function(x, ...)
+  .desc(x)
 
-description.default <- function(x, ...) 
-  stop("description() not implemented for this class")
-description.DSC <- function(x, ...) .desc(x) 
-description.DSD <- function(x, ...) .desc(x)
-description.DSO <- function(x, ...) .desc(x)
+#' @rdname DST
+#' @export
+description.DSD <- function(x, ...)
+  .desc(x)
+
+#' @rdname DST
+#' @export
+description.DSO <- function(x, ...)
+  .desc(x)

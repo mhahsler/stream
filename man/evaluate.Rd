@@ -5,7 +5,6 @@
 \alias{evaluate_with_callbacks}
 \alias{evaluate_cluster}
 \alias{evaluate_cluster_with_callbacks}
-\alias{print.stream_eval}
 \title{Evaluate Clusterings}
 \usage{
 evaluate(
@@ -153,8 +152,9 @@ maximum average within cluster dissimilarity (\pkg{fpc}) \item
 (\pkg{fpc}) \item \code{"wb.ratio"} average.within/average.between
 (\pkg{fpc}) }
 
-The following external evaluation measures are available: \itemize{ \item
-\code{"precision"}, \code{"recall"}, \code{"F1"} F1.  A true positive (TP)
+The following external evaluation measures are available: \itemize{
+
+\item \code{"precision"}, \code{"recall"}, \code{"F1"} F1.  A true positive (TP)
 decision assigns two points in the same true cluster also to the same
 cluster, a true negative (TN) decision assigns two points from two different
 true clusters to two different clusters.  A false positive (FP) decision
@@ -170,23 +170,49 @@ The F1 measure is the harmonic mean of precision and recall.
 
 \item \code{"purity"} Average purity of clusters. The purity of each cluster
 is the proportion of the points of the majority true group assigned to it
-(see Cao et al. (2006)) \% \item \code{"classPurity"} (of real clusters; see
-Wan et al (2009)), \% \item \code{"fpr"} false positive rate, \item
+(see Cao et al. (2006)) \%
+
+\item \code{"classPurity"} (of real clusters; see
+Wan et al (2009)), \%
+
+\item \code{"fpr"} false positive rate, \item
 \code{"Euclidean"} Euclidean dissimilarity of the memberships (see
-Dimitriadou, Weingessel and Hornik (2002)) (\pkg{clue}) \item
-\code{"Manhattan"} Manhattan dissimilarity of the memberships (\pkg{clue})
-\item \code{"Rand"} Rand index (see Rand (1971)) (\pkg{clue}) \item
-\code{"cRand"} Adjusted Rand index (see Hubert and Arabie (1985))
-(\pkg{clue}) \item \code{"NMI"} Normalized Mutual Information (see Strehl
-and Ghosh (2002)) (\pkg{clue}) \item \code{"KP"} Katz-Powell index (see Katz
-and Powell (1953)) (\pkg{clue}) \item \code{"angle"} maximal cosine of the
-angle between the agreements (\pkg{clue}) \item \code{"diag"} maximal
-co-classification rate (\pkg{clue}) \item \code{"FM"} Fowlkes and Mallows's
-index (see Fowlkes and Mallows (1983)) (\pkg{clue}) \item \code{"Jaccard"}
-Jaccard index (\pkg{clue}) \item \code{"PS"} Prediction Strength (see
-Tibshirani and Walter (2005)) (\pkg{clue}) \% \item \code{"corrected.rand"}
-corrected Rand index (\pkg{fpc}) \item \code{"vi"} variation of information
-(VI) index (\pkg{fpc}) }
+Dimitriadou, Weingessel and Hornik (2002)) (\pkg{clue})
+
+\item \code{"Manhattan"} Manhattan dissimilarity of the memberships (\pkg{clue})
+
+\item \code{"Rand"} Rand index (see Rand (1971)) (\pkg{clue})
+
+\item \code{"cRand"} Adjusted Rand index (see Hubert and Arabie (1985))
+(\pkg{clue})
+
+\item \code{"NMI"} Normalized Mutual Information (see Strehl
+and Ghosh (2002)) (\pkg{clue})
+
+\item \code{"KP"} Katz-Powell index (see Katz
+and Powell (1953)) (\pkg{clue})
+
+\item \code{"angle"} maximal cosine of the
+angle between the agreements (\pkg{clue})
+
+\item \code{"diag"} maximal
+co-classification rate (\pkg{clue})
+
+\item \code{"FM"} Fowlkes and Mallows's
+index (see Fowlkes and Mallows (1983)) (\pkg{clue})
+
+\item \code{"Jaccard"}
+Jaccard index (\pkg{clue})
+
+\item \code{"PS"} Prediction Strength (see
+Tibshirani and Walter (2005)) (\pkg{clue}) \%
+
+\item \code{"corrected.rand"}
+corrected Rand index (\pkg{fpc})
+
+\item \code{"vi"} variation of information
+(VI) index (\pkg{fpc})
+}
 
 Many measures are the average over all clusters. For example, purity is the
 average purity over all clusters.
@@ -345,7 +371,35 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 \code{\link{animate_cluster}}, \code{\link[clue]{cl_agreement}} in
 \pkg{clue}, \code{\link[fpc]{cluster.stats}} in \pkg{fpc},
 \code{\link[cluster]{silhouette}} in \pkg{cluster}.
+
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Static}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{animate}},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler, Matthew Bolanos, John Forrest, and Dalibor Krleža
 }
+\concept{DSC}

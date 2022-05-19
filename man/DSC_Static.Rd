@@ -39,12 +39,12 @@ dstream <- DSC_DStream(gridsize=0.05)
 update(dstream, stream, 500)
 dstream
 plot(dstream, stream)
-  
+
 # create a static copy of the clustering
 static <- DSC_Static(dstream)
 static
 plot(static, stream)
-  
+
 # copy only the 5 largest clusters
 static2 <- DSC_Static(dstream, k_largest=5)
 static2
@@ -58,7 +58,35 @@ plot(static3, stream)
 }
 \seealso{
 \code{\link{DSC}}, \code{\link{DSC_Micro}}, \code{\link{DSC_Macro}}
+
+Other DSC: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSCAN}()},
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_EA}()},
+\code{\link{DSC_Hierarchical}()},
+\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_R}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()},
+\code{\link{DSC}()},
+\code{\link{animate}},
+\code{\link{evaluate}()},
+\code{\link{get_assignment}()},
+\code{\link{microToMacro}()},
+\code{\link{plot}()},
+\code{\link{prune_clusters}()},
+\code{\link{read_saveDSC}},
+\code{\link{recluster}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSC}

@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,17 +18,19 @@
 
 
 #' Kmeans Macro-clusterer
-#' 
+#'
 #' Macro Clusterer.
 #' Class implements the k-means algorithm for reclustering a set of
 #' micro-clusters.
-#' 
+#'
 #' Please refer to function \code{kmeans} in \pkg{stats} for more details on
 #' the algorithm.
-#' 
+#'
 #' Note that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
-#' 
+#'
+#' @family DSC
+#'
 #' @param k either the number of clusters, say k, or a set of initial
 #' (distinct) cluster centers. If a number, a random set of (distinct) rows in
 #' x is chosen as the initial centers.
@@ -45,36 +47,36 @@
 #' @author Michael Hahsler
 #' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
 #' @examples
-#' 
+#'
 #' stream <- DSD_Gaussians(k=3, noise=0)
-#' 
+#'
 #' # create micro-clusters via sampling
 #' sample <- DSC_Sample(k=20)
 #' update(sample, stream, 500)
 #' sample
-#'   
+#'
 #' # recluster micro-clusters
 #' kmeans <- DSC_Kmeans(k=3)
 #' recluster(kmeans, sample)
 #' plot(kmeans, stream, type="both")
-#' 
+#'
 #' # For comparison we use k-means directly to cluster data
 #' # Note: k-means is not a data stream clustering algorithm
 #' kmeans <- DSC_Kmeans(k=3)
 #' update(kmeans, stream, 500)
 #' plot(kmeans, stream)
-#' 
-#' @export DSC_Kmeans
+#'
+#' @export
 DSC_Kmeans <- function(k, weighted = TRUE, iter.max = 10, nstart = 1,
   algorithm = c("Hartigan-Wong", "Lloyd", "Forgy",
-    "MacQueen"), 
+    "MacQueen"),
   min_weight = NULL, description=NULL) {
-  
+
   algorithm <- match.arg(algorithm)
   if(!is.null(description)) desc <- description
   else if(weighted) desc <- "k-Means (weighted)"
   else desc <-"k-Means"
-  
+
   structure(list(description = desc,
     RObj = kmeans_refClass$new(
       k=k, weighted=weighted, iter.max = iter.max, nstart = nstart,
@@ -83,7 +85,7 @@ DSC_Kmeans <- function(k, weighted = TRUE, iter.max = 10, nstart = 1,
 }
 
 
-kmeans_refClass <- setRefClass("kmeans", 
+kmeans_refClass <- setRefClass("kmeans",
   fields = list(
     k	    = "numeric",
     weighted = "logical",
@@ -97,62 +99,62 @@ kmeans_refClass <- setRefClass("kmeans",
     clusterWeights = "numeric",
     details      = "ANY",
     min_weight   = "numeric"
-  ), 
-  
+  ),
+
   methods = list(
     initialize = function(
       k      = 3,
       weighted = TRUE,
       iter.max    = 10,
       nstart	    = 1,
-      algorithm   = c("Hartigan-Wong", "Lloyd", 
+      algorithm   = c("Hartigan-Wong", "Lloyd",
         "Forgy","MacQueen"),
       min_weight = NULL
     ) {
-      
-      k  	<<- k 
+
+      k  	<<- k
       weighted <<- weighted
-      iter.max	<<- iter.max 
+      iter.max	<<- iter.max
       nstart	<<- nstart
       algorithm   <<- match.arg(algorithm)
-      assignment	<<- numeric() 
-      weights	<<- numeric() 
-      clusterWeights <<- numeric() 
+      assignment	<<- numeric()
+      weights	<<- numeric()
+      clusterWeights <<- numeric()
       clusterCenters <<- data.frame()
       data	<<- data.frame()
-      
+
       if(is.null(min_weight)) min_weight <<- 0
       else min_weight <<- min_weight
-      
+
       .self
     }
-    
+
   ),
 )
 
 kmeans_refClass$methods(
   cluster = function(x, weight = rep(1,nrow(x)), ...) {
-    
-  #  if(nrow(x)==1) 
+
+  #  if(nrow(x)==1)
   #    warning("DSC_Kmeans does not support iterative updating! Old data is overwritten.")
-    
+
     ### filter weak clusters
     if(min_weight>0) {
       x <- x[weight>min_weight,]
       weight <- weight[weight>min_weight]
     }
-    
-    
+
+
     weights <<- weight
     data <<- x
-    
+
     if(nrow(data)>k) {
-      if(weighted) km <- kmeansW(x=data, weight=weights, centers=k, 
+      if(weighted) km <- kmeansW(x=data, weight=weights, centers=k,
         iter.max = iter.max, nstart = nstart)
-      else km <- kmeans(x=data, centers=k, 
+      else km <- kmeans(x=data, centers=k,
         iter.max = iter.max, nstart = nstart,
         algorithm = algorithm)
-      
+
       assignment <<- km$cluster
       clusterCenters <<- data.frame(km$centers)
       details <<- km
@@ -161,22 +163,22 @@ kmeans_refClass$methods(
       clusterCenters <<- x
       details <<- NULL
     }
-    
+
     clusterWeights <<- sapply(1:k, FUN =
         function(i) sum(weights[assignment==i]))
-    
+
   },
-  
+
   get_macroclusters = function(...) { clusterCenters },
   get_macroweights = function(...) { clusterWeights },
-  
+
   get_microclusters = function(...) { data },
   get_microweights = function(x) { weights },
-  
-  microToMacro = function(micro=NULL, ...){ 
+
+  microToMacro = function(micro=NULL, ...){
     if(is.null(micro)) micro <- 1:nrow(data)
     structure(assignment[micro], names=micro)
-  }  
+  }
 )
 
 

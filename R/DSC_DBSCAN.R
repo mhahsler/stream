@@ -33,6 +33,9 @@
 #' Note that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
+#' @aliases DBSCAN dbscan
+#' @family DSC
+#'
 #' @param eps radius of the eps-neighborhood.
 #' @param MinPts minimum number of points required in the eps-neighborhood.
 #' @param weighted logical indicating if a weighted version of DBSCAN should be
@@ -67,8 +70,7 @@
 #' dbscan <- DSC_DBSCAN(eps = .05)
 #' update(dbscan, stream, 500)
 #' plot(dbscan, stream)
-#'
-#' @export DSC_DBSCAN
+#' @export
 DSC_DBSCAN <-
   function(eps,
     MinPts = 5,
