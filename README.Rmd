@@ -8,9 +8,15 @@ options(digits = 2)
 knitr::opts_chunk$set(tidy = TRUE, message = FALSE, fig.path = 'inst/README_files/')
 ```
 
-[![CRAN version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
-[![stream status badge](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
+```{r echo=FALSE, results = 'asis'}
+pkg <- 'stream'
+
+library(stringr)
+
+  cat(str_interp("[![CRAN version](http://www.r-pkg.org/badges/version/${pkg})](https://CRAN.R-project.org/package=${pkg})\n"))
+  cat(str_interp("[![stream r-universe status](https://mhahsler.r-universe.dev/badges/${pkg})](https://mhahsler.r-universe.dev/ui#package:${pkg})\n"))
+  cat(str_interp("[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/${pkg})](https://CRAN.R-project.org/package=${pkg})\n"))
+```
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
 experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides

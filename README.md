@@ -2,11 +2,11 @@ R package stream - Infrastructure for Data Stream Mining
 ================
 
 [![CRAN
-version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
-[![stream status
-badge](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev)
+version](http://www.r-pkg.org/badges/version/stream)](https://CRAN.R-project.org/package=stream)
+[![stream r-universe
+status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev/ui#package:stream)
 [![CRAN RStudio mirror
-downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
+downloads](http://cranlogs.r-pkg.org/badges/stream)](https://CRAN.R-project.org/package=stream)
 
 The package provides support for modeling and simulating data streams as
 well as an extensible framework for implementing, interfacing and
