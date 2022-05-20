@@ -9,8 +9,8 @@ knitr::opts_chunk$set(tidy = TRUE, message = FALSE, fig.path = 'inst/README_file
 ```
 
 [![CRAN version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
+[![stream status badge](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
-[![R-CMD-check](https://github.com/mhahsler/stream/workflows/R-CMD-check/badge.svg)](https://github.com/mhahsler/stream/actions)
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
 experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides
@@ -22,7 +22,7 @@ Additional packages in the stream family are:
   algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
   Includes implementations of **DenStream**, **ClusTree** and **CluStream**.
 
-The development of the stream package was supported in part by NSF IIS-0948893 and NIH R21HG005912.
+The development of the stream package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 ## Installation
 
@@ -31,12 +31,7 @@ __Stable CRAN version:__ install from within R with
 ```{r eval=FALSE}
 install.packages("stream")
 ```
-__Current development version:__ Install from GitHub (needs devtools and a installed R development environment).
-
-```{r eval=FALSE}
-devtools::install_github("mhahsler/stream")
-```
-
+__Current development version:__ Install from [r-universe.](https://mhahsler.r-universe.dev/ui#package:stream)
 
 
 ## Usage

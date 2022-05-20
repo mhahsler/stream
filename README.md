@@ -3,9 +3,10 @@ R package stream - Infrastructure for Data Stream Mining
 
 [![CRAN
 version](http://www.r-pkg.org/badges/version/stream)](https://cran.r-project.org/package=stream)
+[![stream status
+badge](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev)
 [![CRAN RStudio mirror
 downloads](http://cranlogs.r-pkg.org/badges/stream)](https://cran.r-project.org/package=stream)
-[![R-CMD-check](https://github.com/mhahsler/stream/workflows/R-CMD-check/badge.svg)](https://github.com/mhahsler/stream/actions)
 
 The package provides support for modeling and simulating data streams as
 well as an extensible framework for implementing, interfacing and
@@ -23,7 +24,7 @@ Additional packages in the stream family are:
     implementations of **DenStream**, **ClusTree** and **CluStream**.
 
 The development of the stream package was supported in part by NSF
-IIS-0948893 and NIH R21HG005912.
+IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 ## Installation
 
@@ -33,12 +34,8 @@ IIS-0948893 and NIH R21HG005912.
 install.packages("stream")
 ```
 
-**Current development version:** Install from GitHub (needs devtools and
-a installed R development environment).
-
-``` r
-devtools::install_github("mhahsler/stream")
-```
+**Current development version:** Install from
+[r-universe](https://mhahsler.r-universe.dev/ui#package:stream)
 
 ## Usage
 
@@ -53,7 +50,7 @@ stream <- DSD_Gaussians(k = 3, noise = 0.1)
 plot(stream)
 ```
 
-![](inst/README_files/unnamed-chunk-4-1.png)<!-- -->
+![](inst/README_files/unnamed-chunk-3-1.png)<!-- -->
 
 Cluster a stream of 1000 points using D-Stream.
 
