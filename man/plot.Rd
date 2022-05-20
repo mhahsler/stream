@@ -35,9 +35,9 @@
 )
 }
 \arguments{
-\item{x}{the DSD or DSC object to be plotted.}
+\item{x}{the \link{DSD} or \link{DSC} object to be plotted.}
 
-\item{dsd}{a DSD object to plot the data in the background.}
+\item{dsd}{a \link{DSD} object to plot the data in the background if \code{x} is a \link{DSC}.}
 
 \item{n}{number of plots taken from the dsd to plot.}
 
@@ -50,22 +50,22 @@ represents its weight.}
 
 \item{pch}{symbol type.}
 
-\item{method}{method used for plotting: "pairs" (pairs plot), "scatter"
-(scatter plot) or "pc" (plot first 2 principal components).}
+\item{method}{method used for plotting: \code{"pairs"} (pairs plot), \code{"scatter"}
+(scatter plot), \code{"pca"} (plot first 2 principal components), or \code{"ts"} (time series).}
 
 \item{dim}{an integer vector with the dimensions to plot. If \code{NULL}
-then for methods \code{"pairs"} and \code{"pc"} all dimensions are used and
+then for methods \code{pairs} and \code{"pca"} all dimensions are used and
 for \code{"scatter"} the first two dimensions are plotted.}
 
-\item{type}{Plot micro clusters (\code{type="micro"}), macro clusters
-(\code{type="macro"}), both micro and macro clusters (\code{type="both"}),
-outliers(\code{type="outliers"}), or everything together
-(\code{type="all"}). \code{type="auto"} leaves to the class of DSC to
+\item{type}{Plot micro clusters (\code{type = "micro"}), macro clusters
+(\code{type = "macro"}), both micro and macro clusters (\code{type = "both"}),
+outliers(\code{type = "outliers"}), or everything together
+(\code{type = "all"}). \code{type = "auto"} leaves to the class of DSC to
 decide.}
 
 \item{assignment}{logical; show assignment area of micro-clusters.}
 
-\item{\dots}{further arguments are passed on to plot or pairs in
+\item{\dots}{further arguments are passed on to \link{plot} or \link{pairs} in
 \pkg{graphics}.}
 
 \item{col, col_points, col_clusters}{colors used for plotting.}
@@ -76,12 +76,11 @@ decide.}
 Methods to plot data stream data and clusterings.
 }
 \examples{
-
 stream <- DSD_Gaussians(k=3, d=3)
 
 ## plot data
 plot(stream, n=500)
-plot(stream, method="pc", n=500)
+plot(stream, method="pca", n=500)
 plot(stream, method="scatter", dim=c(1,3), n=500)
 
 ## create and plot micro-clusters

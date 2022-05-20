@@ -26,6 +26,7 @@
 #' @family DSF
 #'
 #' @param dsd A object of class [DSD] that will be scaled.
+#' @param dim integer vector; what dimensions should be scaled? Default is all.
 #' @param center,scale logical or a numeric vector of length equal to the
 #' number of columns used for centering/scaling (see function [scale]).
 #' @param n The number of points used by `scale_stream()` to creating the centering/scaling
@@ -35,7 +36,7 @@
 #' @author Michael Hahsler
 #' @seealso [scale] in \pkg{base}
 #' @examples
-#' stream <- DSD_Gaussians(k=3, d=3)
+#' stream <- DSD_Gaussians(k = 3, d = 2)
 #' plot(stream)
 #'
 #' # scale stream using 100 points
@@ -43,9 +44,14 @@
 #' stream_scaled
 #'
 #' plot(stream_scaled)
+#'
+#' ## scale only the first column
+#' stream_scaled <- DSF_Scale(stream, dim = 1, n = 100)
+#' plot(stream_scaled)
 #' @export
 DSF_Scale <-
   function(dsd,
+    dim = NULL,
     center = TRUE,
     scale = TRUE,
     n = 1000,
@@ -54,6 +60,7 @@ DSF_Scale <-
     l <- list(
       description = paste0(dsd$description, "\n\t - scaled"),
       dsd = dsd,
+      dim = dim,
       d = dsd$d,
       k = dsd$k,
       o = dsd$o,
@@ -114,7 +121,10 @@ get_points.DSF_Scale <- function(x,
   }
 
   # scale
-  d <- as.data.frame(scale(d, center = x$center, scale = x$scale))
+  if (is.null(x$dim))
+    d <- as.data.frame(scale(d, center = x$center, scale = x$scale))
+  else
+    d[, x$dim] <- as.data.frame(scale(d[, x$dim], center = x$center, scale = x$scale))
 
   if (cluster)
     attr(d, "cluster") <- cl
@@ -133,12 +143,17 @@ scale_stream <-
     center = TRUE,
     scale = TRUE,
     reset = FALSE) {
-    sc <- scale(get_points(dsd, n = n), center = center, scale = scale)
+
+    if (is.null(dsd$dim))
+      sc <- scale(get_points(dsd, n = n), center = center, scale = scale)
+    else
+      sc <- scale(get_points(dsd, n = n)[, dsd$dim, drop = FALSE], center = center, scale = scale)
+
     dsd$center <- attr(sc, "scaled:center")
     if (is.null(dsd$center))
       dsd$center <- center
-    dsd$scale <- attr(sc, "scaled:scale")
 
+    dsd$scale <- attr(sc, "scaled:scale")
     if (is.null(dsd$scale))
       dsd$scale <- scale
     else

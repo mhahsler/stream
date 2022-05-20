@@ -9,11 +9,11 @@ DSO_Window(horizon = 100, lambda = 0)
 \arguments{
 \item{horizon}{the window length.}
 
-\item{lambda}{decay factor damped window model. \code{lambda=0} means no
+\item{lambda}{decay factor damped window model. \code{lambda = 0} means no
 dampening.}
 }
 \value{
-An object of class \code{DSO_Window} (subclass of \link{DSO}.
+An object of class \code{DSO_Window} (subclass of \link{DSO}).
 }
 \description{
 Implements a sliding window data stream operator which keeps a fixed amount
@@ -25,18 +25,19 @@ model (Zhu and Shasha, 2002).  The weight for points in the window follows
 \eqn{2^(-lambda*t)} where \eqn{t} is the age of the point.
 }
 \examples{
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
-stream <- DSD_Gaussians(k=3, d=2, noise=0.05)
-
-window <- DSO_Window(horizon=100)
+window <- DSO_Window(horizon = 10)
 window
 
-update(window, stream, 200)
-window
+update(window, stream, 2)
+get_points(window)
+
+update(window, stream, 100)
+get_points(window)
 
 # plot points in window
 plot(get_points(window))
-
 }
 \references{
 Zhu, Y. and Shasha, D. (2002). StatStream: Statistical

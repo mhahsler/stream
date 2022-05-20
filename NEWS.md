@@ -3,7 +3,7 @@
 ## Changes
 * New base class DSF for data stream Filters.
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
-* New DSF: DSF_Downsample
+* New DSF: DSF_Downsample, DSF_Filter
 * The NAMESPACE is now managed using roxygen.
 
 # stream 1.5-1 (05/09/22)

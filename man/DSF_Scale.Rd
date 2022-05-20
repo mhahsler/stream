@@ -5,12 +5,28 @@
 \alias{DSD_ScaleStream}
 \title{Scale a Data Stream}
 \usage{
-DSF_Scale(dsd, center = TRUE, scale = TRUE, n = 1000, reset = FALSE)
+DSF_Scale(
+  dsd,
+  dim = NULL,
+  center = TRUE,
+  scale = TRUE,
+  n = 1000,
+  reset = FALSE
+)
 
-DSD_ScaleStream(dsd, center = TRUE, scale = TRUE, n = 1000, reset = FALSE)
+DSD_ScaleStream(
+  dsd,
+  dim = NULL,
+  center = TRUE,
+  scale = TRUE,
+  n = 1000,
+  reset = FALSE
+)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD} that will be scaled.}
+
+\item{dim}{integer vector; what dimensions should be scaled? Default is all.}
 
 \item{center, scale}{logical or a numeric vector of length equal to the
 number of columns used for centering/scaling (see function \link{scale}).}
@@ -36,7 +52,7 @@ Make an unscaled data stream into a scaled data stream.
 }
 
 \examples{
-stream <- DSD_Gaussians(k=3, d=3)
+stream <- DSD_Gaussians(k = 3, d = 2)
 plot(stream)
 
 # scale stream using 100 points
@@ -44,12 +60,17 @@ stream_scaled <- DSF_Scale(stream, n=100)
 stream_scaled
 
 plot(stream_scaled)
+
+## scale only the first column
+stream_scaled <- DSF_Scale(stream, dim = 1, n = 100)
+plot(stream_scaled)
 }
 \seealso{
 \link{scale} in \pkg{base}
 
 Other DSF: 
 \code{\link{DSF_Downsample}()},
+\code{\link{DSF_Filter}()},
 \code{\link{DSF}()}
 }
 \author{

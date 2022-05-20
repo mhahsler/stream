@@ -222,7 +222,7 @@ get_points.DSD_Memory <- function(x,
   ### handle missing cluster/class info
   if ((cluster ||
       class) && is.null(a))
-    a <- rep(NA_integer_, nrow(d))
+    a <- rep(1L, nrow(d))
   if (cluster)
     attr(d, "cluster") <- a
   if (outlier)

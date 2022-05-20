@@ -188,10 +188,10 @@ reset_stream.DSD <- function(dsd, pos = 1) {
 print.DSD <- function(x, ...) {
   .nodots(...)
 
-  k <- x$k
+  k <- x[["k"]]
   if (is.null(k))
     k <- NA
-  d <- x$d
+  d <- x[["d"]]
   if (is.null(d))
     d <- NA
   o <- x$o
