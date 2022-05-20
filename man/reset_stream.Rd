@@ -30,7 +30,7 @@ underlying connection.
 \item \link{DSD_MG}
 \item \link{DSD_Memory}
 \item \link{DSD_ReadCSV}
-\item \link{DSF_ScaleStream}
+\item \link{DSF}
 }
 }
 \examples{

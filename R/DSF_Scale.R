@@ -31,7 +31,7 @@
 #' @param n The number of points used by `scale_stream()` to creating the centering/scaling
 #' @param reset Try to reset the stream to its beginning after taking `n`
 #' points for scaling.
-#' @return An object of class `DSF_ScaleStream` (subclass of [DSF] and [DSD]).
+#' @return An object of class `DSF_Scale` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @seealso [scale] in \pkg{base}
 #' @examples
@@ -39,12 +39,12 @@
 #' plot(stream)
 #'
 #' # scale stream using 100 points
-#' stream_scaled <- DSF_ScaleStream(stream, n=100)
+#' stream_scaled <- DSF_Scale(stream, n=100)
 #' stream_scaled
 #'
 #' plot(stream_scaled)
 #' @export
-DSF_ScaleStream <-
+DSF_Scale <-
   function(dsd,
     center = TRUE,
     scale = TRUE,
@@ -52,7 +52,7 @@ DSF_ScaleStream <-
     reset = FALSE) {
     # creating the DSD object
     l <- list(
-      description = paste(dsd$description, "(scaled)"),
+      description = paste0(dsd$description, "\n\t - scaled"),
       dsd = dsd,
       d = dsd$d,
       k = dsd$k,
@@ -61,7 +61,7 @@ DSF_ScaleStream <-
       scale = FALSE
     )
     class(l) <-
-      c("DSF_ScaleStream", "DSD_R", "DSD_data.frame", "DSD")
+      c("DSF_Scale", "DSF", "DSD_R", "DSD_data.frame", "DSD")
 
     l <- scale_stream(
       l,
@@ -75,13 +75,16 @@ DSF_ScaleStream <-
   }
 
 ### Deprecated
+#' @rdname DSF_Scale
+#' @section Deprecated:
+#' `DSD_ScaleStream` is deprecated. Use `DSF_Scale` instead.
 #' @export
-DSD_ScaleStream <- DSF_ScaleStream
+DSD_ScaleStream <- DSF_Scale
 
 ## it is important that the connection is OPEN
 
 #' @export
-get_points.DSF_ScaleStream <- function(x,
+get_points.DSF_Scale <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
   cluster = FALSE,
@@ -122,12 +125,6 @@ get_points.DSF_ScaleStream <- function(x,
 
   d
 }
-
-#' @export
-reset_stream.DSF_ScaleStream <- function(dsd, pos = 1) {
-  reset_stream(dsd$dsd, pos = pos)
-}
-
 
 # internal
 scale_stream <-

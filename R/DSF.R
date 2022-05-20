@@ -36,3 +36,11 @@
 #' @export DSF
 DSF <- abstract_class_generator("DSF")
 
+#' @describeIn DSF reset the attached stream.
+#' @param dsd a stream object of class [DSD].
+#' @param pos position in the stream.
+#' @export
+reset_stream.DSF <- function(dsd, pos = 1) {
+  reset_stream(dsd$dsd, pos = pos)
+}
+

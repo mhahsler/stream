@@ -16,17 +16,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-
-
 #' Read a Data Stream from an open DB Query
 #'
 #' A DSD class that reads a data stream from an open DB result set from a
 #' relational database with using R's data base interface (DBI).
 #'
 #' This class provides a streaming interface for result sets from a data base
-#' with via [DBI]. You need to connect to the data base and submit a SQL
-#' query using [dbGetQuery()] to obtain a result set. Make sure that your
+#' with via [DBI::DBI]. You need to connect to the data base and submit a SQL
+#' query using [DBI::dbGetQuery()] to obtain a result set. Make sure that your
 #' query only includes the columns that should be included in the stream
 #' (including class and outlier marking columns). Do not forget to close the
 #' result set and the data base connection.
@@ -39,10 +36,10 @@
 #' @param class column index for the class/cluster assignment.
 #' @param outlier column index for the outlier mark.
 #' @param description a character string describing the data.
-#' @return An object of class \code{DSD_ReadDB} (subclass of  [DSD_R],
+#' @return An object of class `DSD_ReadDB` (subclass of  [DSD_R],
 #' [DSD]).
 #' @author Michael Hahsler, Dalibor Krleža
-#' @seealso [dbGetQuery()]
+#' @seealso [DBI::dbGetQuery()]
 #' @examples
 #'
 #' ### create a data base with a table with 3 Gaussians

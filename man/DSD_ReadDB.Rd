@@ -36,8 +36,8 @@ relational database with using R's data base interface (DBI).
 }
 \details{
 This class provides a streaming interface for result sets from a data base
-with via \link{DBI}. You need to connect to the data base and submit a SQL
-query using \code{\link[=dbGetQuery]{dbGetQuery()}} to obtain a result set. Make sure that your
+with via \link[DBI:DBI-package]{DBI::DBI}. You need to connect to the data base and submit a SQL
+query using \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}} to obtain a result set. Make sure that your
 query only includes the columns that should be included in the stream
 (including class and outlier marking columns). Do not forget to close the
 result set and the data base connection.
@@ -73,7 +73,7 @@ dbDisconnect(con)
 
 }
 \seealso{
-\code{\link[=dbGetQuery]{dbGetQuery()}}
+\code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}}
 
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},

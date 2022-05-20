@@ -2,12 +2,19 @@
 % Please edit documentation in R/DSF.R
 \name{DSF}
 \alias{DSF}
+\alias{reset_stream.DSF}
 \title{Data Stream Filter Base Classes}
 \usage{
 DSF(...)
+
+\method{reset_stream}{DSF}(dsd, pos = 1)
 }
 \arguments{
 \item{...}{Further arguments.}
+
+\item{dsd}{a stream object of class \link{DSD}.}
+
+\item{pos}{position in the stream.}
 }
 \description{
 Abstract base classes for all data stream filter (DSF) classes. Data stream filters transform a data stream (\link{DSD}).
@@ -19,12 +26,18 @@ class from which other DSF classes inherit.
 Data stream filters transform a \link{DSD} data stream.
 DSF implementations inherit from \link{DSD} and have the same basic interface.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{reset_stream}: reset the attached stream.
+}}
+
 \examples{
 DSF()
 }
 \seealso{
 Other DSF: 
-\code{\link{DSF_ScaleStream}()}
+\code{\link{DSF_Downsample}()},
+\code{\link{DSF_Scale}()}
 }
 \author{
 Michael Hahsler
