@@ -35,7 +35,7 @@ install.packages("stream")
 ```
 
 **Current development version:** Install from
-[r-universe](https://mhahsler.r-universe.dev/ui#package:stream)
+[r-universe.](https://mhahsler.r-universe.dev/ui#package:stream)
 
 ## Usage
 
@@ -50,7 +50,7 @@ stream <- DSD_Gaussians(k = 3, noise = 0.1)
 plot(stream)
 ```
 
-![](inst/README_files/unnamed-chunk-3-1.png)<!-- -->
+![](inst/README_files/stream-1.png)<!-- -->
 
 Cluster a stream of 1000 points using D-Stream.
 
