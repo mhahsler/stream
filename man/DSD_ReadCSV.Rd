@@ -53,31 +53,31 @@ read data.}
 \item{colClasses}{A vector of classes to be assumed for the columns passed
 on to \code{read.table}.}
 
-\item{...}{Further arguments are passed on to \code{read.table}.  This can
+\item{...}{Further arguments are passed on to \link{read.table}.  This can
 for example be used for encoding, quotes, etc.}
 
 \item{dsd}{A object of class \code{DSD_ReadCSV}.}
 }
 \value{
-An object of class \code{DSD_ReadCSV} (subclass of \code{DSD_R},
+An object of class \code{DSD_ReadCSV} (subclass of \link{DSD_R},
 \code{DSD}).
 }
 \description{
 A DSD class that reads a data stream from a file or any R connection.
 }
 \details{
-\code{DSD_ReadCSV} uses \code{read.table()} to read in data from an R
+\code{DSD_ReadCSV} uses \code{\link[=read.table]{read.table()}} to read in data from an R
 connection. The connection is responsible for maintaining where the stream
 is currently being read from. In general, the connections will consist of
 files stored on disk but have many other possibilities (see
-\code{\link{connection}}).
+\link{connection}).
 
 The implementation tries to gracefully deal with slightly corrupted data by
 dropping points with inconsistent reading and producing a warning. However,
 this might not always be possible resulting in an error instead.
 
 The position in the file can be reset to the beginning using
-\code{reset_stream()}. The connection can be closed using
+\code{\link[=reset_stream]{reset_stream()}}. The connection can be closed using
 \code{close_stream()}.
 }
 \examples{
@@ -109,15 +109,13 @@ stream
 
 get_points(stream, 5, class = TRUE)
 
-
 # plot 100 points (projected on the first two principal components)
 plot(stream, n=100, method="pc")
 
 close_stream(stream)
-
 }
 \seealso{
-\code{\link{read.table}}.
+\code{\link[=read.table]{read.table()}}.
 
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},

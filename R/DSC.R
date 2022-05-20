@@ -4,7 +4,7 @@
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Sioftware Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 2 of the License, or
 # any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -17,36 +17,35 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' Data Stream Clusterer Base Classes
+#' Data Stream Clustering Base Class
 #'
-#' Abstract base classes for all DSC (Data Stream Clusterer) and DSC_R classes.
-#' Concrete implementations are functions starting with `DSC_` (R Studio use auto-completion with Tab to select one).
+#' Abstract base classes for Data Stream Clustering (DSC).
+#' Concrete implementations are functions starting with `DSC_` (RStudio use auto-completion with Tab to select one).
 #'
-#' The `DSC` and `DSC_R` classes cannot be instantiated (calling
-#' `DSC()` or `DSC_R()` produces only a message listing the available implementations),
+#' The `DSC` class cannot be instantiated (calling
+#' `DSC()` produces only a message listing the available implementations),
 #' but they serve as a base
 #' class from which other DSC classes inherit.
 #'
 #' Class `DSC` provides several generic functions that can operate on all
-#' DSC subclasses. See Functions section below.
-#' Additional, separately documented functions are:
+#' DSC subclasses. See Usage and Functions sections for methods.
+#' Additional, separately documented methods are:
 #'
-#' * [update] Add new data points from a stream to a clustering.
-#' * [plot] function is also provides for `DSC`.
-#' * [get_assignment] Find out what cluster new data points would be assigned to.
+#' * [update()] Add new data points from a stream to a clustering.
+#' * [plot()] function is also provides for `DSC`.
+#' * [get_assignment()] Predict the cluster assignment for new data points.
 #'
-#' `get_centers` and `get_weights` are typically overwritten by
-#' subclasses of `DSC`. [DSC_R] provides these functions for R-based
-#' DSC implementations.
+#' `get_centers()` and `get_weights()` are typically overwritten by
+#' subclasses of `DSC`.
 #'
 #' Since `DSC` objects often contain external pointers, regular saving and
-#' reading operations will fail. Use [saveDSC] and [readDSC]
+#' reading operations will fail. Use [saveDSC()] and [readDSC()]
 #' which will serialize the objects first appropriately.
 #'
 #' @family DSC
 #'
 #' @param x,object a DSC object.
-#' @param dsd a data stream object.
+#' @param dsd a [DSD] data stream object.
 #' @param n number of data points taken from the stream.
 #' @param type Return weights of micro- or macro-clusters in x.  Auto uses the
 #' class of x to decide.
@@ -56,12 +55,12 @@
 #' @author Michael Hahsler
 #' @export DSC
 #' @examples
-#'
 #' DSC()
 #'
-#' stream <- DSD_Gaussians(k=3, d=2)
-#' dstream <- DSC_DStream(gridsize=.1)
-#' update(dstream, stream, 500)
+#' set.seed(1000)
+#' stream <- DSD_Gaussians(k = 3, d = 2)
+#' dstream <- DSC_DStream(gridsize = .1)
+#' update(dstream, stream, 1000)
 #' dstream
 #'
 #' # get micro-cluster centers
@@ -82,11 +81,11 @@ DSC <- abstract_class_generator("DSC")
 ### all DSC classes have these interface methods
 
 #' @rdname DSC
+#' @section Functions
 #' @export
 update.DSC <- function(object, dsd, n = 1, ...) {
   stop("No implementaiton for update found!")
 }
-
 
 #' @describeIn DSC Gets the cluster centers (micro- or macro-clusters) from a DSC object.
 #' @export get_centers
@@ -118,19 +117,7 @@ get_weights.default <- function(x, type=c("auto", "micro", "macro"),
 ### End of interface
 #####################################################################3
 
-### make a deep copy of the
-
-
-#' @describeIn DSC Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
-#' @export
-get_copy <- function(x) UseMethod("get_copy")
-
-get_copy.default <- function(x, ...) {
-  stop(gettextf("get_copy not implemented for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
-#' @describeIn DSC Get micro-clusters if the object is a `DSC_Micro`.
+#' @describeIn DSC Get micro-clusters if the object is a [DSC_Micro] object.
 #' @export
 get_microclusters <- function(x, ...) UseMethod("get_microclusters")
 
@@ -140,17 +127,7 @@ get_microclusters.DSC <- function(x, ...) {
     paste(class(x), collapse=", ")))
 }
 
-#' @describeIn DSC Get micro-clusters if the the object is a `DSC_Macro`.
-#' @export
-get_macroclusters <- function(x, ...) UseMethod("get_macroclusters")
-
-#' @export
-get_macroclusters.DSC <- function(x, ...) {
-  stop(gettextf("No macro-clusters available for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
-#' @describeIn DSC Get micro-cluster weights if the object is a `DSC_Micro`.
+#' @describeIn DSC Get micro-cluster weights if the object is a [DSC_Micro] object.
 #' @export
 get_microweights <- function(x, ...) UseMethod("get_microweights")
 
@@ -160,7 +137,19 @@ get_microweights.DSC <- function(x, ...) {
     paste(class(x), collapse=", ")))
 }
 
-#' @describeIn DSC Get macro-cluster weights if the object is a `DSC_Macro`.
+
+#' @describeIn DSC Get micro-clusters if the the object is a [DSC_Macro] object.
+#' @export
+get_macroclusters <- function(x, ...) UseMethod("get_macroclusters")
+
+#' @export
+get_macroclusters.DSC <- function(x, ...) {
+  stop(gettextf("No macro-clusters available for class '%s'.",
+    paste(class(x), collapse=", ")))
+}
+
+
+#' @describeIn DSC Get macro-cluster weights if the object is a [DSC_Macro] object.
 #' @export
 get_macroweights <- function(x, ...) UseMethod("get_macroweights")
 
@@ -175,6 +164,16 @@ get_macroweights.DSC <- function(x, ...) {
 #' @export
 nclusters <- function(x, type=c("auto", "micro", "macro"), ...)
   UseMethod("nclusters")
+
+### make a deep copy of the
+#' @describeIn DSC Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
+#' @export
+get_copy <- function(x) UseMethod("get_copy")
+
+get_copy.default <- function(x, ...) {
+  stop(gettextf("get_copy not implemented for class '%s'.",
+    paste(class(x), collapse=", ")))
+}
 
 #' @export
 nclusters.DSC <- function(x, type=c("auto", "micro", "macro"), ...) {

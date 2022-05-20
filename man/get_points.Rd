@@ -7,7 +7,7 @@
 get_points(x, n = 1, outofpoints = c("stop", "warn", "ignore"), ...)
 }
 \arguments{
-\item{x}{The DSD object.}
+\item{x}{The \link{DSD} object.}
 
 \item{n}{Request up to $n$ points from the stream.}
 
@@ -22,13 +22,13 @@ implementations.}
 Returns a matrix of \code{x$d} columns and \code{n} rows.
 }
 \description{
-Gets points from a DSD object.
+Gets points from a \link{DSD} object.
 }
 \details{
 Each DSD object has a unique way for returning data points, but they all are
-called through the generic function, \code{get_points}. This is done by
-using the S3 class system. See the man page for the specific DSD class on
-the semantics for each implementation of \code{get_points}.
+called through the generic function, \code{get_points()}. This is done by
+using the S3 class system. See the man page for the specific \link{DSD} class on
+the semantics for each implementation of \code{get_points()}.
 }
 \examples{
 

@@ -27,8 +27,8 @@ DSD_ReadDB(
 \item{description}{a character string describing the data.}
 }
 \value{
-An object of class \code{DSD_ReadDB} (subclass of \code{DSD_R},
-\code{DSD}).
+An object of class \code{DSD_ReadDB} (subclass of  \link{DSD_R},
+\link{DSD}).
 }
 \description{
 A DSD class that reads a data stream from an open DB result set from a
@@ -36,8 +36,8 @@ relational database with using R's data base interface (DBI).
 }
 \details{
 This class provides a streaming interface for result sets from a data base
-with via \pkg{DBI}. You need to connect to the data base and submit a SQL
-query using \code{dbGetQuery()} to obtain a result set. Make sure that your
+with via \link{DBI}. You need to connect to the data base and submit a SQL
+query using \code{\link[=dbGetQuery]{dbGetQuery()}} to obtain a result set. Make sure that your
 query only includes the columns that should be included in the stream
 (including class and outlier marking columns). Do not forget to close the
 result set and the data base connection.
@@ -73,7 +73,7 @@ dbDisconnect(con)
 
 }
 \seealso{
-\code{\link[DBI]{dbGetQuery}}
+\code{\link[=dbGetQuery]{dbGetQuery()}}
 
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},

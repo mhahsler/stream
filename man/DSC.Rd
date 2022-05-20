@@ -5,13 +5,13 @@
 \alias{update.DSC}
 \alias{get_centers}
 \alias{get_weights}
-\alias{get_copy}
 \alias{get_microclusters}
-\alias{get_macroclusters}
 \alias{get_microweights}
+\alias{get_macroclusters}
 \alias{get_macroweights}
 \alias{nclusters}
-\title{Data Stream Clusterer Base Classes}
+\alias{get_copy}
+\title{Data Stream Clustering Base Class}
 \usage{
 DSC(...)
 
@@ -21,22 +21,22 @@ get_centers(x, type = c("auto", "micro", "macro"), ...)
 
 get_weights(x, type = c("auto", "micro", "macro"), scale = NULL, ...)
 
-get_copy(x)
-
 get_microclusters(x, ...)
 
-get_macroclusters(x, ...)
-
 get_microweights(x, ...)
+
+get_macroclusters(x, ...)
 
 get_macroweights(x, ...)
 
 nclusters(x, type = c("auto", "micro", "macro"), ...)
+
+get_copy(x)
 }
 \arguments{
 \item{...}{further parameter}
 
-\item{dsd}{a data stream object.}
+\item{dsd}{a \link{DSD} data stream object.}
 
 \item{n}{number of data points taken from the stream.}
 
@@ -49,30 +49,29 @@ class of x to decide.}
 the raw weights.}
 }
 \description{
-Abstract base classes for all DSC (Data Stream Clusterer) and DSC_R classes.
-Concrete implementations are functions starting with \code{DSC_} (R Studio use auto-completion with Tab to select one).
+Abstract base classes for Data Stream Clustering (DSC).
+Concrete implementations are functions starting with \code{DSC_} (RStudio use auto-completion with Tab to select one).
 }
 \details{
-The \code{DSC} and \code{DSC_R} classes cannot be instantiated (calling
-\code{DSC()} or \code{DSC_R()} produces only a message listing the available implementations),
+The \code{DSC} class cannot be instantiated (calling
+\code{DSC()} produces only a message listing the available implementations),
 but they serve as a base
 class from which other DSC classes inherit.
 
 Class \code{DSC} provides several generic functions that can operate on all
-DSC subclasses. See Functions section below.
-Additional, separately documented functions are:
+DSC subclasses. See Usage and Functions sections for methods.
+Additional, separately documented methods are:
 \itemize{
-\item \link{update} Add new data points from a stream to a clustering.
-\item \link{plot} function is also provides for \code{DSC}.
-\item \link{get_assignment} Find out what cluster new data points would be assigned to.
+\item \code{\link[=update]{update()}} Add new data points from a stream to a clustering.
+\item \code{\link[=plot]{plot()}} function is also provides for \code{DSC}.
+\item \code{\link[=get_assignment]{get_assignment()}} Predict the cluster assignment for new data points.
 }
 
-\code{get_centers} and \code{get_weights} are typically overwritten by
-subclasses of \code{DSC}. \link{DSC_R} provides these functions for R-based
-DSC implementations.
+\code{get_centers()} and \code{get_weights()} are typically overwritten by
+subclasses of \code{DSC}.
 
 Since \code{DSC} objects often contain external pointers, regular saving and
-reading operations will fail. Use \link{saveDSC} and \link{readDSC}
+reading operations will fail. Use \code{\link[=saveDSC]{saveDSC()}} and \code{\link[=readDSC]{readDSC()}}
 which will serialize the objects first appropriately.
 }
 \section{Functions}{
@@ -81,26 +80,30 @@ which will serialize the objects first appropriately.
 
 \item \code{get_weights}: Get the weights of the clusters in the DSC (returns 1s if not implemented by the clusterer)
 
-\item \code{get_copy}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
+\item \code{get_microclusters}: Get micro-clusters if the object is a \link{DSC_Micro} object.
 
-\item \code{get_microclusters}: Get micro-clusters if the object is a \code{DSC_Micro}.
+\item \code{get_microweights}: Get micro-cluster weights if the object is a \link{DSC_Micro} object.
 
-\item \code{get_macroclusters}: Get micro-clusters if the the object is a \code{DSC_Macro}.
+\item \code{get_macroclusters}: Get micro-clusters if the the object is a \link{DSC_Macro} object.
 
-\item \code{get_microweights}: Get micro-cluster weights if the object is a \code{DSC_Micro}.
-
-\item \code{get_macroweights}: Get macro-cluster weights if the object is a \code{DSC_Macro}.
+\item \code{get_macroweights}: Get macro-cluster weights if the object is a \link{DSC_Macro} object.
 
 \item \code{nclusters}: Returns the number of micro-clusters from the DSC object.
+
+\item \code{get_copy}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
 }}
 
-\examples{
+\section{Functions}{
+NA
+}
 
+\examples{
 DSC()
 
-stream <- DSD_Gaussians(k=3, d=2)
-dstream <- DSC_DStream(gridsize=.1)
-update(dstream, stream, 500)
+set.seed(1000)
+stream <- DSD_Gaussians(k = 3, d = 2)
+dstream <- DSC_DStream(gridsize = .1)
+update(dstream, stream, 1000)
 dstream
 
 # get micro-cluster centers

@@ -21,10 +21,10 @@ base class from which all DSD objects inherit.
 
 \code{DSD} provides common functionality like:
 \itemize{
-\item \link{get_points}
-\item \code{print}
-\item \link{plot}
-\item \link{reset_stream} (if available)
+\item \code{\link[=get_points]{get_points()}}
+\item \code{print()}
+\item \code{\link[=plot]{plot()}}
+\item \code{\link[=reset_stream]{reset_stream()}} (if available)
 }
 
 \code{DSD_R} inherits form \code{DSD} and is the abstract parent class for

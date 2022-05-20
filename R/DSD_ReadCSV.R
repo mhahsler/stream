@@ -17,29 +17,23 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-### FIXME: test class and take
-
-# accepts an open connection
-# ... goes to read.table
-
-
 #' Read a Data Stream from File
 #'
 #' A DSD class that reads a data stream from a file or any R connection.
 #'
-#' \code{DSD_ReadCSV} uses \code{read.table()} to read in data from an R
+#' \code{DSD_ReadCSV} uses [read.table()] to read in data from an R
 #' connection. The connection is responsible for maintaining where the stream
 #' is currently being read from. In general, the connections will consist of
 #' files stored on disk but have many other possibilities (see
-#' \code{\link{connection}}).
+#' [connection]).
 #'
 #' The implementation tries to gracefully deal with slightly corrupted data by
 #' dropping points with inconsistent reading and producing a warning. However,
 #' this might not always be possible resulting in an error instead.
 #'
 #' The position in the file can be reset to the beginning using
-#' \code{reset_stream()}. The connection can be closed using
-#' \code{close_stream()}.
+#' [reset_stream()]. The connection can be closed using
+#' `close_stream()`.
 #'
 #' @family DSD
 #'
@@ -62,13 +56,13 @@
 #' read data.
 #' @param colClasses A vector of classes to be assumed for the columns passed
 #' on to \code{read.table}.
-#' @param ... Further arguments are passed on to \code{read.table}.  This can
+#' @param ... Further arguments are passed on to [read.table].  This can
 #' for example be used for encoding, quotes, etc.
 #' @param dsd A object of class \code{DSD_ReadCSV}.
-#' @return An object of class \code{DSD_ReadCSV} (subclass of \code{DSD_R},
+#' @return An object of class \code{DSD_ReadCSV} (subclass of [DSD_R],
 #' \code{DSD}).
 #' @author Michael Hahsler, Dalibor Krleža
-#' @seealso \code{\link{read.table}}.
+#' @seealso [read.table()].
 #' @examples
 #'
 #' # creating data and writing it to disk
@@ -98,12 +92,10 @@
 #'
 #' get_points(stream, 5, class = TRUE)
 #'
-#'
 #' # plot 100 points (projected on the first two principal components)
 #' plot(stream, n=100, method="pc")
 #'
 #' close_stream(stream)
-#'
 #' @export
 DSD_ReadCSV <- function(file,
   k = NA,

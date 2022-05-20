@@ -22,7 +22,8 @@
 #' stream clustering [DSC], outlier detection [DSOutlier], classification on data streams
 #' [DSClassify] and frequent pattern mining on data streams [DSFP].
 #'
-#' The method `update()` is used to update the data stream task with new datapoints coming from a data stream.
+#' The basic interface for all `DST` classes can be found in the Functions Section.
+#'
 #'
 #' @aliases update
 #'
@@ -43,8 +44,41 @@ DST <- function(...) {
   invisible(NULL)
 }
 
-#' @rdname DST
+#' @describeIn DST update the data stream task with new data points coming from a data stream.
 #' @export
 update.DST <- function(object, dsd, n = 1, ...) {
   stop("No implementaiton for update found!")
   }
+
+#' @rdname DST
+#' @export
+description <- function(x, ...)
+  UseMethod("description")
+
+description.default <- function(x, ...)
+  stop("description() not implemented for this class!")
+
+
+.desc <- function(x) {
+  if (is.list(x) &&
+      !is.null(x$description) && is.character(x$description))
+    x$description
+  else
+    stop("This object does not have a description field!")
+}
+
+#' @describeIn DST Get a description of the task as a character string.
+#' @export
+description.DST <- description.default
+
+#' @export
+description.DSC <- function(x, ...)
+  .desc(x)
+
+#' @export
+description.DSD <- function(x, ...)
+  .desc(x)
+
+#' @export
+description.DSO <- function(x, ...)
+  .desc(x)

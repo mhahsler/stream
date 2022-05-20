@@ -14,14 +14,24 @@ reset function.}
 1).}
 }
 \description{
-Resets the counter in a DSD object to the beginning or any other position in
+Resets the position in a \link{DSD} object to the beginning or, if available, any other position in
 the stream.
 }
 \details{
 Resets the counter of the stream object. For example, for \link{DSD_Memory},
 the counter stored in the environment variable is moved back to 1. For
-\link{DSD_ReadCSV} objects, this is done by calling \code{seek()} on the
+\link{DSD_ReadCSV} objects, this is done by calling \code{\link[=seek]{seek()}} on the
 underlying connection.
+
+\code{reset_stream()} is implemented for:
+\itemize{
+\item \link{DSD}
+\item \link{DSD_Gaussians}
+\item \link{DSD_MG}
+\item \link{DSD_Memory}
+\item \link{DSD_ReadCSV}
+\item \link{DSD_ScaleStream}
+}
 }
 \examples{
 
