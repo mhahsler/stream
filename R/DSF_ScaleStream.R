@@ -16,41 +16,35 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-# accepts an open connection
-
-
-#' Scale a Stream from a DSD
+#' Scale a Data Stream
 #'
 #' Make an unscaled data stream into a scaled data stream.
 #'
-#' \code{scale_stream()} estimates the values for centering and scaling (see
-#' \code{scale} in \pkg{base}) using \code{n} points from the stream.
+#' `scale_stream()` estimates the values for centering and scaling (see
+#' [scale] in \pkg{base}) using `n` points from the stream.
 #'
-#' @family DSD
+#' @family DSF
 #'
-#' @param dsd A object of class \code{DSD} that will be scaled.
+#' @param dsd A object of class [DSD] that will be scaled.
 #' @param center,scale logical or a numeric vector of length equal to the
-#' number of columns used for centering/scaling (see function \code{scale}).
-#' @param n The number of points used to creating the centering/scaling
-#' @param reset Try to reset the stream to its beginning after taking \code{n}
+#' number of columns used for centering/scaling (see function [scale]).
+#' @param n The number of points used by `scale_stream()` to creating the centering/scaling
+#' @param reset Try to reset the stream to its beginning after taking `n`
 #' points for scaling.
-#' @return An object of class \code{DSD_ScaleStream} (subclass of \code{DSD_R},
-#' \code{DSD}).
+#' @return An object of class `DSF_ScaleStream` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
-#' @seealso \code{\link{scale}}
-#' in \pkg{base},
+#' @seealso [scale] in \pkg{base}
 #' @examples
-#'
 #' stream <- DSD_Gaussians(k=3, d=3)
 #' plot(stream)
 #'
 #' # scale stream using 100 points
-#' stream_scaled <- DSD_ScaleStream(stream, n=100)
-#' plot(stream_scaled)
+#' stream_scaled <- DSF_ScaleStream(stream, n=100)
+#' stream_scaled
 #'
+#' plot(stream_scaled)
 #' @export
-DSD_ScaleStream <-
+DSF_ScaleStream <-
   function(dsd,
     center = TRUE,
     scale = TRUE,
@@ -66,7 +60,8 @@ DSD_ScaleStream <-
       center = FALSE,
       scale = FALSE
     )
-    class(l) <- c("DSD_ScaleStream", "DSD_R", "DSD_data.frame", "DSD")
+    class(l) <-
+      c("DSF_ScaleStream", "DSD_R", "DSD_data.frame", "DSD")
 
     l <- scale_stream(
       l,
@@ -79,10 +74,14 @@ DSD_ScaleStream <-
     l
   }
 
+### Deprecated
+#' @export
+DSD_ScaleStream <- DSF_ScaleStream
+
 ## it is important that the connection is OPEN
 
 #' @export
-get_points.DSD_ScaleStream <- function(x,
+get_points.DSF_ScaleStream <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
   cluster = FALSE,
@@ -106,7 +105,7 @@ get_points.DSD_ScaleStream <- function(x,
     j <- which("class" == colnames(d))
     if (length(j) == 1L) {
       cl <- d[, j]
-      d <- d[,-j]
+      d <- d[, -j]
     } else
       cl <- rep(NA_integer_, nrow(d))
   }
@@ -125,7 +124,7 @@ get_points.DSD_ScaleStream <- function(x,
 }
 
 #' @export
-reset_stream.DSD_ScaleStream <- function(dsd, pos = 1) {
+reset_stream.DSF_ScaleStream <- function(dsd, pos = 1) {
   reset_stream(dsd$dsd, pos = pos)
 }
 

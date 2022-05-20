@@ -135,7 +135,6 @@ Other DSD:
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
-\code{\link{DSD_ScaleStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

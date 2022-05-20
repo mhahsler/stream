@@ -17,17 +17,14 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
-
-
 #' Data Stream Operator Base Classes
 #'
-#' Abstract base classes for all DSO (Data Stream Operator) classes.
+#' Abstract base classes for all DSO (Data Stream Operator) classes. Data stream operators aggregate streams.
 #'
 #' The `DSO` class cannot be instantiated, but it serve as a base
 #' class from which other DSO classes inherit.
 #'
-#' Data stream operators use [update] to process new data from the
+#' Data stream operators use `update.DSO()` to process new data from the
 #' [DSD] stream. The result of the operator can be obtained via [get_points]
 #' and [get_weights] (if available).
 #'

@@ -30,7 +30,7 @@ underlying connection.
 \item \link{DSD_MG}
 \item \link{DSD_Memory}
 \item \link{DSD_ReadCSV}
-\item \link{DSD_ScaleStream}
+\item \link{DSF_ScaleStream}
 }
 }
 \examples{
@@ -62,7 +62,6 @@ Other DSD:
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
-\code{\link{DSD_ScaleStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

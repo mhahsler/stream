@@ -1,6 +1,8 @@
 # stream 1.5-1.1 (xx/xx/22)
 
 ## Changes
+* New base class DSF for data stream Filters.
+* DSD_ScaleStream is now DSF_ScaleStream and DSD_ScaleStream is deprecated.
 * The NAMESPACE is now managed using roxygen.
 
 # stream 1.5-1 (05/09/22)

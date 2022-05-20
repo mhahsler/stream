@@ -25,13 +25,13 @@ DSO(...)
 \item{x, object}{a concrete implementation of DSO}
 }
 \description{
-Abstract base classes for all DSO (Data Stream Operator) classes.
+Abstract base classes for all DSO (Data Stream Operator) classes. Data stream operators aggregate streams.
 }
 \details{
 The \code{DSO} class cannot be instantiated, but it serve as a base
 class from which other DSO classes inherit.
 
-Data stream operators use \link{update} to process new data from the
+Data stream operators use \code{update.DSO()} to process new data from the
 \link{DSD} stream. The result of the operator can be obtained via \link{get_points}
 and \link{get_weights} (if available).
 }
