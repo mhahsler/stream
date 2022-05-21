@@ -38,7 +38,8 @@ DSF()
 Other DSF: 
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_Filter}()},
-\code{\link{DSF_Scale}()}
+\code{\link{DSF_Scale}()},
+\code{\link{DSF_dplyr}()}
 }
 \author{
 Michael Hahsler

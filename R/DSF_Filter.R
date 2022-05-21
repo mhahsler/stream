@@ -36,11 +36,11 @@
 #'
 #' ## create a data stream with two copies of president approval ratings.
 #' ## we will filter the second one and leave the first unfiltered.
-#' stream <- DSD_Memory(data.frame(approval_orig = presidents, approval_MA = presidents))
+#' stream <- data.frame(approval_orig = presidents, approval_MA = presidents) %>% DSD_Memory()
 #' plot(stream, dim = 1, n = 120, method = "ts")
 #'
 #' ## apply a moving average filter to dimension 1
-#' filteredStream <- DSF_Filter(stream, kernel = filter_MA(5), dim = 2)
+#' filteredStream <- stream %>% DSF_Filter(kernel = filter_MA(5), dim = 2)
 #' filteredStream
 #'
 #' ## resetting the filtered stream also resets the original stream
@@ -67,7 +67,7 @@ DSF_Filter <-
     na.rm = TRUE) {
     # creating the DSD object
     l <- list(
-      description = paste0(dsd$description, "\n\t - filtered"),
+      description = paste0(dsd$description, "\n\t + filtered"),
       dsd = dsd,
       dim = dim,
       window = DSO_Window(horizon = length(kernel)),

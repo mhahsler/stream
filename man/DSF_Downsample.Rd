@@ -33,6 +33,7 @@ get_points(downsampledStream, 5)
 Other DSF: 
 \code{\link{DSF_Filter}()},
 \code{\link{DSF_Scale}()},
+\code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
 }
 \author{

@@ -36,18 +36,13 @@
 #' @author Michael Hahsler
 #' @seealso [scale] in \pkg{base}
 #' @examples
-#' stream <- DSD_Gaussians(k = 3, d = 2)
+#' ## create a stream and apply scaling to z-scores using 100 points from the stream
+#' stream <- DSD_Gaussians(k = 3, d = 2) %>% DSF_Scale(n = 100)
 #' plot(stream)
 #'
-#' # scale stream using 100 points
-#' stream_scaled <- DSF_Scale(stream, n=100)
-#' stream_scaled
-#'
-#' plot(stream_scaled)
-#'
-#' ## scale only the first column
-#' stream_scaled <- DSF_Scale(stream, dim = 1, n = 100)
-#' plot(stream_scaled)
+#' ## scale only the second dimension
+#' stream <- DSD_Gaussians(k = 3, d = 2) %>% DSF_Scale(n = 100, dim = 2)
+#' plot(stream)
 #' @export
 DSF_Scale <-
   function(dsd,
@@ -58,7 +53,7 @@ DSF_Scale <-
     reset = FALSE) {
     # creating the DSD object
     l <- list(
-      description = paste0(dsd$description, "\n\t - scaled"),
+      description = paste0(dsd$description, "\n\t + scaled"),
       dsd = dsd,
       dim = dim,
       d = dsd$d,
