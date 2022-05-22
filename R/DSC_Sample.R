@@ -19,7 +19,7 @@
 #' Extract a Fixed-size Sample from a Data Stream
 #'
 #' Micro Clusterer.
-#' Extracts a sample form a data stream using Reservoir Sampling (\code{DSO_Sample}).  The sample
+#' Extracts a sample form a data stream using Reservoir Sampling (\code{DSAggregate_Sample}).  The sample
 #' is stored as a set of micro-clusters to be compatible with other data DSC
 #' stream clustering algorithms.
 #'

@@ -26,32 +26,33 @@
 #' model (Zhu and Shasha, 2002).  The weight for points in the window follows
 #' \eqn{2^(-lambda*t)} where \eqn{t} is the age of the point.
 #'
-#' @family DSO
+#' @family DSAggregate
 #'
 #' @param horizon the window length.
 #' @param lambda decay factor damped window model. `lambda = 0` means no
 #' dampening.
-#' @return An object of class `DSO_Window` (subclass of [DSO]).
+#' @return An object of class `DSAggregate_Window` (subclass of [DSAggregate]).
 #' @author Michael Hahsler
 #' @references Zhu, Y. and Shasha, D. (2002). StatStream: Statistical
 #' Monitoring of Thousands of Data Streams in Real Time, Intl. Conference of
 #' Very Large Data Bases (VLDB'02).
 #' @examples
+#' set.seed(1500)
+#'
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 #'
-#' window <- DSO_Window(horizon = 10)
+#' window <- DSAggregate_Window(horizon = 10)
 #' window
 #'
+#' # update with only two points
 #' update(window, stream, 2)
 #' get_points(window)
 #'
+#' # update window
 #' update(window, stream, 100)
 #' get_points(window)
-#'
-#' # plot points in window
-#' plot(get_points(window))
 #' @export
-DSO_Window <- function(horizon = 100, lambda = 0)
+DSAggregate_Window <- function(horizon = 100, lambda = 0)
   structure(
     list(
       description =
@@ -59,34 +60,33 @@ DSO_Window <- function(horizon = 100, lambda = 0)
           "Damped sliding window"
       else
         "Sliding window",
-      RObj = WindowDSO$new(horizon = as.integer(horizon), lambda = lambda)
+      RObj = WindowDSAggregate$new(horizon = as.integer(horizon), lambda = lambda)
     ),
-    class = c("DSO_Window", "DSO")
+    class = c("DSAggregate_Window", "DSAggregate", "DST")
   )
 
 #' @export
-update.DSO_Window <-
+update.DSAggregate_Window <-
   function(object,
     dsd,
     n = 1,
     verbose = FALSE,
     ...) {
-
     ### TODO: we do not need to get all points if n is very large!
     object$RObj$update(get_points(dsd, n = n), verbose = verbose, ...)
   }
 
 #' @export
-get_points.DSO_Window <- function(x, ...)
+get_points.DSAggregate_Window <- function(x, ...)
   x$RObj$get_points(...)
 
 #' @export
-get_weights.DSO_Window <- function(x, ...)
+get_weights.DSAggregate_Window <- function(x, ...)
   x$RObj$get_weights(...)
 
 # implements a ring-buffer. pos is the current insert position
-WindowDSO <- setRefClass(
-  "WindowDSO",
+WindowDSAggregate <- setRefClass(
+  "WindowDSAggregate",
   fields = list(
     horizon	= "integer",
     pos	= "integer",
@@ -105,10 +105,15 @@ WindowDSO <- setRefClass(
     },
 
     update = function(x, ...) {
-
       ### fist time we get data
       if (is.null(data))
-        data <<- data.frame(matrix(NA, nrow = horizon, ncol = ncol(x), dimnames = list(NULL, colnames(x))))
+        data <<-
+          data.frame(matrix(
+            NA,
+            nrow = horizon,
+            ncol = ncol(x),
+            dimnames = list(NULL, colnames(x))
+          ))
 
       if (ncol(x) != ncol(data))
         stop("Dimensionality mismatch between window and data!")
@@ -119,7 +124,8 @@ WindowDSO <- setRefClass(
       while (i < n) {
         ## process the next m points: all or to fill the current horizon
         m <- min(horizon - pos + 1L, n - i)
-        data[pos:(pos + m - 1L), ] <<- x[(i + 1L):(i + m), , drop = FALSE]
+        data[pos:(pos + m - 1L),] <<-
+          x[(i + 1L):(i + m), , drop = FALSE]
 
         i <- i + m
         pos <<- pos + m
@@ -155,10 +161,10 @@ WindowDSO <- setRefClass(
   )
 )
 
-### DSC interface to WindowDSO
+### DSC interface to WindowDSAggregate
 WindowDSC <- setRefClass(
   "WindowDSC",
-  contains = "WindowDSO",
+  contains = "WindowDSAggregate",
 
   methods = list(
     cluster = function(x, ...)

@@ -6,6 +6,7 @@
 * New DSF: DSF_Downsample, DSF_Filter, DSF_Func, DSF_dplyr
 * We now support %>%.
 * The NAMESPACE is now managed using roxygen.
+* DSO is now called DSAggregate.
 
 # stream 1.5-1 (05/09/22)
 

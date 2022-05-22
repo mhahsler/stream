@@ -32,7 +32,7 @@
 #' @param n the number of data points used for the update.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
-#' @seealso [DSC], [DSOutlier], [DSClassify], [DSFP], [DSO]
+#' @seealso [DSC], [DSOutlier], [DSClassify], [DSFP], [DSAggregate]
 #' @examples
 #' DST()
 #' @export DST
@@ -77,8 +77,4 @@ description.DSC <- function(x, ...)
 
 #' @export
 description.DSD <- function(x, ...)
-  .desc(x)
-
-#' @export
-description.DSO <- function(x, ...)
   .desc(x)

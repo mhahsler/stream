@@ -27,8 +27,8 @@ underlying connection.
 \itemize{
 \item \link{DSD}
 \item \link{DSD_Gaussians}
-\item \link{DSD_Memory}
 \item \link{DSD_MG}
+\item \link{DSD_Memory}
 \item \link{DSD_ReadCSV}
 \item \link{DSF}
 \item \link{DSF_Filter}

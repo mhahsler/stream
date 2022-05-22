@@ -17,55 +17,49 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' Data Stream Operator Base Classes
+#' Data Stream Aggregator Base Classes
 #'
-#' Abstract base classes for all DSO (Data Stream Operator) classes. Data stream operators aggregate streams.
+#' Abstract base classes for all DSAggregate (Data Stream Aggregator) classes to aggregate streams.
 #'
-#' The `DSO` class cannot be instantiated, but it serve as a base
-#' class from which other DSO classes inherit.
+#' The `DSAggreagate` class cannot be instantiated, but it serve as a base
+#' class from which other DSAggregate subclasses inherit.
 #'
-#' Data stream operators use `update.DSO()` to process new data from the
-#' [DSD] stream. The result of the operator can be obtained via [get_points]
-#' and [get_weights] (if available).
+#' Data stream operators use `update.DSAggregate()` to process new data from the
+#' [DSD] stream. The result of the operator can be obtained via [get_points()]
+#' and [get_weights()] (if available).
 #'
-#' @family DSO
+#' @family DSAggregate
 #'
-#' @param x,object a concrete implementation of DSO
+#' @param x,object a concrete implementation of `DSAggregate`.
 #' @param dsd a data stream object.
 #' @param n the number of data points used for the update.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
 #' @examples
-#' DSO()
-#' @export DSO
-DSO <- abstract_class_generator("DSO")
-
-#' @rdname DSO
+#' DSAggregate()
 #' @export
-update.DSO <- function(object, dsd, n = 1, ...) {
+DSAggregate <- abstract_class_generator("DSAggregate")
+
+#' @rdname DSAggregate
+#' @export
+update.DSAggregate <- function(object, dsd, n = 1, ...) {
   stop("No implementation for update found!")
 }
 
-#' @rdname DSO
+#' @rdname DSAggregate
 #' @export
-get_points.DSO <- function(x, ...) {
+get_points.DSAggregate <- function(x, ...) {
   stop("Implementation is missing!")
 }
 
-#' @rdname DSO
+#' @rdname DSAggregate
 #' @export
-get_weights.DSO <- function(x, ...) {
+get_weights.DSAggregate <- function(x, ...) {
   stop("Implementation is missing!")
 }
 
-
-
 #' @export
-print.DSO <- function(x, ...) {
+print.DSAggregate <- function(x, ...) {
   cat(.line_break(paste(x$description)))
   cat("Class:", paste(class(x), collapse=", "), "\n")
-  #if(!is(nc <- try(nclusters(x, type="micro"), silent=TRUE), "try-error"))
-  #  cat(paste('Number of micro-clusters:', nc, '\n'))
-  #if(!is(nc <- try(nclusters(x, type="macro"), silent=TRUE), "try-error"))
-  #  cat(paste('Number of macro-clusters:', nc, '\n'))
 }

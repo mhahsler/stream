@@ -18,7 +18,7 @@ An object of class \code{DSF_dplyr} (subclass of \link{DSF} and \link{DSD}).
 Applies dplyr transformations to a data stream.
 }
 \details{
-Since streams are processed on point or block o at a time, only \link{dplyr} operations that work on individual
+Since streams are processed on point or block o at a time, only \link[dplyr:dplyr-package]{dplyr::dplyr} operations that work on individual
 rows are allowed on streams. Examples are:
 \itemize{
 \item \code{\link[dplyr:select]{dplyr::select()}}
@@ -49,8 +49,6 @@ get_points(stream2, n = 10)
 }
 }
 \seealso{
-\link[stats:filter]{stats::filter}
-
 Other DSF: 
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_Filter}()},
