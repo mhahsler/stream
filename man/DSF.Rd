@@ -51,8 +51,8 @@ get_points(stream, n = 5)
 }
 \seealso{
 Other DSF: 
+\code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
-\code{\link{DSF_Filter}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()}

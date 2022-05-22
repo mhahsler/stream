@@ -33,16 +33,19 @@ reservoir size over \code{k}. This an exponential bias function of
 \eqn{2^{-lambda}} with \eqn{lambda = 1 / k}.
 }
 \examples{
-stream <- DSD_Gaussians(k=3, noise=0.05)
+set.seed(1500)
 
-sample <- DSAggregate_Sample(k=20)
+stream <- DSD_Gaussians(k = 3, noise = 0.05)
+
+sample <- DSAggregate_Sample(k = 50)
 
 update(sample, stream, 500)
 sample
 
 # apply kmeans clustering to the sample
 km <- kmeans(get_points(sample), centers = 3)
-km
+plot(get_points(sample))
+points(km$centers, col = "red", pch = 3, cex = 2)
 }
 \references{
 Vitter, J. S. (1985): Random sampling with a reservoir. ACM
