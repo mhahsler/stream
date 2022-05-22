@@ -3,7 +3,7 @@
 ## Changes
 * New base class DSF for data stream Filters.
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
-* New DSF: DSF_Downsample, DSF_Filter, DSF_Func, DSF_dplyr
+* New DSF: DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
 * We now support %>%.
 * The NAMESPACE is now managed using roxygen.
 * DSO is now called DSAggregate.

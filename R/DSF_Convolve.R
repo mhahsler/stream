@@ -22,25 +22,34 @@
 #'
 #' A filter kernel is a vector with kernel weights. A few filter are provided.
 #'
+#' Note about missing values: `na.rm` can be used to remove missing values (default behavior).
+#' For `filter_diff()` removing missing values can be problematic and should not be used.
+#'
 #' @family DSF
 #'
 #' @param dsd A object of class [DSD].
 #' @param dim columns to which the filter should be applied. Default is all.
 #' @param kernel filter kernel as a vector of weights.
 #' @param na.rm logical; should NAs be ignored?
-#' @return An object of class `DSF_Filter` (subclass of [DSF] and [DSD]).
+#' @return An object of class `DSF_Convolve` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @seealso [stats::filter]
 #' @examples
 #' data(presidents)
 #'
-#' ## create a data stream with two copies of president approval ratings.
-#' ## we will filter the second one and leave the first unfiltered.
-#' stream <- data.frame(approval_orig = presidents, approval_MA = presidents) %>% DSD_Memory()
+#' ## create a data stream with three copies of president approval ratings.
+#' ## we will filter the second one using MA and the third one using differencing.
+#' stream <- data.frame(
+#'     approval_orig = presidents,
+#'     approval_MA = presidents,
+#'     approval_diff1 = presidents) %>%
+#'   DSD_Memory()
 #' plot(stream, dim = 1, n = 120, method = "ts")
 #'
 #' ## apply a moving average filter to dimension 1
-#' filteredStream <- stream %>% DSF_Filter(kernel = filter_MA(5), dim = 2)
+#' filteredStream <- stream %>%
+#'   DSF_Convolve(kernel = filter_MA(5), dim = 2) %>%
+#'   DSF_Convolve(kernel = filter_diff(1), dim = 3, na.rm = FALSE)
 #' filteredStream
 #'
 #' ## resetting the filtered stream also resets the original stream
@@ -55,33 +64,34 @@
 #' plot(filteredStream, dim = 2, n = 120, method = "ts")
 #'
 #' ## look at different filters
-#' plot(filter_MA(20), type = "l")
-#' plot(filter_hamming(20), type = "l")
-#' plot(filter_sinc(10, 100, width = 20), type = "l")
+#' plot(filter_MA(20), type = "s")
+#' plot(filter_hamming(20), type = "s")
+#' plot(filter_sinc(10, 100, width = 20), type = "s")
+#' plot(filter_diff(1), type = "s")
 #'
 #' @export
-DSF_Filter <-
+DSF_Convolve <-
   function(dsd,
     dim = NULL,
     kernel = NULL,
     na.rm = TRUE) {
     # creating the DSD object
     l <- list(
-      description = paste0(dsd$description, "\n  + convolution filter"),
+      description = paste0(dsd$description, "\n\t + filtered"),
       dsd = dsd,
       dim = dim,
-      window = DSO_Window(horizon = length(kernel)),
+      window = DSAggregate_Window(horizon = length(kernel)),
       kernel = kernel,
       na.rm = na.rm
     )
     class(l) <-
-      c("DSF_Filter", "DSF", "DSD_R", "DSD_data.frame", "DSD")
+      c("DSF_Convolve", "DSF", "DSD_R", "DSD_data.frame", "DSD")
 
     l
   }
 
 #' @export
-get_points.DSF_Filter <- function(x,
+get_points.DSF_Convolve <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
   cluster = FALSE,
@@ -91,7 +101,7 @@ get_points.DSF_Filter <- function(x,
   .nodots(...)
 
   #if (any(cluster || class || outlier))
-  #  stop("Clusters, class or outliers not supported for DSF_Filter!")
+  #  stop("Clusters, class or outliers not supported for DSF_Convolve!")
 
   for (i in seq(n)) {
     update(x$window, x$dsd, n = 1)
@@ -99,20 +109,26 @@ get_points.DSF_Filter <- function(x,
 
     # preallocate the space
     if (i == 1L) {
-      ps <- data.frame(matrix(NA, nrow = 0, ncol = ncol(win), dimnames = list(NULL, colnames(win))))
-      ps[n, ] <- NA
+      ps <-
+        data.frame(matrix(
+          NA,
+          nrow = 0,
+          ncol = ncol(win),
+          dimnames = list(NULL, colnames(win))
+        ))
+      ps[n,] <- NA
     }
 
     ## only filter variables in dim
     if (is.null(x$dim))
-      ps[i,] <-
+      ps[i, ] <-
       sapply(
         win,
         FUN = function(p)
           mean(p * x$kernel, na.rm = x$na.rm) * length(x$kernel)
       )
     else {
-      ps[i,] <- win[nrow(win), , drop = FALSE]
+      ps[i, ] <- win[nrow(win), , drop = FALSE]
       ps[i, x$dim] <-
         sapply(
           win[, x$dim, drop = FALSE],
@@ -126,7 +142,7 @@ get_points.DSF_Filter <- function(x,
 }
 
 #' @export
-reset_stream.DSF_Filter <- function(dsd, pos = 1) {
+reset_stream.DSF_Convolve <- function(dsd, pos = 1) {
   ## clean window
   dsd$window$RObj$reset()
 
@@ -134,21 +150,32 @@ reset_stream.DSF_Filter <- function(dsd, pos = 1) {
   NextMethod()
 }
 
-#' @rdname DSF_Filter
+#' @rdname DSF_Convolve
 #' @param width filter width.
 #' @export
-filter_MA <- function(width) rep.int(1, width)/width
+filter_MA <- function(width)
+  rep.int(1, width) / width
 
-#' @rdname DSF_Filter
+#' @rdname DSF_Convolve
 #' @export
 filter_hamming <- function(width) {
   M <- width - 1
-  k <- (0:M)/M
+  k <- (0:M) / M
   c <- 0.54 - 0.46 * cos(2 * pi * k)
   c / sum(c)
 }
 
-#' @rdname DSF_Filter
+#' @rdname DSF_Convolve
+#' @param lag an integer indicating which time lag to use.
+#' @export
+filter_diff <- function(lag) {
+  c <- numeric(lag + 1L)
+  c[1] <- -1
+  c[lag + 1] <- 1
+  c
+}
+
+#' @rdname DSF_Convolve
 #' @param bw transition bandwidth.
 #' @param fc cutoff frequency.
 #' @param fs sampling frequency.

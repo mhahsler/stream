@@ -22,7 +22,7 @@ DSAggregate(...)
 
 \item{n}{the number of data points used for the update.}
 
-\item{x, object}{a concrete implementation of DSO}
+\item{x, object}{a concrete implementation of \code{DSAggregate}.}
 }
 \description{
 Abstract base classes for all DSAggregate (Data Stream Aggregator) classes to aggregate streams.
@@ -36,7 +36,7 @@ Data stream operators use \code{update.DSAggregate()} to process new data from t
 and \code{\link[=get_weights]{get_weights()}} (if available).
 }
 \examples{
-DSO()
+DSAggregate()
 }
 \seealso{
 Other DSAggregate: 

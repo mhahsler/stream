@@ -44,7 +44,7 @@ The basic interface for all \code{DST} classes can be found in the Functions Sec
 DST()
 }
 \seealso{
-\link{DSC}, \link{DSOutlier}, \link{DSClassify}, \link{DSFP}, \link{DSO}
+\link{DSC}, \link{DSOutlier}, \link{DSClassify}, \link{DSFP}, \link{DSAggregate}
 }
 \author{
 Michael Hahsler

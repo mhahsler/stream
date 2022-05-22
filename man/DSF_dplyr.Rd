@@ -50,8 +50,8 @@ get_points(stream2, n = 10)
 }
 \seealso{
 Other DSF: 
+\code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
-\code{\link{DSF_Filter}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSF}()}

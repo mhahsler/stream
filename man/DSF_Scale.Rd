@@ -64,8 +64,8 @@ plot(stream)
 \link{scale} in \pkg{base}
 
 Other DSF: 
+\code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
-\code{\link{DSF_Filter}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}

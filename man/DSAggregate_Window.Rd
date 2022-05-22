@@ -25,19 +25,20 @@ model (Zhu and Shasha, 2002).  The weight for points in the window follows
 \eqn{2^(-lambda*t)} where \eqn{t} is the age of the point.
 }
 \examples{
+set.seed(1500)
+
 stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
 window <- DSAggregate_Window(horizon = 10)
 window
 
+# update with only two points
 update(window, stream, 2)
 get_points(window)
 
+# update window
 update(window, stream, 100)
 get_points(window)
-
-# plot points in window
-plot(get_points(window))
 }
 \references{
 Zhu, Y. and Shasha, D. (2002). StatStream: Statistical
