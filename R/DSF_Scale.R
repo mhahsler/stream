@@ -53,7 +53,7 @@ DSF_Scale <-
     reset = FALSE) {
     # creating the DSD object
     l <- list(
-      description = paste0(dsd$description, "\n\t + scaled"),
+      description = paste0(dsd$description, "\n  + scaled"),
       dsd = dsd,
       dim = dim,
       d = dsd$d,

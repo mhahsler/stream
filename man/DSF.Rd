@@ -25,6 +25,10 @@ class from which other DSF classes inherit.
 
 Data stream filters transform a \link{DSD} data stream.
 DSF implementations inherit from \link{DSD} and have the same basic interface.
+
+\code{reset_stream()} resets the source stream.
+
+It is convenient to use the pipe (\link[magrittr:pipe]{magrittr::\%>\%}) to apply filters to data streams (see Examples section).
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -33,15 +37,48 @@ DSF implementations inherit from \link{DSD} and have the same basic interface.
 
 \examples{
 DSF()
+
+## Example: Using pipes
+if (require(dplyr)) {
+
+stream <- DSD_Gaussians(k = 3, d = 2) \%>\%
+  DSF_dplyr(filter(X1 > .5)) \%>\%
+  DSF_dplyr(mutate(Xsum = X1 + X2))
+stream
+
+get_points(stream, n = 5)
+}
 }
 \seealso{
 Other DSF: 
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_Filter}()},
+\code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()}
+
+Other DSD: 
+\code{\link{DSD_BarsAndGaussians}()},
+\code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Cubes}()},
+\code{\link{DSD_Gaussians}()},
+\code{\link{DSD_MG}()},
+\code{\link{DSD_Memory}()},
+\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadDB}()},
+\code{\link{DSD_Target}()},
+\code{\link{DSD_UniformNoise}()},
+\code{\link{DSD_mlbenchData}()},
+\code{\link{DSD_mlbenchGenerator}()},
+\code{\link{DSD}()},
+\code{\link{animate}},
+\code{\link{get_points}()},
+\code{\link{plot}()},
+\code{\link{reset_stream}()},
+\code{\link{write_stream}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DSD}
 \concept{DSF}

@@ -112,6 +112,7 @@ Other DSD:
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
+\code{\link{DSF}()},
 \code{\link{get_points}()},
 \code{\link{plot}()},
 \code{\link{reset_stream}()},

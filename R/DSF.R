@@ -27,12 +27,28 @@
 #' Data stream filters transform a [DSD] data stream.
 #' DSF implementations inherit from [DSD] and have the same basic interface.
 #'
+#' `reset_stream()` resets the source stream.
+#'
+#' It is convenient to use the pipe ([magrittr::%>%]) to apply filters to data streams (see Examples section).
+#'
 #' @family DSF
+#' @family DSD
 #'
 #' @param ... Further arguments.
 #' @author Michael Hahsler
 #' @examples
 #' DSF()
+#'
+#' ## Example: Using pipes
+#' if (require(dplyr)) {
+#'
+#' stream <- DSD_Gaussians(k = 3, d = 2) %>%
+#'   DSF_dplyr(filter(X1 > .5)) %>%
+#'   DSF_dplyr(mutate(Xsum = X1 + X2))
+#' stream
+#'
+#' get_points(stream, n = 5)
+#' }
 #' @export DSF
 DSF <- abstract_class_generator("DSF")
 

@@ -4,31 +4,49 @@
 \alias{DSF_dplyr}
 \title{Apply a dplyr Transformation to a Data Stream}
 \usage{
-DSF_dplyr(dsd, call = NULL)
+DSF_dplyr(dsd, func = NULL)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
 
-\item{call}{a dplyr expression.}
+\item{func}{a dplyr expression.}
 }
 \value{
 An object of class \code{DSF_dplyr} (subclass of \link{DSF} and \link{DSD}).
 }
 \description{
-Applies a ...
+Applies dplyr transformations to a data stream.
+}
+\details{
+Since streams are processed on point or block o at a time, only \link{dplyr} operations that work on individual
+rows are allowed on streams. Examples are:
+\itemize{
+\item \code{\link[dplyr:select]{dplyr::select()}}
+\item \code{\link[dplyr:mutate]{dplyr::mutate()}}
+\item \code{\link[dplyr:rename]{dplyr::rename()}}
+\item \code{\link[dplyr:mutate]{dplyr::transmute()}}
+\item \code{\link[dplyr:filter]{dplyr::filter()}}
+}
+
+Summary functions can be used, but will only be applied to the requested part of the stream of length \code{n}.
+
+\code{DSF_dplyr()} is just an alias for \code{\link[=DSF_Func]{DSF_Func()}}.
 }
 \examples{
+if (require(dplyr)) {
+
 stream <- DSD_Gaussians(k = 3, d = 3)
 
 stream2 <- stream \%>\%
   DSF_dplyr(select(X1, X2)) \%>\%
-  DSF_dplyr(mutate(Xnew = X1 + X2)) \%>\%
-  DSF_dplyr(filter(X1 > .5))
+  DSF_dplyr(filter(X1 > .5)) \%>\%
+  DSF_dplyr(mutate(Xsum = X1 + X2))
 stream2
 
 get_points(stream2, n = 10)
 ## Note: you get fewer points because of the filter operation.
 
+}
 }
 \seealso{
 \link[stats:filter]{stats::filter}
@@ -36,6 +54,7 @@ get_points(stream2, n = 10)
 Other DSF: 
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_Filter}()},
+\code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSF}()}
 }

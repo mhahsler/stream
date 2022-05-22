@@ -46,7 +46,7 @@ DSF_Downsample <- function(dsd, factor = 1) {
   l <- list(
     dsd = dsd,
     factor = factor,
-    description = paste0(dsd$description, "\n\t - downsampled by factor ", factor)
+    description = paste0(dsd$description, "\n  + downsampled by factor ", factor)
   )
   class(l) <- c("DSF_Downsample", "DSF", "DSD_R", "DSD_data.frame", "DSD")
 

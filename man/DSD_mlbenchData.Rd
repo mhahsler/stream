@@ -59,6 +59,7 @@ Other DSD:
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
+\code{\link{DSF}()},
 \code{\link{animate}},
 \code{\link{get_points}()},
 \code{\link{plot}()},

@@ -75,6 +75,7 @@ plot(filter_sinc(10, 100, width = 20), type = "l")
 
 Other DSF: 
 \code{\link{DSF_Downsample}()},
+\code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}

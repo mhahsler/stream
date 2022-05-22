@@ -67,7 +67,7 @@ DSF_Filter <-
     na.rm = TRUE) {
     # creating the DSD object
     l <- list(
-      description = paste0(dsd$description, "\n\t + filtered"),
+      description = paste0(dsd$description, "\n  + convolution filter"),
       dsd = dsd,
       dim = dim,
       window = DSO_Window(horizon = length(kernel)),
