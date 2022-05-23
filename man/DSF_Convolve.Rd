@@ -3,29 +3,47 @@
 \name{DSF_Convolve}
 \alias{DSF_Convolve}
 \alias{filter_MA}
-\alias{filter_hamming}
+\alias{filter_Hamming}
 \alias{filter_diff}
-\alias{filter_sinc}
+\alias{filter_Sinc}
+\alias{pow2}
 \title{Apply a Filter to a Data Stream}
 \usage{
-DSF_Convolve(dsd, dim = NULL, kernel = NULL, na.rm = TRUE)
+DSF_Convolve(
+  dsd,
+  dim = NULL,
+  kernel = NULL,
+  pre = NULL,
+  post = NULL,
+  na.rm = FALSE,
+  replace = TRUE,
+  name = NULL
+)
 
 filter_MA(width)
 
-filter_hamming(width)
+filter_Hamming(width)
 
 filter_diff(lag)
 
-filter_sinc(fc, fs, width = NULL, bw = NULL)
+filter_Sinc(fc, fs, width = NULL, bw = NULL)
+
+pow2(x)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
 
-\item{dim}{columns to which the filter should be applied. Default is all.}
+\item{dim}{columns to which the filter should be applied. Default is all columns.}
 
-\item{kernel}{filter kernel as a vector of weights.}
+\item{kernel}{filter kernel as a numeric vector of weights.}
+
+\item{pre, post}{functions to be applied before and after the convolution.}
 
 \item{na.rm}{logical; should NAs be ignored?}
+
+\item{replace}{logical; should the column be replaced or a column with the convolved column added?}
+
+\item{name}{character; the new column will be name with the old column name + \verb{_} + \code{name}.}
 
 \item{width}{filter width.}
 
@@ -36,6 +54,8 @@ filter_sinc(fc, fs, width = NULL, bw = NULL)
 \item{fs}{sampling frequency.}
 
 \item{bw}{transition bandwidth.}
+
+\item{x}{values to be squared.}
 }
 \value{
 An object of class \code{DSF_Convolve} (subclass of \link{DSF} and \link{DSD}).
@@ -45,47 +65,80 @@ Applies a filter (i.e., a convolution with a filter kernel) to a data stream.
 }
 \details{
 A filter kernel is a vector with kernel weights. A few filter are provided.
+\itemize{
+\item \code{filter_MA(width)} creates a moving average.
+\item \code{filter_diff(lag)} calculates laged differences. Note that \code{na.rm = TRUE} will lead to artifacts and should not be used.
+\item \code{filter_Hamming(width)} creates a Hamming window.
+\item \code{filter_Sinc(fc, fs, width, bw)} creates a windowed-sinc filter. One of \code{width} (filter length) or
+\code{bw} (transition bandwidth can  be used to control the filter roll-off. The relationship is \eqn{width = 4/bw}.
+See Chapter 16 in Smith (1997).
+}
 
-Note about missing values: \code{na.rm} can be used to remove missing values (default behavior).
-For \code{filter_diff()} removing missing values can be problematic and should not be used.
+\code{pre} and \code{post} are functions that are called before and after the convolution. For example, to calculate
+RMS, you can use \code{pre = pow2} and \code{post = sqrt}. \code{pow2()} is a convenience function.
 }
 \examples{
 data(presidents)
 
-## create a data stream with three copies of president approval ratings.
-## we will filter the second one using MA and the third one using differencing.
+## Example 1: Create a data stream with three copies of president approval ratings.
+## We will use several convolutions.
 stream <- data.frame(
     approval_orig = presidents,
     approval_MA = presidents,
     approval_diff1 = presidents) \%>\%
   DSD_Memory()
+
 plot(stream, dim = 1, n = 120, method = "ts")
 
 ## apply a moving average filter to dimension 1
 filteredStream <- stream \%>\%
-  DSF_Convolve(kernel = filter_MA(5), dim = 2) \%>\%
-  DSF_Convolve(kernel = filter_diff(1), dim = 3, na.rm = FALSE)
+  DSF_Convolve(kernel = filter_MA(5), dim = 2, na.rm = TRUE) \%>\%
+  DSF_Convolve(kernel = filter_diff(1), dim = 3)
 filteredStream
 
 ## resetting the filtered stream also resets the original stream
 reset_stream(filteredStream)
-get_points(filteredStream, n = 10)
+ps <- get_points(filteredStream, n = 120)
+head(ps)
 
-reset_stream(filteredStream)
-plot(filteredStream, dim = 1, n = 120, method = "ts")
+matplot(ps, type = "l")
+legend("topright", colnames(ps), col = 1:4, lty = 1:4)
 
-## the second dimension is filtered
-reset_stream(filteredStream)
-plot(filteredStream, dim = 2, n = 120, method = "ts")
+## Example 2: Create a stream with a constant sine wave
+stream <- DSD_Memory(data.frame(y = sin(seq(0, 2 * pi, .1))), loop = TRUE)
+plot(stream, n = 200, method = "ts")
 
-## look at different filters
-plot(filter_MA(20), type = "s")
-plot(filter_hamming(20), type = "s")
-plot(filter_sinc(10, 100, width = 20), type = "s")
-plot(filter_diff(1), type = "s")
+filteredStream <- stream \%>\%
+  DSF_Convolve(kernel = filter_MA(200), dim = 1,
+    replace = FALSE, name = "MA") \%>\%
+  DSF_Convolve(kernel = filter_MA(200), pre = pow2, post = sqrt, dim = 1,
+    replace = FALSE, name = "RMS") \%>\%
+  DSF_Convolve(kernel = filter_diff(1), dim = 1,
+    replace = FALSE, name = "diff1")
+filteredStream
+
+ps <- get_points(filteredStream, n = 500)
+head(ps)
+
+matplot(ps, type = "l")
+legend("topright", colnames(ps), col = 1:4, lty = 1:4)
+
+## Note that MA and RMS use a window of length 200 and are missing at the
+##   beginning of the stream the window is full.
+
+## Filters: look at different filters
+filter_MA(20)
+filter_diff(1)
+plot(filter_Hamming(20), type = "s")
+plot(filter_Sinc(10, 100, width = 20), type = "s")
+}
+\references{
+Steven W. Smith, The Scientist and Engineer's Guide to
+Digital Signal Processing, California Technical Pub; 1st edition (January 1, 1997).
+ISBN 0966017633, URL: https://www.dspguide.com/
 }
 \seealso{
-\link[stats:filter]{stats::filter}
+\link[stats:filter]{stats::filter} provides non-streaming convolution.
 
 Other DSF: 
 \code{\link{DSF_Downsample}()},

@@ -206,7 +206,7 @@ get_points.DSD_Memory <- function(x,
         togo <- togo - n_left
       } else{
         # take the rest
-        d <- rbind(d, x$strm[1:(x$state$counter + togo - 1), ])
+        d <- rbind(d, x$strm[1:(x$state$counter + togo - 1), ,drop = FALSE])
         a <- append(a, x$class[1:(x$state$counter + togo - 1)])
         if (!is.null(x$outlier))
           o <- append(o, x$outlier[1:(x$state$counter + togo - 1)])
