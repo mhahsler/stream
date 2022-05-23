@@ -7,6 +7,7 @@
 * We now support %>%.
 * The NAMESPACE is now managed using roxygen.
 * DSO is now called DSAggregate.
+* Added DST_Multi.
 
 # stream 1.5-1 (05/09/22)
 

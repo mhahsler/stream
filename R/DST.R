@@ -37,18 +37,28 @@
 #' DST()
 #' @export DST
 DST <- function(...) {
-  message("DST is an abstract class and cannot be instantiated!\n",
+  message(
+    "DST is an abstract class and cannot be instantiated!\n",
     "Available subclasses are:\n\t",
-    paste(setdiff(grep("^DS[^_]*$", ls("package:stream"), value = TRUE), "DST"),
-      collapse=",\n\t"))
+    paste(setdiff(
+      grep("^DS[^_]*$", ls("package:stream"), value = TRUE), "DST"
+    ),
+      collapse = ",\n\t")
+  )
   invisible(NULL)
 }
 
 #' @describeIn DST update the data stream task with new data points coming from a data stream.
 #' @export
 update.DST <- function(object, dsd, n = 1, ...) {
-  stop("No implementaiton for update found!")
-  }
+  stop("No implementation for update found!")
+}
+
+#' @export
+print.DST <- function(x, ...) {
+  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat(.line_break(paste(x$description)))
+}
 
 #' @rdname DST
 #' @export
@@ -69,7 +79,8 @@ description.default <- function(x, ...)
 
 #' @describeIn DST Get a description of the task as a character string.
 #' @export
-description.DST <- description.default
+description.DST <- function(x, ...)
+  .desc(x)
 
 #' @export
 description.DSC <- function(x, ...)

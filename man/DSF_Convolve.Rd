@@ -29,6 +29,8 @@ filter_sinc(fc, fs, width = NULL, bw = NULL)
 
 \item{width}{filter width.}
 
+\item{lag}{an integer indicating which time lag to use.}
+
 \item{fc}{cutoff frequency.}
 
 \item{fs}{sampling frequency.}
@@ -50,8 +52,8 @@ For \code{filter_diff()} removing missing values can be problematic and should n
 \examples{
 data(presidents)
 
-## create a data stream with two copies of president approval ratings.
-## we will filter the second one and leave the first unfiltered.
+## create a data stream with three copies of president approval ratings.
+## we will filter the second one using MA and the third one using differencing.
 stream <- data.frame(
     approval_orig = presidents,
     approval_MA = presidents,
@@ -81,7 +83,6 @@ plot(filter_MA(20), type = "s")
 plot(filter_hamming(20), type = "s")
 plot(filter_sinc(10, 100, width = 20), type = "s")
 plot(filter_diff(1), type = "s")
-
 }
 \seealso{
 \link[stats:filter]{stats::filter}
