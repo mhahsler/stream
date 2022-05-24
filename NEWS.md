@@ -5,6 +5,7 @@
 * New base class DSF for data stream Filters.
 * New DSF: DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
 * New DST: DST_Multi, DSD_NULL
+* DSD_ReadCSV gained parameter col.names
 
 ## Changes
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
