@@ -27,31 +27,29 @@ underlying connection.
 \itemize{
 \item \link{DSD}
 \item \link{DSD_Gaussians}
-\item \link{DSD_Memory}
 \item \link{DSD_MG}
+\item \link{DSD_Memory}
 \item \link{DSD_ReadCSV}
 \item \link{DSF}
 \item \link{DSF_Convolve}
 }
 }
 \examples{
-
 # initializing the objects
-stream <- DSD_Gaussians(k=3, d=2)
+stream <- DSD_Gaussians()
 replayer <- DSD_Memory(stream, 100)
 replayer
 
 p <- get_points(replayer, 50)
 replayer
 
-# reset replayer to the begining of the stream
+# reset replayer to the beginning of the stream
 reset_stream(replayer)
 replayer
 
 # set replayer to position 21
-reset_stream(replayer, pos=21)
+reset_stream(replayer, pos = 21)
 replayer
-
 }
 \seealso{
 Other DSD: 

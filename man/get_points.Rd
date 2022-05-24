@@ -4,7 +4,7 @@
 \alias{get_points}
 \title{Get Points from a Data Stream Generator}
 \usage{
-get_points(x, n = 1, outofpoints = c("stop", "warn", "ignore"), ...)
+get_points(x, n = 1L, outofpoints = c("stop", "warn", "ignore"), ...)
 }
 \arguments{
 \item{x}{The \link{DSD} object.}
@@ -31,10 +31,8 @@ using the S3 class system. See the man page for the specific \link{DSD} class on
 the semantics for each implementation of \code{get_points()}.
 }
 \examples{
-
 stream <- DSD_Gaussians()
 get_points(stream, 100)
-
 }
 \seealso{
 Other DSD: 

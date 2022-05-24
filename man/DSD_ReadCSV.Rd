@@ -16,6 +16,7 @@ DSD_ReadCSV(
   sep = ",",
   header = FALSE,
   skip = 0,
+  col.names = NULL,
   colClasses = NA,
   ...
 )
@@ -50,6 +51,9 @@ the stream.}
 \item{skip}{the number of lines of the data file to skip before beginning to
 read data.}
 
+\item{col.names}{A vector of optional names for the variables. The default is to use \code{"V"} followed by the
+column number.}
+
 \item{colClasses}{A vector of classes to be assumed for the columns passed
 on to \code{read.table}.}
 
@@ -81,21 +85,19 @@ The position in the file can be reset to the beginning using
 \code{close_stream()}.
 }
 \examples{
-
 # creating data and writing it to disk
-stream <- DSD_Gaussians(k=3, d=5, outliers=1, space_limit=c(0,2),
-  outlier_options = list(outlier_horizon=10))
-write_stream(stream, "data.txt", n=10, header = TRUE, sep=",", class=TRUE, write_outliers=TRUE)
+stream <- DSD_Gaussians(k = 3, d = 5, outliers = 1, space_limit = c(0,2),
+  outlier_options = list(outlier_horizon = 10))
+write_stream(stream, "data.txt", n = 10, header = TRUE, sep = ",")
 
 # reading the same data back (as a loop)
-stream2 <- DSD_ReadCSV(k=3, o=1, "data.txt", sep=",", header = TRUE, loop=TRUE, class="class",
-                       outlier="outlier")
+stream2 <- DSD_ReadCSV("data.txt", sep = ",", header = TRUE, loop = TRUE)
 stream2
 
 # get points (fist a single point and then 20 using loop)
 get_points(stream2)
-p <- get_points(stream2, n=20, outlier=TRUE)
-message(paste("Outliers",sum(attr(p,"outlier"))))
+p <- get_points(stream2, n = 20)
+plot(p)
 
 # clean up
 close_stream(stream2)
@@ -104,13 +106,13 @@ file.remove("data.txt")
 # example with a part of the kddcup1999 data (take only cont. variables)
 file <- system.file("examples", "kddcup10000.data.gz", package="stream")
 stream <- DSD_ReadCSV(gzfile(file),
-        take=c(1, 5, 6, 8:11, 13:20, 23:42), class=42, k=7)
+        take=c(1, 5, 6, 8:11, 13:20, 23:42), class = 42, k = 7)
 stream
 
 get_points(stream, 5, class = TRUE)
 
 # plot 100 points (projected on the first two principal components)
-plot(stream, n=100, method="pc")
+plot(stream, n=100, method = "pca")
 
 close_stream(stream)
 }

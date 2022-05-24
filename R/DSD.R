@@ -46,25 +46,23 @@
 #' @param ... further arguments.
 #' @author Michael Hahsler
 #' @examples
-#'
 #' DSD()
 #'
 #' # create data stream with three clusters in 3-dimensional space
-#' stream <- DSD_Gaussians(k=3, d=3)
+#' stream <- DSD_Gaussians(k = 3, d = 3)
 #'
 #' # get points from stream
-#' get_points(stream, n=5)
+#' get_points(stream, n = 5)
 #'
 #' # get points with true cluster assignment
-#' p <- get_points(stream, n=5, cluster=TRUE)
+#' p <- get_points(stream, n = 5, cluster = TRUE)
 #' attr(p, "cluster")
 #'
 #' # plotting the data (scatter plot matrix, first and third dimension, and first
 #' #  two principal components)
 #' plot(stream)
-#' plot(stream, dim=c(1,3))
-#' plot(stream, method="pc")
-#'
+#' plot(stream, dim = c(1, 3))
+#' plot(stream, method = "pca")
 #' @export DSD
 DSD <- abstract_class_generator("DSD")
 
@@ -93,14 +91,12 @@ DSD_R <- abstract_class_generator("DSD")
 #' @return Returns a matrix of `x$d` columns and `n` rows.
 #' @author Michael Hahsler
 #' @examples
-#'
 #' stream <- DSD_Gaussians()
 #' get_points(stream, 100)
-#'
 #' @export
 get_points <-
   function(x,
-    n = 1,
+    n = 1L,
     outofpoints = c("stop", "warn", "ignore"),
     ...)
     UseMethod("get_points")
@@ -108,14 +104,11 @@ get_points <-
 get_points.default <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  ...) {
+  ...)
   stop(gettextf(
     "get_points not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
-}
-
-### in case the stream can be reset (e.g., a stream from a file)
 
 
 #' Reset a Data Stream to its Beginning
@@ -140,23 +133,21 @@ get_points.default <- function(x,
 #' 1).
 #' @author Michael Hahsler
 #' @examples
-#'
 #' # initializing the objects
-#' stream <- DSD_Gaussians(k=3, d=2)
+#' stream <- DSD_Gaussians()
 #' replayer <- DSD_Memory(stream, 100)
 #' replayer
 #'
 #' p <- get_points(replayer, 50)
 #' replayer
 #'
-#' # reset replayer to the begining of the stream
+#' # reset replayer to the beginning of the stream
 #' reset_stream(replayer)
 #' replayer
 #'
 #' # set replayer to position 21
-#' reset_stream(replayer, pos=21)
+#' reset_stream(replayer, pos = 21)
 #' replayer
-#'
 #' @export
 reset_stream <- function(dsd, pos = 1)
   UseMethod("reset_stream")
