@@ -127,7 +127,7 @@ legend("topright", colnames(ps), col = 1:4, lty = 1:4)
 ##   beginning of the stream the window is full.
 
 ## Filters: look at different filters
-filter_MA(20)
+filter_MA(5)
 filter_diff(1)
 plot(filter_Hamming(20), type = "s")
 plot(filter_Sinc(10, 100, width = 20), type = "s")

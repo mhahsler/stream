@@ -32,9 +32,11 @@ DSD implemented in R. To create a new R-based implementation there are only
 two function that needs to be implemented for a new \code{DSD} subclass
 called \code{Foo} would be:
 \enumerate{
-\item A creator function \code{DSD_Foo()} and
-\item a method \code{get_points.DSD_Foo()} for that class.
+\item A creator function \code{DSD_Foo(...)} and
+\item a method \code{get_points.DSD_Foo(x, n = 1L)} for that class.
 }
+
+For details see \code{vignette()}
 }
 \examples{
 
@@ -65,6 +67,7 @@ Other DSD:
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
+\code{\link{DSD_NULL}()},
 \code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
 \code{\link{DSD_Target}()},

@@ -119,6 +119,7 @@ Other DSD:
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_Memory}()},
+\code{\link{DSD_NULL}()},
 \code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
 \code{\link{DSD_Target}()},

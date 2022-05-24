@@ -35,7 +35,7 @@
 \DeclareTextFontCommand{\emph}{\normalfont}
 
 %\usepackage{Sweave}
-%\VignetteIndexEntry{Introduction to stream}
+%\VignetteIndexEntry{stream: Introduction to the package}
 
 %% publication information
 %% NOTE: This needs to filled out ONLY IF THE PAPER WAS ACCEPTED.
@@ -99,7 +99,7 @@ and frequent pattern mining.
 \Plainkeywords{data streams, data mining, clustering}
 
 \Address{Michael Hahsler\\
-Engineering Management, Information, and Systems\\
+Computer Science\\
 Lyle School of Engineering\\
 Southern Methodist University\\
 P.O. Box 750122 \\
@@ -682,17 +682,25 @@ simulated data sets to get reproducible results.
 <<init>>=
 library("stream")
 set.seed(1000)
-stream <- DSD_Gaussians(k = 3, d = 2)
+stream_orig <- DSD_Gaussians(k = 3, d = 2)
 @
 
-Next, we create an instance of the density-based
+Next, we apply a filter to transform the stream. Here, we will
+scale the stream to z-scores. We use here a pipe, but \code{DSF_Scale()} can also be called with the
+input stream as its first argument.
+
+<<scale>>=
+stream <- stream_orig %>% DSF_Scale()
+@
+
+Now, we create an instance of the density-based
 data stream clustering algorithm
 D-Stream which uses grid cells as micro-clusters. We
 specify the grid cell size (\code{gridsize}) as .1 and require that the density of a grid cell (\code{Cm}) needs to be at least
 1.2 times the average cell density to become a micro-cluster.
 Then we update the model with the next 500 data points from the stream.
 <<simple_DStream>>=
-dstream <- DSC_DStream(gridsize = .1, Cm = 1.2)
+dstream <- DSC_DStream(gridsize = .5, Cm = 1.2)
 update(dstream, stream, n = 500)
 @
 
@@ -705,10 +713,11 @@ plot(km, stream, type = "both")
 @
 
 
-As shown in this example, the \pkg{stream} framework consists of two
+As shown in this example, the \pkg{stream} framework consists of three
 main components:
 \begin{enumerate}
 \item {Data stream data (DSD)} simulates or connects to a data stream.
+\item {Data stream filter (DSF)} one or more filters to transform the stream.
 \item {Data stream task (DST)} performs a data stream mining task.
     In the example above, we performed twice a data stream clustering (DSC)
     task.
@@ -727,7 +736,7 @@ object. DSTs can implement any type of data stream mining task
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=.7\linewidth]{architecture}
+\includegraphics[width=.9\linewidth]{architecture}
 \caption{A high level view of the \pkg{stream} architecture.}
 \label{figure:workflow}
 \end{figure}

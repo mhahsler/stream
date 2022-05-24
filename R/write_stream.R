@@ -34,6 +34,7 @@
 #' (equivalent to \code{col.names} in \code{write.table()}).
 #' @param row.names A flag that determines if row names will be output.
 #' @param write_outliers A flag that determines if outliers will be output.
+#' @param close close stream after writing.
 #' @param ... Additional parameters that are passed to \code{write.table()}.
 #' @return There is no value returned from this operation.
 #' @author Michael Hahsler, Dalibor Krleža
@@ -90,6 +91,7 @@ write_stream.DSD <- function(dsd,
   header = FALSE,
   row.names = FALSE,
   write_outliers = FALSE,
+  close = TRUE,
   ...) {
   # make sure files are not overwritten
   if (is(file, "character") && file.exists(file) && !append)
@@ -131,5 +133,7 @@ write_stream.DSD <- function(dsd,
       )
     )
   }
-  close(file)
+
+  if (close)
+    close(file)
 }

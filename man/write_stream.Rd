@@ -30,6 +30,7 @@ write_stream(
   header = FALSE,
   row.names = FALSE,
   write_outliers = FALSE,
+  close = TRUE,
   ...
 )
 }
@@ -56,6 +57,8 @@ write_stream(
 \item{write_outliers}{A flag that determines if outliers will be output.}
 
 \item{...}{Additional parameters that are passed to \code{write.table()}.}
+
+\item{close}{close stream after writing.}
 }
 \value{
 There is no value returned from this operation.
@@ -86,6 +89,7 @@ Other DSD:
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
+\code{\link{DSD_NULL}()},
 \code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
 \code{\link{DSD_Target}()},

@@ -17,18 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-## DSD - Data Stream Data interface
-## all DSD classes have these functions
-## and an additional function to create the DSD
-##
-## A new DSD class (e.g., myDSD) needs the following:
-## 1. a constructor function. myDSD <- function(PARAMETERS) which
-## returns an object with the class  c("DSD_myDSD","DSD_R","DSD")
-## 2. get_points.myDSD <- function(x, n=1, ...)
-##
-## See DSD_Gaussian_Static.R for an example
-
-
 #' Data Stream Data Generator Base Classes
 #'
 #' Abstract base classes for DSD (Data Stream Data Generator).
@@ -48,8 +36,10 @@
 #' two function that needs to be implemented for a new `DSD` subclass
 #' called `Foo` would be:
 #'
-#' 1. A creator function `DSD_Foo()` and
-#' 2. a method `get_points.DSD_Foo()` for that class.
+#' 1. A creator function `DSD_Foo(...)` and
+#' 2. a method `get_points.DSD_Foo(x, n = 1L)` for that class.
+#'
+#' For details see `vignette()`
 #'
 #' @family DSD
 #'

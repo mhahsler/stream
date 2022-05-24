@@ -34,7 +34,7 @@
 \DeclareTextFontCommand{\emph}{\normalfont}
 
 %\usepackage{Sweave}
-%\VignetteIndexEntry{Extending the stream Framework}
+%\VignetteIndexEntry{stream: Extending the stream Framework}
 
 %% publication information
 %% NOTE: This needs to filled out ONLY IF THE PAPER WAS ACCEPTED.
@@ -57,8 +57,8 @@ John Forrest\\Microsoft Corporation
 \title{Extending the \pkg{stream} Framework}
 
 \Plainauthor{Michael Hahsler, Matthew Bolanos, John Forrest}
-\Plaintitle{Extending the stream Framework}
-\Shorttitle{Extending the \pkg{stream} Framework}
+\Plaintitle{stream: Extending the stream Framework}
+\Shorttitle{\pkg{stream}: Extending the \pkg{stream} Framework}
 
 %% an abstract and keywords
 \Abstract{This document describes how to add new data stream sources \code{DSD} and
@@ -68,7 +68,7 @@ data stream tasks \code{DST} to the \pkg{stream} framework.}
 \Plainkeywords{data streams, data mining, clustering}
 
 \Address{Michael Hahsler\\
-Engineering Management, Information, and Systems\\
+Computer Science\\
 Lyle School of Engineering\\
 Southern Methodist University\\
 P.O. Box 750122 \\
@@ -236,7 +236,7 @@ The resulting plot is shown in Figure~\ref{figure:dsd_example}.
 
 \begin{figure}
 \centering
-\includegraphics[width=.5\linewidth]{stream_extension-dsd_example}
+\includegraphics[width=.5\linewidth]{extending_stream-dsd_example}
 \caption{Sample points from the newly implemented \code{DSD\_UniformNoise} object.}
 \label{figure:dsd_example}
 \end{figure}
