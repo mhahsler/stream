@@ -57,7 +57,7 @@
 #' get_points(stream, n = 5, info = TRUE)
 #' plot(stream, xlim = c(-20,120), ylim = c(-20, 120))
 #'
-#' \dontrun{
+#' if (interactive()) {
 #' animate_data(stream, n = 5000, xlim = c(-20, 120), ylim = c(-20, 120))
 #' }
 #'
@@ -96,8 +96,8 @@
 #' stream
 #'
 #' dbstream <- DSC_DBSTREAM(r = 10, lambda = 0.1)
-#' \dontrun{
-#' purity <- animate_cluster(dbstream, stream, n = 2500, type = "both",
+#' if (interactive()) {
+#' purity <- animate_cluster(dbstream, stream, n = 2500, type = "micro",
 #'   xlim = c(-10, 120), ylim = c(-10, 120), evaluationMeasure = "purity", horizon = 100)
 #' }
 #' @export

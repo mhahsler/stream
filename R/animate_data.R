@@ -41,7 +41,7 @@
 #' @author Michael Hahsler
 #' @seealso [animation::ani.replay()] for replaying and saving animations.
 #' @examples
-#' if (interactive) {
+#' if (interactive()) {
 #'
 #' stream <- DSD_Benchmark(1)
 #' animate_data(stream, horizon = 100, n = 5000, xlim = c(0,1), ylim = c(0,1))

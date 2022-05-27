@@ -536,7 +536,7 @@ evaluate <-
 #' stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
 #' km <- DSC_Kmeans(3)
 #' update(km, stream, n=500)
-#' evaluate_with_callbacks(km, stream, type="macro", n=500,
+#' evaluate(km, stream, type="macro", n=500,
 #'                         measure = c("crand","LowestWeightPercentage"),
 #'                         callbacks = list(cc=CustomCallback()))
 #'

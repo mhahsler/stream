@@ -33,7 +33,7 @@ and saved in various formats (see Examples section below).
 its system requirements.
 }
 \examples{
-if (interactive) {
+if (interactive()) {
 
 stream <- DSD_Benchmark(1)
 animate_data(stream, horizon = 100, n = 5000, xlim = c(0,1), ylim = c(0,1))
