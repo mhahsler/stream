@@ -133,12 +133,11 @@ Note that \code{DSC_DStream} can at this point not be saved to disk using
 save() or saveRDS(). This functionality will be added later!
 }
 \examples{
-
-stream <- DSD_BarsAndGaussians(noise=.05)
+stream <- DSD_BarsAndGaussians(noise = .05)
 plot(stream)
 
 # we set Cm=.8 to pick up the lower density clusters
-dstream1 <- DSC_DStream(gridsize=1, Cm=1.5)
+dstream1 <- DSC_DStream(gridsize = 1, Cm = 1.5)
 update(dstream1, stream, 1000)
 dstream1
 
@@ -148,31 +147,30 @@ head(get_centers(dstream1))
 
 # plot (DStream provides additional grid visualization)
 plot(dstream1, stream)
-plot(dstream1, stream, grid=TRUE)
+plot(dstream1, stream, grid = TRUE)
 
 # look only at dense grids
-nclusters(dstream1, grid_type="dense")
-plot(dstream1, stream, grid=TRUE, grid_type="dense")
+nclusters(dstream1, grid_type = "dense")
+plot(dstream1, stream, grid = TRUE, grid_type = "dense")
 
 # look at transitional and sparse cells
-plot(dstream1, stream, grid=TRUE, grid_type="transitional")
-plot(dstream1, stream, grid=TRUE, grid_type="sparse")
+plot(dstream1, stream, grid = TRUE, grid_type = "transitional")
+plot(dstream1, stream, grid = TRUE, grid_type = "sparse")
 
 ### Macro-clusters
 # standard D-Stream uses reachability
-nclusters(dstream1, type="macro")
-get_centers(dstream1, type="macro")
-plot(dstream1, stream, type="both", grid=TRUE)
-evaluate(dstream1, stream, measure="crand", type="macro")
+nclusters(dstream1, type = "macro")
+get_centers(dstream1, type = "macro")
+plot(dstream1, stream, type = "both", grid = TRUE)
+evaluate(dstream1, stream, measure = "crand", type = "macro")
 
 # use attraction for reclustering
-dstream2 <- DSC_DStream(gridsize=1, attraction=TRUE, Cm=1.5)
+dstream2 <- DSC_DStream(gridsize = 1, attraction = TRUE, Cm = 1.5)
 update(dstream2, stream, 1000)
 dstream2
 
-plot(dstream2, stream, type="both", grid=TRUE)
-evaluate(dstream2, stream, measure="crand", type="macro")
-
+plot(dstream2, stream, type = "both", grid = TRUE)
+evaluate(dstream2, stream, measure = "crand", type = "macro")
 }
 \references{
 Yixin Chen and Li Tu. 2007. Density-based clustering for
@@ -185,34 +183,22 @@ attraction. \emph{ACM Transactions on Knowledge Discovery from Data,} 3(3),
 Article 12 (July 2009), 27 pages.
 }
 \seealso{
-Other DSC: 
+Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSCAN}()},
 \code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_R}()},
 \code{\link{DSC_Sample}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
 \code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
-\code{\link{DSC}()},
-\code{\link{animate}},
-\code{\link{evaluate}()},
-\code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
-\code{\link{prune_clusters}()},
-\code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link{DSC_evoStream}()}
+
+Other DSC_TwoStage: 
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_evoStream}()}
 }
 \author{
 Michael Hahsler
 }
-\concept{DSC}
+\concept{DSC_Micro}
+\concept{DSC_TwoStage}

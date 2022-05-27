@@ -10,17 +10,16 @@ DSD_mlbenchData(data = NULL, loop = FALSE, random = FALSE, scale = FALSE)
 \item{data}{The name of the dataset from mlbench. If missing then a list of
 all available data sets is shown and returned.}
 
-\item{loop}{A flag that tells the stream to loop or not to loop over the
+\item{loop}{logical; loop or not to loop over the
 data frame.}
 
-\item{random}{A flag that determines if the data should be in a random
-order.}
+\item{random}{logical; should the data be used a random order?}
 
-\item{scale}{A flag that determines if the data should be scaled.}
+\item{scale}{logical; apply scaling to the data?}
 }
 \value{
 Returns a \code{DSD_mlbenchData} object which is also of class
-\code{DSD_Memory}.
+\link{DSD_Memory}.
 }
 \description{
 Provides a convenient stream interface for data sets from the mlbench
@@ -28,24 +27,25 @@ package.
 }
 \details{
 The \code{DSD_mlbenchData} class is designed to be a wrapper class for data
-that is held in memory in either a data frame or matrix form. It is a
-subclass of \code{DSD_Memory}.
+from the mlbench package.
 
-Call \code{DSD_mlbenchData} with a missing value for data to get a list of
+All data is held in memory in either data frame or matrix form. It is served as a stream using the
+\link{DSD_Memory} class. The stream can be reset to position 1 using \code{\link[=reset_stream]{reset_stream()}}.
+
+Call \code{DSD_mlbenchData} with a missing value for \code{data} to get a list of
 all available data sets.
 }
 \examples{
+DSD_mlbenchData()
 
 stream <- DSD_mlbenchData("Shuttle")
 stream
 
-plot(stream, n=100)
+get_points(stream, n = 5, info = TRUE)
 
+plot(stream, n = 100)
 }
 \seealso{
-\code{\link{DSD}}, \code{\link{DSD_Memory}},
-\code{\link{reset_stream}}
-
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
@@ -61,9 +61,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

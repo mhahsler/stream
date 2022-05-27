@@ -18,7 +18,8 @@ nullstream <- DSD_NULL()
 nullstream
 
 ## This will produce an error
-# get_points(nullstream)
+\dontrun{
+get_points(nullstream)}
 }
 \seealso{
 Other DSD: 
@@ -36,9 +37,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

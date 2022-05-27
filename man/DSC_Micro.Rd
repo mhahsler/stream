@@ -2,7 +2,7 @@
 % Please edit documentation in R/DSC_Micro.R
 \name{DSC_Micro}
 \alias{DSC_Micro}
-\title{Abstract Class for Micro Clusterers}
+\title{Abstract Class for Micro Clusterers (Online Component)}
 \usage{
 DSC_Micro(...)
 }
@@ -10,37 +10,54 @@ DSC_Micro(...)
 \item{...}{further arguments.}
 }
 \description{
-Abstract class for all DSC Micro Clusterers.
+Abstract class for all clustering methods that can operate \strong{online} and result in a set of
+micro-clusters.
 }
 \details{
+Micro-clustering algorithms are data stream mining tasks \link{DST}
+which implement the \strong{online component of data stream clustering.}
+The clustering is performed sequentially by using \code{\link[=update]{update()}}
+to add new points from a data stream to the clustering. The result is
+a set of micro-clusters that can be retrieved using \code{\link[=get_clusters]{get_clusters()}}.
+
+Available clustering methods can be found in the See Also section below.
+
+Many data stream clustering algorithms define both, the online and an offline
+component to recluster micro-clusters into larger clusters called macro-clusters.
+This is implemented here as class \link{DSC_TwoStage}.
+
 \code{DSC_Micro} cannot be instantiated.
 }
-\seealso{
-\link{DSC}
+\examples{
+stream <- DSD_BarsAndGaussians(noise = .05)
 
-Other DSC: 
+# Use a DStream to create micro-clusters
+dstream <- DSC_DStream(gridsize = 1, Cm = 1.5)
+update(dstream, stream, 1000)
+dstream
+nclusters(dstream)
+plot(dstream, stream, main = "micro-clusters")
+}
+\seealso{
+Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSCAN}()},
 \code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_R}()},
 \code{\link{DSC_Sample}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()}
+
+Other DSC: 
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_R}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
 \code{\link{DSC}()},
-\code{\link{animate}},
+\code{\link{animate_cluster}()},
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
+\code{\link{plot.DSC}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
@@ -49,3 +66,4 @@ Other DSC:
 Michael Hahsler
 }
 \concept{DSC}
+\concept{DSC_Micro}

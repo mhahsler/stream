@@ -4,31 +4,17 @@
 \alias{DSD_ReadDB}
 \title{Read a Data Stream from an open DB Query}
 \usage{
-DSD_ReadDB(
-  result,
-  k = NA,
-  o = NA,
-  class = NULL,
-  outlier = NULL,
-  description = NULL
-)
+DSD_ReadDB(result, k = NA, description = NULL)
 }
 \arguments{
 \item{result}{An open DBI result set.}
 
 \item{k}{Number of true clusters, if known.}
 
-\item{o}{Number of outliers, if known.}
-
-\item{class}{column index for the class/cluster assignment.}
-
-\item{outlier}{column index for the outlier mark.}
-
 \item{description}{a character string describing the data.}
 }
 \value{
-An object of class \code{DSD_ReadDB} (subclass of  \link{DSD_R},
-\link{DSD}).
+An object of class \code{DSD_ReadDB} (subclass of  \link{DSD_R}, \link{DSD}).
 }
 \description{
 A DSD class that reads a data stream from an open DB result set from a
@@ -41,36 +27,39 @@ query using \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}} to obtain a result s
 query only includes the columns that should be included in the stream
 (including class and outlier marking columns). Do not forget to close the
 result set and the data base connection.
+
+If additional information is available (e.g., class information), then the SQL
+statement needs to make sure that the columns have the appropriate name starting with \code{.}.
+See Examples section below.
 }
 \examples{
-
 ### create a data base with a table with 3 Gaussians
 library("RSQLite")
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
-points <- get_points(DSD_Gaussians(k=3, d=2, outliers=1,
-  outlier_options=list(outlier_horizon=600)), 600,
-  class = TRUE, outlier = TRUE)
-points <- cbind(points, outlier=attr(points,"outlier"))
+points <- get_points(DSD_Gaussians(k=3, d=2), n = 110, info = TRUE)
 head(points)
 
-dbWriteTable(con, "gaussians", points)
+dbWriteTable(con, "Gaussians", points)
 
-### prepare a query result set
-res <- dbSendQuery(con, "SELECT X1, X2, class, outlier FROM gaussians")
+### prepare a query result set. Make sure that the additional information
+### column starts with .
+res <- dbSendQuery(con, "SELECT X1, X2, `.class` AS '.class' FROM Gaussians")
 res
 
 ### create a stream interface to the result set
-stream <- DSD_ReadDB(res, k=3, o=1, class = 3, outlier = 4)
+stream <- DSD_ReadDB(res, k = 3)
+stream
 
 ### get points
-get_points(stream, 5, class = TRUE, outlier=TRUE)
-plot(stream)
+get_points(stream, n = 5)
+get_points(stream, n = 5, info = TRUE)
+
+plot(stream, n = 100)
 
 ### clean up
 dbClearResult(res)
 dbDisconnect(con)
-
 }
 \seealso{
 \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}}
@@ -90,13 +79,13 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }
 \author{
-Michael Hahsler, Dalibor Krleža
+Michael Hahsler
 }
 \concept{DSD}

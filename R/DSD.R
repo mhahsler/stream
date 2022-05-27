@@ -22,7 +22,8 @@
 #' Abstract base classes for DSD (Data Stream Data Generator).
 #'
 #' The `DSD` class cannot be instantiated, but it serves as a abstract
-#' base class from which all DSD objects inherit.
+#' base class from which all DSD objects inherit. Implementations can be found in the
+#' See Also section below.
 #'
 #' `DSD` provides common functionality like:
 #'
@@ -55,7 +56,7 @@
 #' get_points(stream, n = 5)
 #'
 #' # get points with true cluster assignment
-#' p <- get_points(stream, n = 5, cluster = TRUE)
+#' p <- get_points(stream, n = 5, info = TRUE)
 #' attr(p, "cluster")
 #'
 #' # plotting the data (scatter plot matrix, first and third dimension, and first
@@ -74,41 +75,67 @@ DSD_R <- abstract_class_generator("DSD")
 #'
 #' Gets points from a [DSD] object.
 #'
-#' Each DSD object has a unique way for returning data points, but they all are
+#' Each DSD object has a unique way for creating/returning data points, but they all are
 #' called through the generic function, `get_points()`. This is done by
 #' using the S3 class system. See the man page for the specific [DSD] class on
 #' the semantics for each implementation of `get_points()`.
 #'
+#' Additional point information (e.g., known cluster/class assignment, noise status) can be requested
+#' with `info = TRUE`. This information is returned as additional columns. The column names start with
+#' `.` and are ignored by [DST] implementations. `remove_info()` is a convenience function to remove the
+#' information columns.
+#'
 #' @family DSD
 #'
-#' @param x The [DSD] object.
-#' @param n Request up to $n$ points from the stream.
-#' @param outofpoints Action taken if less than $n$ data points are
-#' available. The default is to stop with an error.  For warn and ignore all
-#' available (possibly zero) points are returned.
-#' @param ... Additional parameters to pass to `get_points`
-#' implementations.
-#' @return Returns a matrix of `x$d` columns and `n` rows.
+#' @param x A [DSD] object.
+#' @param n integer; request up to $n$ points from the stream.
+#' @param outofpoints Action taken if less than `n` data points are
+#'   available. The default is to stop with an error.  Other actions that
+#'   might be supported by different `DSD` are:
+#'    - `warn`: return the available points (maybe an empty data.frame) with a warning.
+#'    - `ignore`: silently return the available points.
+#'    - `block`: wait till enough data points are available.
+#' @param info return additional columns with information about the data point (e.g., a known cluster assignment).
+#' @param ... Additional parameters to pass to the `get_points()` implementations.
+#' @return Returns a [data.frame] with (up to) `n` rows and as many columns as `x` produces.
 #' @author Michael Hahsler
 #' @examples
 #' stream <- DSD_Gaussians()
-#' get_points(stream, 100)
+#' points <- get_points(stream, n = 5, info = TRUE)
+#' points
+#'
+#' remove_info(points)
 #' @export
 get_points <-
   function(x,
     n = 1L,
-    outofpoints = c("stop", "warn", "ignore"),
+    outofpoints = "stop",
+    info = FALSE,
     ...)
     UseMethod("get_points")
 
 get_points.default <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
+  outofpoints = "stop",
+  info = FALSE,
   ...)
   stop(gettextf(
     "get_points not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
+
+#' @rdname get_points
+#' @param points a data.frame with points.
+#' @export
+remove_info <- function(points) {
+  info_cols <- grep('^\\.', colnames(points))
+  if (length(info_cols) > 0L)
+    points <- points[,-info_cols]
+
+  points
+}
+
+
 
 
 #' Reset a Data Stream to its Beginning
@@ -175,19 +202,13 @@ print.DSD <- function(x, ...) {
   d <- x[["d"]]
   if (is.null(d))
     d <- NA
-  o <- x$o
-  if (is.null(o))
-    o <- NA
 
   cat(.line_break(x$description))
   cat("Class:", paste(class(x), collapse = ", "), "\n")
   cat(paste(
     'With',
     k,
-    'clusters',
-    'and',
-    o,
-    'outliers',
+    'clusters/classes',
     'in',
     d,
     'dimensions',

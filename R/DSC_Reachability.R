@@ -37,7 +37,7 @@
 #' Note that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
-#' @family DSC
+#' @family DSC_Macro
 #'
 #' @param epsilon radius of the epsilon-neighborhood.
 #' @param min_weight micro-clusters with a weight less than this will be

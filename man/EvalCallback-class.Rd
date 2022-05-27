@@ -17,7 +17,7 @@ The abstract class for all evaluation callbacks. Cannot be instantiated.
 Must be inherited. Evaluation is the process of the clustering quality
 assessment. This assessment can include clustering results, as well as the
 clustering process, e.g., duration, spatial query performance, and similar.
-The \emph{stream} package has some measurements (see \link{evaluate} for
+The \pkg{stream} package has some measurements (see \link{evaluate} for
 details) already implemented. All other measurements can be externally
 implemented without need to extend the \emph{stream} package, by using
 callbacks.

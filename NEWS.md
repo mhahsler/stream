@@ -11,6 +11,8 @@
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
 * DSO is now called DSAggregate.
 * The NAMESPACE is now managed using roxygen.
+* class information and extra information is now stored as columns starting with . 
+  instead of as attributes.
 
 # stream 1.5-1 (05/09/22)
 

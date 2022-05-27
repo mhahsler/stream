@@ -17,8 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
-
 #' Uniform Noise Data Stream Generator
 #'
 #' This generator produces uniform noise in a d-dimensional unit (hyper) cube.
@@ -26,21 +24,20 @@
 #' @family DSD
 #'
 #' @param d Determines the number of dimensions.
-#' @param range A matrix with two columns and \code{d} rows giving the minimum
+#' @param range A matrix with two columns and `d` rows giving the minimum
 #' and maximum for each dimension. Defaults to the range of \eqn{[0,1]}.
-#' @return Returns a \code{DSD_UniformNoise} object.(subclass of \code{DSD_R},
-#' \code{DSD}).
+#' @return Returns a `DSD_UniformNoise` object.(subclass of `DSD_R`,
+#' `DSD`).
 #' @author Michael Hahsler
 #' @examples
-#'
 #' # create data stream with three clusters in 2D
-#' stream <- DSD_UniformNoise(d=2)
+#' stream <- DSD_UniformNoise(d = 2)
+#' get_points(stream, n = 5, info = TRUE)
 #' plot(stream, n=100)
 #'
 #' # specify a different range for each dimension
-#' stream <- DSD_UniformNoise(d=3, range=rbind(c(0,1), c(0,10), c(0,5)))
-#' plot(stream, n=100)
-#'
+#' stream <- DSD_UniformNoise(d = 3, range = rbind(c(0, 1), c(0, 10), c(0, 5)))
+#' plot(stream, n = 100)
 #' @export
 DSD_UniformNoise <- function(d = 2, range = NULL) {
   if (is.null(range))
@@ -54,17 +51,15 @@ DSD_UniformNoise <- function(d = 2, range = NULL) {
       d = d,
       range = range
     ),
-    class = c("DSD_UniformNoise", "DSD_R", "DSD_data.frame", "DSD")
+    class = c("DSD_UniformNoise", "DSD_R", "DSD")
   )
 }
 
 #' @export
 get_points.DSD_UniformNoise <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  outofpoints = "stop",
+  info = FALSE,
   ...) {
   .nodots(...)
 
@@ -81,10 +76,8 @@ get_points.DSD_UniformNoise <- function(x,
 
   data <- data.frame(data)
 
-  if (cluster)
-    attr(data, "cluster") <- rep(NA_integer_, n)
-  if (class)
-    data <- cbind(data, class = rep(NA_integer_, n))
+  if (info) 
+    data[[".class"]] <- NA
 
   data
 }

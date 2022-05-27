@@ -17,26 +17,29 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
 #' TwoStage Clustering Process
 #'
-#' Combines a micro and a macro clustering algorithm into a single process.
+#' Combines an **online clustering component** ([DSC_Micro])
+#' and an **offline reclustering component** ([DSC_Macro])
+#' into a single process.
 #'
 #' \code{update()} runs the micro-clustering stage and only when macro cluster
-#' centers/weights are requested, then the offline stage reclustering is
-#' automatically performed.
+#' centers/weights are requested using [get_centers()] or [get_weights()], then the offline stage
+#' reclustering is automatically performed.
 #'
+#' Available clustering methods can be found in the See Also section below.
+#'
+#' @family DSC_TwoStage
 #' @family DSC
 #'
 #' @param micro Clustering algorithm used in the online stage
-#' (\code{DSC_micro})
+#' ([DSC_Micro])
 #' @param macro Clustering algorithm used for reclustering in the offline stage
-#' (\code{DSC_macro})
-#' @return An object of class \code{DSC_TwoStage} (subclass of \code{DSC},
-#' \code{DSC_Macro}).
+#' ([DSC_Macro])
+#' @return An object of class `DSC_TwoStage` (subclass of [DSC],
+#' [DSC_Macro]).
 #' @author Michael Hahsler
 #' @examples
-#'
 #' stream <- DSD_Gaussians(k=3)
 #'
 #' # Create a clustering process that uses a window for the online stage and
@@ -51,56 +54,54 @@
 #' win_km
 #' plot(win_km, stream, type="both")
 #' evaluate(win_km, stream, assign="macro")
-#'
 #' @export
 DSC_TwoStage <- function(micro, macro) {
-
   state <- new.env()
   state$newdata <- TRUE
   l <- list(
     description = paste(micro$description, " + ",
-                        macro$description, sep=''),
+      macro$description, sep = ''),
     micro_dsc = micro,
     macro_dsc = macro,
     macro = state
   )
   czs <- c("DSC_Macro", "DSC")
-### MFH: this should be its own DSOutlier class
-#  if(is(micro,"DSOutlier")) {
-#    czs <- c("DSOutlier", czs)
-#    l$recheck_outliers <- micro$recheck_outliers
-#  }
-#  if(is(micro,"DSC_SinglePass")) czs <- c("DSC_SinglePass", czs)
   czs <- c("DSC_TwoStage", czs)
 
-  structure(l,class = czs)
+  structure(l, class = c("DSC_TwoStage", "DSC_Macro", "DSC"))
 }
 
 ### TwoStage has its own interface (does not use DSC_R)
 #' @export
-update.DSC_TwoStage <- function(object, dsd, n=1, verbose=FALSE,
-                                block=10000L, ...) {
+update.DSC_TwoStage <- function(object,
+  dsd,
+  n = 1,
+  verbose = FALSE,
+  block = 10000L,
+  ...) {
   ### dsc contains an RObj which is  a reference object with a cluster method
 
   ### some matrix to be processed in one go
-  if(!is(dsd, "DSD")) {
+  if (!is(dsd, "DSD")) {
     n <- nrow(dsd)
     dsd <- DSD_Memory(dsd)
   }
 
   n <- as.integer(n)
-  if(n>0) {
-    if(!is(dsd, "DSD_data.frame"))
-      stop("Cannot cluster stream (need a DSD_data.frame.)")
-
+  if (n > 0) {
     ### for DSC_TwoStage
-    if(is.environment(object$macro)) object$macro$newdata <- TRUE
+    if (is.environment(object$macro))
+      object$macro$newdata <- TRUE
 
     ### TODO: Check data
-    for(bl in .make_block(n, block)) {
-      update(object$micro_dsc, dsd, n=bl, ...)
-      if(verbose) cat("Processed", bl, "points -",
-                      nclusters(object), "clusters\n")
+    for (bl in .make_block(n, block)) {
+      update(object$micro_dsc, dsd, n = bl, ...)
+      if (verbose)
+        cat("Processed",
+          bl,
+          "points -",
+          nclusters(object),
+          "clusters\n")
     }
   }
 
@@ -110,34 +111,38 @@ update.DSC_TwoStage <- function(object, dsd, n=1, verbose=FALSE,
 
 ### accessors
 #' @export
-get_centers.DSC_TwoStage <- function(x, type=c("auto", "micro", "macro"), ...) {
-  type <- match.arg(type)
-  if(type=="micro") get_centers(x$micro_dsc)
-  else {
-    if(x$macro$newdata) {
-      recluster(x$macro_dsc, x$micro_dsc)
-      x$macro$newdata <- FALSE
+get_centers.DSC_TwoStage <-
+  function(x, type = c("auto", "micro", "macro"), ...) {
+    type <- match.arg(type)
+    if (type == "micro")
+      get_centers(x$micro_dsc)
+    else {
+      if (x$macro$newdata) {
+        recluster(x$macro_dsc, x$micro_dsc)
+        x$macro$newdata <- FALSE
+      }
+      get_centers(x$macro_dsc)
     }
-    get_centers(x$macro_dsc)
   }
-}
 
 #' @export
-get_weights.DSC_TwoStage <- function(x, type=c("auto", "micro", "macro"), ...) {
-  type <- match.arg(type)
-  if(type=="micro") get_weights(x$micro_dsc, ...)
-  else {
-    if(x$macro$newdata) {
-      recluster(x$macro_dsc, x$micro_dsc)
-      x$macro$newdata <- FALSE
+get_weights.DSC_TwoStage <-
+  function(x, type = c("auto", "micro", "macro"), ...) {
+    type <- match.arg(type)
+    if (type == "micro")
+      get_weights(x$micro_dsc, ...)
+    else {
+      if (x$macro$newdata) {
+        recluster(x$macro_dsc, x$micro_dsc)
+        x$macro$newdata <- FALSE
+      }
+      get_weights(x$macro_dsc, ...)
     }
-    get_weights(x$macro_dsc, ...)
   }
-}
 
 #' @export
-microToMacro.DSC_TwoStage <- function(x, micro=NULL, ...) {
-  if(x$macro$newdata) {
+microToMacro.DSC_TwoStage <- function(x, micro = NULL, ...) {
+  if (x$macro$newdata) {
     recluster(x$macro_dsc, x$micro_dsc)
     x$macro$newdata <- FALSE
   }
@@ -145,25 +150,31 @@ microToMacro.DSC_TwoStage <- function(x, micro=NULL, ...) {
 }
 
 #' @export
-get_assignment.DSC_TwoStage <- function(dsc, points, type=c("auto", "micro", "macro"),
-                                        method="auto", ...) {
-  type <- match.arg(type)
-  if(type=="micro") {
-    if(is(dsc$micro_dsc, "DSC_SinglePass")) dsc$macro$newdata <- TRUE
-    get_assignment(dsc$micro_dsc, points, type, method, ...)
-  } else {
-    if(dsc$macro$newdata) {
-      recluster(dsc$macro_dsc, dsc$micro_dsc)
-      dsc$macro$newdata <- FALSE
+get_assignment.DSC_TwoStage <-
+  function(dsc,
+    points,
+    type = c("auto", "micro", "macro"),
+    method = "auto",
+    ...) {
+    type <- match.arg(type)
+    if (type == "micro") {
+      dsc$macro$newdata <- TRUE
+      get_assignment(dsc$micro_dsc, points, type, method, ...)
+    } else {
+      if (dsc$macro$newdata) {
+        recluster(dsc$macro_dsc, dsc$micro_dsc)
+        dsc$macro$newdata <- FALSE
+      }
+      get_assignment(dsc$macro_dsc, points, type, method, ...)
     }
-    get_assignment(dsc$macro_dsc, points, type, method, ...)
   }
-}
 
 ### make a deep copy
 #' @export
 get_copy.DSC_TwoStage <- function(x) {
-  copy <- DSC_TwoStage(micro=get_copy(x$micro_dsc), macro=get_copy(x$macro_dsc))
+  copy <-
+    DSC_TwoStage(micro = get_copy(x$micro_dsc),
+      macro = get_copy(x$macro_dsc))
   copy$macro$newdata <- x$macro$newdata
   copy
 }

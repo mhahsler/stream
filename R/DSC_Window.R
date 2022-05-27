@@ -26,7 +26,7 @@
 #' model (Zhu and Shasha, 2002).  The weight for points in the window follows
 #' \eqn{2^{-lambda*t}} where \eqn{t} is the age of the point.
 #'
-#' @family DSC
+#' @family DSC_Micro
 #'
 #' @param horizon the window length.
 #' @param lambda decay factor damped window model. \code{lambda=0} means no

@@ -34,8 +34,8 @@ ignored for reclustering.}
 method.}
 }
 \value{
-An object of class \code{DSC_Kmeans} (subclass of \code{DSC},
-\code{DSC_R}, \code{DSC_Macro})
+An object of class \code{DSC_Kmeans} (subclass of \link{DSC},
+\link{DSC_R}, \link{DSC_Macro})
 }
 \description{
 Macro Clusterer.
@@ -43,64 +43,41 @@ Class implements the k-means algorithm for reclustering a set of
 micro-clusters.
 }
 \details{
-Please refer to function \code{kmeans} in \pkg{stats} for more details on
+Please refer to function \code{\link[stats:kmeans]{stats::kmeans()}} for more details on
 the algorithm.
 
 Note that this clustering cannot be updated iteratively and every time it is
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
-
-stream <- DSD_Gaussians(k=3, noise=0)
+set.seed(1000)
+stream <- DSD_Gaussians(k = 3, noise = 0)
 
 # create micro-clusters via sampling
-sample <- DSC_Sample(k=20)
+sample <- DSC_Sample(k = 20)
 update(sample, stream, 500)
 sample
 
 # recluster micro-clusters
 kmeans <- DSC_Kmeans(k=3)
 recluster(kmeans, sample)
-plot(kmeans, stream, type="both")
+plot(kmeans, stream, type = "both")
 
 # For comparison we use k-means directly to cluster data
 # Note: k-means is not a data stream clustering algorithm
-kmeans <- DSC_Kmeans(k=3)
+kmeans <- DSC_Kmeans(k = 3)
 update(kmeans, stream, 500)
 plot(kmeans, stream)
-
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Macro}}
-
-Other DSC: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
+Other DSC_Macro: 
 \code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
 \code{\link{DSC_EA}()},
 \code{\link{DSC_Hierarchical}()},
 \code{\link{DSC_Macro}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
-\code{\link{DSC}()},
-\code{\link{animate}},
-\code{\link{evaluate}()},
-\code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
-\code{\link{prune_clusters}()},
-\code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link{DSC_Reachability}()}
 }
 \author{
 Michael Hahsler
 }
-\concept{DSC}
+\concept{DSC_Macro}

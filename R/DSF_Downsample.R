@@ -48,7 +48,7 @@ DSF_Downsample <- function(dsd, factor = 1) {
     factor = factor,
     description = paste0(dsd$description, "\n  + downsampled by factor ", factor)
   )
-  class(l) <- c("DSF_Downsample", "DSF", "DSD_R", "DSD_data.frame", "DSD")
+  class(l) <- c("DSF_Downsample", "DSF", "DSD_R", "DSD")
 
   l
 }
@@ -57,9 +57,7 @@ DSF_Downsample <- function(dsd, factor = 1) {
 get_points.DSF_Downsample <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  info = FALSE,
   ...) {
   .nodots(...)
 
@@ -67,7 +65,7 @@ get_points.DSF_Downsample <- function(x,
   take <- seq_len(n) * x$factor - x$factor + 1L
 
   d <-
-    get_points(x$dsd, n_take, outofpoints, cluster, class, outlier, ...)
+    get_points(x$dsd, n = n_take, outofpoints = outofpoints, info = info, ...)
   d <- d[take,]
 
   if (!is.null(attr(d, "cluster")))

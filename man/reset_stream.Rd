@@ -27,8 +27,8 @@ underlying connection.
 \itemize{
 \item \link{DSD}
 \item \link{DSD_Gaussians}
-\item \link{DSD_MG}
 \item \link{DSD_Memory}
+\item \link{DSD_MG}
 \item \link{DSD_ReadCSV}
 \item \link{DSF}
 \item \link{DSF_Convolve}
@@ -68,9 +68,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{write_stream}()}
 }
 \author{

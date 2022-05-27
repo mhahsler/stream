@@ -2,37 +2,56 @@
 % Please edit documentation in R/DSD.R
 \name{get_points}
 \alias{get_points}
+\alias{remove_info}
 \title{Get Points from a Data Stream Generator}
 \usage{
-get_points(x, n = 1L, outofpoints = c("stop", "warn", "ignore"), ...)
+get_points(x, n = 1L, outofpoints = "stop", info = FALSE, ...)
+
+remove_info(points)
 }
 \arguments{
-\item{x}{The \link{DSD} object.}
+\item{x}{A \link{DSD} object.}
 
-\item{n}{Request up to $n$ points from the stream.}
+\item{n}{integer; request up to $n$ points from the stream.}
 
-\item{outofpoints}{Action taken if less than $n$ data points are
-available. The default is to stop with an error.  For warn and ignore all
-available (possibly zero) points are returned.}
+\item{outofpoints}{Action taken if less than \code{n} data points are
+available. The default is to stop with an error.  Other actions that
+might be supported by different \code{DSD} are:
+\itemize{
+\item \code{warn}: return the available points (maybe an empty data.frame) with a warning.
+\item \code{ignore}: silently return the available points.
+\item \code{block}: wait till enough data points are available.
+}}
 
-\item{...}{Additional parameters to pass to \code{get_points}
-implementations.}
+\item{info}{return additional columns with information about the data point (e.g., a known cluster assignment).}
+
+\item{...}{Additional parameters to pass to the \code{get_points()} implementations.}
+
+\item{points}{a data.frame with points.}
 }
 \value{
-Returns a matrix of \code{x$d} columns and \code{n} rows.
+Returns a \link{data.frame} with (up to) \code{n} rows and as many columns as \code{x} produces.
 }
 \description{
 Gets points from a \link{DSD} object.
 }
 \details{
-Each DSD object has a unique way for returning data points, but they all are
+Each DSD object has a unique way for creating/returning data points, but they all are
 called through the generic function, \code{get_points()}. This is done by
 using the S3 class system. See the man page for the specific \link{DSD} class on
 the semantics for each implementation of \code{get_points()}.
+
+Additional point information (e.g., known cluster/class assignment, noise status) can be requested
+with \code{info = TRUE}. This information is returned as additional columns. The column names start with
+\code{.} and are ignored by \link{DST} implementations. \code{remove_info()} is a convenience function to remove the
+information columns.
 }
 \examples{
 stream <- DSD_Gaussians()
-get_points(stream, 100)
+points <- get_points(stream, n = 5, info = TRUE)
+points
+
+remove_info(points)
 }
 \seealso{
 Other DSD: 
@@ -51,8 +70,8 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
-\code{\link{plot}()},
+\code{\link{animate_data}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

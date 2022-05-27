@@ -16,7 +16,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 #' Write a Data Stream to a File
 #'
 #' Writes points from a data stream DSD object to a file or a connection.
@@ -27,41 +26,37 @@
 #' @param file A file name or a R connection to be written to.
 #' @param n The number of data points to be written.
 #' @param block Write stream in blocks to improve file I/O speed.
-#' @param class Save the class/cluster labels of the points as the last column.
+#' @param info Save the class/cluster labels and other information columns with the data.
 #' @param sep The character that will separate attributes in a data point.
 #' @param append Append the data to an existing file.
 #' @param header A flag that determines if column names will be output
-#' (equivalent to \code{col.names} in \code{write.table()}).
+#' (equivalent to `col.names` in [write.table()]).
 #' @param row.names A flag that determines if row names will be output.
-#' @param write_outliers A flag that determines if outliers will be output.
 #' @param close close stream after writing.
-#' @param ... Additional parameters that are passed to \code{write.table()}.
+#' @param ... Additional parameters that are passed to [write.table()].
 #' @return There is no value returned from this operation.
-#' @author Michael Hahsler, Dalibor Krleža
-#' @seealso \code{\link{write.table}}
+#' @author Michael Hahsler
+#' @seealso [write.table]
 #' @examples
-#'
 #' # creating data and writing it to disk
-#' stream <- DSD_Gaussians(k=3, d=5, outliers=1,
-#'   outlier_options=list(outlier_horizon=10))
-#' write_stream(stream, file="data.txt", n=10, class=TRUE, write_outliers=TRUE)
+#' stream <- DSD_Gaussians(k = 3, d = 5)
+#' write_stream(stream, file="data.txt", n = 10, header = TRUE, info = TRUE)
 #'
-#' #file.show("data.txt")
+#' readLines("data.txt")
 #'
 #' # clean up
 #' file.remove("data.txt")
-#'
 #' @export
 write_stream <- function(dsd,
   file,
   n = 100,
   block = 100000L,
-  class = FALSE,
+  info = FALSE,
   append = FALSE,
   sep = ",",
   header = FALSE,
   row.names = FALSE,
-  write_outliers = FALSE,
+  close = TRUE,
   ...)
   UseMethod("write_stream")
 
@@ -69,12 +64,12 @@ write_stream.default <- function(dsd,
   file,
   n = 100,
   block = 100000L,
-  class = FALSE,
+  info = FALSE,
   append = FALSE,
   sep = ",",
   header = FALSE,
   row.names = FALSE,
-  write_outliers = FALSE,
+  close = TRUE,
   ...) {
   stop(gettextf("write_stream not implemented for class '%s'.", class(dsd)))
 }
@@ -85,12 +80,11 @@ write_stream.DSD <- function(dsd,
   file,
   n = 100,
   block = 100000L,
-  class = FALSE,
+  info = FALSE,
   append = FALSE,
   sep = ",",
   header = FALSE,
   row.names = FALSE,
-  write_outliers = FALSE,
   close = TRUE,
   ...) {
   # make sure files are not overwritten
@@ -114,11 +108,7 @@ write_stream.DSD <- function(dsd,
 
   # all following calls have to have col.names=FALSE regardless
   for (bl in .make_block(n, block)) {
-    if (write_outliers) {
-      p <- get_points(dsd, bl, class = class, outlier = TRUE)
-      p <- cbind(p, outlier = attr(p, "outlier"))
-    } else
-      p <- get_points(dsd, bl, class = class)
+      p <- get_points(dsd, bl, info = info)
 
     ## suppress warning for append and col.names
     suppressWarnings(

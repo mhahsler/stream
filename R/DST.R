@@ -22,8 +22,13 @@
 #' stream clustering [DSC], outlier detection [DSOutlier], classification on data streams
 #' [DSClassify] and frequent pattern mining on data streams [DSFP].
 #'
-#' The basic interface for all `DST` classes can be found in the Functions Section.
-#'
+#' The basic interface for all `DST` classes can be found in the Methods Section.
+#' Types of `DST` are
+#'   - [DSC] for data stream clustering.
+#'   - [DSAggregate] to aggregate data streams (e.g., with a sliding window).
+#'   - [DSFP] frequent pattern mining for data stream clustering.
+#'   - [DSClassify] classification for data streams.
+#'   - [DSOutlier] outlier detection for data streams.
 #'
 #' @aliases update
 #'
@@ -32,7 +37,6 @@
 #' @param n the number of data points used for the update.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
-#' @seealso [DSC], [DSOutlier], [DSClassify], [DSFP], [DSAggregate]
 #' @examples
 #' DST()
 #' @export DST

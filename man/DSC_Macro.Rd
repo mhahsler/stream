@@ -2,45 +2,64 @@
 % Please edit documentation in R/DSC_Macro.R
 \name{DSC_Macro}
 \alias{DSC_Macro}
-\title{Abstract Class for Macro Clusterers}
+\alias{microToMacro}
+\title{Abstract Class for Macro Clusterers (Offline Component)}
 \usage{
 DSC_Macro(...)
+
+microToMacro(x, micro = NULL)
 }
 \arguments{
 \item{...}{further arguments.}
+
+\item{x}{a \code{DSC_Macro} object that also contains information about
+micro-clusters.}
+
+\item{micro}{A vector with micro-cluster ids. If \code{NULL} then the
+assignments for all micro-clusters in \code{x} are returned.}
+}
+\value{
+A vector of the same length as \code{micro} with the macro-cluster
+ids.
 }
 \description{
-Abstract class for all DSC Macro Clusterers. \code{DSC_Macro} cannot be instantiated.
+Abstract class for all DSC Macro Clusterers which recluster micro-clusters \strong{offline} into final
+clusters called macro-clusters.
 }
 \details{
-\code{DSC_Macro} provide \link{microToMacro} that returns the assignment of Micro-cluster IDs to Macro-cluster IDs.
+Data stream clustering algorithms typically consists of an \strong{online component}
+that creates micro-clusters (implemented as \link{DSC_Micro}) and
+and \strong{offline components} which is used to recluster micro-clusters into
+final clusters called macro-clusters.
+The function \code{\link[=recluster]{recluster()}} is used extract micro-clusters from a \link{DSC_Micro} and
+create macro-clusters with a \code{DSC_Macro}.
+
+Available clustering methods can be found in the See Also section below.
+
+\code{\link[=microToMacro]{microToMacro()}} returns the assignment of Micro-cluster IDs to Macro-cluster IDs.
+
+For convenience, a \link{DSC_Micro} and \code{DSC_Macro} can be combined using \link{DSC_TwoStage}.
+
+\code{DSC_Macro} cannot be instantiated.
 }
 \seealso{
-\link{DSC}
-
-Other DSC: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
+Other DSC_Macro: 
 \code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
 \code{\link{DSC_EA}()},
 \code{\link{DSC_Hierarchical}()},
 \code{\link{DSC_Kmeans}()},
+\code{\link{DSC_Reachability}()}
+
+Other DSC: 
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
 \code{\link{DSC_R}()},
-\code{\link{DSC_Sample}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
 \code{\link{DSC}()},
-\code{\link{animate}},
+\code{\link{animate_cluster}()},
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
+\code{\link{plot.DSC}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
@@ -49,3 +68,4 @@ Other DSC:
 Michael Hahsler
 }
 \concept{DSC}
+\concept{DSC_Macro}

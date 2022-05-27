@@ -2,24 +2,10 @@
 % Please edit documentation in R/evaluate.R
 \name{evaluate}
 \alias{evaluate}
-\alias{evaluate_with_callbacks}
 \alias{evaluate_cluster}
-\alias{evaluate_cluster_with_callbacks}
 \title{Evaluate Clusterings}
 \usage{
 evaluate(
-  dsc,
-  dsd,
-  measure,
-  n = 100,
-  type = c("auto", "micro", "macro"),
-  assign = "micro",
-  assignmentMethod = c("auto", "model", "nn"),
-  noise = c("class", "exclude"),
-  ...
-)
-
-evaluate_with_callbacks(
   dsc,
   dsd,
   measure,
@@ -33,20 +19,6 @@ evaluate_with_callbacks(
 )
 
 evaluate_cluster(
-  dsc,
-  dsd,
-  measure,
-  n = 1000,
-  type = c("auto", "micro", "macro"),
-  assign = "micro",
-  assignmentMethod = c("auto", "model", "nn"),
-  horizon = 100,
-  verbose = FALSE,
-  noise = c("class", "exclude"),
-  ...
-)
-
-evaluate_cluster_with_callbacks(
   dsc,
   dsd,
   measure,
@@ -70,6 +42,9 @@ from.}
 \item{measure}{Evaluation measure(s) to use. If missing then all available
 measures are returned.}
 
+\item{callbacks}{A list of \code{\link{EvalCallback}} objects, invoked when
+measurement is calculated.}
+
 \item{n}{The number of data points being requested.}
 
 \item{type}{Use micro- or macro-clusters for evaluation. Auto used the class
@@ -85,9 +60,6 @@ a separate class (default) or to exclude them from evaluation.}
 
 \item{...}{Unused arguments are ignored.}
 
-\item{callbacks}{A list of \code{\link{EvalCallback}} objects, invoked when
-measurement is calculated.}
-
 \item{horizon}{Evaluation is done using horizon many previous points (see
 detail section).}
 
@@ -100,60 +72,71 @@ attributes, \code{"type"} and \code{"assign"}, to see at what level the
 evaluation was done.
 }
 \description{
-Gets evaluation measures for micro or macro-clusters from a DSC object given
-the original DSD object.
+Calculate evaluation measures for micro or macro-clusters from a \link{DSC} object given
+the original \link{DSD} object.
 }
 \details{
-For evaluation each data points are assigned to its nearest cluster using
+For evaluation, each data point is assigned to its nearest cluster using
 Euclidean distance to the cluster centers. Then for each cluster the
 majority class is determined. Based on the majority class several evaluation
 measures can be computed.
 
-For \code{evaluate_cluster} the most commonly used method of prequential
-error estimation (see Gama, Sebastiao and Rodrigues; 2013).  The data points
-in the horizon are first used to calculate the evaluation measire and then
-they are used for updating the cluster model.  Many evaluation measures are
-calculated with code from the packages \pkg{cluster}, \pkg{clue} and
-\pkg{fpc}. Detailed documentation can be found in these packages (see
-Section See Also.)
+We provide two evaluation methods:
+\itemize{
+\item \code{evaluate()} evaluates the current static clustering using new data.
+\item \code{evaluate_cluster()} evaluates the clustering process. The most commonly used method
+is \emph{prequential error estimation} (see Gama, Sebastiao and Rodrigues; 2013).  The data points
+in the horizon are first used to calculate the evaluation measure and then
+they are used for updating the cluster model.
+}
 
-The following information items are available: \itemize{ \item
-\code{"numMicroClusters"} number of micro-clusters \item
-\code{"numMacroClusters"} number of macro-clusters \item \code{"numClasses"}
-number of classes }
+Many evaluation measures are available using
+code from other packages including \code{\link[cluster:silhouette]{cluster::silhouette()}},
+\code{\link[clue:cl_agreement]{clue:: cl_agreement()}}, and \code{\link[fpc:cluster.stats]{fpc::cluster.stats()}}.
 
-The following noise-related items are available: \itemize{ \item
-\code{"noisePredicted"} Number data points predicted as noise \item
-\code{"noiseActual"} Number of data points which are actually noise \item
-\code{"noisePrecision"} Precision of the predicting noise (i.e., number of
+The following information items are available:
+\itemize{
+\item \code{"numMicroClusters"} number of micro-clusters
+\item \code{"numMacroClusters"} number of macro-clusters
+\item \code{"numClasses"} number of classes
+}
+
+The following noise-related items are available:
+\itemize{
+\item \code{"noisePredicted"} Number data points predicted as noise
+\item \code{"noiseActual"} Number of data points which are actually noise
+\item \code{"noisePrecision"} Precision of the predicting noise (i.e., number of
 correctly predicted noise points over the total number of points predicted
-as noise) }
+as noise)
+}
 
-The following internal evaluation measures are available: \itemize{ \item
-\code{"SSQ"} within cluster sum of squares. Assigns each non-noise point to
+The following internal evaluation measures are available:
+\itemize{
+\item \code{"SSQ"} within cluster sum of squares. Assigns each non-noise point to
 its nearest center from the clustering and calculates the sum of squares
 \item \code{"silhouette"} average silhouette width (actual noise points
 which stay unassigned by the clustering algorithm are removed; regular
 points that are unassigned by the clustering algorithm will form their own
-noise cluster) (\pkg{cluster}) \item \code{"average.between"} average
-distance between clusters (\pkg{fpc}) \item \code{"average.within"} average
-distance within clusters (\pkg{fpc}) \item \code{"max.diameter"} maximum
-cluster diameter (\pkg{fpc}) \item \code{ "min.separation"} minimum cluster
-separation (\pkg{fpc}) \item \code{"ave.within.cluster.ss"} a generalization
+noise cluster) (\pkg{cluster})
+\item \code{"average.between"} average distance between clusters (\pkg{fpc})
+\item \code{"average.within"} average distance within clusters (\pkg{fpc})
+\item \code{"max.diameter"} maximum cluster diameter (\pkg{fpc})
+\item \code{"min.separation"} minimum cluster separation (\pkg{fpc})
+\item \code{"ave.within.cluster.ss"} a generalization
 of the within clusters sum of squares (half the sum of the within cluster
-squared dissimilarities divided by the cluster size) (\pkg{fpc}) \item
-\code{"g2"} Goodman and Kruskal's Gamma coefficient (\pkg{fpc}) \item
-\code{"pearsongamma"} correlation between distances and a 0-1-vector where 0
-means same cluster, 1 means different clusters (\pkg{fpc}) \item
-\code{"dunn"} Dunn index (minimum separation / maximum diameter) (\pkg{fpc})
+squared dissimilarities divided by the cluster size) (\pkg{fpc})
+\item \code{"g2"} Goodman and Kruskal's Gamma coefficient (\pkg{fpc})
+\item \code{"pearsongamma"} correlation between distances and a 0-1-vector where 0
+means same cluster, 1 means different clusters (\pkg{fpc})
+\item \code{"dunn"} Dunn index (minimum separation / maximum diameter) (\pkg{fpc})
 \item \code{"dunn2"} minimum average dissimilarity between two cluster /
-maximum average within cluster dissimilarity (\pkg{fpc}) \item
-\code{"entropy"} entropy of the distribution of cluster memberships
-(\pkg{fpc}) \item \code{"wb.ratio"} average.within/average.between
-(\pkg{fpc}) }
+maximum average within cluster dissimilarity (\pkg{fpc})
+\item \code{"entropy"} entropy of the distribution of cluster memberships (\pkg{fpc})
+\item \code{"wb.ratio"} average.within/average.between (\pkg{fpc})
+}
 
-The following external evaluation measures are available: \itemize{
-
+The following external evaluation measures are available:
+\itemize{
 \item \code{"precision"}, \code{"recall"}, \code{"F1"} F1.  A true positive (TP)
 decision assigns two points in the same true cluster also to the same
 cluster, a true negative (TN) decision assigns two points from two different
@@ -167,59 +150,33 @@ precision = TP/(TP+FP)
 recall = TP/(TP+FN)
 
 The F1 measure is the harmonic mean of precision and recall.
-
 \item \code{"purity"} Average purity of clusters. The purity of each cluster
 is the proportion of the points of the majority true group assigned to it
-(see Cao et al. (2006)) \%
-
-\item \code{"classPurity"} (of real clusters; see
-Wan et al (2009)), \%
-
-\item \code{"fpr"} false positive rate, \item
-\code{"Euclidean"} Euclidean dissimilarity of the memberships (see
+(see Cao et al. (2006)).
+\item \code{"classPurity"} (of real clusters; see Wan et al (2009)).
+\item \code{"fpr"} false positive rate.
+\item \code{"Euclidean"} Euclidean dissimilarity of the memberships (see
 Dimitriadou, Weingessel and Hornik (2002)) (\pkg{clue})
-
 \item \code{"Manhattan"} Manhattan dissimilarity of the memberships (\pkg{clue})
-
 \item \code{"Rand"} Rand index (see Rand (1971)) (\pkg{clue})
-
-\item \code{"cRand"} Adjusted Rand index (see Hubert and Arabie (1985))
-(\pkg{clue})
-
-\item \code{"NMI"} Normalized Mutual Information (see Strehl
-and Ghosh (2002)) (\pkg{clue})
-
-\item \code{"KP"} Katz-Powell index (see Katz
-and Powell (1953)) (\pkg{clue})
-
-\item \code{"angle"} maximal cosine of the
-angle between the agreements (\pkg{clue})
-
-\item \code{"diag"} maximal
-co-classification rate (\pkg{clue})
-
-\item \code{"FM"} Fowlkes and Mallows's
-index (see Fowlkes and Mallows (1983)) (\pkg{clue})
-
-\item \code{"Jaccard"}
-Jaccard index (\pkg{clue})
-
-\item \code{"PS"} Prediction Strength (see
-Tibshirani and Walter (2005)) (\pkg{clue}) \%
-
-\item \code{"corrected.rand"}
-corrected Rand index (\pkg{fpc})
-
-\item \code{"vi"} variation of information
-(VI) index (\pkg{fpc})
+\item \code{"cRand"} Adjusted Rand index (see Hubert and Arabie (1985)) (\pkg{clue})
+\item \code{"NMI"} Normalized Mutual Information (see Strehl and Ghosh (2002)) (\pkg{clue})
+\item \code{"KP"} Katz-Powell index (see Katz and Powell (1953)) (\pkg{clue})
+\item \code{"angle"} maximal cosine of the angle between the agreements (\pkg{clue})
+-\code{ "diag"} maximal co-classification rate (\pkg{clue})
+\item \code{"FM"} Fowlkes and Mallows's index (see Fowlkes and Mallows (1983)) (\pkg{clue})
+\item \code{"Jaccard"} Jaccard index (\pkg{clue})
+\item \code{"PS"} Prediction Strength (see Tibshirani and Walter (2005)) (\pkg{clue}) \%
+\item \code{"corrected.rand"}  corrected Rand index (\pkg{fpc})
+\item \code{"vi"} variation of information (VI) index (\pkg{fpc})
 }
 
 Many measures are the average over all clusters. For example, purity is the
 average purity over all clusters.
 
-For \code{DSC_Micro} objects, data points are assigned to micro-clusters and
-then each micro-cluster is evaluated. For \code{DSC_Macro} objects, data
-points by default (\code{assign="micro"}) also assigned to micro-clusters,
+For \link{DSC_Micro} objects, data points are assigned to micro-clusters and
+then each micro-cluster is evaluated. For \link{DSC_Macro} objects, data
+points by default (\code{assign = "micro"}) also assigned to micro-clusters,
 but these assignments are translated to macro-clusters. The evaluation is
 here done for macro-clusters. This is important when macro-clustering is
 done with algorithms which do not create spherical clusters (e.g,
@@ -229,16 +186,17 @@ to the macro-clusters directly (i.e., their center) does not make sense.
 Using \code{type} and \code{assign}, the user can select how to assign data
 points and ad what level (micro or macro) to evaluate.
 
-Many of the above measures are implemented package \pkg{clue} in function
-\code{cl_agreement().}
-
-The following outlier measures are available: \itemize{ \item
-\code{"OutlierJaccard"} - A variant of the Jaccard index used to assess
+The following outlier measures are available:
+\itemize{
+\item \code{"OutlierJaccard"} - A variant of the Jaccard index used to assess
 outlier detection accuracy (see Krleza et al (2020)).  Outlier Jaccard index
-is calculated as TP/(TP+FP+UNDETECTED).  } Outlier measures are taken as
+is calculated as TP/(TP+FP+UNDETECTED).
+}
+
+Outlier measures are taken as
 external measures, and can be applied only for DSD that can mark outliers
-(see \code{\link{DSD_Gaussians}}) and outlier detection clusterers that
-inherits \code{\link{DSOutlier}} class.
+(see \link{DSD_Gaussians}) and outlier detection clusterers that
+inherits \link{DSOutlier} class.
 
 \code{evaluate_cluster()} is used to evaluate an evolving data stream using
 the method described by Wan et al. (2009). Of the \code{n} data points
@@ -255,42 +213,46 @@ callbacks are done through objects inheriting the \code{\link{EvalCallback}}
 class.
 }
 \examples{
+set.seed(0)
+stream <- DSD_Gaussians(k = 3, d = 2)
 
-stream <- DSD_Gaussians(k=3, d=2)
-
-dstream <- DSC_DStream(gridsize=0.05, Cm=1.5)
+dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
 update(dstream, stream, 500)
 plot(dstream, stream)
-# Evaluate micro-clusters
-# Note: we use here only n=500 points for evaluation to speed up execution
-evaluate(dstream, stream, measure=c("numMicro","numMacro","purity","crand", "SSQ"),
-  n=100)
+
+# Evaluate the micro-clusters in the clustering
+# Note: we use here only n = 100 points for evaluation to speed up execution
+evaluate(dstream, stream, measure=c("numMicro", "numMacro", "purity", "crand", "SSQ"),
+  n = 100)
 
 # DStream also provides macro clusters. Evaluate macro clusters with type="macro"
-plot(dstream, stream, type="macro")
+plot(dstream, stream, type = "macro")
 evaluate(dstream, stream, type ="macro",
-  measure=c("numMicro","numMacro","purity","crand", "SSQ"), n=100)
+  measure = c("numMicro","numMacro","purity","crand", "SSQ"),
+  n = 100)
 
-# Points are by default assigned to the closest micro clusters for evalution.
+# Points are by default assigned to the closest micro clusters for evaluation.
 # However, points can also be assigned to the closest macro-cluster using
-# assign="macro".
-evaluate(dstream, stream, type ="macro", assign="macro",
-  measure=c("numMicro","numMacro","purity","crand", "SSQ"), n=100)
+# assign = "macro".
+evaluate(dstream, stream, type = "macro", assign = "macro",
+  measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
+  n = 100)
 
 # Evaluate an evolving data stream
 stream <- DSD_Benchmark(1)
-dstream <- DSC_DStream(gridsize=0.05, lambda=0.1)
-evaluate_cluster(dstream, stream, type="macro", assign="micro",
-  measure=c("numMicro","numMacro","purity","crand"),
-  n=600, horizon=100)
+dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 
-\dontrun{
+evaluate_cluster(dstream, stream, type = "macro", assign = "micro",
+  measure=c("numMicro", "numMacro", "purity", "crand"),
+  n = 600, horizon = 100)
+
 # animate the clustering process
+if (interactive()){
 reset_stream(stream)
-dstream <- DSC_DStream(gridsize=0.05, lambda=0.1)
-animate_cluster(dstream, stream, horizon=100, n=5000,
-  measure=c("crand"), type="macro", assign="micro",
-  plot.args = list(type="both", xlim=c(0,1), ylim=c(0,1)))
+dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
+animate_cluster(dstream, stream, horizon = 100, n = 5000,
+  measure=c("crand"), type = "macro", assign = "micro",
+  plot.args = list(type = "both", xlim = c(0,1), ylim = c(0,1)))
 }
 
 # a simple callback example
@@ -306,6 +268,7 @@ CustomCallback <- function() {
   class(this) <- c("CustomCallback", "EvalCallback")
   this
 }
+
 evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
                                              actual, predict, outliers,
                                              predict_outliers,
@@ -318,11 +281,10 @@ evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
 }
 stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
 km <- DSC_Kmeans(3)
-update(km, stream, n=500)
-evaluate_with_callbacks(km, stream, type="macro", n=500,
+update(km, stream, n = 500)
+evaluate(km, stream, type = "macro", n = 500,
                         measure = c("crand","LowestWeightPercentage"),
-                        callbacks = list(cc=CustomCallback()))
-
+                        callbacks = list(cc = CustomCallback()))
 }
 \references{
 Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On
@@ -368,38 +330,27 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 \emph{Springer Machine Learning}.
 }
 \seealso{
-\code{\link{animate_cluster}}, \code{\link[clue]{cl_agreement}} in
-\pkg{clue}, \code{\link[fpc]{cluster.stats}} in \pkg{fpc},
-\code{\link[cluster]{silhouette}} in \pkg{cluster}.
+\code{\link[cluster:silhouette]{cluster::silhouette()}}, \code{\link[clue:cl_agreement]{clue:: cl_agreement()}}, and \code{\link[fpc:cluster.stats]{fpc::cluster.stats()}}.
 
 Other DSC: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
 \code{\link{DSC_R}()},
-\code{\link{DSC_Sample}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
 \code{\link{DSC}()},
-\code{\link{animate}},
+\code{\link{animate_cluster}()},
 \code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
+\code{\link{plot.DSC}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
+
+Other evaluation: 
+\code{\link{animate_cluster}()}
 }
 \author{
 Michael Hahsler, Matthew Bolanos, John Forrest, and Dalibor Krleža
 }
 \concept{DSC}
+\concept{evaluation}

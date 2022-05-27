@@ -7,41 +7,37 @@
 DSD_mlbenchGenerator(method, ...)
 }
 \arguments{
-\item{method}{The name of the mlbench data generator.}
+\item{method}{The name of the mlbench data generator. If missing then a list of
+all available generators is shown and returned.}
 
 \item{...}{Parameters for the mlbench data generator.}
 }
 \value{
 Returns a \code{DSD_mlbenchGenerator} object (subclass of
-\code{DSD_R}, \code{DSD}) which is a list of the defined parameters. The
-parameters are either passed in from the function or created internally.
-They include:
-
-\item{description}{The name of the class of the DSD object.}
-\item{method}{The name of the mlbench data generator.} \item{variables}{The
-variables for the mlbench data generator.}
+\link{DSD_R}, \link{DSD})
 }
 \description{
 A data stream generator class that interfaces data generators found in
-mlbench.
+package \code{mlbench}.
 }
 \details{
 The \code{DSD_mlbenchGenerator} class is designed to be a wrapper class for
-data created by data generators in the mlbench library.
+data created by data generators in the \code{mlbench} library.
 
 Call \code{DSD_mlbenchGenerator} with missing method to get a list of
 available methods.
 }
 \examples{
+DSD_mlbenchGenerator()
 
-stream <- DSD_mlbenchGenerator(method="cassini")
+stream <- DSD_mlbenchGenerator(method = "cassini")
+stream
 
-plot(stream, n=500)
+get_points(stream, n = 5, info = TRUE)
 
+plot(stream, n = 500)
 }
 \seealso{
-\code{\link{DSD}}
-
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
@@ -57,9 +53,9 @@ Other DSD:
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

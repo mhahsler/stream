@@ -136,7 +136,7 @@ DSF_Convolve <-
       name = name
     )
     class(l) <-
-      c("DSF_Convolve", "DSF", "DSD_R", "DSD_data.frame", "DSD")
+      c("DSF_Convolve", "DSF", "DSD_R", "DSD")
 
     l
   }
@@ -145,9 +145,7 @@ DSF_Convolve <-
 get_points.DSF_Convolve <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  info = FALSE,
   ...) {
   .nodots(...)
 

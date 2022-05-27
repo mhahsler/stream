@@ -8,25 +8,28 @@ DSC_TwoStage(micro, macro)
 }
 \arguments{
 \item{micro}{Clustering algorithm used in the online stage
-(\code{DSC_micro})}
+(\link{DSC_Micro})}
 
 \item{macro}{Clustering algorithm used for reclustering in the offline stage
-(\code{DSC_macro})}
+(\link{DSC_Macro})}
 }
 \value{
-An object of class \code{DSC_TwoStage} (subclass of \code{DSC},
-\code{DSC_Macro}).
+An object of class \code{DSC_TwoStage} (subclass of \link{DSC},
+\link{DSC_Macro}).
 }
 \description{
-Combines a micro and a macro clustering algorithm into a single process.
+Combines an \strong{online clustering component} (\link{DSC_Micro})
+and an \strong{offline reclustering component} (\link{DSC_Macro})
+into a single process.
 }
 \details{
 \code{update()} runs the micro-clustering stage and only when macro cluster
-centers/weights are requested, then the offline stage reclustering is
-automatically performed.
+centers/weights are requested using \code{\link[=get_centers]{get_centers()}} or \code{\link[=get_weights]{get_weights()}}, then the offline stage
+reclustering is automatically performed.
+
+Available clustering methods can be found in the See Also section below.
 }
 \examples{
-
 stream <- DSD_Gaussians(k=3)
 
 # Create a clustering process that uses a window for the online stage and
@@ -41,32 +44,23 @@ update(win_km, stream, 200)
 win_km
 plot(win_km, stream, type="both")
 evaluate(win_km, stream, assign="macro")
-
 }
 \seealso{
-Other DSC: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSCAN}()},
+Other DSC_TwoStage: 
 \code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
+\code{\link{DSC_evoStream}()}
+
+Other DSC: 
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
 \code{\link{DSC_R}()},
-\code{\link{DSC_Sample}()},
 \code{\link{DSC_Static}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
 \code{\link{DSC}()},
-\code{\link{animate}},
+\code{\link{animate_cluster}()},
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
+\code{\link{plot.DSC}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
@@ -75,3 +69,4 @@ Other DSC:
 Michael Hahsler
 }
 \concept{DSC}
+\concept{DSC_TwoStage}

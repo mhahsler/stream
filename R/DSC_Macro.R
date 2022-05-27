@@ -25,17 +25,31 @@
 # a cluster method in the RObj
 #######
 
-#' Abstract Class for Macro Clusterers
+#' Abstract Class for Macro Clusterers (Offline Component)
 #'
-#' Abstract class for all DSC Macro Clusterers. `DSC_Macro` cannot be instantiated.
+#' Abstract class for all DSC Macro Clusterers which recluster micro-clusters **offline** into final
+#' clusters called macro-clusters.
 #'
-#' `DSC_Macro` provide [microToMacro] that returns the assignment of Micro-cluster IDs to Macro-cluster IDs.
+#' Data stream clustering algorithms typically consists of an **online component**
+#' that creates micro-clusters (implemented as [DSC_Micro]) and
+#' and **offline components** which is used to recluster micro-clusters into
+#' final clusters called macro-clusters.
+#' The function [recluster()] is used extract micro-clusters from a [DSC_Micro] and
+#' create macro-clusters with a `DSC_Macro`.
 #'
+#' Available clustering methods can be found in the See Also section below.
+#'
+#' [microToMacro()] returns the assignment of Micro-cluster IDs to Macro-cluster IDs.
+#'
+#' For convenience, a [DSC_Micro] and `DSC_Macro` can be combined using [DSC_TwoStage].
+#'
+#' `DSC_Macro` cannot be instantiated.
+#'
+#' @family DSC_Macro
 #' @family DSC
 #'
 #' @param ... further arguments.
 #' @author Michael Hahsler
-#' @seealso [DSC]
 #' @export
 DSC_Macro <- abstract_class_generator("DSC")
 
@@ -65,4 +79,19 @@ get_weights.DSC_Macro <- function(x, type=c("auto", "micro", "macro"),
     }
 
     w
+}
+
+#' @rdname DSC_Macro
+#' @param x a `DSC_Macro` object that also contains information about
+#' micro-clusters.
+#' @param micro A vector with micro-cluster ids. If `NULL` then the
+#' assignments for all micro-clusters in `x` are returned.
+#' @return A vector of the same length as `micro` with the macro-cluster
+#' ids.
+#' @export
+microToMacro <- function(x, micro=NULL) UseMethod("microToMacro")
+
+microToMacro.default <- function(x, micro=NULL) {
+  stop(gettextf("microToMacro not implemented for class '%s'.",
+    paste(class(x), collapse=", ")))
 }

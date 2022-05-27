@@ -16,9 +16,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-
-
 #' Static Cubes Data Stream Generator
 #'
 #' A data stream generator that produces a data stream with static (hyper)
@@ -29,7 +26,7 @@
 #' @param k Determines the number of clusters.
 #' @param d Determines the number of dimensions.
 #' @param center A matrix of means for each dimension of each cluster.
-#' @param size A \code{k} times \code{d} matrix with the cube dimensions.
+#' @param size A `k` times `d` matrix with the cube dimensions.
 #' @param p A vector of probabilities that determines the likelihood of
 #' generated a data point from a particular cluster.
 #' @param noise Noise probability between 0 and 1.  Noise is uniformly
@@ -37,17 +34,15 @@
 #' @param noise_range A matrix with d rows and 2 columns. The first column
 #' contains the minimum values and the second column contains the maximum
 #' values for noise.
-#' @return Returns a \code{DSD_Cubes} object (subclass of \code{DSD_R},
-#' \code{DSD}).
+#' @return Returns a `DSD_Cubes` object (subclass of [DSD_R], [DSD]).
 #' @author Michael Hahsler
 #' @examples
-#'
 #' # create data stream with three clusters in 3D
-#' stream <- DSD_Cubes(k=3, d=3)
+#' stream <- DSD_Cubes(k = 3, d = 3, noise = 0.05)
 #'
-#' # plotting the data
+#' get_points(stream, n = 5, info = TRUE)
+#'
 #' plot(stream)
-#'
 #' @export
 DSD_Cubes <-
   function(k = 2,
@@ -113,22 +108,20 @@ DSD_Cubes <-
       noise = noise,
       noise_range = noise_range
     )
-    class(l) <- c("DSD_Cubes", "DSD_R", "DSD_data.frame", "DSD")
+    class(l) <- c("DSD_Cubes", "DSD_R", "DSD")
     l
   }
 
 #' @export
 get_points.DSD_Cubes <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  outofpoints = "stop",
+  info = FALSE,
   ...) {
   .nodots(...)
 
   clusterOrder <- sample(
-    x = c(1:x$k),
+    x = seq(x$k),
     size = n,
     replace = TRUE,
     prob = x$p
@@ -137,7 +130,7 @@ get_points.DSD_Cubes <- function(x,
   data <- t(sapply(
     clusterOrder,
     FUN = function(i)
-      runif(x$d, min = x$min[i, ] , max = x$max[i, ])
+      runif(x$d, min = x$min[i,] , max = x$max[i,])
   ))
 
   ## Replace some points by random noise
@@ -146,7 +139,7 @@ get_points.DSD_Cubes <- function(x,
   if (x$noise) {
     repl <- runif(n) < x$noise
     if (sum(repl) > 0) {
-      data[repl, ] <- t(replicate(
+      data[repl,] <- t(replicate(
         sum(repl),
         runif(
           x$d,
@@ -159,10 +152,9 @@ get_points.DSD_Cubes <- function(x,
   }
 
   data <- as.data.frame(data)
-  if (cluster)
-    attr(data, "cluster") <- clusterOrder
-  if (class)
-    data <- cbind(data, class = clusterOrder)
+
+  if (info)
+    data[['.class']] <- clusterOrder
 
   data
 }

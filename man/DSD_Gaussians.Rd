@@ -130,6 +130,7 @@ find them in data streams. For more details, read the "Introduction to
 \examples{
 # Example 1: create data stream with three clusters in 3-dimensional data space
 stream1 <- DSD_Gaussians(k = 3, d = 3)
+get_points(stream1, n = 5, info = TRUE)
 plot(stream1)
 
 # Example 2: create data stream with specified cluster positions,
@@ -140,6 +141,7 @@ stream2 <- DSD_Gaussians(k = 2, d = 2,
     noise = 0.2,
     noise_range = rbind(c(-1, 1),c(-1, 1)),
     p = c(.1, .9))
+get_points(stream2, n = 5, info = TRUE)
 plot(stream2)
 
 # Example 3: create 2 clusters and 2 outliers. Clusters and outliers
@@ -194,9 +196,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

@@ -66,7 +66,7 @@ DSF_Func <-
       func = parse(text = paste('ps <- ps %>%', func))
     )
     class(l) <-
-      c("DSF_Func", "DSF", "DSD_R", "DSD_data.frame", "DSD")
+      c("DSF_Func", "DSF", "DSD_R", "DSD")
 
     l
   }
@@ -75,13 +75,11 @@ DSF_Func <-
 get_points.DSF_Func <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  info = FALSE,
   ...) {
   .nodots(...)
 
-  ps <- get_points(x$dsd, n = n, outofpoints = outofpoints, cluster = cluster, class= class, outlier = outlier, ...)
+  ps <- get_points(x$dsd, n = n, outofpoints = outofpoints, info = info, ...)
   eval(x$func)
   ps
 }

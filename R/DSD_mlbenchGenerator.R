@@ -16,42 +16,35 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-
-
-
 #' mlbench Data Stream Generator
 #'
 #' A data stream generator class that interfaces data generators found in
-#' mlbench.
+#' package `mlbench`.
 #'
-#' The \code{DSD_mlbenchGenerator} class is designed to be a wrapper class for
-#' data created by data generators in the mlbench library.
+#' The `DSD_mlbenchGenerator` class is designed to be a wrapper class for
+#' data created by data generators in the `mlbench` library.
 #'
-#' Call \code{DSD_mlbenchGenerator} with missing method to get a list of
+#' Call `DSD_mlbenchGenerator` with missing method to get a list of
 #' available methods.
 #'
 #' @family DSD
 #'
-#' @param method The name of the mlbench data generator.
+#' @param method The name of the mlbench data generator. If missing then a list of
+#' all available generators is shown and returned.
 #' @param ... Parameters for the mlbench data generator.
-#' @return Returns a \code{DSD_mlbenchGenerator} object (subclass of
-#' \code{DSD_R}, \code{DSD}) which is a list of the defined parameters. The
-#' parameters are either passed in from the function or created internally.
-#' They include:
-#'
-#' \item{description}{The name of the class of the DSD object.}
-#' \item{method}{The name of the mlbench data generator.} \item{variables}{The
-#' variables for the mlbench data generator.}
+#' @return Returns a `DSD_mlbenchGenerator` object (subclass of
+#' [DSD_R], [DSD])
 #' @author John Forrest
-#' @seealso \code{\link{DSD}}
 #' @examples
+#' DSD_mlbenchGenerator()
 #'
-#' stream <- DSD_mlbenchGenerator(method="cassini")
+#' stream <- DSD_mlbenchGenerator(method = "cassini")
+#' stream
 #'
-#' plot(stream, n=500)
+#' get_points(stream, n = 5, info = TRUE)
 #'
-#' @export DSD_mlbenchGenerator
+#' plot(stream, n = 500)
+#' @export
 DSD_mlbenchGenerator <- function(method, ...) {
   methods <- c(
     "2dnormals",
@@ -79,7 +72,7 @@ DSD_mlbenchGenerator <- function(method, ...) {
   if (missing(method)) {
     cat("Available generators are:\n")
     print(methods)
-    return()
+    return(invisible(methods))
   }
 
   #finds index of partial match in array of methods
@@ -94,16 +87,15 @@ DSD_mlbenchGenerator <- function(method, ...) {
     variables = list(...)
   )
   class(l) <-
-    c("DSD_mlbenchGenerator", "DSD_R", "DSD_data.frame", "DSD")
+    c("DSD_mlbenchGenerator", "DSD_R", "DSD")
   l
 }
 
+#' @export
 get_points.DSD_mlbenchGenerator <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  outofpoints = "stop",
+  info = FALSE,
   ...) {
   .nodots(...)
 
@@ -112,19 +104,18 @@ get_points.DSD_mlbenchGenerator <- function(x,
   if (is.null(d$classes))
     d$classes <- rep(NA_integer_, times = n)
 
-  ## the data order needs to be scrambled...
+  ## the data order needs to be scrambled
   if (n > 1) {
     o <- sample(nrow(d$x))
     d$x <- d$x[o, , drop = FALSE]
     d$classes <- d$classes[o]
   }
 
-  df <- as.data.frame(d$x)
-  names(df) <- paste("V", 1:ncol(df), sep = "")
-  if (cluster)
-    attr(df, "cluster") <- as.integer(d$classes)
-  if (class)
-    df <- cbind(df, class = as.integer(d$classes))
+  dat <- as.data.frame(d$x)
+  colnames(dat) <- paste0("V", 1:ncol(dat))
 
-  df
+  if (info)
+    dat[['.class']] <- as.integer(d$classes)
+
+  dat
 }

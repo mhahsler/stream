@@ -32,28 +32,29 @@
 #' Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters and
 #' weights are available.
 #'
-#' \code{get_cluster_assignments()} can be used to extract the MC assignment
+#' [get_cluster_assignments()] can be used to extract the MC assignment
 #' for each data point clustered during the last update operation (note: update
-#' needs to be called with \code{assignments = TRUE} and the block size needs
+#' needs to be called with `assignments = TRUE` and the block size needs
 #' to be large enough). The function returns the MC index (in the current set
-#' of MCs obtained with, e.g., \code{get_centers()}) and as an attribute the
+#' of MCs obtained with, e.g., [get_centers()] and as an attribute the
 #' permanent MC ids.
 #'
-#' \code{plot()} for DSC_DBSTREAM has two extra logical parameters called
-#' \code{assignment} and \code{shared_density} which show the assignment area
+#' [plot()] for DSC_DBSTREAM has two extra logical parameters called
+#' `assignment` and `shared_density` which show the assignment area
 #' and the shared density graph, respectively.
 #'
 #' @aliases DSC_DBSTREAM DBSTREAM dbstream
-#' @family DSC
+#' @family DSC_Micro
+#' @family DSC_TwoStage
 #'
 #' @param r The radius of micro-clusters.
 #' @param lambda The lambda used in the fading function.
 #' @param gaptime weak micro-clusters (and weak shared density entries) are
-#' removed every \code{gaptime} points.
+#' removed every `gaptime` points.
 #' @param Cm minimum weight for a micro-cluster.
 #' @param metric metric used to calculate distances.
 #' @param shared_density Record shared density information. If set to
-#' \code{TRUE} then shared density is used for reclustering, otherwise
+#' `TRUE` then shared density is used for reclustering, otherwise
 #' reachability is used (overlapping clusters with less than \eqn{r*(1-alpha)}
 #' distance are clustered together).
 #' @param k The number of macro clusters to be returned if macro is true.
@@ -66,20 +67,19 @@
 #' @param use_alpha only return shared density if it exceeds alpha.
 #' @param ...	further arguments are passed on to plot or pairs in graphics.
 #'
-#' @return An object of class \code{DSC_DBSTREAM} (subclass of \code{DSC},
-#' \code{DSC_R}, \code{DSC_Micro}).
+#' @return An object of class `DSC_DBSTREAM` (subclass of [DSC],
+#' [DSC_R], [DSC_Micro]).
 #' @author Michael Hahsler and Matthew Bolanos
 #' @references Michael Hahsler and Matthew Bolanos. Clustering data streams
-#' based on shared density between micro-clusters. \emph{IEEE Transactions on
-#' Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
+#' based on shared density between micro-clusters. _IEEE Transactions on
+#' Knowledge and Data Engineering,_ 28(6):1449--1461, June 2016
 #' @examples
-#'
-#' set.seed(0)
+#' set.seed(2000)
 #' stream <- DSD_Gaussians(k = 3, noise = 0.05)
 #'
-#' # create clusterer with r = 0.05
-#' dbstream <- DSC_DBSTREAM(r = .05)
-#' update(dbstream, stream, 1000)
+#' # create clusterer with r = .05
+#' dbstream <- DSC_DBSTREAM(r = .05 )
+#' update(dbstream, stream, 2000)
 #' dbstream
 #'
 #' # check micro-clusters

@@ -37,7 +37,7 @@
 #' by using the \code{kmeans++} algorithm on the coreset.
 #'
 #' @aliases DSC_BICO BICO bico
-#' @family DSC
+#' @family DSC_Micro
 #'
 #' @param k number of centres
 #' @param space coreset size

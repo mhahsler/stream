@@ -29,7 +29,7 @@
 #' Note that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
-#' @family DSC
+#' @family DSC_Macro
 #'
 #' @param k The number of desired clusters.
 #' @param h Height where to cut the dendrogram.

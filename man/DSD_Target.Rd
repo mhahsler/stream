@@ -24,12 +24,7 @@ DSD_Target(
 \item{noise}{proportion of noise}
 }
 \value{
-Returns a \code{DSD_Target} object which is a list of the defined
-params. The params are either passed in from the function or created
-internally. They include:
-
-\item{description}{A brief description of the DSD object.} \item{k}{The
-number of clusters.} \item{d}{The number of dimensions.}
+Returns a \code{DSD_Target} object.
 }
 \description{
 A data stream generator that generates a data stream in the shape of a
@@ -37,23 +32,18 @@ target. It has a single Gaussian cluster in the center and a ring that
 surrounds it.
 }
 \details{
-\code{DSD_Target} is a DSD generator for stream data.  It has been
-implemented entirely in R, so there is no computational overhead with
-communicating to the Java Runtime Interface (JRI) or native C code. This DSD
-will produce a singular Gaussian cluster in the center with a ring around
+This DSD will produce a singular Gaussian cluster in the center with a ring around
 it.
 }
 \examples{
-
 # create data stream with three clusters in 2D
 stream <- DSD_Target()
-# plotting the data
-plot(stream)
 
+get_points(stream, n = 5, info = TRUE)
+
+plot(stream)
 }
 \seealso{
-\code{\link{DSD}}
-
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
@@ -69,9 +59,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

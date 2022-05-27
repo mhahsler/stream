@@ -17,8 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
-
 #' Create as Static Copy of a Clustering
 #'
 #' This representation cannot perform clustering anymore, but it also does not

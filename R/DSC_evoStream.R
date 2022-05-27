@@ -36,7 +36,8 @@
 #' this implementation also allows to evaluate a fixed number of generations
 #' after each observation.
 #'
-#' @family DSC
+#' @family DSC_Micro
+#' @family DSC_TwoStage
 #'
 #' @param r radius threshold for micro-cluster assignment
 #' @param lambda decay rate

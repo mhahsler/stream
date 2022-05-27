@@ -34,7 +34,7 @@
 #' used for (re)clustering, the old clustering is deleted.
 #'
 #' @aliases DBSCAN dbscan
-#' @family DSC
+#' @family DSC_Macro
 #'
 #' @param eps radius of the eps-neighborhood.
 #' @param MinPts minimum number of points required in the eps-neighborhood.

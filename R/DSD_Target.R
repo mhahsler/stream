@@ -16,19 +16,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-
-
 #' Target Data Stream Generator
 #'
 #' A data stream generator that generates a data stream in the shape of a
 #' target. It has a single Gaussian cluster in the center and a ring that
 #' surrounds it.
 #'
-#' \code{DSD_Target} is a DSD generator for stream data.  It has been
-#' implemented entirely in R, so there is no computational overhead with
-#' communicating to the Java Runtime Interface (JRI) or native C code. This DSD
-#' will produce a singular Gaussian cluster in the center with a ring around
+#' This DSD will produce a singular Gaussian cluster in the center with a ring around
 #' it.
 #'
 #' @family DSD
@@ -38,21 +32,15 @@
 #' @param ring_r average ring radius
 #' @param ring_sd standard deviation of ring radius
 #' @param noise proportion of noise
-#' @return Returns a \code{DSD_Target} object which is a list of the defined
-#' params. The params are either passed in from the function or created
-#' internally. They include:
-#'
-#' \item{description}{A brief description of the DSD object.} \item{k}{The
-#' number of clusters.} \item{d}{The number of dimensions.}
+#' @return Returns a `DSD_Target` object.
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSD}}
 #' @examples
-#'
 #' # create data stream with three clusters in 2D
 #' stream <- DSD_Target()
-#' # plotting the data
-#' plot(stream)
 #'
+#' get_points(stream, n = 5, info = TRUE)
+#'
+#' plot(stream)
 #' @export
 DSD_Target <- function(center_sd = .05,
   center_weight = .5,
@@ -70,7 +58,7 @@ DSD_Target <- function(center_sd = .05,
     ring_sd = ring_sd,
     noise = noise
   )
-  class(l) <- c("DSD_Target", "DSD_R", "DSD_data.frame", "DSD")
+  class(l) <- c("DSD_Target", "DSD_R", "DSD")
   l
 }
 
@@ -78,10 +66,8 @@ DSD_Target <- function(center_sd = .05,
 #' @export
 get_points.DSD_Target <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  outofpoints = "stop",
+  info = FALSE,
   ...) {
   .nodots(...)
 
@@ -121,10 +107,8 @@ get_points.DSD_Target <- function(x,
   p <- as.data.frame(t(p))
   colnames(p) <- c("x", "y")
 
-  if (cluster)
-    attr(p, "cluster") <- type
-  if (class)
-    p <- cbind(p, class = type)
+  if (info) 
+    p[['.class']] <- type
 
   p
 }

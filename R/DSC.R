@@ -27,6 +27,11 @@
 #' but they serve as a base
 #' class from which other DSC classes inherit.
 #'
+#' Data stream clustering has typically an
+#'
+#'   - **online clustering component** (see [DSC_Micro]), and an
+#'   - **offline reclustering component** (see [DSC_Macro]).
+#'
 #' Class `DSC` provides several generic functions that can operate on all
 #' DSC subclasses. See Usage and Functions sections for methods.
 #' Additional, separately documented methods are:

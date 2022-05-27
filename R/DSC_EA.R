@@ -31,7 +31,7 @@
 #' allows to improve existing macro-clusters instead of recomputing them every
 #' time.
 #'
-#' @family DSC
+#' @family DSC_Macro
 #'
 #' @param k number of macro-clusters
 #' @param generations number of EA generations performed during reclustering

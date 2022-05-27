@@ -58,6 +58,12 @@ The \code{DSC} class cannot be instantiated (calling
 but they serve as a base
 class from which other DSC classes inherit.
 
+Data stream clustering has typically an
+\itemize{
+\item \strong{online clustering component} (see \link{DSC_Micro}), and an
+\item \strong{offline reclustering component} (see \link{DSC_Macro}).
+}
+
 Class \code{DSC} provides several generic functions that can operate on all
 DSC subclasses. See Usage and Functions sections for methods.
 Additional, separately documented methods are:
@@ -121,28 +127,15 @@ get_weights(dstream, type="macro")
 }
 \seealso{
 Other DSC: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
 \code{\link{DSC_R}()},
-\code{\link{DSC_Sample}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
-\code{\link{animate}},
+\code{\link{animate_cluster}()},
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
+\code{\link{plot.DSC}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}

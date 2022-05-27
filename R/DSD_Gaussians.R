@@ -118,6 +118,7 @@
 #' @examples
 #' # Example 1: create data stream with three clusters in 3-dimensional data space
 #' stream1 <- DSD_Gaussians(k = 3, d = 3)
+#' get_points(stream1, n = 5, info = TRUE)
 #' plot(stream1)
 #'
 #' # Example 2: create data stream with specified cluster positions,
@@ -128,6 +129,7 @@
 #'     noise = 0.2,
 #'     noise_range = rbind(c(-1, 1),c(-1, 1)),
 #'     p = c(.1, .9))
+#' get_points(stream2, n = 5, info = TRUE)
 #' plot(stream2)
 #'
 #' # Example 3: create 2 clusters and 2 outliers. Clusters and outliers
@@ -386,9 +388,6 @@ DSD_Gaussians <-
     e1 <-
       new.env() # we need this to maintain the state of the stream generator
     e1$pos <- 1
-    e1$data <- matrix(nrow = 0, ncol = d)
-    e1$clusterOrder <- c()
-    e1$outliers <- c()
 
     l <- list(
       description = "Mixture of Gaussians",
@@ -405,7 +404,7 @@ DSD_Gaussians <-
       outs_vv = outlier_options$outlier_virtual_variance,
       env = e1
     )
-    class(l) <- c("DSD_Gaussians", "DSD_R", "DSD_data.frame", "DSD")
+    class(l) <- c("DSD_Gaussians", "DSD_R", "DSD")
     l
   }
 
@@ -413,103 +412,78 @@ DSD_Gaussians <-
 get_points.DSD_Gaussians <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  info = FALSE,
   ...) {
   .nodots(...)
-  remainder <- nrow(x$env$data) - (x$env$pos - 1)
-  if (remainder < 0)
-    remainder <- 0
-  n_inner <- if ((n - remainder) > 0)
-    n - remainder
-  else
-    0
 
-  if (n_inner < n) {
-    data <- x$env$data[x$env$pos:(x$env$pos + (n - n_inner) - 1),]
-    clusterOrder <-
-      x$env$clusterOrder[x$env$pos:(x$env$pos + (n - n_inner) - 1)]
-    outliers <-
-      x$env$outliers[x$env$pos:(x$env$pos + (n - n_inner) - 1)]
-  } else {
-    data <- matrix(nrow = 0, ncol = x$d)
-    clusterOrder <- c()
-    outliers <- c()
-  }
-  if (n_inner > 0) {
-    tmp_clusterOrder <-
-      sample(
-        x = c(1:x$k),
-        size = n_inner,
-        replace = TRUE,
-        prob = x$p
-      )
-    tmp_outliers <- rep(FALSE, n_inner)
+  noise_pos <- NULL
+  outlier_pos <- NULL
 
-    tmp_data <- t(sapply(
-      tmp_clusterOrder,
-      FUN = function(i)
-        MASS::mvrnorm(1, mu = x$mu[i,], Sigma = x$sigma[[i]])
-    ))
+  cluster_id <-
+    sample(
+      x = c(1:x$k),
+      size = n,
+      replace = TRUE,
+      prob = x$p
+    )
 
-    ## fix for d==1
-    if (x$d == 1)
-      tmp_data <- t(tmp_data)
+  data <- t(sapply(
+    cluster_id,
+    FUN = function(i)
+      MASS::mvrnorm(1, mu = x$mu[i,], Sigma = x$sigma[[i]])
+  ))
 
-    ## Replace some points by random noise
-    ## TODO: [0,1]^d might not be a good choice. Some clusters can have
-    ## points outside this range!
-    if (x$noise) {
-      repl <- runif(n_inner) < x$noise
-      if (sum(repl) > 0) {
-        tmp_data[repl,] <-
-          t(replicate(
-            sum(repl),
-            runif(
-              x$d,
-              min = x$noise_range[, 1],
-              max = x$noise_range[, 2]
-            )
-          ))
-        tmp_clusterOrder[repl] <- NA
-      }
+  ## fix for d==1
+  if (x$d == 1)
+    data <- t(data)
+
+  ## Replace some points by random noise
+  ## TODO: [0,1]^d might not be a good choice. Some clusters can have
+  ## points outside this range!
+  if (x$noise) {
+    noise_pos <- runif(n) < x$noise
+    n_noise <- sum(noise_pos)
+    if (n_noise > 0) {
+      data[noise_pos,] <-
+        t(replicate(
+          n_noise,
+          runif(
+            x$d,
+            min = x$noise_range[, 1],
+            max = x$noise_range[, 2]
+          )
+        ))
+      cluster_id[noise_pos] <- NA
     }
-
-    ## Replace some points by outliers
-    if (x$o > 0) {
-      # positions needed to match outliers
-      f_pos <- x$env$pos
-      e_pos <- x$env$pos + (n_inner - 1)
-      # which outliers are in the current stream window
-      opositions <- x$outs_pos[x$outs_pos %in% f_pos:e_pos]
-      for (i in opositions) {
-        op <- which(x$outs_pos == i) # calculate the outlier position
-        sp <- i - f_pos # calculate the stream position
-        tmp_data[sp,] <- x$outs[op,]
-        tmp_clusterOrder[sp] <- (x$k + op)
-        tmp_outliers[sp] <- TRUE
-      }
-    }
-    # increase position to the end of the generated batch
-    #x$env$pos <- x$env$pos + n_inner
-    tmp_data <- as.data.frame(tmp_data)
-    colnames(tmp_data) <- paste0("X", 1:ncol(tmp_data))
-    x$env$data <- rbind(x$env$data, tmp_data)
-    x$env$clusterOrder <- c(x$env$clusterOrder, tmp_clusterOrder)
-    x$env$outliers <- c(x$env$outliers, tmp_outliers)
-    data <- rbind(data, tmp_data)
-    clusterOrder <- c(clusterOrder, tmp_clusterOrder)
-    outliers <- c(outliers, tmp_outliers)
   }
+
+  ## Replace some points by outliers
+  if (x$o > 0) {
+    outlier_pos <- rep(NA, n)
+
+    # positions needed to match outliers
+    f_pos <- x$env$pos
+    e_pos <- x$env$pos + (n - 1)
+    # which outliers are in the current stream window
+    for (i in x$outs_pos[x$outs_pos %in% f_pos:e_pos]) {
+      op <- which(x$outs_pos == i) # calculate the outlier position
+      sp <- i - f_pos # calculate the stream position
+      data[sp,] <- x$outs[op,]
+      #cluster_id[sp] <- (x$k + op)
+      cluster_id[sp] <- NA
+      outlier_pos[sp] <- TRUE
+    }
+  }
+
+  data <- as.data.frame(data)
+  colnames(data) <- paste0("X", 1:ncol(data))
+
   x$env$pos <- x$env$pos + n
 
-  if (class)
-    data <- cbind(data, class = clusterOrder)
-  if (cluster)
-    attr(data, "cluster") <- clusterOrder
-  if (outlier)
-    attr(data, "outlier") <- outliers
+  if (info) {
+    data[[".class"]] <- cluster_id
+    data[[".outlier"]] <- outlier_pos
+  }
 
   data
 }

@@ -57,35 +57,17 @@ algorithm and its applications", \emph{Data Mining and Knowledge Discovery.}
 Vol. 1(2), pp. 141-182.
 }
 \seealso{
-Other DSC: 
+Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
-\code{\link{DSC_DBSCAN}()},
 \code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_R}()},
 \code{\link{DSC_Sample}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
 \code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
-\code{\link{DSC}()},
-\code{\link{animate}},
-\code{\link{evaluate}()},
-\code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
-\code{\link{prune_clusters}()},
-\code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link{DSC_evoStream}()}
 }
 \author{
 Dennis Assenmacher (\email{Dennis.Assenmacher@uni-muenster.de}),
 Matthias Carnein (\email{Matthias.Carnein@uni-muenster.de})
 }
-\concept{DSC}
+\concept{DSC_Micro}

@@ -952,13 +952,13 @@ p
 The result is a data frame containing the data points as rows. For evaluation
 it is often important to know the ground truth, i.e., from which
 cluster each point was created. Many generators also return the ground
-truth (class or cluster label) if they are called with \code{class = TRUE}.
+truth (class or cluster label) if they are called with \code{info = TRUE}.
 %The ground truth is returned as an attribute with the name
 %\code{"assignment"} and can be accessed in the following way:
 
 
 <<get_points_with_class>>=
-p <- get_points(stream, n = 100, class = TRUE)
+p <- get_points(stream, n = 100, info = TRUE)
 head(p, n = 10)
 @
 
@@ -1109,7 +1109,6 @@ package~\pkg{animation}.
 We can use \code{DSD_Gaussians} to generate and mark outliers as well. We define
 a data stream consisting of 10000 data points.
 <<>>=
-library("stream")
 set.seed(1000)
 stream <- DSD_Gaussians(k = 3, d = 2, outliers = 4,
                         outlier_options = list(outlier_horizon = 10000),
@@ -1130,13 +1129,13 @@ plot(stream, 10000, xlim = c(0, 1), ylim = c(0, 1))
 We can obtain data points from the stream, asking for the outlier marks.
 <<>>=
 reset_stream(stream)
-p <- get_points(stream, n = 10000, outlier = TRUE)
+p <- get_points(stream, n = 10000, info = TRUE)
 head(p)
 @
 
 Outlier marks can be retrieved from the \code{outlier} attribute.
 <<>>=
-out_marks <- attr(p, "outlier")
+out_marks <- p[['.outlier']]
 sum(out_marks)
 @
 We can see that four data points were marked as outliers. These outliers were generated at positions
@@ -1329,7 +1328,7 @@ directory.
 <<>>=
 file <- system.file("examples", "kddcup10000.data.gz", package = "stream")
 stream_file <- DSD_ReadCSV(gzfile(file),
-  take = c(1, 5, 6, 8:11, 13:20, 23:42), class = 42, k = 7)
+  take = c(1, 5, 6, 8:11, 13:20, 23:41, .class = 42), k = 7)
 stream_file
 @
 
@@ -2554,10 +2553,10 @@ for each cluster. We expect the smallest cluster to have around 20\% of generate
 <<>>=
 stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
 km <- DSC_Kmeans(3)
-update(km, stream, n=500)
-evaluate_with_callbacks(km, stream, type="macro", n=500,
+update(km, stream, n = 500)
+evaluate(km, stream, type = "macro", n = 500,
                         measure = c("crand","LowestWeightPercentage"),
-                        callbacks = list(cc=CustomCallback()))
+                        callbacks = list(cc = CustomCallback()))
 @
 
 %\section{Extending the stream framework} \label{sec:extension}

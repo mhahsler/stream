@@ -17,7 +17,8 @@ Abstract base classes for DSD (Data Stream Data Generator).
 }
 \details{
 The \code{DSD} class cannot be instantiated, but it serves as a abstract
-base class from which all DSD objects inherit.
+base class from which all DSD objects inherit. Implementations can be found in the
+See Also section below.
 
 \code{DSD} provides common functionality like:
 \itemize{
@@ -48,7 +49,7 @@ stream <- DSD_Gaussians(k = 3, d = 3)
 get_points(stream, n = 5)
 
 # get points with true cluster assignment
-p <- get_points(stream, n = 5, cluster = TRUE)
+p <- get_points(stream, n = 5, info = TRUE)
 attr(p, "cluster")
 
 # plotting the data (scatter plot matrix, first and third dimension, and first
@@ -73,9 +74,9 @@ Other DSD:
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

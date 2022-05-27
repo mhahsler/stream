@@ -17,7 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
 #' Abstract Class for Implementing R-based Clusterers
 #'
 #' Abstract class for implementing R-based clusterers.
@@ -48,43 +47,52 @@
 #' @export
 DSC_R <- abstract_class_generator("DSC")
 
-
 ### cluster worker
-### geting a block of data improves performance the R implementation
-### needs to make sure that points are processed sequencially
+### getting a block of data improves performance the R implementation
+### needs to make sure that points are processed sequentially
 ### (make especially BIRCH faster by passing block data points at once)
 
 #' @rdname DSC_R
 #' @export
-update.DSC_R <- function(object, dsd, n=1, verbose=FALSE,
-  block=10000L, ...) {
+update.DSC_R <- function(object,
+  dsd,
+  n = 1,
+  verbose = FALSE,
+  block = 10000L,
+  ...) {
   ### object contains an RObj which is  a reference object with a cluster method
 
   ### for data frame/matrix we do it all at once
-  if(is.data.frame(dsd) || is.matrix(dsd)) {
-    if(verbose) cat("Clustering all data at once for matrix/data.frame.")
+  if (is.data.frame(dsd) || is.matrix(dsd)) {
+    if (verbose)
+      cat("Clustering all data at once for matrix/data.frame.")
     object$RObj$cluster(dsd, ...)
     return(invisible(object))
   }
 
   n <- as.integer(n)
   block <- as.integer(block)
-  if(n>0) {
-    if(!is(dsd, "DSD_data.frame"))
-      stop("Cannot cluster stream (need a DSD_data.frame.)")
+  if (n > 0) {
 
     ### for clusterers which also create macro-clusterings
-    if(is.environment(object$macro)) object$macro$newdata <- TRUE
+    if (is.environment(object$macro))
+      object$macro$newdata <- TRUE
 
     ### TODO: Check data
-    if(verbose) total <- 0L
-    for(bl in .make_block(n, block)) {
-      p <- get_points(dsd, bl, outlier=TRUE)
+    if (verbose)
+      total <- 0L
+    for (bl in .make_block(n, block)) {
+      p <- get_points(dsd, bl, info = FALSE)
       object$RObj$cluster(p, ...)
-      if(verbose) {
+      if (verbose) {
         total <- total + bl
-        cat("Processed", total, "/", n, "points -",
-        nclusters(object), "clusters\n")
+        cat("Processed",
+          total,
+          "/",
+          n,
+          "points -",
+          nclusters(object),
+          "clusters\n")
       }
     }
   }
@@ -95,31 +103,41 @@ update.DSC_R <- function(object, dsd, n=1, verbose=FALSE,
 
 ### accessors
 #' @export
-get_microclusters.DSC_R <- function(x, ...) x$RObj$get_microclusters(...)
+get_microclusters.DSC_R <-
+  function(x, ...)
+    x$RObj$get_microclusters(...)
 
 #' @export
-get_microweights.DSC_R <- function(x, ...) x$RObj$get_microweights(...)
+get_microweights.DSC_R <-
+  function(x, ...)
+    x$RObj$get_microweights(...)
 
 #' @export
-get_macroclusters.DSC_R <- function(x, ...) x$RObj$get_macroclusters(...)
+get_macroclusters.DSC_R <-
+  function(x, ...)
+    x$RObj$get_macroclusters(...)
 
 #' @export
-get_macroweights.DSC_R <- function(x, ...) x$RObj$get_macroweights(...)
+get_macroweights.DSC_R <-
+  function(x, ...)
+    x$RObj$get_macroweights(...)
 
 #' @export
-microToMacro.DSC_R <- function(x, micro=NULL, ...)  x$RObj$microToMacro(micro, ...)
+microToMacro.DSC_R <-
+  function(x, micro = NULL, ...)
+    x$RObj$microToMacro(micro, ...)
 
 
 ### make a deep copy of the reference class in RObj
 #' @export
 get_copy.DSC_R <- function(x) {
-	temp <- x
+  temp <- x
 
-	temp$RObj <- x$RObj$copy(TRUE)
+  temp$RObj <- x$RObj$copy(TRUE)
 
-	if(is.environment(temp$macro))
-    temp$macro <- as.environment(as.list(temp$macro, all.names=TRUE))
+  if (is.environment(temp$macro))
+    temp$macro <-
+    as.environment(as.list(temp$macro, all.names = TRUE))
 
-	temp
+  temp
 }
-

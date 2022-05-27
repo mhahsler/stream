@@ -26,21 +26,19 @@ contains the minimum values and the second column contains the maximum
 values for noise.}
 }
 \value{
-Returns a \code{DSD_Cubes} object (subclass of \code{DSD_R},
-\code{DSD}).
+Returns a \code{DSD_Cubes} object (subclass of \link{DSD_R}, \link{DSD}).
 }
 \description{
 A data stream generator that produces a data stream with static (hyper)
 cubes filled uniformly with data points.
 }
 \examples{
-
 # create data stream with three clusters in 3D
-stream <- DSD_Cubes(k=3, d=3)
+stream <- DSD_Cubes(k = 3, d = 3, noise = 0.05)
 
-# plotting the data
+get_points(stream, n = 5, info = TRUE)
+
 plot(stream)
-
 }
 \seealso{
 Other DSD: 
@@ -58,9 +56,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

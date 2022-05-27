@@ -17,8 +17,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-
-
 #' Balanced Iterative Reducing Clustering using Hierarchies
 #'
 #' Micro Clusterer.
@@ -34,7 +32,7 @@
 #' nodes into a new tree structure with an increased threshold.
 #'
 #' @aliases DSC_BIRCH BIRCH birch
-#' @family DSC
+#' @family DSC_Micro
 #'
 #' @param threshold threshold used to check whether a new datapoint can be
 #' absorbed or not

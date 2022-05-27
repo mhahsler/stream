@@ -17,69 +17,47 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' Animates the plotting of a DSD and the clustering process
+#' Animates Plots of the Clustering Process
 #'
-#' Generates an animation of a data stream or a data steam clustering.
-#' \bold{Note:} You need to install package \code{animation}, and, if
-#' necessary, the libraries required for package \code{magick}.
+#' Generates an animation of a data stream clustering process.
 #'
 #' Animations are recorded using the library animation and can be replayed
 #' (which gives a smoother experience since the is no more computation done)
 #' and saved in various formats (see Examples section below).
 #'
-#' @name animate
-#' @family DSD
-#' @family DSC
+#' **Note:** You need to install package \pkg{animation} and its system requirements.
 #'
-#' @aliases animate animation animate_data animate_cluster
-#' @param dsd a DSD object
-#' @param dsc a DSC object
+#' @family DSC
+#' @family plot
+#' @family evaluation
+#'
+#' @param dsd a [DSD]
+#' @param dsc a [DSC]
+#' @param measure the evaluation measure that should be graphed below the
+#'  animation (see [evaluate_cluster()].)
 #' @param horizon the number of points displayed at once/used for evaluation.
 #' @param n the number of points to be plotted
-#' @param measure the evaluation measure that should be graphed below the
-#' animation
-#' @param type evaluate \code{"micro"} or \code{"macro"}-clusters?
-#' \code{"auto"} chooses micro if \code{dsc} is of class \code{DSC_micro} and
-#' no \code{macro} is given. Otherwise macro is used.
-#' @param assign assign new points to the closest \code{"micro"} or
-#' \code{"macro"}-cluster to calculate the evaluation measure.
-#' @param assignmentMethod how to assign data points to micro-clusters. Options
-#' are \code{"model"} and \code{"nn"} (nearest neighbor). \code{"auto"} uses
-#' model if available and nn otherwise.
-#' @param noise how to handle noise for calculating the evaluation measure (as
-#' a separate class or excluded).
 #' @param wait the time interval between each frame
 #' @param plot.args a list with plotting parameters for the clusters.
-#' @param ... extra arguments are added to \code{plot.args}.
+#' @param type,assign,assignmentMethod,noise are passed on to [evaluate_cluster()] to calculate the
+#'   evaluation measure.
+#' @param ... extra arguments are added to `plot.args`.
 #' @author Michael Hahsler
-#' @seealso \code{\link{evaluate_cluster}} for stream evaluation without
-#' animation.  See \code{\link[animation]{ani.replay}} for replaying and saving
-#' animations.
+#' @seealso [animation::ani.replay()] for replaying and saving animations.
 #' @examples
-#'
-#' \dontrun{
+#' if (interactive()) {
 #' stream <- DSD_Benchmark(1)
-#' animate_data(stream, horizon=100, n=5000, xlim=c(0,1), ylim=c(0,1))
-#'
-#' ### animations can be replayed with the animation package
-#' library(animation)
-#' animation::ani.options(interval=.1) ## change speed
-#' ani.replay()
-#'
-#' ### animations can also be saved as HTML, animated gifs, etc.
-#' saveHTML(ani.replay())
 #'
 #' ### animate the clustering process with evaluation
 #' ### Note: we choose to exclude noise points from the evaluation
 #' ###       measure calculation, even if the algorithm would assign
 #' ###       them to a cluster.
-#' reset_stream(stream)
-#' dbstream <- DSC_DBSTREAM(r=.04, lambda=.1, gaptime=100, Cm=3,
-#'   shared_density=TRUE, alpha=.2)
+#' dbstream <- DSC_DBSTREAM(r = .04, lambda = .1, gaptime = 100, Cm = 3,
+#'   shared_density = TRUE, alpha = .2)
 #'
-#' animate_cluster(dbstream, stream, horizon=100, n=5000,
-#'   measure="crand", type="macro", assign="micro", noise = "exclude",
-#'   plot.args = list(xlim=c(0,1), ylim=c(0,1), shared = TRUE))
+#' animate_cluster(dbstream, stream, horizon = 100, n = 5000,
+#'   measure = "crand", type = "macro", assign = "micro", noise = "exclude",
+#'   plot.args = list(xlim = c(0, 1), ylim = c(0, 1), shared = TRUE))
 #' }
 #' @export
 animate_cluster <-
@@ -122,28 +100,6 @@ animate_cluster <-
       ...
     )
   }
-
-#' @rdname animate
-#' @export
-animate_data <- function(dsd,
-  horizon = 100,
-  n = 1000,
-  wait = .1,
-  plot.args = NULL,
-  ...) {
-  cluster.ani(NULL,
-    dsd,
-    NULL,
-    horizon,
-    n,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    wait,
-    plot.args,
-    ...)
-}
 
 
 ## work horse
@@ -202,6 +158,7 @@ cluster.ani <- function(dsc,
         evaluation[i, 2] <- evaluate(dsc,
           d,
           measure,
+          NULL,
           horizon,
           type,
           assign,

@@ -71,34 +71,14 @@ Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 \seealso{
 \code{\link{DSC}}, \code{\link{DSC_Macro}}
 
-Other DSC: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
+Other DSC_Macro: 
 \code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
 \code{\link{DSC_EA}()},
 \code{\link{DSC_Hierarchical}()},
 \code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
-\code{\link{DSC}()},
-\code{\link{animate}},
-\code{\link{evaluate}()},
-\code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
-\code{\link{prune_clusters}()},
-\code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link{DSC_Macro}()}
 }
 \author{
 Michael Hahsler
 }
-\concept{DSC}
+\concept{DSC_Macro}

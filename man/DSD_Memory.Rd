@@ -4,15 +4,7 @@
 \alias{DSD_Memory}
 \title{A Data Stream Interface for Data Stored in Memory}
 \usage{
-DSD_Memory(
-  x,
-  n,
-  k = NA,
-  loop = FALSE,
-  class = NULL,
-  outlier = NULL,
-  description = NULL
-)
+DSD_Memory(x, n, k = NA, loop = FALSE, description = NULL)
 }
 \arguments{
 \item{x}{A matrix-like object containing the data.  If \code{x} is a DSD
@@ -25,19 +17,10 @@ matrix-like object then \code{n} is ignored.}
 
 \item{loop}{Should the stream start over when it reaches the end?}
 
-\item{class}{Vector with the class/cluster label (only used if \code{x} is
-not a DSD object).}
-
-\item{outlier}{A logical vector with outlier marks (only used if \code{x} is
-not a DSD object). FALSE = the correspnding data instance in the \code{x}
-data frame is not an outlier, TRUE = the corresponding data instance in the
-\code{x} data frame is an outlier.}
-
 \item{description}{character string with a description.}
 }
 \value{
-Returns a \code{DSD_Memory} object (subclass of \code{DSD_R},
-\code{DSD}).
+Returns a \code{DSD_Memory} object (subclass of \link{DSD_R}, \link{DSD}).
 }
 \description{
 This class provides a data stream interface for data stored in memory as
@@ -51,16 +34,15 @@ subsetting with the bracket operator can be used. This includes \code{ffdf}
 \code{big.matrix} from \pkg{bigmemory}.
 }
 \examples{
-
-# store 1000 points from a stream
-stream <- DSD_Gaussians(k=3, d=2)
-replayer <- DSD_Memory(stream, k=3, n=1000)
+# Example 1: store 1000 points from a stream
+stream <- DSD_Gaussians(k = 3, d = 2)
+replayer <- DSD_Memory(stream, k = 3, n = 1000)
 replayer
 plot(replayer)
 
 # creating 2 clusterers of different algorithms
-dsc1 <- DSC_DBSTREAM(r=0.1)
-dsc2 <- DSC_DStream(gridsize=0.1, Cm=1.5)
+dsc1 <- DSC_DBSTREAM(r = 0.1)
+dsc2 <- DSC_DStream(gridsize = 0.1, Cm = 1.5)
 
 # clustering the same data in 2 DSC objects
 reset_stream(replayer) # resetting the replayer to the first position
@@ -70,24 +52,30 @@ update(dsc2, replayer, 500)
 
 # plot the resulting clusterings
 reset_stream(replayer)
-plot(dsc1, replayer, main="DBSTREAM")
+plot(dsc1, replayer, main = "DBSTREAM")
 reset_stream(replayer)
-plot(dsc2, replayer, main="D-Stream")
+plot(dsc2, replayer, main = "D-Stream")
 
-### use a data.frame to create a stream (3rd col. contains the assignment)
-df <- data.frame(x=runif(100), y=runif(100),
-  class=sample(1:3, 100, replace=TRUE))
+
+# Example 2: use a data.frame to create a stream (3rd col. contains the assignment)
+df <- data.frame(x = runif(100), y = runif(100),
+  .class = sample(1:3, 100, replace = TRUE))
+
+# add some outliers
+out <- runif(100) > .95
+df[['.outlier']] <- out
+df[['.class']] <- NA
 head(df)
-### add some outliers
-out <- runif(100) >.95
-### re-assign classes for outliers
-df[which(out),"class"]<-sample(4:(4+sum(out)-1),sum(out),replace=FALSE)
 
-stream <- DSD_Memory(df[,c("x", "y")], class=df[,"class"], outlier=out)
+stream <- DSD_Memory(df)
 stream
-reset_stream(stream)
-plot(stream, n=100)
 
+reset_stream(stream)
+get_points(stream, n = 5)
+get_points(stream, n = 5, info = TRUE)
+
+reset_stream(stream)
+plot(stream, n = 100)
 }
 \seealso{
 Other DSD: 
@@ -105,13 +93,13 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }
 \author{
-Michael Hahsler, Dalibor Krleža
+Michael Hahsler
 }
 \concept{DSD}

@@ -20,15 +20,14 @@ Returns a \code{DSD_UniformNoise} object.(subclass of \code{DSD_R},
 This generator produces uniform noise in a d-dimensional unit (hyper) cube.
 }
 \examples{
-
 # create data stream with three clusters in 2D
-stream <- DSD_UniformNoise(d=2)
+stream <- DSD_UniformNoise(d = 2)
+get_points(stream, n = 5, info = TRUE)
 plot(stream, n=100)
 
 # specify a different range for each dimension
-stream <- DSD_UniformNoise(d=3, range=rbind(c(0,1), c(0,10), c(0,5)))
-plot(stream, n=100)
-
+stream <- DSD_UniformNoise(d = 3, range = rbind(c(0, 1), c(0, 10), c(0, 5)))
+plot(stream, n = 100)
 }
 \seealso{
 Other DSD: 
@@ -46,9 +45,9 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }

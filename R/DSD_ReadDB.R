@@ -28,80 +28,65 @@
 #' (including class and outlier marking columns). Do not forget to close the
 #' result set and the data base connection.
 #'
+#' If additional information is available (e.g., class information), then the SQL
+#' statement needs to make sure that the columns have the appropriate name starting with `.`.
+#' See Examples section below.
+#'
 #' @family DSD
 #'
 #' @param result An open DBI result set.
 #' @param k Number of true clusters, if known.
-#' @param o Number of outliers, if known.
-#' @param class column index for the class/cluster assignment.
-#' @param outlier column index for the outlier mark.
 #' @param description a character string describing the data.
-#' @return An object of class `DSD_ReadDB` (subclass of  [DSD_R],
-#' [DSD]).
-#' @author Michael Hahsler, Dalibor Krleža
+#' @return An object of class `DSD_ReadDB` (subclass of  [DSD_R], [DSD]).
+#' @author Michael Hahsler
 #' @seealso [DBI::dbGetQuery()]
 #' @examples
-#'
 #' ### create a data base with a table with 3 Gaussians
 #' library("RSQLite")
 #' con <- dbConnect(RSQLite::SQLite(), ":memory:")
 #'
-#' points <- get_points(DSD_Gaussians(k=3, d=2, outliers=1,
-#'   outlier_options=list(outlier_horizon=600)), 600,
-#'   class = TRUE, outlier = TRUE)
-#' points <- cbind(points, outlier=attr(points,"outlier"))
+#' points <- get_points(DSD_Gaussians(k=3, d=2), n = 110, info = TRUE)
 #' head(points)
 #'
-#' dbWriteTable(con, "gaussians", points)
+#' dbWriteTable(con, "Gaussians", points)
 #'
-#' ### prepare a query result set
-#' res <- dbSendQuery(con, "SELECT X1, X2, class, outlier FROM gaussians")
+#' ### prepare a query result set. Make sure that the additional information
+#' ### column starts with .
+#' res <- dbSendQuery(con, "SELECT X1, X2, `.class` AS '.class' FROM Gaussians")
 #' res
 #'
 #' ### create a stream interface to the result set
-#' stream <- DSD_ReadDB(res, k=3, o=1, class = 3, outlier = 4)
+#' stream <- DSD_ReadDB(res, k = 3)
+#' stream
 #'
 #' ### get points
-#' get_points(stream, 5, class = TRUE, outlier=TRUE)
-#' plot(stream)
+#' get_points(stream, n = 5)
+#' get_points(stream, n = 5, info = TRUE)
+#'
+#' plot(stream, n = 100)
 #'
 #' ### clean up
 #' dbClearResult(res)
 #' dbDisconnect(con)
-#'
 #' @export
 DSD_ReadDB <- function(result,
   k = NA,
-  o = NA,
-  class = NULL,
-  outlier = NULL,
   description = NULL) {
-  if (is.na(o) && !is.null(outlier))
-    stop("The outlier column is defined, but the number of outliers is not supplied")
-  if (!is.na(o) && is.null(outlier))
-    stop("The number of outliers is supplied, but the outlier column was not supplied")
+
+  if (is.null(description))
+    description <- 'DB Query Stream'
 
   # figure out d
-  d <- length(DBI::dbColumnInfo(result))
-  if (!is.null(class))
-    d <- d - 1L
-  if (!is.null(outlier))
-    d <- d - 1L
+  d <- length(grep('^\\.', DBI::dbColumnInfo(result)[["name"]], invert = TRUE))
 
   # creating the DSD object
   l <- list(
-    description = if (is.null(description))
-      'DB Query Stream'
-    else
-      description,
+    description = description,
     d = d,
     k = k,
-    o = o,
-    result = result,
-    class = class,
-    outlier = outlier
+    result = result
   )
-  class(l) <- c("DSD_ReadDB", "DSD_R", "DSD_data.frame", "DSD")
+  class(l) <- c("DSD_ReadDB", "DSD_R", "DSD")
 
   l
 }
@@ -110,9 +95,7 @@ DSD_ReadDB <- function(result,
 get_points.DSD_ReadDB <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  info = FALSE,
   ...) {
   .nodots(...)
 
@@ -129,27 +112,8 @@ get_points.DSD_ReadDB <- function(x,
       warning("The stream is at its end returning available points!")
   }
 
-  cl <- NULL
-  outs <- rep(FALSE, nrow(d))
-  removal <- c()
-  if (nrow(d) > 0) {
-    if (!is.null(x$class)) {
-      cl <- d[, x$class]
-      removal <- c(x$class)
-    }
-    if (!is.null(x$outlier)) {
-      outs <- d[, x$class]
-      removal <- c(removal, x$outlier)
-    }
-  }
-  d <- d[, -removal, drop = FALSE]
-
-  if (class && !is.null(cl))
-    d <- cbind(d, class = cl)
-  if (cluster)
-    attr(d, "cluster") <- cl
-  if (outlier)
-    attr(d, "outlier") <- outs
+  if (!info)
+    d <- remove_info(d)
 
   d
 }

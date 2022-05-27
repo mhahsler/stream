@@ -10,12 +10,12 @@ write_stream(
   file,
   n = 100,
   block = 100000L,
-  class = FALSE,
+  info = FALSE,
   append = FALSE,
   sep = ",",
   header = FALSE,
   row.names = FALSE,
-  write_outliers = FALSE,
+  close = TRUE,
   ...
 )
 
@@ -24,12 +24,11 @@ write_stream(
   file,
   n = 100,
   block = 100000L,
-  class = FALSE,
+  info = FALSE,
   append = FALSE,
   sep = ",",
   header = FALSE,
   row.names = FALSE,
-  write_outliers = FALSE,
   close = TRUE,
   ...
 )
@@ -43,22 +42,20 @@ write_stream(
 
 \item{block}{Write stream in blocks to improve file I/O speed.}
 
-\item{class}{Save the class/cluster labels of the points as the last column.}
+\item{info}{Save the class/cluster labels and other information columns with the data.}
 
 \item{append}{Append the data to an existing file.}
 
 \item{sep}{The character that will separate attributes in a data point.}
 
 \item{header}{A flag that determines if column names will be output
-(equivalent to \code{col.names} in \code{write.table()}).}
+(equivalent to \code{col.names} in \code{\link[=write.table]{write.table()}}).}
 
 \item{row.names}{A flag that determines if row names will be output.}
 
-\item{write_outliers}{A flag that determines if outliers will be output.}
-
-\item{...}{Additional parameters that are passed to \code{write.table()}.}
-
 \item{close}{close stream after writing.}
+
+\item{...}{Additional parameters that are passed to \code{\link[=write.table]{write.table()}}.}
 }
 \value{
 There is no value returned from this operation.
@@ -67,20 +64,17 @@ There is no value returned from this operation.
 Writes points from a data stream DSD object to a file or a connection.
 }
 \examples{
-
 # creating data and writing it to disk
-stream <- DSD_Gaussians(k=3, d=5, outliers=1,
-  outlier_options=list(outlier_horizon=10))
-write_stream(stream, file="data.txt", n=10, class=TRUE, write_outliers=TRUE)
+stream <- DSD_Gaussians(k = 3, d = 5)
+write_stream(stream, file="data.txt", n = 10, header = TRUE, info = TRUE)
 
-#file.show("data.txt")
+readLines("data.txt")
 
 # clean up
 file.remove("data.txt")
-
 }
 \seealso{
-\code{\link{write.table}}
+\link{write.table}
 
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
@@ -98,12 +92,12 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()}
 }
 \author{
-Michael Hahsler, Dalibor Krleža
+Michael Hahsler
 }
 \concept{DSD}

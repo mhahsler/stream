@@ -16,8 +16,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
-
 #' D-Stream Data Stream Clustering Algorithm
 #'
 #' Micro Clusterer with reclustering.
@@ -52,7 +50,8 @@
 #' save() or saveRDS(). This functionality will be added later!
 #'
 #' @aliases DSC_DStream dstream d-stream D-Stream
-#' @family DSC
+#' @family DSC_Micro
+#' @family DSC_TwoStage
 #'
 #' @param gridsize Size of grid cells.
 #' @param lambda Fading constant used function to calculate the decay factor
@@ -91,20 +90,19 @@
 #' \code{DSC_R}, \code{DSC_Micro}).
 #' @author Michael Hahsler
 #' @references Yixin Chen and Li Tu. 2007. Density-based clustering for
-#' real-time stream data. In \emph{Proceedings of the 13th ACM SIGKDD
-#' International Conference on Knowledge Discovery and Data Mining (KDD '07).}
+#' real-time stream data. In _Proceedings of the 13th ACM SIGKDD
+#' International Conference on Knowledge Discovery and Data Mining (KDD '07)._
 #' ACM, New York, NY, USA, 133-142.
 #'
 #' Li Tu and Yixin Chen. 2009. Stream data clustering based on grid density and
-#' attraction. \emph{ACM Transactions on Knowledge Discovery from Data,} 3(3),
+#' attraction. _ACM Transactions on Knowledge Discovery from Data,_ 3(3),
 #' Article 12 (July 2009), 27 pages.
 #' @examples
-#'
-#' stream <- DSD_BarsAndGaussians(noise=.05)
+#' stream <- DSD_BarsAndGaussians(noise = .05)
 #' plot(stream)
 #'
 #' # we set Cm=.8 to pick up the lower density clusters
-#' dstream1 <- DSC_DStream(gridsize=1, Cm=1.5)
+#' dstream1 <- DSC_DStream(gridsize = 1, Cm = 1.5)
 #' update(dstream1, stream, 1000)
 #' dstream1
 #'
@@ -114,31 +112,30 @@
 #'
 #' # plot (DStream provides additional grid visualization)
 #' plot(dstream1, stream)
-#' plot(dstream1, stream, grid=TRUE)
+#' plot(dstream1, stream, grid = TRUE)
 #'
 #' # look only at dense grids
-#' nclusters(dstream1, grid_type="dense")
-#' plot(dstream1, stream, grid=TRUE, grid_type="dense")
+#' nclusters(dstream1, grid_type = "dense")
+#' plot(dstream1, stream, grid = TRUE, grid_type = "dense")
 #'
 #' # look at transitional and sparse cells
-#' plot(dstream1, stream, grid=TRUE, grid_type="transitional")
-#' plot(dstream1, stream, grid=TRUE, grid_type="sparse")
+#' plot(dstream1, stream, grid = TRUE, grid_type = "transitional")
+#' plot(dstream1, stream, grid = TRUE, grid_type = "sparse")
 #'
 #' ### Macro-clusters
 #' # standard D-Stream uses reachability
-#' nclusters(dstream1, type="macro")
-#' get_centers(dstream1, type="macro")
-#' plot(dstream1, stream, type="both", grid=TRUE)
-#' evaluate(dstream1, stream, measure="crand", type="macro")
+#' nclusters(dstream1, type = "macro")
+#' get_centers(dstream1, type = "macro")
+#' plot(dstream1, stream, type = "both", grid = TRUE)
+#' evaluate(dstream1, stream, measure = "crand", type = "macro")
 #'
 #' # use attraction for reclustering
-#' dstream2 <- DSC_DStream(gridsize=1, attraction=TRUE, Cm=1.5)
+#' dstream2 <- DSC_DStream(gridsize = 1, attraction = TRUE, Cm = 1.5)
 #' update(dstream2, stream, 1000)
 #' dstream2
 #'
-#' plot(dstream2, stream, type="both", grid=TRUE)
-#' evaluate(dstream2, stream, measure="crand", type="macro")
-#'
+#' plot(dstream2, stream, type = "both", grid = TRUE)
+#' evaluate(dstream2, stream, measure = "crand", type = "macro")
 #' @export
 DSC_DStream <- function(gridsize,
   lambda = 1e-3,
@@ -644,8 +641,7 @@ plot.DSC_DStream <- function(x,
   if (!is.null(dsd)) {
     ps <- get_points(dsd,
       n = n,
-      cluster = TRUE,
-      outlier = TRUE)
+      info = FALSE)
     varnames <- colnames(ps)
   }
 

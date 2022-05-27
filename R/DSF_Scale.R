@@ -38,11 +38,15 @@
 #' @examples
 #' ## create a stream and apply scaling to z-scores using 100 points from the stream
 #' stream <- DSD_Gaussians(k = 3, d = 2) %>% DSF_Scale(n = 100)
+#' p <- get_points(stream, n = 100)
+#' colMeans(p)
+#' apply(p, MARGIN = 2, sd)
 #' plot(stream)
 #'
-#' ## scale only the second dimension
+#' ## scale only dimension 2
 #' stream <- DSD_Gaussians(k = 3, d = 2) %>% DSF_Scale(n = 100, dim = 2)
-#' plot(stream)
+#'
+#' plot(p)
 #' @export
 DSF_Scale <-
   function(dsd,
@@ -63,7 +67,7 @@ DSF_Scale <-
       scale = FALSE
     )
     class(l) <-
-      c("DSF_Scale", "DSF", "DSD_R", "DSD_data.frame", "DSD")
+      c("DSF_Scale", "DSF", "DSD_R", "DSD")
 
     l <- scale_stream(
       l,
@@ -89,31 +93,18 @@ DSD_ScaleStream <- DSF_Scale
 get_points.DSF_Scale <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  cluster = FALSE,
-  class = FALSE,
-  outlier = FALSE,
+  info = FALSE,
   ...) {
   .nodots(...)
 
-  d <-
+  points <-
     get_points(x$dsd,
       n,
-      cluster = cluster,
-      class = class,
-      outlier = outlier)
+      info = info)
 
-  if (cluster)
-    cl <- attr(d, "cluster")
-  if (outlier)
-    out <- attr(d, "outlier")
-  if (class) {
-    j <- which("class" == colnames(d))
-    if (length(j) == 1L) {
-      cl <- d[, j]
-      d <- d[, -j]
-    } else
-      cl <- rep(NA_integer_, nrow(d))
-  }
+  d_cols <- grep('^\\.', colnames(points), invert = TRUE)
+
+  d <- points[, d_cols, drop = FALSE]
 
   # scale
   if (is.null(x$dim))
@@ -121,14 +112,10 @@ get_points.DSF_Scale <- function(x,
   else
     d[, x$dim] <- as.data.frame(scale(d[, x$dim], center = x$center, scale = x$scale))
 
-  if (cluster)
-    attr(d, "cluster") <- cl
-  if (outlier)
-    attr(d, "outlier") <- out
-  if (class)
-    d <- cbind(d, class = cl)
 
-  d
+  points[, d_cols] <- d
+
+  points
 }
 
 # internal

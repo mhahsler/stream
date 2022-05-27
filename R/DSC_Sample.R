@@ -35,7 +35,7 @@
 #' reservoir size over \code{k}. This an exponential bias function of
 #' \eqn{2^{-lambda}} with \eqn{lambda=1/k}.
 #'
-#' @family DSC
+#' @family DSC_Micro
 #'
 #' @param k the number of points to be sampled from the stream.
 #' @param biased if \code{FALSE} then a regular (unbiased) reservoir sampling

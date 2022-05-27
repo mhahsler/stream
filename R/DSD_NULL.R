@@ -31,7 +31,8 @@
 #' nullstream
 #'
 #' ## This will produce an error
-#' # get_points(nullstream)
+#' \dontrun{
+#' get_points(nullstream)}
 #' @export
 DSD_NULL <- function()
 structure(list(description = "NULL stream") , class = c("DSD_NULL", "DSD"))
@@ -39,6 +40,7 @@ structure(list(description = "NULL stream") , class = c("DSD_NULL", "DSD"))
 #' @export
 get_points.DSD_NULL <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
+  outofpoints = "stop",
+  info = FALSE,
   ...)
   stop("DSD_NULL does not produce points.")

@@ -54,11 +54,15 @@ Make an unscaled data stream into a scaled data stream.
 \examples{
 ## create a stream and apply scaling to z-scores using 100 points from the stream
 stream <- DSD_Gaussians(k = 3, d = 2) \%>\% DSF_Scale(n = 100)
+p <- get_points(stream, n = 100)
+colMeans(p)
+apply(p, MARGIN = 2, sd)
 plot(stream)
 
-## scale only the second dimension
+## scale only dimension 2
 stream <- DSD_Gaussians(k = 3, d = 2) \%>\% DSF_Scale(n = 100, dim = 2)
-plot(stream)
+
+plot(p)
 }
 \seealso{
 \link{scale} in \pkg{base}

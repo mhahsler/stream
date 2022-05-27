@@ -89,8 +89,8 @@ have not to be noise (between 0 and 1).}
 \item{...}{further arguments are passed on to plot or pairs in graphics.}
 }
 \value{
-An object of class \code{DSC_DBSTREAM} (subclass of \code{DSC},
-\code{DSC_R}, \code{DSC_Micro}).
+An object of class \code{DSC_DBSTREAM} (subclass of \link{DSC},
+\link{DSC_R}, \link{DSC_Micro}).
 }
 \description{
 Micro Clusterer with reclustering.
@@ -107,25 +107,24 @@ Otherwise, a new micro-cluster is created to accommodate the new data point.
 Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters and
 weights are available.
 
-\code{get_cluster_assignments()} can be used to extract the MC assignment
+\code{\link[=get_cluster_assignments]{get_cluster_assignments()}} can be used to extract the MC assignment
 for each data point clustered during the last update operation (note: update
 needs to be called with \code{assignments = TRUE} and the block size needs
 to be large enough). The function returns the MC index (in the current set
-of MCs obtained with, e.g., \code{get_centers()}) and as an attribute the
+of MCs obtained with, e.g., \code{\link[=get_centers]{get_centers()}} and as an attribute the
 permanent MC ids.
 
-\code{plot()} for DSC_DBSTREAM has two extra logical parameters called
+\code{\link[=plot]{plot()}} for DSC_DBSTREAM has two extra logical parameters called
 \code{assignment} and \code{shared_density} which show the assignment area
 and the shared density graph, respectively.
 }
 \examples{
-
-set.seed(0)
+set.seed(2000)
 stream <- DSD_Gaussians(k = 3, noise = 0.05)
 
-# create clusterer with r = 0.05
-dbstream <- DSC_DBSTREAM(r = .05)
-update(dbstream, stream, 1000)
+# create clusterer with r = .05
+dbstream <- DSC_DBSTREAM(r = .05 )
+update(dbstream, stream, 2000)
 dbstream
 
 # check micro-clusters
@@ -183,34 +182,22 @@ based on shared density between micro-clusters. \emph{IEEE Transactions on
 Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
 }
 \seealso{
-Other DSC: 
+Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSCAN}()},
 \code{\link{DSC_DStream}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_R}()},
 \code{\link{DSC_Sample}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
 \code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()},
-\code{\link{DSC}()},
-\code{\link{animate}},
-\code{\link{evaluate}()},
-\code{\link{get_assignment}()},
-\code{\link{microToMacro}()},
-\code{\link{plot}()},
-\code{\link{prune_clusters}()},
-\code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link{DSC_evoStream}()}
+
+Other DSC_TwoStage: 
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_TwoStage}()},
+\code{\link{DSC_evoStream}()}
 }
 \author{
 Michael Hahsler and Matthew Bolanos
 }
-\concept{DSC}
+\concept{DSC_Micro}
+\concept{DSC_TwoStage}

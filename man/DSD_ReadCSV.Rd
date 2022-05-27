@@ -8,11 +8,7 @@
 DSD_ReadCSV(
   file,
   k = NA,
-  o = NA,
   take = NULL,
-  class = NULL,
-  outlier = NULL,
-  loop = FALSE,
   sep = ",",
   header = FALSE,
   skip = 0,
@@ -28,20 +24,7 @@ close_stream(dsd)
 
 \item{k}{Number of true clusters, if known.}
 
-\item{o}{Number of outliers, if known.}
-
 \item{take}{indices of columns to extract from the file.}
-
-\item{class}{column index for the class attribute/cluster label.  If
-\code{take} is specified then it needs to also include the class/label
-column.}
-
-\item{outlier}{column index for the outlier mark.  If \code{take} is
-specified then it needs to also include the outlier column.}
-
-\item{loop}{If enabled, the object will loop through the stream when the end
-has been reached. If disabled, the object will warn the user upon reaching
-the end.}
 
 \item{sep}{The character string that separates dimensions in data points in
 the stream.}
@@ -52,19 +35,18 @@ the stream.}
 read data.}
 
 \item{col.names}{A vector of optional names for the variables. The default is to use \code{"V"} followed by the
-column number.}
+column number. Additional information (e.g., class labels) need to have names starting with \code{.}.}
 
 \item{colClasses}{A vector of classes to be assumed for the columns passed
-on to \code{read.table}.}
+on to \code{\link[=read.table]{read.table()}}.}
 
-\item{...}{Further arguments are passed on to \link{read.table}.  This can
+\item{...}{Further arguments are passed on to \code{\link[=read.table]{read.table()}}.  This can
 for example be used for encoding, quotes, etc.}
 
 \item{dsd}{A object of class \code{DSD_ReadCSV}.}
 }
 \value{
-An object of class \code{DSD_ReadCSV} (subclass of \link{DSD_R},
-\code{DSD}).
+An object of class \code{DSD_ReadCSV} (subclass of \link{DSD_R}, \code{DSD}).
 }
 \description{
 A DSD class that reads a data stream from a file or any R connection.
@@ -85,34 +67,34 @@ The position in the file can be reset to the beginning using
 \code{close_stream()}.
 }
 \examples{
-# creating data and writing it to disk
-stream <- DSD_Gaussians(k = 3, d = 5, outliers = 1, space_limit = c(0,2),
-  outlier_options = list(outlier_horizon = 10))
-write_stream(stream, "data.txt", n = 10, header = TRUE, sep = ",")
+# Example 1: creating data and writing it to disk
+stream <- DSD_Gaussians(k = 3, d = 2)
+write_stream(stream, "data.txt", n = 100, info = TRUE, header = TRUE)
+readLines("data.txt", n = 5)
 
-# reading the same data back (as a loop)
-stream2 <- DSD_ReadCSV("data.txt", sep = ",", header = TRUE, loop = TRUE)
+# reading the same data back
+stream2 <- DSD_ReadCSV("data.txt", header = TRUE)
 stream2
 
-# get points (fist a single point and then 20 using loop)
-get_points(stream2)
-p <- get_points(stream2, n = 20)
-plot(p)
+# get points
+get_points(stream2, n = 5, info = TRUE)
+plot(stream2, n = 20)
 
 # clean up
 close_stream(stream2)
 file.remove("data.txt")
 
-# example with a part of the kddcup1999 data (take only cont. variables)
-file <- system.file("examples", "kddcup10000.data.gz", package="stream")
+# Example 2:  Read part of the kddcup1999 data (take only cont. variables)
+# col 42 is the class variable
+file <- system.file("examples", "kddcup10000.data.gz", package = "stream")
 stream <- DSD_ReadCSV(gzfile(file),
-        take=c(1, 5, 6, 8:11, 13:20, 23:42), class = 42, k = 7)
+        take = c(1, 5, 6, 8:11, 13:20, 23:41, .class = 42), k = 7)
 stream
 
-get_points(stream, 5, class = TRUE)
+get_points(stream, 5, info = TRUE)
 
 # plot 100 points (projected on the first two principal components)
-plot(stream, n=100, method = "pca")
+plot(stream, n = 100, method = "pca")
 
 close_stream(stream)
 }
@@ -134,13 +116,13 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
-\code{\link{animate}},
+\code{\link{animate_data}()},
 \code{\link{get_points}()},
-\code{\link{plot}()},
+\code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},
 \code{\link{write_stream}()}
 }
 \author{
-Michael Hahsler, Dalibor Krleža
+Michael Hahsler
 }
 \concept{DSD}

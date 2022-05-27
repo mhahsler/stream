@@ -31,7 +31,15 @@ stream clustering \link{DSC}, outlier detection \link{DSOutlier}, classification
 \link{DSClassify} and frequent pattern mining on data streams \link{DSFP}.
 }
 \details{
-The basic interface for all \code{DST} classes can be found in the Functions Section.
+The basic interface for all \code{DST} classes can be found in the Methods Section.
+Types of \code{DST} are
+\itemize{
+\item \link{DSC} for data stream clustering.
+\item \link{DSAggregate} to aggregate data streams (e.g., with a sliding window).
+\item \link{DSFP} frequent pattern mining for data stream clustering.
+\item \link{DSClassify} classification for data streams.
+\item \link{DSOutlier} outlier detection for data streams.
+}
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -42,9 +50,6 @@ The basic interface for all \code{DST} classes can be found in the Functions Sec
 
 \examples{
 DST()
-}
-\seealso{
-\link{DSC}, \link{DSOutlier}, \link{DSClassify}, \link{DSFP}, \link{DSAggregate}
 }
 \author{
 Michael Hahsler
