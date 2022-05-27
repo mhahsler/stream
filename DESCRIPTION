@@ -4,8 +4,9 @@ Date: 2022-xx-xx
 Encoding: UTF-8
 Title: Infrastructure for Data Stream Mining
 Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
-                email = "mhahsler@lyle.smu.edu"),
-            person("Matthew", "Bolaños", role = c("ctb")),
+	    email = "mhahsler@lyle.smu.edu",
+	    comment = c(ORCID = "0000-0003-2716-1405")),
+	    person("Matthew", "Bolaños", role = c("ctb")),
             person("John", "Forrest", role = c("ctb")),
             person("Matthias", "Carnein", role = c("ctb")),
             person("Dennis", "Assenmacher", role = c("ctb")),
