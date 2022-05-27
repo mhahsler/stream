@@ -85,6 +85,8 @@ DSD_R <- abstract_class_generator("DSD")
 #' `.` and are ignored by [DST] implementations. `remove_info()` is a convenience function to remove the
 #' information columns.
 #'
+#' Many streams can be reset using [reset_stream()].
+#'
 #' @family DSD
 #'
 #' @param x A [DSD] object.

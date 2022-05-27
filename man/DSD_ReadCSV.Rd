@@ -52,8 +52,9 @@ An object of class \code{DSD_ReadCSV} (subclass of \link{DSD_R}, \code{DSD}).
 A DSD class that reads a data stream from a file or any R connection.
 }
 \details{
-\code{DSD_ReadCSV} uses \code{\link[=read.table]{read.table()}} to read in data from an R
-connection. The connection is responsible for maintaining where the stream
+\code{DSD_ReadCSV} uses \code{\link[=readLines]{readLines()}} and \code{\link[=read.table]{read.table()}} to read data from an R
+connection line-by-line and convert it into a data.frame.
+The connection is responsible for maintaining where the stream
 is currently being read from. In general, the connections will consist of
 files stored on disk but have many other possibilities (see
 \link{connection}).
@@ -62,9 +63,19 @@ The implementation tries to gracefully deal with slightly corrupted data by
 dropping points with inconsistent reading and producing a warning. However,
 this might not always be possible resulting in an error instead.
 
-The position in the file can be reset to the beginning using
-\code{\link[=reset_stream]{reset_stream()}}. The connection can be closed using
-\code{close_stream()}.
+\strong{Column names}
+
+If the file has column headers in the first line, then they can be used by setting \code{header = TRUE}.
+Alternatively, column names can be set using \code{col.names} or a named vector for \code{take}. If no column
+names are specified then default names will be created.
+
+\strong{Resetting and closing a stream}
+
+The position in the file can be reset to the beginning or another position using
+\code{\link[=reset_stream]{reset_stream()}}. This fails of the underlying connection is not seekable (see \link{connection}).
+
+\code{DSD_ReadCSV} maintains an open connection to the stream and needs to be closed
+using \code{close_stream()}.
 }
 \examples{
 # Example 1: creating data and writing it to disk
@@ -99,7 +110,7 @@ plot(stream, n = 100, method = "pca")
 close_stream(stream)
 }
 \seealso{
-\code{\link[=read.table]{read.table()}}.
+\code{\link[=readLines]{readLines()}}, \code{\link[=read.table]{read.table()}}.
 
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},

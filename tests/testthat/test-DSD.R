@@ -67,6 +67,7 @@ expect_warning(points <-
     get_points(stream, n = 101, outofpoints = "warn"))
 expect_equivalent(nrow(points), 100L)
 
+close_stream(stream)
 unlink("test.stream")
 
 ########################################################################

@@ -21,8 +21,9 @@
 #'
 #' A DSD class that reads a data stream from a file or any R connection.
 #'
-#' \code{DSD_ReadCSV} uses [read.table()] to read in data from an R
-#' connection. The connection is responsible for maintaining where the stream
+#' `DSD_ReadCSV` uses [readLines()] and [read.table()] to read data from an R
+#' connection line-by-line and convert it into a data.frame.
+#' The connection is responsible for maintaining where the stream
 #' is currently being read from. In general, the connections will consist of
 #' files stored on disk but have many other possibilities (see
 #' [connection]).
@@ -31,9 +32,19 @@
 #' dropping points with inconsistent reading and producing a warning. However,
 #' this might not always be possible resulting in an error instead.
 #'
-#' The position in the file can be reset to the beginning using
-#' [reset_stream()]. The connection can be closed using
-#' `close_stream()`.
+#' **Column names**
+#'
+#' If the file has column headers in the first line, then they can be used by setting `header = TRUE`.
+#' Alternatively, column names can be set using `col.names` or a named vector for `take`. If no column
+#' names are specified then default names will be created.
+#'
+#' **Resetting and closing a stream**
+#'
+#' The position in the file can be reset to the beginning or another position using
+#' [reset_stream()]. This fails of the underlying connection is not seekable (see [connection]).
+#'
+#' `DSD_ReadCSV` maintains an open connection to the stream and needs to be closed
+#' using `close_stream()`.
 #'
 #' @family DSD
 #'
@@ -52,9 +63,9 @@
 #' @param ... Further arguments are passed on to [read.table()].  This can
 #' for example be used for encoding, quotes, etc.
 #' @param dsd A object of class `DSD_ReadCSV`.
-#' @return An object of class `DSD_ReadCSV` (subclass of [DSD_R], `DSD`).
+#' @return An object of class `DSD_ReadCSV` (subclass of [DSD_R], [DSD]).
 #' @author Michael Hahsler
-#' @seealso [read.table()].
+#' @seealso [readLines()], [read.table()].
 #' @examples
 #' # Example 1: creating data and writing it to disk
 #' stream <- DSD_Gaussians(k = 3, d = 2)
@@ -96,6 +107,9 @@ DSD_ReadCSV <- function(file,
   col.names = NULL,
   colClasses = NA,
   ...) {
+  header <- as.logical(header)
+  skip <- as.integer(skip)
+
   # error if no string or connection is passed
   if (is(file, "character"))
     file <- file(file)
@@ -106,16 +120,11 @@ DSD_ReadCSV <- function(file,
   if (!isOpen(file))
     open(file)
 
-  # filename
-  filename <- basename(summary(file)$description)
-
-  header <- as.logical(header)
-
   # read first point to figure out structure!
-  if (skip > 0)
+  if (skip > 0L)
     readLines(file, n = skip)
   point <- read.table(
-    text = readLines(con = file, n = 1 + header),
+    text = readLines(con = file, n = 1L + header),
     sep = sep,
     header = header,
     colClasses = colClasses,
@@ -124,14 +133,15 @@ DSD_ReadCSV <- function(file,
 
   # reset stream if possible (otherwise first point is lost)
   if (isSeekable(file)) {
-    seek(file, where = 0)
-    if (skip > 0)
+    seek(file, where = 0L)
+    if (skip > 0L)
       readLines(file, n = skip)
     if (header)
-      readLines(file, n = 1)
-  }
+      readLines(file, n = 1L)
+  } else
+    warning("Stream is not seekable. Some data points will be lost.")
 
-  # select columns take
+  # select columns to take
   if (!is.null(take)) {
     if (is.character(take))
       take <- pmatch(take, colnames(point))
@@ -140,28 +150,24 @@ DSD_ReadCSV <- function(file,
     point <- point[, take]
   }
 
-  # header
+  # deal with header and update colnames in point
   has_name <- names(take) != ""
-  if (length(has_name) > 0)
+  if (length(has_name) > 0L)
     colnames(point)[has_name] <- names(take)[has_name]
 
   if (!is.null(col.names))
     colnames(point) <- col.names
 
-  col.names <- colnames(point)
-
   # dimensions
   d <- ncol(remove_info(point))
 
-  # data types?
-  colClasses <- sapply(point[1,], class)
-  ### integer -> numeric, factor -> character
+  # fix data types for reading: integer -> numeric, factor -> character
+  colClasses <- sapply(point[1L, ], class)
   colClasses[colClasses == "integer"] <- "numeric"
   colClasses[colClasses == "factor"] <- "character"
 
-  # creating the DSD object
   l <- list(
-    description = paste('File Data Stream (', filename, ')', sep = ''),
+    description = paste0('File Data Stream (', basename(summary(file)$description), ')'),
     d = d,
     k = k,
     file = file,
@@ -169,7 +175,7 @@ DSD_ReadCSV <- function(file,
     take = take,
     header = header,
     colClasses = colClasses,
-    col.names = col.names,
+    col.names = colnames(point),
     read.table.args = list(...),
     skip = skip
   )
@@ -193,6 +199,7 @@ get_points.DSD_ReadCSV <- function(x,
   outofpoints <- match.arg(outofpoints)
 
   noop <- function(...) {
+
   }
   msg <- switch(
     outofpoints,
@@ -228,15 +235,14 @@ get_points.DSD_ReadCSV <- function(x,
       ),
       x$read.table.args
     )),
-    silent = !.DEBUG)
-  )
+    silent = !.DEBUG))
 
   ## no data!
   if (is.null(d))
   {
     ## create conforming data.frame with 0 rows
     d <- data.frame()
-    for (i in 1:length(x$colClasses))
+    for (i in seq_along(x$colClasses))
       d[[i]] <- do.call(x$colClasses[i], list(0))
   } else {
     ## take columns
@@ -263,13 +269,15 @@ reset_stream.DSD_ReadCSV <- function(dsd, pos = 1) {
   if (!isSeekable(dsd$file))
     stop("Underlying conneciton does not support seek!")
 
-  seek(dsd$file, where = 0)
+  # got to the beginning of the file
+  seek(dsd$file, where = 0L)
 
-  if (dsd$skip > 0)
+  # skip to the pos
+  if (dsd$skip > 0L)
     readLines(dsd$file, n = dsd$skip)
   if (dsd$header)
-    readLines(dsd$file, n = 1)
-  if (pos > 1)
+    readLines(dsd$file, n = 1L)
+  if (pos > 1L)
     readLines(dsd$file, n = pos - 1L)
   invisible(NULL)
 }
