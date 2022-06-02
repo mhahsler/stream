@@ -55,7 +55,8 @@
 #' stream <- data.frame(
 #'     approval_orig = presidents,
 #'     approval_MA = presidents,
-#'     approval_diff1 = presidents) %>%
+#'     approval_diff1 = presidents,
+#'     .time = time(presidents)) %>%
 #'   DSD_Memory()
 #'
 #' plot(stream, dim = 1, n = 120, method = "ts")
@@ -71,17 +72,21 @@
 #' ps <- get_points(filteredStream, n = 120)
 #' head(ps)
 #'
-#' matplot(ps, type = "l")
-#' legend("topright", colnames(ps), col = 1:4, lty = 1:4)
+#' year <- ps[[".time"]]
+#' approval <- remove_info(ps)
+#' matplot(year, approval, type = "l", ylim = c(-20, 100))
+#' legend("topright", colnames(approval), col = 1:3, lty = 1:3, bty = "n")
 #'
-#' ## Example 2: Create a stream with a constant sine wave
-#' stream <- DSD_Memory(data.frame(y = sin(seq(0, 2 * pi, .1))), loop = TRUE)
+#' ## Example 2: Create a stream with a constant sine wave and apply
+#' ## a moving average, an RMS envelope and a differences
+#' stream <- DSD_Memory(data.frame(y = sin(seq(0, 2 * pi - (2 * pi / 100) ,
+#'   length.out = 100))), loop = TRUE)
 #' plot(stream, n = 200, method = "ts")
 #'
 #' filteredStream <- stream %>%
-#'   DSF_Convolve(kernel = filter_MA(200), dim = 1,
+#'   DSF_Convolve(kernel = filter_MA(100), dim = 1,
 #'     replace = FALSE, name = "MA") %>%
-#'   DSF_Convolve(kernel = filter_MA(200), pre = pow2, post = sqrt, dim = 1,
+#'   DSF_Convolve(kernel = filter_MA(100), pre = pow2, post = sqrt, dim = 1,
 #'     replace = FALSE, name = "RMS") %>%
 #'   DSF_Convolve(kernel = filter_diff(1), dim = 1,
 #'     replace = FALSE, name = "diff1")

@@ -52,7 +52,7 @@ MGC_Linear_refClass$methods(
     exists <- which(keyframes$time == t)
     if (length(exists) > 0) {
       warning("Existing keyframe at time ", t, " replaced!")
-      keyframes <<- keyframes[-exists, ]
+      keyframes <<- keyframes[-exists,]
     }
 
     keyframes <<- rbind(keyframes,
@@ -63,7 +63,7 @@ MGC_Linear_refClass$methods(
         centers = I(list(c)),
         reset = r
       ))
-    keyframes <<- keyframes[order(keyframes$time),]
+    keyframes <<- keyframes[order(keyframes$time), ]
   },
 
   get_points = function(time) {
@@ -132,10 +132,7 @@ MGC_Linear_refClass$methods(
 MGC_Linear <-
   function(dimension = 2,
     keyframelist = NULL,
-    shape = NULL) {
-    if (is.null(shape))
-      shape <- MGC_Shape_Gaussian
-
+    shape = Shape_Gaussian) {
     x <-
       structure(
         list(
@@ -205,7 +202,7 @@ remove_keyframe <- function(x, time)
 #' @export
 remove_keyframe.MGC_Linear <- function(x, time) {
   x$RObj$keyframes <-
-    x$RObj$keyframes[which(x$RObj$keyframes$time != time), ]
+    x$RObj$keyframes[which(x$RObj$keyframes$time != time),]
 }
 
 

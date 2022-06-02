@@ -32,7 +32,7 @@ stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 window <- DSAggregate_Window(horizon = 10)
 window
 
-# update with only two points
+# update with only two points. The window is mostly empty (NA)
 update(window, stream, 2)
 get_points(window)
 

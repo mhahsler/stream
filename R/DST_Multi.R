@@ -57,7 +57,7 @@ DST_Multi <- function(dsts) {
 
 #' @export
 update.DST_Multi <- function(object, dsd, n = 1, ...) {
-  ps <- DSD_Memory(get_points(dsd, n = n, ...))
+  ps <- DSD_Memory(get_points(dsd, n = n, infot = TRUE, ...))
 
   for (dst in object$dsts) {
     reset_stream(ps)

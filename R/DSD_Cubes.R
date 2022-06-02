@@ -40,7 +40,7 @@
 #' # create data stream with three clusters in 3D
 #' stream <- DSD_Cubes(k = 3, d = 3, noise = 0.05)
 #'
-#' get_points(stream, n = 5, info = TRUE)
+#' get_points(stream, n = 5)
 #'
 #' plot(stream)
 #' @export
@@ -97,7 +97,7 @@ DSD_Cubes <-
       stop("invalid size of size matrix")
 
     l <- list(
-      description = "Mixture of (Hyper) Cubes",
+      description = paste0("Mixture of (Hyper) Cubes (d = ", d, ", k = ", k, ")"),
       k = k,
       d = d,
       center = center,
@@ -116,7 +116,7 @@ DSD_Cubes <-
 get_points.DSD_Cubes <- function(x,
   n = 1,
   outofpoints = "stop",
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 

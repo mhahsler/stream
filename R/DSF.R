@@ -42,12 +42,14 @@
 #' ## Example: Using pipes
 #' if (require(dplyr)) {
 #'
+#' library(dplyr)
 #' stream <- DSD_Gaussians(k = 3, d = 2) %>%
 #'   DSF_dplyr(filter(X1 > .5)) %>%
 #'   DSF_dplyr(mutate(Xsum = X1 + X2))
 #' stream
 #'
 #' get_points(stream, n = 5)
+#'
 #' }
 #' @export DSF
 DSF <- abstract_class_generator("DSF")

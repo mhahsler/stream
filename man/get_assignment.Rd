@@ -22,19 +22,20 @@ get_assignment(
 )
 }
 \arguments{
-\item{dsc}{The DSC object with the clusters for assignment.}
+\item{dsc}{The \link{DSC} object with the clusters for assignment.}
 
 \item{points}{The points to be assigned as a data.frame.}
 
-\item{type}{Use micro- or macro-clusters in DSC for assignment. Auto used
-the class of dsc to decide.}
+\item{type}{Use micro- or macro-clusters in \link{DSC} for assignment.}
 
-\item{method}{assignment method \itemize{ \item \code{"model"} uses the
-assignment method of the underlying algorithm (unassigned points return
-\code{NA}). Not all algorithms implement this option.  \item \code{"nn"}
-performs nearest neighbor assignment using Euclidean distance.  \item
-\code{"auto"} uses the model assignment method. If this method is not
-implemented/available then nn assignment is used instead. }}
+\item{method}{assignment method
+\itemize{
+\item \code{"model"} uses the assignment method of the underlying algorithm
+(unassigned points return \code{NA}). Not all algorithms implement this option.
+\item \code{"nn"} performs nearest neighbor assignment using Euclidean distance.
+\item \code{"auto"} uses the model assignment method. If this method is not
+implemented/available then method \code{"nn"} is used instead.
+}}
 
 \item{...}{Additional arguments are passed on.}
 }
@@ -44,7 +45,7 @@ that a data point was not assigned to a cluster.
 }
 \description{
 Get the assignment of data points to clusters in a \code{DSC} using the
-model's assignment rules or nearest neighbor assignemnt. The clustering is
+model's assignment rules or nearest neighbor assignment. The clustering is
 not modified.
 }
 \details{
@@ -54,14 +55,13 @@ model's assignment strategy, but is not available, then nearest neighbor
 assignment is used and a warning is produced.
 }
 \examples{
-
 stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
 
 dbstream <- DSC_DBSTREAM(r = .1)
 update(dbstream, stream, n = 100)
 
 # find the assignment for the next 100 points to
-# micro-clusters in dsc. This uses the model's assignemnt function
+# micro-clusters in dsc. This uses the model's assignment function
 points <- get_points(stream, n = 100)
 a <- get_assignment(dbstream, points)
 a
@@ -74,11 +74,8 @@ points(points[is.na(a),], col = "red", pch = 20)
 
 # use nearest neighbor assignment instead
 get_assignment(dbstream, points, method = "nn")
-
 }
 \seealso{
-\code{\link{DSC}}
-
 Other DSC: 
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},

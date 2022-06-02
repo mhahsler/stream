@@ -113,12 +113,15 @@
 #'
 #' \item{outs_vv}{Outlier virtual variance.}
 #' @author Michael Hahsler, Dalibor Krleža
-#' @references Jain and Dubes(1988) Algorithms for clustering data,
+#' @references
+#' Jain and Dubes(1988) Algorithms for clustering data,
 #' Prentice-Hall, Inc., Upper Saddle River, NJ, USA.
 #' @examples
 #' # Example 1: create data stream with three clusters in 3-dimensional data space
 #' stream1 <- DSD_Gaussians(k = 3, d = 3)
-#' get_points(stream1, n = 5, info = TRUE)
+#' stream1
+#'
+#' get_points(stream1, n = 5)
 #' plot(stream1)
 #'
 #' # Example 2: create data stream with specified cluster positions,
@@ -129,7 +132,7 @@
 #'     noise = 0.2,
 #'     noise_range = rbind(c(-1, 1),c(-1, 1)),
 #'     p = c(.1, .9))
-#' get_points(stream2, n = 5, info = TRUE)
+#' get_points(stream2, n = 5)
 #' plot(stream2)
 #'
 #' # Example 3: create 2 clusters and 2 outliers. Clusters and outliers
@@ -390,7 +393,7 @@ DSD_Gaussians <-
     e1$pos <- 1
 
     l <- list(
-      description = "Mixture of Gaussians",
+      description = paste0("Gaussian Mixture (d = ", d, ", k = ", k, ")"),
       k = k,
       d = d,
       o = outliers,
@@ -412,7 +415,7 @@ DSD_Gaussians <-
 get_points.DSD_Gaussians <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 
@@ -488,6 +491,8 @@ get_points.DSD_Gaussians <- function(x,
   data
 }
 
+
+## this is used for outliers.
 #' @export
 reset_stream.DSD_Gaussians <- function(dsd, pos = 1) {
   dsd$env$pos <- pos

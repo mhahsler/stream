@@ -16,7 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-MGC_Random_refClass <- setRefClass("MGC_Random",
+MGC_Random_refClass <- setRefClass(
+  "MGC_Random",
   fields = list(
     start = "numeric",
     current = "numeric",
@@ -29,7 +30,7 @@ MGC_Random_refClass <- setRefClass("MGC_Random",
   ),
 
   methods = list(
-    initialize = function(s,p,d,r,sha) {
+    initialize = function(s, p, d, r, sha) {
       start  <<- s
       current <<- s
       density <<- d
@@ -45,29 +46,43 @@ MGC_Random_refClass <- setRefClass("MGC_Random",
 )
 
 MGC_Random_refClass$methods(
-  get_attributes = function(time, attributes=NULL) {
-      att <- list(density = density, parameter=parameter, randomness=randomness)
-      if(!is.null(attributes)) att <- att[attributes]
-      att
+  get_attributes = function(time, attributes = NULL) {
+    att <-
+      list(density = density,
+        parameter = parameter,
+        randomness = randomness)
+    if (!is.null(attributes))
+      att <- att[attributes]
+    att
   },
 
   get_points = function(time) {
-    if(time == 1) current <<- start
-    if(floor(time) > lastUpdate) {
-      current <<- current + runif(length(current), -randomness, randomness)
+    if (time == 1)
+      current <<- start
+    if (floor(time) > lastUpdate) {
+      current <<-
+        current + runif(length(current),-randomness, randomness)
       lastUpdate <<- floor(time)
     }
 
-    shape(center=current, parameter=parameter)
+    shape(center = current, parameter = parameter)
   }
 )
 
 #' @rdname MGC
 #' @export
-MGC_Random<- function(density, center, parameter, randomness=1, shape=NULL) {
-  if(is.null(shape)) shape <- MGC_Shape_Gaussian
+MGC_Random <-
+  function(density,
+    center,
+    parameter,
+    randomness = 1,
+    shape = Shape_Gaussian) {
 
-  structure(list(description = "Random Moving Generator Cluster",
-    RObj = MGC_Random_refClass$new(center, parameter, density, randomness, shape)),
-    class = c("MGC_Random","MGC"))
-}
+    structure(
+      list(
+        description = "Random Moving Generator Cluster",
+        RObj = MGC_Random_refClass$new(center, parameter, density, randomness, shape)
+      ),
+      class = c("MGC_Random", "MGC")
+    )
+  }

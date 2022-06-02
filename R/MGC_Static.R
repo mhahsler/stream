@@ -18,22 +18,21 @@
 
 #' @rdname MGC
 #' @export
-MGC_Static <- function(density = 1, center, parameter,
-  shape = NULL) {
-    if(is.null(shape)) shape <- MGC_Shape_Gaussian
-
-    x <- MGC_Function(
-      density = function(t) density,
-      parameter = function(t) parameter,
-      center= function(t) center,
-      shape = shape
-    )
+MGC_Static <- function(density = 1,
+  center,
+  parameter,
+  shape = Shape_Gaussian) {
+  x <- MGC_Function(
+    density = function(t)
+      density,
+    parameter = function(t)
+      parameter,
+    center = function(t)
+      center,
+    shape = shape
+  )
 
   x$description <- "Static Cluster"
-
   class(x) <- c("MGC_Static", class(x))
   x
 }
-
-
-

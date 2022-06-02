@@ -16,11 +16,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-MGC_Function_refClass <- setRefClass("MGC_Function",
+MGC_Function_refClass <- setRefClass(
+  "MGC_Function",
   fields = list(
     dimension = "numeric",
     density = "function",
-    center= "function",
+    center = "function",
     parameter = "function",
     shape = "function"
   ),
@@ -39,26 +40,35 @@ MGC_Function_refClass <- setRefClass("MGC_Function",
 )
 
 MGC_Function_refClass$methods(
-  get_attributes = function(time, attributes=NULL) {
-    att <- list(density = density(time), parameter=parameter(time),
-      center = center(time))
-    if(!is.null(attributes)) att <- att[attributes]
+  get_attributes = function(time, attributes = NULL) {
+    att <- list(
+      density = density(time),
+      parameter = parameter(time),
+      center = center(time)
+    )
+    if (!is.null(attributes))
+      att <- att[attributes]
     att
   },
 
-
   get_points = function(time) {
-    shape(center=center(time), parameter=parameter(time))
+    shape(center = center(time), parameter = parameter(time))
   }
 )
 
 #' @rdname MGC
 #' @export MGC_Function
-MGC_Function<- function(density, center, parameter, shape = NULL) {
-  if(is.null(shape)) shape <- MGC_Shape_Gaussian
-
-  structure(list(description = "Functional Moving Generator Cluster",
-    RObj = MGC_Function_refClass$new(den = density, cen = center,
-      par = parameter, sha = shape)),
-    class = c("MGC_Function","MGC"))
+MGC_Function <- function(density, center, parameter, shape = Shape_Gaussian) {
+  structure(
+    list(
+      description = "Functional Moving Generator Cluster",
+      RObj = MGC_Function_refClass$new(
+        den = density,
+        cen = center,
+        par = parameter,
+        sha = shape
+      )
+    ),
+    class = c("MGC_Function", "MGC")
+  )
 }

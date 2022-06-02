@@ -33,7 +33,7 @@ DSD_mlbenchGenerator()
 stream <- DSD_mlbenchGenerator(method = "cassini")
 stream
 
-get_points(stream, n = 5, info = TRUE)
+get_points(stream, n = 5)
 
 plot(stream, n = 500)
 }
@@ -46,8 +46,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

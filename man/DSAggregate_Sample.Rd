@@ -38,13 +38,14 @@ set.seed(1500)
 stream <- DSD_Gaussians(k = 3, noise = 0.05)
 
 sample <- DSAggregate_Sample(k = 50)
-
 update(sample, stream, 500)
 sample
 
-# apply kmeans clustering to the sample
-km <- kmeans(get_points(sample), centers = 3)
-plot(get_points(sample))
+head(get_points(sample))
+
+# apply k-means clustering to the sample (data without info columns)
+km <- kmeans(get_points(sample, info = FALSE), centers = 3)
+plot(get_points(sample, info = FALSE))
 points(km$centers, col = "red", pch = 3, cex = 2)
 }
 \references{

@@ -32,6 +32,7 @@
 #' @author Michael Hahsler
 #' @examples
 #' stream <- DSD_Gaussians(k = 3, d = 3)
+#' get_points(stream)
 #'
 #' ## Example 1: rename the columns
 #' rename <- function(x, names) {
@@ -39,7 +40,8 @@
 #'   x
 #' }
 #'
-#' stream2 <- stream %>% DSF_Func(rename(c("A", "B", "C")))
+#' # Be careful not to forget the info columns
+#' stream2 <- stream %>% DSF_Func(rename(c("A", "B", "C", ".class")))
 #' stream2
 #'
 #' get_points(stream2, n = 5)
@@ -75,7 +77,7 @@ DSF_Func <-
 get_points.DSF_Func <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 

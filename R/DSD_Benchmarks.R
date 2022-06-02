@@ -37,7 +37,7 @@
 #' @author Michael Hahsler
 #' @examples
 #' stream <- DSD_Benchmark(i = 1)
-#' get_points(stream, n = 5, info = TRUE)
+#' get_points(stream, n = 5)
 #'
 #' \dontrun{
 #' stream <- DSD_Benchmark(i = 1)
@@ -96,7 +96,7 @@ DSD_Benchmark <- function(i = 1) {
         )),
         MGC_Noise(density = 2, range = rbind(c(0, 1), c(0, 1))),
         labels = c(1, 2, NA),
-        description = "Benchmark 1: Two clusters moving diagonally from left to right, meeting in the center (5% noise)."
+        description = "Benchmark 1: Two clusters moving diagonally from left to right, meeting in the center (d = 2, k = 2, 5% noise)."
       )
     )
   }
@@ -137,7 +137,7 @@ DSD_Benchmark <- function(i = 1) {
             reset = TRUE
           )
         )),
-        description = "Benchmark 2: Two fixes clusters. A third cluster moves between them (no noise)."
+        description = "Benchmark 2: Two fixes clusters. A third cluster moves between them (d = 2, k = 3, no noise)."
       )
     )
   }

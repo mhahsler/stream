@@ -18,7 +18,9 @@ An object of class \code{DSF_dplyr} (subclass of \link{DSF} and \link{DSD}).
 Applies dplyr transformations to a data stream.
 }
 \details{
-Since streams are processed on point or block o at a time, only \link[dplyr:dplyr-package]{dplyr::dplyr} operations that work on individual
+\pkg{dplyr} needs to be installed and loaded with \code{library(dplyr)} before \code{DSF_dplyr} can be used.
+
+Since streams are processed one point or block at a time, only \link[dplyr:dplyr-package]{dplyr::dplyr} operations that work on individual
 rows are allowed on streams. Examples are:
 \itemize{
 \item \code{\link[dplyr:select]{dplyr::select()}}
@@ -34,6 +36,8 @@ Summary functions can be used, but will only be applied to the requested part of
 }
 \examples{
 if (require(dplyr)) {
+
+library(dplyr)
 
 stream <- DSD_Gaussians(k = 3, d = 3)
 

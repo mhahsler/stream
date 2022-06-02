@@ -691,6 +691,8 @@ get_assignment.DSC_DStream <-
     type <- match.arg(type)
     method <- match.arg(method)
 
+    points <- remove_info(points)
+
     if (method == "auto")
       method <- "model"
     if (method != "model")

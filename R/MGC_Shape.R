@@ -16,13 +16,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+#' @rdname MGC
+#' @export
+Shape_Gaussian <-
+  function(center, parameter)
+    rnorm(length(center),
+      mean = center, sd = parameter)
 
 #' @rdname MGC
 #' @export
-MGC_Shape_Gaussian <- function(center, parameter) rnorm(length(center),
-  mean=center, sd=parameter)
-
-#' @rdname MGC
-#' @export
-MGC_Shape_Block <- function(center, parameter) runif(length(center),
-  min=-parameter/2, max=parameter/2)+center
+Shape_Block <- function(center, parameter)
+  runif(length(center),
+    min = -parameter / 2, max = parameter / 2) + center

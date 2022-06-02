@@ -55,13 +55,14 @@
 #' stream <- DSD_Gaussians(k = 3, noise = 0.05)
 #'
 #' sample <- DSAggregate_Sample(k = 50)
-#'
 #' update(sample, stream, 500)
 #' sample
 #'
-#' # apply kmeans clustering to the sample
-#' km <- kmeans(get_points(sample), centers = 3)
-#' plot(get_points(sample))
+#' head(get_points(sample))
+#'
+#' # apply k-means clustering to the sample (data without info columns)
+#' km <- kmeans(get_points(sample, info = FALSE), centers = 3)
+#' plot(get_points(sample, info = FALSE))
 #' points(km$centers, col = "red", pch = 3, cex = 2)
 #' @export
 DSAggregate_Sample <- function(k = 100, biased = FALSE)
@@ -91,12 +92,12 @@ update.DSAggregate_Sample <-
     }
 
     ### FIXME: we do not need to get all points if n is very large!
-    object$RObj$update(get_points(dsd, n = n), verbose = verbose, ...)
+    object$RObj$update(get_points(dsd, n = n, info = TRUE), verbose = verbose, ...)
   }
 
 #' @export
-get_points.DSAggregate_Sample <- function(x, ...) {
-  x$RObj$get_points(...)
+get_points.DSAggregate_Sample <- function(x, info = TRUE, ...) {
+  x$RObj$get_points(info = info, ...)
 }
 
 #' @export
@@ -234,11 +235,14 @@ SampleDSAggregate <- setRefClass(
       }
     },
 
-    get_points = function(...) {
-      if (!is.null(data))
-        data
-      else
-        data.frame()
+    get_points = function(info = TRUE, ...) {
+      if (is.null(data))
+        return(data.frame())
+
+      if (!info)
+        return(remove_info(data))
+
+      return(data)
     },
 
     get_weights = function(...) {
@@ -264,7 +268,7 @@ SampleDSC <- setRefClass(
     cluster = function(x, ...)
       update(x, ...),
     get_microclusters = function(...)
-      get_points(...),
+      get_points(info = FALSE, ...),
     get_microweights = function(...)
       get_weights(...)
   )

@@ -38,7 +38,7 @@
 #' # create data stream with three clusters in 2D
 #' stream <- DSD_Target()
 #'
-#' get_points(stream, n = 5, info = TRUE)
+#' get_points(stream, n = 5)
 #'
 #' plot(stream)
 #' @export
@@ -49,7 +49,7 @@ DSD_Target <- function(center_sd = .05,
   noise = 0) {
   # creating the DSD object
   l <- list(
-    description = "Target (ball in circle)",
+    description = "Target: Ball in circle (d = 2, k = 2)",
     d = 2,
     k = 2,
     center_sd = center_sd,
@@ -67,7 +67,7 @@ DSD_Target <- function(center_sd = .05,
 get_points.DSD_Target <- function(x,
   n = 1,
   outofpoints = "stop",
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 
@@ -107,7 +107,7 @@ get_points.DSD_Target <- function(x,
   p <- as.data.frame(t(p))
   colnames(p) <- c("x", "y")
 
-  if (info) 
+  if (info)
     p[['.class']] <- type
 
   p

@@ -40,6 +40,16 @@
 #'
 #' ## plot micro and macro-clusters
 #' plot(dstream, stream, type = "both")
+#'
+#' ## plot a time series using the AirPassenger data with the total monthly
+#' ## passengers from 1949 to 1960) a as a stream
+#' AirPassengers
+#' stream <- DSD_Memory(data.frame(
+#'   .time = time(AirPassengers),
+#'   passengers = AirPassengers))
+#'
+#' get_points(stream, n = 10)
+#' plot(stream, n = 100, method = "ts")
 #' @export
 plot.DSD <- function(x,
   n = 500,
@@ -54,6 +64,9 @@ plot.DSD <- function(x,
 
   d <- get_points(x, n, info = TRUE)
   assignment <- d[['.class']]
+  time <- d[['.time']]
+
+  d <- remove_info(d)
 
   ### stream has no assignments!
   if (length(assignment) == 0)
@@ -65,7 +78,6 @@ plot.DSD <- function(x,
   if (!is.numeric(assignment))
     assignment <- as.integer(as.factor(assignment))
 
-  d <- remove_info(d)
 
   ### add alpha shading to color
   if (is.null(col)) {
@@ -115,7 +127,11 @@ plot.DSD <- function(x,
     ts = {
       if (ncol(d) != 1L)
         stop("Choose a single variable containing the time series using 'dim'!")
-      d <- data.frame(pos = seq_len(nrow(d)), d)
+
+      if (is.null(time))
+        time <- seq_len(nrow(d))
+
+      d <- data.frame(time = time, d)
       plot(d,
         col = col,
         pch = pch,

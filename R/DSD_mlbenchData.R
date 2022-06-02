@@ -47,7 +47,7 @@
 #' stream <- DSD_mlbenchData("Shuttle")
 #' stream
 #'
-#' get_points(stream, n = 5, info = TRUE)
+#' get_points(stream, n = 5)
 #'
 #' plot(stream, n = 100)
 #' @export
@@ -191,14 +191,16 @@ DSD_mlbenchData <-
 
     d <- as.data.frame(d)
 
+    dims <- ncol(d)
+
     d[['.class']] <- as.integer(a)
     k <- length(unique(a))
 
     l <-
       DSD_Memory(
         d,
-        k = ,
-        description = paste("mlbench:", data)
+        k = k,
+        description = paste0("mlbench:", data, "(d = ", dims, ", k = ", k ,")")
       )
     class(l) <- c("DSD_mlbenchData", class(l))
     l

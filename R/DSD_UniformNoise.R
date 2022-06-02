@@ -32,11 +32,12 @@
 #' @examples
 #' # create data stream with three clusters in 2D
 #' stream <- DSD_UniformNoise(d = 2)
-#' get_points(stream, n = 5, info = TRUE)
-#' plot(stream, n=100)
+#' get_points(stream, n = 5)
+#' plot(stream, n = 100)
 #'
 #' # specify a different range for each dimension
-#' stream <- DSD_UniformNoise(d = 3, range = rbind(c(0, 1), c(0, 10), c(0, 5)))
+#' stream <- DSD_UniformNoise(d = 3,
+#'   range = rbind(c(0, 1), c(0, 10), c(0, 5)))
 #' plot(stream, n = 100)
 #' @export
 DSD_UniformNoise <- function(d = 2, range = NULL) {
@@ -47,7 +48,7 @@ DSD_UniformNoise <- function(d = 2, range = NULL) {
       byrow = TRUE)
   structure(
     list(
-      description = "Uniform Noise",
+      description = paste0("Uniform Noise (d = ", d, ")"),
       d = d,
       range = range
     ),
@@ -59,7 +60,7 @@ DSD_UniformNoise <- function(d = 2, range = NULL) {
 get_points.DSD_UniformNoise <- function(x,
   n = 1,
   outofpoints = "stop",
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 
@@ -76,7 +77,7 @@ get_points.DSD_UniformNoise <- function(x,
 
   data <- data.frame(data)
 
-  if (info) 
+  if (info)
     data[[".class"]] <- NA
 
   data

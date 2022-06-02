@@ -16,13 +16,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-### DSCs may overwrite get_assignment
-
-
 #' Assignment Data Points to Clusters
 #'
 #' Get the assignment of data points to clusters in a \code{DSC} using the
-#' model's assignment rules or nearest neighbor assignemnt. The clustering is
+#' model's assignment rules or nearest neighbor assignment. The clustering is
 #' not modified.
 #'
 #' Each data point is assigned either using the original model's assignment
@@ -32,30 +29,27 @@
 #'
 #' @family DSC
 #'
-#' @param dsc The DSC object with the clusters for assignment.
+#' @param dsc The [DSC] object with the clusters for assignment.
 #' @param points The points to be assigned as a data.frame.
-#' @param type Use micro- or macro-clusters in DSC for assignment. Auto used
-#' the class of dsc to decide.
-#' @param method assignment method \itemize{ \item \code{"model"} uses the
-#' assignment method of the underlying algorithm (unassigned points return
-#' \code{NA}). Not all algorithms implement this option.  \item \code{"nn"}
-#' performs nearest neighbor assignment using Euclidean distance.  \item
-#' \code{"auto"} uses the model assignment method. If this method is not
-#' implemented/available then nn assignment is used instead. }
+#' @param type Use micro- or macro-clusters in [DSC] for assignment.
+#' @param method assignment method
+#'   * `"model"` uses the assignment method of the underlying algorithm
+#'     (unassigned points return `NA`). Not all algorithms implement this option.
+#'   * `"nn"` performs nearest neighbor assignment using Euclidean distance.
+#'   * `"auto"` uses the model assignment method. If this method is not
+#'     implemented/available then method `"nn"` is used instead.
 #' @param ... Additional arguments are passed on.
-#' @return A vector containing the assignment of each point. \code{NA} means
+#' @return A vector containing the assignment of each point. `NA` means
 #' that a data point was not assigned to a cluster.
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSC}}
 #' @examples
-#'
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
 #'
 #' dbstream <- DSC_DBSTREAM(r = .1)
 #' update(dbstream, stream, n = 100)
 #'
 #' # find the assignment for the next 100 points to
-#' # micro-clusters in dsc. This uses the model's assignemnt function
+#' # micro-clusters in dsc. This uses the model's assignment function
 #' points <- get_points(stream, n = 100)
 #' a <- get_assignment(dbstream, points)
 #' a
@@ -68,41 +62,48 @@
 #'
 #' # use nearest neighbor assignment instead
 #' get_assignment(dbstream, points, method = "nn")
-#'
 #' @export
-get_assignment <- function(dsc, points, type=c("auto", "micro", "macro"),
-  method="auto", ...)
-  UseMethod("get_assignment")
+get_assignment <-
+  function(dsc,
+    points,
+    type = c("auto", "micro", "macro"),
+    method = "auto",
+    ...)
+    UseMethod("get_assignment")
 
 ### default method is Euclidean nearest neighbor "nn"
 
 #' @rdname get_assignment
 #' @export
-get_assignment.DSC <- function(dsc, points, type=c("auto", "micro", "macro"),
-  method=c("auto", "nn", "model"), ...) {
+get_assignment.DSC <-
+  function(dsc,
+    points,
+    type = c("auto", "micro", "macro"),
+    method = c("auto", "nn", "model"),
+    ...) {
+    method <- match.arg(method)
+    if (method == "auto")
+      method <- "nn"
 
-  method <- match.arg(method)
-  if(method=="auto") method <- "nn"
+    if (method == "model") {
+      warning("method model not implemented! using Euclidean nearest neighbor instead!")
+      method <- "nn"
+    }
 
-  if(method=="model") {
-    warning("method model not implemented! using Euclidean nearest neighbor instead!")
-    method <- "nn"
+    points <- remove_info(points)
+    c <- get_centers(dsc, type = type, ...)
+
+    if (nrow(c) > 0L) {
+      dist <- dist(points, c, method = "Euclidean")
+      # Find the minimum distance and save the class
+      predict <- apply(dist, 1L, which.min)
+
+    } else {
+      #warning("There are no clusters!")
+      predict <- rep(NA_integer_, nrow(points))
+    }
+
+    attr(predict, "method") <- method
+
+    predict
   }
-
-  c <- get_centers(dsc, type=type, ...)
-
-  if(nrow(c)>0L) {
-    dist <- dist(points, c, method="Euclidean")
-    # Find the minimum distance and save the class
-    predict <- apply(dist, 1L, which.min)
-
-  } else {
-    #warning("There are no clusters!")
-    predict <- rep(NA_integer_, nrow(points))
-  }
-
-  attr(predict, "method") <- method
-
-  predict
-}
-

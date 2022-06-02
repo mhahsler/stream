@@ -60,7 +60,7 @@ add_cluster(stream, c2)
 stream
 
 get_clusters(stream)
-get_points(stream, n = 5, info = TRUE)
+get_points(stream, n = 5)
 plot(stream, xlim = c(-20,120), ylim = c(-20, 120))
 
 if (interactive()) {
@@ -69,6 +69,7 @@ animate_data(stream, n = 5000, xlim = c(-20, 120), ylim = c(-20, 120))
 
 ### remove cluster 1
 remove_cluster(stream, 1)
+stream
 
 get_clusters(stream)
 plot(stream, xlim = c(-20, 120), ylim = c(-20, 120))
@@ -76,12 +77,13 @@ plot(stream, xlim = c(-20, 120), ylim = c(-20, 120))
 ### create a more complicated cluster structure (using 2 clusters with the same
 ### label to form an L shape)
 stream <- DSD_MG(dim = 2,
-  MGC_Static(density = 10, center = c(.5, .2),   par = c(.4, .2),   shape = MGC_Shape_Block),
-  MGC_Static(density = 10, center = c(.6, .5),   par = c(.2, .4),   shape = MGC_Shape_Block),
-  MGC_Static(density = 5,  center = c(.39, .53), par = c(.16, .35), shape = MGC_Shape_Block),
+  MGC_Static(density = 10, center = c(.5, .2),   par = c(.4, .2),   shape = Shape_Block),
+  MGC_Static(density = 10, center = c(.6, .5),   par = c(.2, .4),   shape = Shape_Block),
+  MGC_Static(density = 5,  center = c(.39, .53), par = c(.16, .35), shape = Shape_Block),
   MGC_Noise( density = 1,  range = rbind(c(0,1), c(0,1))),
   labels = c(1, 1, 2, NA)
   )
+stream
 
 plot(stream, xlim = c(0, 1), ylim = c(0, 1))
 
@@ -117,8 +119,8 @@ Other DSD:
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

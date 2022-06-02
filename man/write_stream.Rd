@@ -2,24 +2,9 @@
 % Please edit documentation in R/write_stream.R
 \name{write_stream}
 \alias{write_stream}
-\alias{write_stream.DSD}
 \title{Write a Data Stream to a File}
 \usage{
 write_stream(
-  dsd,
-  file,
-  n = 100,
-  block = 100000L,
-  info = FALSE,
-  append = FALSE,
-  sep = ",",
-  header = FALSE,
-  row.names = FALSE,
-  close = TRUE,
-  ...
-)
-
-\method{write_stream}{DSD}(
   dsd,
   file,
   n = 100,
@@ -84,8 +69,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

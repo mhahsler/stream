@@ -16,7 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-MGC_Noise_refClass <- setRefClass("MGC_Noise",
+MGC_Noise_refClass <- setRefClass(
+  "MGC_Noise",
   fields = list(
     density = "numeric",
     range = "matrix",
@@ -24,7 +25,7 @@ MGC_Noise_refClass <- setRefClass("MGC_Noise",
   ),
 
   methods = list(
-    initialize = function(d,r) {
+    initialize = function(d, r) {
       density  <<- d
       range <<- r
       dimension <<- nrow(r)
@@ -35,21 +36,27 @@ MGC_Noise_refClass <- setRefClass("MGC_Noise",
 )
 
 MGC_Noise_refClass$methods(
-  get_attributes = function(time, attributes=NULL) {
-    att <- list(density = density, range=range)
-    if(!is.null(attributes)) att <- att[attributes]
+  get_attributes = function(time, attributes = NULL) {
+    att <- list(density = density, range = range)
+    if (!is.null(attributes))
+      att <- att[attributes]
     att
   },
 
   get_points = function(time) {
-    apply(range, 1, function(x) runif(1, x[1], x[2]))
+    apply(range, 1, function(x)
+      runif(1, x[1], x[2]))
   }
 )
 
 #' @rdname MGC
 #' @export
-MGC_Noise<- function(density, range) {
-  structure(list(description = "Noise Moving Generator Cluster",
-    RObj = MGC_Noise_refClass$new(density, range)),
-    class = c("MGC_Noise","MGC"))
+MGC_Noise <- function(density, range) {
+  structure(
+    list(
+      description = "Noise",
+      RObj = MGC_Noise_refClass$new(density, range)
+    ),
+    class = c("MGC_Noise", "MGC")
+  )
 }

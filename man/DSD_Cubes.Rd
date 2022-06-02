@@ -36,7 +36,7 @@ cubes filled uniformly with data points.
 # create data stream with three clusters in 3D
 stream <- DSD_Cubes(k = 3, d = 3, noise = 0.05)
 
-get_points(stream, n = 5, info = TRUE)
+get_points(stream, n = 5)
 
 plot(stream)
 }
@@ -48,8 +48,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

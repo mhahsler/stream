@@ -5,36 +5,29 @@
 \alias{DSD_ScaleStream}
 \title{Scale a Data Stream}
 \usage{
-DSF_Scale(
-  dsd,
-  dim = NULL,
-  center = TRUE,
-  scale = TRUE,
-  n = 1000,
-  reset = FALSE
-)
+DSF_Scale(dsd, dim = NULL, center = TRUE, scale = TRUE, n = 100, reset = FALSE)
 
 DSD_ScaleStream(
   dsd,
   dim = NULL,
   center = TRUE,
   scale = TRUE,
-  n = 1000,
+  n = 100,
   reset = FALSE
 )
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD} that will be scaled.}
 
-\item{dim}{integer vector; what dimensions should be scaled? Default is all.}
+\item{dim}{integer vector or names of dimensions that should be scaled? Default is all.}
 
 \item{center, scale}{logical or a numeric vector of length equal to the
-number of columns used for centering/scaling (see function \link{scale}).}
+number of columns (selected with dim) used for centering/scaling (see function \link{scale}).}
 
 \item{n}{The number of points used by \code{scale_stream()} to creating the centering/scaling}
 
 \item{reset}{Try to reset the stream to its beginning after taking \code{n}
-points for scaling.}
+points for calculating scaling factors.}
 }
 \value{
 An object of class \code{DSF_Scale} (subclass of \link{DSF} and \link{DSD}).
@@ -43,8 +36,10 @@ An object of class \code{DSF_Scale} (subclass of \link{DSF} and \link{DSD}).
 Make an unscaled data stream into a scaled data stream.
 }
 \details{
-\code{scale_stream()} estimates the values for centering and scaling (see
-\link{scale} in \pkg{base}) using \code{n} points from the stream.
+If \code{center} and \code{scale} are not vectors with scaling factors, then \code{scale_stream()}
+estimates the values for centering and scaling (see
+\link{scale} in \pkg{base}) using \code{n} points from the stream and the stream is reset if \code{reset = TRUE} and the
+\link{DSD} object supports resetting.
 }
 \section{Deprecated}{
 
@@ -52,17 +47,26 @@ Make an unscaled data stream into a scaled data stream.
 }
 
 \examples{
-## create a stream and apply scaling to z-scores using 100 points from the stream
-stream <- DSD_Gaussians(k = 3, d = 2) \%>\% DSF_Scale(n = 100)
-p <- get_points(stream, n = 100)
-colMeans(p)
-apply(p, MARGIN = 2, sd)
-plot(stream)
+stream <- DSD_Gaussians(k = 3, d = 2)
 
-## scale only dimension 2
-stream <- DSD_Gaussians(k = 3, d = 2) \%>\% DSF_Scale(n = 100, dim = 2)
+# scale with manually calculated scaling factors
+points <- get_points(stream, n = 100, info = FALSE)
+center <- colMeans(points)
+scale <- apply(points, MARGIN = 2, sd)
 
-plot(p)
+scaledStream <- stream \%>\%  DSF_Scale(center = center, scale = scale)
+colMeans(get_points(scaledStream, n = 100, info = FALSE))
+apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
+
+# let DSF_Scale calculate the scaling factors
+scaledStream <- stream \%>\% DSF_Scale(n = 100)
+colMeans(get_points(scaledStream, n = 100, info = FALSE))
+apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
+
+## scale only X2
+scaledStream <- stream \%>\% DSF_Scale(n = 100, dim = "X2")
+colMeans(get_points(scaledStream, n = 100, info = FALSE))
+apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 }
 \seealso{
 \link{scale} in \pkg{base}

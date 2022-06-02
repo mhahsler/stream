@@ -20,7 +20,9 @@
 #'
 #' Applies dplyr transformations to a data stream.
 #'
-#' Since streams are processed on point or block o at a time, only [dplyr::dplyr] operations that work on individual
+#' \pkg{dplyr} needs to be installed and loaded with `library(dplyr)` before `DSF_dplyr` can be used.
+#'
+#' Since streams are processed one point or block at a time, only [dplyr::dplyr] operations that work on individual
 #' rows are allowed on streams. Examples are:
 #'
 #' * [dplyr::select()]
@@ -41,6 +43,8 @@
 #' @author Michael Hahsler
 #' @examples
 #' if (require(dplyr)) {
+#'
+#' library(dplyr)
 #'
 #' stream <- DSD_Gaussians(k = 3, d = 3)
 #'

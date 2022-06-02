@@ -326,7 +326,7 @@ evaluate <-
     actual <- points[[".class"]]
     outliers <- points[[".outliers"]]
     if (is.null(actual))
-      warning("the stream (dsd) does not provide true class/cluster labels.")
+      warning("the stream (dsd) does not provide true class/cluster labels in '.class'.")
     if (all(is.na(actual)))
       warning(
         "all points used for evaluation have a missing class/cluster label. Evaluation results will not be useful!"

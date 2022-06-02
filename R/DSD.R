@@ -55,10 +55,6 @@
 #' # get points from stream
 #' get_points(stream, n = 5)
 #'
-#' # get points with true cluster assignment
-#' p <- get_points(stream, n = 5, info = TRUE)
-#' attr(p, "cluster")
-#'
 #' # plotting the data (scatter plot matrix, first and third dimension, and first
 #' #  two principal components)
 #' plot(stream)
@@ -80,10 +76,18 @@ DSD_R <- abstract_class_generator("DSD")
 #' using the S3 class system. See the man page for the specific [DSD] class on
 #' the semantics for each implementation of `get_points()`.
 #'
+#' **Additional Point Information**
+#'
 #' Additional point information (e.g., known cluster/class assignment, noise status) can be requested
 #' with `info = TRUE`. This information is returned as additional columns. The column names start with
 #' `.` and are ignored by [DST] implementations. `remove_info()` is a convenience function to remove the
 #' information columns.
+#' Examples are
+#' * `.id` for point IDs
+#' * `.class` for known cluster/class labels used for plotting and evaluation
+#' * `.time` a time stamp for the point (can be in seconds or an index for ordering)
+#'
+#' **Resetting a Stream##
 #'
 #' Many streams can be reset using [reset_stream()].
 #'
@@ -103,28 +107,31 @@ DSD_R <- abstract_class_generator("DSD")
 #' @author Michael Hahsler
 #' @examples
 #' stream <- DSD_Gaussians()
-#' points <- get_points(stream, n = 5, info = TRUE)
+#' points <- get_points(stream, n = 5)
 #' points
 #'
 #' remove_info(points)
 #' @export
 get_points <-
-  function(x,
-    n = 1L,
-    outofpoints = "stop",
-    info = FALSE,
-    ...)
+  function(x, ...)
     UseMethod("get_points")
 
-get_points.default <- function(x,
-  n = 1,
-  outofpoints = "stop",
-  info = FALSE,
-  ...)
+get_points.default <- function(x, ...)
   stop(gettextf(
     "get_points not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
+
+#' @rdname get_points
+#' @method get_points DSD
+#' @export
+get_points.DSD <-
+  function(x,
+    n = 1L,
+    outofpoints = c("stop", "warn", "ignore"),
+    info = TRUE,
+    ...)
+    UseMethod("get_points")
 
 #' @rdname get_points
 #' @param points a data.frame with points.
@@ -132,12 +139,10 @@ get_points.default <- function(x,
 remove_info <- function(points) {
   info_cols <- grep('^\\.', colnames(points))
   if (length(info_cols) > 0L)
-    points <- points[,-info_cols]
+    points <- points[, -info_cols, drop = FALSE]
 
   points
 }
-
-
 
 
 #' Reset a Data Stream to its Beginning
@@ -207,15 +212,6 @@ print.DSD <- function(x, ...) {
 
   cat(.line_break(x$description))
   cat("Class:", paste(class(x), collapse = ", "), "\n")
-  cat(paste(
-    'With',
-    k,
-    'clusters/classes',
-    'in',
-    d,
-    'dimensions',
-    '\n'
-  ))
 }
 
 #' @export

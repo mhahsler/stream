@@ -17,11 +17,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' Read a Data Stream from File
+#' Read a Data Stream from a File or a Connection
 #'
-#' A DSD class that reads a data stream from a file or any R connection.
+#' A DSD class that reads a data stream (text format) from a file or any R connection.
 #'
-#' `DSD_ReadCSV` uses [readLines()] and [read.table()] to read data from an R
+#' `DSD_ReadStream` uses [readLines()] and [read.table()] to read data from an R
 #' connection line-by-line and convert it into a data.frame.
 #' The connection is responsible for maintaining where the stream
 #' is currently being read from. In general, the connections will consist of
@@ -38,14 +38,20 @@
 #' Alternatively, column names can be set using `col.names` or a named vector for `take`. If no column
 #' names are specified then default names will be created.
 #'
+#' Columns with names that start with `.` are considered information columns and are ignored by `DST`s.
+#' See [get_points()] for details.
+#'
+#' Other information columns are are used by various functions.
+#'
 #' **Resetting and closing a stream**
 #'
 #' The position in the file can be reset to the beginning or another position using
 #' [reset_stream()]. This fails of the underlying connection is not seekable (see [connection]).
 #'
-#' `DSD_ReadCSV` maintains an open connection to the stream and needs to be closed
+#' `DSD_ReadStream` maintains an open connection to the stream and needs to be closed
 #' using `close_stream()`.
 #'
+#' `DSD_ReadCSV` reads a stream from a comma-separated values file.
 #' @family DSD
 #'
 #' @param file A file/URL or an open connection.
@@ -73,11 +79,11 @@
 #' readLines("data.txt", n = 5)
 #'
 #' # reading the same data back
-#' stream2 <- DSD_ReadCSV("data.txt", header = TRUE)
+#' stream2 <- DSD_ReadStream("data.txt", header = TRUE)
 #' stream2
 #'
 #' # get points
-#' get_points(stream2, n = 5, info = TRUE)
+#' get_points(stream2, n = 5)
 #' plot(stream2, n = 20)
 #'
 #' # clean up
@@ -91,14 +97,14 @@
 #'         take = c(1, 5, 6, 8:11, 13:20, 23:41, .class = 42), k = 7)
 #' stream
 #'
-#' get_points(stream, 5, info = TRUE)
+#' get_points(stream, 5)
 #'
 #' # plot 100 points (projected on the first two principal components)
 #' plot(stream, n = 100, method = "pca")
 #'
 #' close_stream(stream)
 #' @export
-DSD_ReadCSV <- function(file,
+DSD_ReadStream <- function(file,
   k = NA,
   take = NULL,
   sep = ",",
@@ -167,7 +173,8 @@ DSD_ReadCSV <- function(file,
   colClasses[colClasses == "factor"] <- "character"
 
   l <- list(
-    description = paste0('File Data Stream (', basename(summary(file)$description), ')'),
+    description = paste0('File Data Stream: ', basename(summary(file)$description),
+      '(d = ', d, ', k = ', k, ')'),
     d = d,
     k = k,
     file = file,
@@ -179,16 +186,16 @@ DSD_ReadCSV <- function(file,
     read.table.args = list(...),
     skip = skip
   )
-  class(l) <- c("DSD_ReadCSV", "DSD_R", "DSD")
+  class(l) <- c("DSD_ReadStream", "DSD_R", "DSD")
 
   l
 }
 
 #' @export
-get_points.DSD_ReadCSV <- function(x,
+get_points.DSD_ReadStream <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 
@@ -198,33 +205,26 @@ get_points.DSD_ReadCSV <- function(x,
   n <- as.integer(n)
   outofpoints <- match.arg(outofpoints)
 
-  noop <- function(...) {
-
-  }
-  msg <- switch(
-    outofpoints,
-    "stop" = stop,
-    "warn" = warning,
-    "ignore" = noop
-  )
-
-  ## remember position
-  if (!isSeekable(x$file))
-    pos <- NA
-  else
+  ## remember position in case the request fails
+  pos <- NA
+  if (isSeekable(x$file))
     pos <- seek(x$file)
 
-  d <- NULL
-  eof <- FALSE
-
+  lines <- character(0)
   try(lines <- readLines(con = x$file, n = n), silent = !.DEBUG)
 
   if (length(lines) < n) {
-    if (outofpoints == "stop" && !is.na(pos))
+    if (outofpoints == "stop") {
+      if (is.na(pos))
+        stop("Not enough data points left in the stream! Connection not seekable, so up to n data points are lost.")
       seek(x$file, where = pos)
-    msg("Not enough data points left in the stream!")
+      stop("Not enough data points left in the stream!")
+    }
+    if (outofpoints == "warn")
+      warning("Not enough data points left in the stream!")
   }
 
+  d <- NULL
   suppressWarnings(try(d <- do.call(read.table,
     c(
       list(
@@ -237,10 +237,8 @@ get_points.DSD_ReadCSV <- function(x,
     )),
     silent = !.DEBUG))
 
-  ## no data!
-  if (is.null(d))
-  {
-    ## create conforming data.frame with 0 rows
+  if (is.null(d)) {
+    ## no data: create conforming data.frame with 0 rows
     d <- data.frame()
     for (i in seq_along(x$colClasses))
       d[[i]] <- do.call(x$colClasses[i], list(0))
@@ -263,7 +261,7 @@ get_points.DSD_ReadCSV <- function(x,
 }
 
 #' @export
-reset_stream.DSD_ReadCSV <- function(dsd, pos = 1) {
+reset_stream.DSD_ReadStream <- function(dsd, pos = 1) {
   pos <- as.integer(pos)
 
   if (!isSeekable(dsd$file))
@@ -282,10 +280,14 @@ reset_stream.DSD_ReadCSV <- function(dsd, pos = 1) {
   invisible(NULL)
 }
 
-#' @rdname DSD_ReadCSV
+#' @rdname DSD_ReadStream
+#' @export
+DSD_ReadCSV <- DSD_ReadStream
+
+#' @rdname DSD_ReadStream
 #' @export
 close_stream <- function(dsd) {
-  if (!is(dsd, "DSD_ReadCSV"))
-    stop("'dsd' is not of class 'DSD_ReadCSV'")
+  if (!is(dsd, "DSD_ReadStream"))
+    stop("'dsd' is not of class 'DSD_ReadStream'")
   close(dsd$file)
 }

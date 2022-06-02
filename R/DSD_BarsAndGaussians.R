@@ -32,7 +32,7 @@
 #' # create data stream with three clusters in 2D
 #' stream <- DSD_BarsAndGaussians(noise = 0.1)
 #'
-#' get_points(stream, n = 10, info = TRUE)
+#' get_points(stream, n = 10)
 #' plot(stream)
 #' @export
 DSD_BarsAndGaussians <- function(angle = NULL, noise = 0) {
@@ -44,7 +44,7 @@ DSD_BarsAndGaussians <- function(angle = NULL, noise = 0) {
 
   # creating the DSD object
   l <- list(
-    description = "Bars and Gaussians",
+    description = "Bars and Gaussians (d = 2, k = 4)",
     d = 2,
     k = 4,
     angle = angle,
@@ -61,7 +61,7 @@ get_points.DSD_BarsAndGaussians <-
   function(x,
     n = 1,
     outofpoints = "stop",
-    info = FALSE,
+    info = TRUE,
     ...) {
     .nodots(...)
 
@@ -137,7 +137,7 @@ get_points.DSD_BarsAndGaussians <-
 
     names(dat) <- c("x", "y")
 
-    if (info) 
+    if (info)
       dat[[".class"]] <- a
 
     dat

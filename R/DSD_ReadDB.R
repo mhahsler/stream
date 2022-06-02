@@ -45,7 +45,7 @@
 #' library("RSQLite")
 #' con <- dbConnect(RSQLite::SQLite(), ":memory:")
 #'
-#' points <- get_points(DSD_Gaussians(k=3, d=2), n = 110, info = TRUE)
+#' points <- get_points(DSD_Gaussians(k=3, d=2), n = 110)
 #' head(points)
 #'
 #' dbWriteTable(con, "Gaussians", points)
@@ -61,7 +61,6 @@
 #'
 #' ### get points
 #' get_points(stream, n = 5)
-#' get_points(stream, n = 5, info = TRUE)
 #'
 #' plot(stream, n = 100)
 #'
@@ -73,11 +72,12 @@ DSD_ReadDB <- function(result,
   k = NA,
   description = NULL) {
 
-  if (is.null(description))
-    description <- 'DB Query Stream'
-
   # figure out d
   d <- length(grep('^\\.', DBI::dbColumnInfo(result)[["name"]], invert = TRUE))
+
+  if (is.null(description))
+    description <- paste0('DB Query Stream (d = ', d , 'k = ', k, ')')
+
 
   # creating the DSD object
   l <- list(
@@ -95,7 +95,7 @@ DSD_ReadDB <- function(result,
 get_points.DSD_ReadDB <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 

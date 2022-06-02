@@ -41,12 +41,14 @@ DSF()
 ## Example: Using pipes
 if (require(dplyr)) {
 
+library(dplyr)
 stream <- DSD_Gaussians(k = 3, d = 2) \%>\%
   DSF_dplyr(filter(X1 > .5)) \%>\%
   DSF_dplyr(mutate(Xsum = X1 + X2))
 stream
 
 get_points(stream, n = 5)
+
 }
 }
 \seealso{
@@ -65,8 +67,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

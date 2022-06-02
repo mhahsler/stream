@@ -77,7 +77,6 @@
 #'
 #' reset_stream(stream)
 #' get_points(stream, n = 5)
-#' get_points(stream, n = 5, info = TRUE)
 #'
 #' reset_stream(stream)
 #' plot(stream, n = 100)
@@ -87,9 +86,12 @@ DSD_Memory <- function(x,
   k = NA,
   loop = FALSE,
   description = NULL) {
+  stream_desc <- NULL
   if (is(x, "DSD")) {
     if (is.na(k) && !is.null(x$k))
       k <- x$k
+
+    stream_desc <- x$description
 
     x <- get_points(x, n, info = TRUE)
   }
@@ -99,8 +101,12 @@ DSD_Memory <- function(x,
   state <- new.env()
   assign("counter", 1L, envir = state)
 
-  if (is.null(description))
-    description <- "Memory Stream Interface"
+  if (is.null(description)) {
+    description <- "Memorized Stream"
+
+    if (!is.null(stream_desc))
+      description <- paste0(description, " for ", stream_desc)
+  }
 
   # creating the DSD object
   structure(
@@ -120,7 +126,7 @@ DSD_Memory <- function(x,
 get_points.DSD_Memory <- function(x,
   n = 1,
   outofpoints = c("stop", "warn", "ignore"),
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 
@@ -135,7 +141,7 @@ get_points.DSD_Memory <- function(x,
         stop("The stream is at its end!")
       if (outofpoints == "warn")
         warning("The stream is at its end! No more points available!")
-      return(x$strm[0, ])
+      return(x$strm[0, , drop = FALSE])
     }
   }
 
@@ -156,19 +162,11 @@ get_points.DSD_Memory <- function(x,
     ### regular case
     d <-
       x$strm[x$state$counter:(x$state$counter + n - 1L), , drop = FALSE]
-    a <- x$class[x$state$counter:(x$state$counter + n - 1L)]
-    if (!is.null(x$outlier))
-      o <- x$outlier[x$state$counter:(x$state$counter + n - 1L)]
     x$state$counter <- x$state$counter + n
   } else{
     ### we need to loop!
-
-
     # take what is left and reset counter
     d <- x$strm[x$state$counter:nrow(x$strm), , drop = FALSE]
-    a <- x$class[x$state$counter:nrow(x$strm)]
-    if (!is.null(x$outlier))
-      o <- x$outlier[x$state$counter:nrow(x$strm)]
 
     togo <- n - n_left
     x$state$counter <- 1L
@@ -179,17 +177,12 @@ get_points.DSD_Memory <- function(x,
       if (n_left < togo) {
         # take the whole stream
         d <- rbind(d, x$strm)
-        a <- append(a, x$class)
-        if (!is.null(x$outlier))
-          o <- append(o, x$outlier)
 
         togo <- togo - n_left
       } else{
         # take the rest
-        d <- rbind(d, x$strm[1:(x$state$counter + togo - 1), ,drop = FALSE])
-        a <- append(a, x$class[1:(x$state$counter + togo - 1)])
-        if (!is.null(x$outlier))
-          o <- append(o, x$outlier[1:(x$state$counter + togo - 1)])
+        d <-
+          rbind(d, x$strm[1:(x$state$counter + togo - 1), , drop = FALSE])
 
         x$state$counter <- x$state$counter + togo
         togo <- 0L

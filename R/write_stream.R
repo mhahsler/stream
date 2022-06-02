@@ -74,7 +74,6 @@ write_stream.default <- function(dsd,
   stop(gettextf("write_stream not implemented for class '%s'.", class(dsd)))
 }
 
-#' @rdname write_stream
 #' @export
 write_stream.DSD <- function(dsd,
   file,

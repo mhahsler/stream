@@ -39,7 +39,7 @@ it.
 # create data stream with three clusters in 2D
 stream <- DSD_Target()
 
-get_points(stream, n = 5, info = TRUE)
+get_points(stream, n = 5)
 
 plot(stream)
 }
@@ -52,8 +52,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},

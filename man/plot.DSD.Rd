@@ -60,6 +60,16 @@ plot(dstream, stream, dim = c(2, 3))
 
 ## plot micro and macro-clusters
 plot(dstream, stream, type = "both")
+
+## plot a time series using the AirPassenger data with the total monthly
+## passengers from 1949 to 1960) a as a stream
+AirPassengers
+stream <- DSD_Memory(data.frame(
+  .time = time(AirPassengers),
+  passengers = AirPassengers))
+
+get_points(stream, n = 10)
+plot(stream, n = 100, method = "ts")
 }
 \seealso{
 Other DSD: 
@@ -70,8 +80,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

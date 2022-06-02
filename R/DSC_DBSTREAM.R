@@ -503,6 +503,8 @@ get_assignment.DSC_DBSTREAM <- function(dsc,
   type <- match.arg(type)
   method <- match.arg(method)
 
+  points <- remove_info(points)
+
   if (method == "auto")
     method <- "model"
   if (method != "model")

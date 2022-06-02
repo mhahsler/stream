@@ -72,7 +72,6 @@ stream
 
 reset_stream(stream)
 get_points(stream, n = 5)
-get_points(stream, n = 5, info = TRUE)
 
 reset_stream(stream)
 plot(stream, n = 100)
@@ -85,8 +84,8 @@ Other DSD:
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

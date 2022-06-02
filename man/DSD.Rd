@@ -48,10 +48,6 @@ stream <- DSD_Gaussians(k = 3, d = 3)
 # get points from stream
 get_points(stream, n = 5)
 
-# get points with true cluster assignment
-p <- get_points(stream, n = 5, info = TRUE)
-attr(p, "cluster")
-
 # plotting the data (scatter plot matrix, first and third dimension, and first
 #  two principal components)
 plot(stream)
@@ -67,8 +63,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

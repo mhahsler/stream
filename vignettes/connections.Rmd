@@ -49,7 +49,7 @@ library(stream)
 con <- socketConnection(port = 6011, open = 'r')
 con
 
-dsd <- DSD_ReadCSV(con)
+dsd <- DSD_ReadStream(con)
 get_points(dsd, n= 20, outofpoints = "ignore")
 
 close(con)

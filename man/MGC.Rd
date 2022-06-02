@@ -11,16 +11,16 @@
 \alias{remove_keyframe}
 \alias{MGC_Noise}
 \alias{MGC_Random}
-\alias{MGC_Shape_Gaussian}
-\alias{MGC_Shape_Block}
+\alias{Shape_Gaussian}
+\alias{Shape_Block}
 \alias{MGC_Static}
 \title{Moving Generator Cluster}
 \usage{
 MGC(...)
 
-MGC_Function(density, center, parameter, shape = NULL)
+MGC_Function(density, center, parameter, shape = Shape_Gaussian)
 
-MGC_Linear(dimension = 2, keyframelist = NULL, shape = NULL)
+MGC_Linear(dimension = 2, keyframelist = NULL, shape = Shape_Gaussian)
 
 keyframe(time, density, center, parameter, reset = FALSE)
 
@@ -32,13 +32,13 @@ remove_keyframe(x, time)
 
 MGC_Noise(density, range)
 
-MGC_Random(density, center, parameter, randomness = 1, shape = NULL)
+MGC_Random(density, center, parameter, randomness = 1, shape = Shape_Gaussian)
 
-MGC_Shape_Gaussian(center, parameter)
+Shape_Gaussian(center, parameter)
 
-MGC_Shape_Block(center, parameter)
+Shape_Block(center, parameter)
 
-MGC_Static(density = 1, center, parameter, shape = NULL)
+MGC_Static(density = 1, center, parameter, shape = Shape_Gaussian)
 }
 \arguments{
 \item{...}{Further arguments.}
@@ -54,14 +54,14 @@ list consists of functions that define the movement of the cluster. For
 \code{MGC} before it begins moving.}
 
 \item{parameter}{Parameters for the shape. For the default shape
-\code{MGC_Shape_Gaussian} the parameter is the standard deviation, one per
+\code{Shape_Gaussian} the parameter is the standard deviation, one per
 dimension. If a single value is specified then it is recycled for all
 dimensions.}
 
 \item{shape}{A function creating the shape of the cluster. It gets passed on
 the parameters argument from above. Available functions are
-\code{MGC_Shape_Gaussian} (the parameters are a vector containing standard
-deviations) and \code{MGC_Shape_Block} (parameters are the dimensions of the
+\code{Shape_Gaussian} (the parameters are a vector containing standard
+deviations) and \code{Shape_Block} (parameters are the dimensions of the
 uniform block).}
 
 \item{dimension}{Dimensionality of the data stream.}
@@ -87,34 +87,57 @@ Creates an evolving cluster for use as a component of a \link{DSD_MG} data strea
 }
 \details{
 An \code{MGC} describes a single cluster for use as a component in a \link{DSD_MG}.
-There are currently four different MGCs that allow a user to express
-many different behaviors within a single data stream.
+Different \link{MGC}s  allow the user to express
+different cluster behaviors within a single data stream. Static, (i.e., not moving)
+clusters are defined as:
 \itemize{
-\item \code{MGC_Linear} creates an evolving Gaussian cluster for a
-\link{DSD_MG} who's behavior is determined by several keyframes. Several keyframe
-functions are provided to create, add and remove keyframes. See Examples section
-for details.
-\item \code{MGC_Function} allows for a creation of a \link{DSD_MG} that is
-defined by functions of time.
-\item \code{MGC_Random} allows for a creation of a \link{DSD_MG} that moves
-randomly.
-\item \code{MGC_Noise} allows for a creation of noise within a \link{DSD_MG}.
+\item \code{MGC_Static} cluster positions are fixed
+\item \code{MGC_Noise} allows to add random noise.
 }
+
+Moving (evolving) clusters are defined as:
+\itemize{
+\item \code{MGC_Linear} creates an evolving cluster for a who's behavior is determined by
+keyframes. Several keyframe
+functions are provided to create, add and remove keyframes.
+See Examples section for details.
+\item \code{MGC_Function} allows to specify \code{density}, \code{center}, and \code{parameter}
+as a function of time.
+\item \code{MGC_Random} allows for a creation of a cluster that follows a random walk.
+}
+
+Cluster shapes can be specified using the functions:
+\itemize{
+\item \code{Shape_Gaussian}
+\item \code{Shape_Block}
+}
+
+New
+shapes can be defined as a function with parameters \code{center} and \code{parameter} that return a single new
+point. Here is an example:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Shape_Gaussian <- function(center, parameter)
+   rnorm(length(center), mean = center, sd = parameter)
+}\if{html}{\out{</div>}}
 }
 \examples{
 MGC()
 
-### Two static clusters that stay in place
+### Two static clusters (Gaussian with sd of .1 and a Block with width .4)
+###   with added noise
 stream <- DSD_MG(dim = 2,
-  MGC_Static(den = 1, center = c(1, 0), par = .1),
-  MGC_Static(den = 1, center = c(2, 0), par = .4, shape = MGC_Shape_Block)
+  MGC_Static(den = .45, center = c(1, 0), par = .1, shape = Shape_Gaussian),
+  MGC_Static(den = .45, center = c(2, 0), par = .4, shape = Shape_Block),
+  MGC_Noise( den = .1, range = rbind(c(0, 3), c(-1,1)))
 )
+stream
+
 plot(stream)
 
 ### Example of several MGC_Randoms which define clusters that randomly move.
 stream <- DSD_MG(dim = 2,
-  MGC_Random(den = 100, center=c(1, 0), par = .1, rand = .1),
-  MGC_Random(den = 100, center=c(2, 0), par = .4, shape = MGC_Shape_Block, rand = .1)
+  MGC_Random(den = 100, center=c(1, 0), par = .1, rand = .2),
+  MGC_Random(den = 100, center=c(2, 0), par = .4, shape = Shape_Block, rand = .2)
 )
 
 \dontrun{
@@ -123,24 +146,28 @@ stream <- DSD_MG(dim = 2,
 
 
 ### Example of several MGC_Functions
-stream <- DSD_MG(dim = 2)
 
-### block-shaped cluster moving from bottom-left to top-right increasing size
+### a block-shaped cluster moving from bottom-left to top-right increasing size
 c1 <- MGC_Function(
   density = function(t){ 100 },
   parameter = function(t){ 1 * t },
   center = function(t) c(t, t),
-  shape = MGC_Shape_Block
+  shape = Shape_Block
   )
-add_cluster(stream, c1)
 
-### cluster moving in a circle (default shape is Gaussian)
+### a cluster moving in a circle (default shape is Gaussian)
 c2 <- MGC_Function(
   density = function(t){ 25 },
   parameter = function(t){ 5 },
   center= function(t) c(sin(t / 10) * 50 + 50, cos(t / 10) * 50 + 50)
 )
-add_cluster(stream, c2)
+
+stream <- DSD_MG(dim = 2, c1, c2)
+
+## adding noise after the stream was created
+add_cluster(stream, MGC_Noise(den = 10, range = rbind(c(-20, 120), c(-20, 120))))
+
+stream
 
 \dontrun{
 animate_data(stream, 10000, xlim = c(-20, 120), ylim = c(-20, 120), horizon = 100)
@@ -155,7 +182,7 @@ add_keyframe(c1, time = 50, dens = 50, par = 5, center = c(50, 50))
 add_keyframe(c1, time = 100,dens = 50, par = 5, center = c(50, 100))
 add_cluster(stream, c1)
 
-c2 <- MGC_Linear(dim = 2, shape = MGC_Shape_Block)
+c2 <- MGC_Linear(dim = 2, shape = Shape_Block)
 add_keyframe(c2, time = 50, dens = 25, par = c(10, 10), center = c(50, 50))
 add_keyframe(c2, time = 100,dens = 25, par = c(30, 30), center = c(100, 50))
 add_cluster(stream, c2)

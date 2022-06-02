@@ -44,7 +44,7 @@
 #' window <- DSAggregate_Window(horizon = 10)
 #' window
 #'
-#' # update with only two points
+#' # update with only two points. The window is mostly empty (NA)
 #' update(window, stream, 2)
 #' get_points(window)
 #'
@@ -73,12 +73,12 @@ update.DSAggregate_Window <-
     verbose = FALSE,
     ...) {
     ### TODO: we do not need to get all points if n is very large!
-    object$RObj$update(get_points(dsd, n = n), verbose = verbose, ...)
+    object$RObj$update(get_points(dsd, n = n, info = TRUE), verbose = verbose, ...)
   }
 
 #' @export
-get_points.DSAggregate_Window <- function(x, ...)
-  x$RObj$get_points(...)
+get_points.DSAggregate_Window <- function(x, info = TRUE, ...)
+  x$RObj$get_points(info = info, ...)
 
 #' @export
 get_weights.DSAggregate_Window <- function(x, ...)
@@ -124,7 +124,7 @@ WindowDSAggregate <- setRefClass(
       while (i < n) {
         ## process the next m points: all or to fill the current horizon
         m <- min(horizon - pos + 1L, n - i)
-        data[pos:(pos + m - 1L),] <<-
+        data[pos:(pos + m - 1L), ] <<-
           x[(i + 1L):(i + m), , drop = FALSE]
 
         i <- i + m
@@ -142,14 +142,19 @@ WindowDSAggregate <- setRefClass(
       data <<- NULL
     },
 
-    get_points = function(...) {
+    get_points = function(info = TRUE, ...) {
       if (is.null(data))
-        return(data.frame())  ### gives 0 nrows and 0 length (we do not know if it is supposed to be a data.frame or a list
+        return(data.frame())
+
+      if (info)
+        d <- data
+      else
+        d <- remove_info(data)
 
       if (pos == 1L)
-        return(data)
+        return(d)
       else
-        return(data[c(pos:(horizon), 1L:(pos - 1L)), , drop = FALSE])
+        return(d[c(pos:(horizon), 1L:(pos - 1L)), , drop = FALSE])
     },
 
     get_weights = function(...) {
@@ -170,7 +175,7 @@ WindowDSC <- setRefClass(
     cluster = function(x, ...)
       update(x, ...),
     get_microclusters = function(...)
-      get_points(...),
+      get_points(infor = FALSE, ...),
     get_microweights = function(...)
       get_weights(...)
   )

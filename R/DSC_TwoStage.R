@@ -156,6 +156,8 @@ get_assignment.DSC_TwoStage <-
     type = c("auto", "micro", "macro"),
     method = "auto",
     ...) {
+    points <- remove_info(points)
+
     type <- match.arg(type)
     if (type == "micro") {
       dsc$macro$newdata <- TRUE

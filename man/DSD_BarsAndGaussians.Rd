@@ -22,7 +22,7 @@ Gaussians clusters with different density.
 # create data stream with three clusters in 2D
 stream <- DSD_BarsAndGaussians(noise = 0.1)
 
-get_points(stream, n = 10, info = TRUE)
+get_points(stream, n = 10)
 plot(stream)
 }
 \seealso{
@@ -35,8 +35,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

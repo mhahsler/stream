@@ -37,7 +37,7 @@ See Examples section below.
 library("RSQLite")
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
-points <- get_points(DSD_Gaussians(k=3, d=2), n = 110, info = TRUE)
+points <- get_points(DSD_Gaussians(k=3, d=2), n = 110)
 head(points)
 
 dbWriteTable(con, "Gaussians", points)
@@ -53,7 +53,6 @@ stream
 
 ### get points
 get_points(stream, n = 5)
-get_points(stream, n = 5, info = TRUE)
 
 plot(stream, n = 100)
 
@@ -72,7 +71,7 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

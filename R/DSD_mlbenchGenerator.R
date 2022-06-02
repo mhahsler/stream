@@ -41,7 +41,7 @@
 #' stream <- DSD_mlbenchGenerator(method = "cassini")
 #' stream
 #'
-#' get_points(stream, n = 5, info = TRUE)
+#' get_points(stream, n = 5)
 #'
 #' plot(stream, n = 500)
 #' @export
@@ -81,8 +81,9 @@ DSD_mlbenchGenerator <- function(method, ...) {
     stop("DSD_mlbenchGenerator: Invalid data generator")
 
   # creating the DSD object
+  ### TODO: Add k and d to desctiption
   l <- list(
-    description = paste("mlbench:", method),
+    description = paste0("mlbench: ", method),
     method = methods[m],
     variables = list(...)
   )
@@ -95,7 +96,7 @@ DSD_mlbenchGenerator <- function(method, ...) {
 get_points.DSD_mlbenchGenerator <- function(x,
   n = 1,
   outofpoints = "stop",
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 

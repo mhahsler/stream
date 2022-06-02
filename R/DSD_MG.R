@@ -54,7 +54,7 @@
 #' stream
 #'
 #' get_clusters(stream)
-#' get_points(stream, n = 5, info = TRUE)
+#' get_points(stream, n = 5)
 #' plot(stream, xlim = c(-20,120), ylim = c(-20, 120))
 #'
 #' if (interactive()) {
@@ -63,6 +63,7 @@
 #'
 #' ### remove cluster 1
 #' remove_cluster(stream, 1)
+#' stream
 #'
 #' get_clusters(stream)
 #' plot(stream, xlim = c(-20, 120), ylim = c(-20, 120))
@@ -70,12 +71,13 @@
 #' ### create a more complicated cluster structure (using 2 clusters with the same
 #' ### label to form an L shape)
 #' stream <- DSD_MG(dim = 2,
-#'   MGC_Static(density = 10, center = c(.5, .2),   par = c(.4, .2),   shape = MGC_Shape_Block),
-#'   MGC_Static(density = 10, center = c(.6, .5),   par = c(.2, .4),   shape = MGC_Shape_Block),
-#'   MGC_Static(density = 5,  center = c(.39, .53), par = c(.16, .35), shape = MGC_Shape_Block),
+#'   MGC_Static(density = 10, center = c(.5, .2),   par = c(.4, .2),   shape = Shape_Block),
+#'   MGC_Static(density = 10, center = c(.6, .5),   par = c(.2, .4),   shape = Shape_Block),
+#'   MGC_Static(density = 5,  center = c(.39, .53), par = c(.16, .35), shape = Shape_Block),
 #'   MGC_Noise( density = 1,  range = rbind(c(0,1), c(0,1))),
 #'   labels = c(1, 1, 2, NA)
 #'   )
+#' stream
 #'
 #' plot(stream, xlim = c(0, 1), ylim = c(0, 1))
 #'
@@ -250,7 +252,7 @@ dsd_MG_refClass$methods(
 get_points.DSD_MG <- function(x,
   n = 1,
   outofpoints = "stop",
-  info = FALSE,
+  info = TRUE,
   ...) {
   .nodots(...)
 
@@ -264,7 +266,8 @@ add_cluster.DSD_MG <- function(x, c, label = NULL) {
   if (is.null(label) && is(c, "MGC_Noise"))
     label <- NA
   x$RObj$add_cluster(c, label)
-}
+  invisible(x)
+  }
 
 #' @export
 reset_stream.DSD_MG <- function(dsd, pos = 1) {
@@ -279,7 +282,7 @@ print.DSD_MG <- function(x, ...) {
   cat(
     paste(
       'With',
-      length(na.omit(unique(x$RObj$labels))),
+      length(x$RObj$clusters),
       'clusters',
       'in',
       x$RObj$dimension,
@@ -299,4 +302,5 @@ get_clusters.DSD_MG <- function(x) {
 remove_cluster.DSD_MG  <- function(x, i) {
   x$RObj$clusters[[i]] <- NULL
   x$RObj$labels <- x$RObj$labels[-i]
+  invisible(x)
 }

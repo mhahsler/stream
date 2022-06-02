@@ -27,9 +27,9 @@ underlying connection.
 \itemize{
 \item \link{DSD}
 \item \link{DSD_Gaussians}
-\item \link{DSD_MG}
 \item \link{DSD_Memory}
-\item \link{DSD_ReadCSV}
+\item \link{DSD_MG}
+\item \link{DSD_ReadStream}
 \item \link{DSF}
 \item \link{DSF_Convolve}
 }
@@ -60,8 +60,8 @@ Other DSD:
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
 \code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadCSV}()},
 \code{\link{DSD_ReadDB}()},
+\code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},

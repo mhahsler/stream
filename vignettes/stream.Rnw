@@ -875,7 +875,7 @@ from the help page for each class. The result of this creator function
 is not a data set but
 an object representing the stream's properties and its current state.
 \item A data generating function \\
-\code{get_points(x, n = 1, outofpoints = c("stop", "warn", "ignore") , ...)}.\\
+\code{get_points(x, n = 1, outofpoints = c("stop", "warn", "ignore") , info = TRUE, ...)}.\\
 This function is used
 to obtain the next data point (or next \code{n} data points) from the
 stream represented by object~\code{x}. Parameter \code{outofpoints}
@@ -942,26 +942,17 @@ the multivariate Gaussian distribution given by the mean and covariance matrix o
 the cluster. Noise points are generated in a bounding box from a
 $d$-dimensional uniform
 distribution.
-The following instruction requests $n=5$ new data points.
+The following instruction requests $n = 10$ new data points.
 
 <<get_points>>=
-p <- get_points(stream, n = 5)
+p <- get_points(stream, n = 10)
 p
 @
 
 The result is a data frame containing the data points as rows. For evaluation
 it is often important to know the ground truth, i.e., from which
 cluster each point was created. Many generators also return the ground
-truth (class or cluster label) if they are called with \code{info = TRUE}.
-%The ground truth is returned as an attribute with the name
-%\code{"assignment"} and can be accessed in the following way:
-
-
-<<get_points_with_class>>=
-p <- get_points(stream, n = 100, info = TRUE)
-head(p, n = 10)
-@
-
+truth (class or cluster label) and other information as columns starting with `.`.
 Note that the data was created by a generator with 5\% noise. Noise points
 do not belong to any cluster and thus have a class label of \code{NA}.
 
@@ -1133,13 +1124,9 @@ p <- get_points(stream, n = 10000, info = TRUE)
 head(p)
 @
 
-Outlier marks can be retrieved from the \code{outlier} attribute.
+Outlier marks can be retrieved from the \code{.outlier} information column. These outliers were generated at positions
 <<>>=
 out_marks <- p[['.outlier']]
-sum(out_marks)
-@
-We can see that four data points were marked as outliers. These outliers were generated at positions
-<<>>=
 which(out_marks)
 @
 and can be seen also in Figure \ref{figure:dsd_outliers}. Such data stream generators can

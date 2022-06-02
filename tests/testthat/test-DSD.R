@@ -55,6 +55,8 @@ reset_stream(stream)
 points <- get_points(stream, n = 100)
 expect_equivalent(nrow(points), 100L)
 
+
+### check that a failed request does not take any points.
 reset_stream(stream)
 points <- NA
 expect_error(points <- get_points(stream, n = 101))
