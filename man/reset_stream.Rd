@@ -27,8 +27,8 @@ underlying connection.
 \itemize{
 \item \link{DSD}
 \item \link{DSD_Gaussians}
-\item \link{DSD_Memory}
 \item \link{DSD_MG}
+\item \link{DSD_Memory}
 \item \link{DSD_ReadStream}
 \item \link{DSF}
 \item \link{DSF_Convolve}
@@ -55,6 +55,7 @@ replayer
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Combination}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},

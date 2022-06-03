@@ -78,6 +78,7 @@ remove_info(points)
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Combination}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},

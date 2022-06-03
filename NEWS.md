@@ -7,6 +7,7 @@
 * New DST: DST_Multi, DSD_NULL
 * DSD_ReadCSV gained parameter col.names
 * Added DSD_ReadStream as an alias for DSD_ReadCSV.
+* Added DSD_Combination to combine streams.
 
 ## Changes
 * class information and extra information is now stored as columns starting with . 

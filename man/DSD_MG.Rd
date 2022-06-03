@@ -115,6 +115,7 @@ purity <- animate_cluster(dbstream, stream, n = 2500, type = "micro",
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
+\code{\link{DSD_Combination}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_Memory}()},
