@@ -75,8 +75,8 @@ update.DSC_R <- function(object,
   if (n > 0) {
 
     ### for clusterers which also create macro-clusterings
-    if (is.environment(object$macro))
-      object$macro$newdata <- TRUE
+    if (is.environment(object$state))
+      object$state$newdata <- TRUE
 
     ### TODO: Check data
     if (verbose)

@@ -6,13 +6,15 @@
 * New DSF: DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
 * New DST: DST_Multi, DSD_NULL
 * DSD_ReadCSV gained parameter col.names
+* Added DSD_ReadStream as an alias for DSD_ReadCSV.
 
 ## Changes
+* class information and extra information is now stored as columns starting with . 
+  instead of as attributes. See get_points().
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
 * DSO is now called DSAggregate.
 * The NAMESPACE is now managed using roxygen.
-* class information and extra information is now stored as columns starting with . 
-  instead of as attributes.
+
 
 # stream 1.5-1 (05/09/22)
 

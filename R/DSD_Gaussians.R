@@ -462,7 +462,7 @@ get_points.DSD_Gaussians <- function(x,
 
   ## Replace some points by outliers
   if (x$o > 0) {
-    outlier_pos <- rep(NA, n)
+    outlier_pos <- rep(FALSE, n)
 
     # positions needed to match outliers
     f_pos <- x$env$pos

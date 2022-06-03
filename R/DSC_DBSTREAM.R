@@ -129,7 +129,6 @@
 #'
 #' # macro-clusters
 #' plot(iris[,-5], col = microToMacro(dbstream, cl))
-#'
 #' @export
 DSC_DBSTREAM <- function(r,
   lambda = 1e-3,
@@ -139,31 +138,25 @@ DSC_DBSTREAM <- function(r,
   shared_density = FALSE,
   alpha = 0.1,
   k = 0,
-  minweight = 0) {
-  dbstream <- dbstream$new(r,
-    lambda,
-    as.integer(gaptime),
-    Cm,
-    shared_density,
-    alpha,
-    k,
-    minweight,
-    metric)
-
-  macro <- new.env()
-  macro$newdata <- TRUE
-
+  minweight = 0)
   structure(
     list(
       description = "DBSTREAM - density-based stream clustering with shared-density-based reclustering",
-      RObj = dbstream,
-      macro = macro
+      RObj = dbstream$new(
+        r,
+        lambda,
+        as.integer(gaptime),
+        Cm,
+        shared_density,
+        alpha,
+        k,
+        minweight,
+        metric
+      ),
+      macro = DSC_Static(x = list(centers = data.frame()), type = "macro")
     ),
     class = c("DSC_DBSTREAM", "DSC_Micro", "DSC_R", "DSC")
   )
-}
-
-
 
 dbstream <- setRefClass(
   "dbstream",
@@ -190,7 +183,10 @@ dbstream <- setRefClass(
 
     ### micro-clusters
     micro         = "ANY",
-    serial        = "ANY"
+    serial        = "ANY",
+
+    ### do we need to rerun the reclusterer
+    newdata         = "logical"
   ),
 
 
@@ -238,6 +234,8 @@ dbstream <- setRefClass(
       shared_density	<<- shared_density
       decay_factor	  <<- 2 ^ (-lambda)
 
+      newdata  <<- TRUE
+
       if (is.null(k))
         k <<- 0L
       else
@@ -280,6 +278,7 @@ dbstream$methods(
     uncache = function() {
       micro <<- new(DBSTREAM, serial)
       serial <<- NULL
+      newdata <<- TRUE
     },
 
 
@@ -289,6 +288,7 @@ dbstream$methods(
       'Cluster new data.' ### online help
 
       micro$update(as.matrix(newdata), debug, assignments)
+      newdata <<- TRUE
     },
 
     # find strong MCs
@@ -379,13 +379,13 @@ dbstream$methods(
         return(list(
           centers = data.frame(),
           microToMacro = integer(0L),
-          weight = numeric(0L)
+          weights = numeric(0L)
         ))
       if (nclusters == 1L)
         return(list(
           centers = mcs,
           microToMacro = 1L,
-          weight = w[1L]
+          weights = w[1L]
         ))
 
       if (shared_density) {
@@ -436,7 +436,8 @@ dbstream$methods(
         ### alpha = 0 -> 1    reachability at r
         ### alpha = 1 -> 0     highest packing
         h <- 1 - alpha
-        assignment <- cutree(hclust(d_pos, method = "single"), h = h)
+        assignment <-
+          cutree(hclust(d_pos, method = "single"), h = h)
 
         ### use k if we don't get enough components!
         if (length(unique(assignment)) < k) {
@@ -460,34 +461,36 @@ dbstream$methods(
   )
 )
 
+# helper to memorize macro clusterings
+.dbstream_update_macro <- function(x) {
+  if (!x$RObj$newdata) return()
+
+  cluster_list <- x$RObj$get_macro_clustering()
+  x$macro$RObj$centers <- cluster_list$centers
+  x$macro$RObj$weights <- cluster_list$weights
+  x$macro$RObj$microToMacro <- cluster_list$microToMacro
+  x$RObj$newdata <- FALSE
+}
+
+
 #' @export
 get_macroclusters.DSC_DBSTREAM <- function(x, ...) {
-  if (x$macro$newdata) {
-    x$macro$macro <- x$RObj$get_macro_clustering()
-    x$macro$newdata <- FALSE
-  }
-
-  x$macro$macro$centers
+  .dbstream_update_macro(x)
+  get_centers(x$macro)
 }
 
 #' @export
 get_macroweights.DSC_DBSTREAM <- function(x, ...) {
-  if (x$macro$newdata) {
-    x$macro$macro <- x$RObj$get_macro_clustering()
-    x$macro$newdata <- FALSE
-  }
-
-  x$macro$macro$weights
+  .dbstream_update_macro(x)
+  get_weights(x$macro)
 }
 
 #' @export
-microToMacro.DSC_DBSTREAM <- function(x, micro = NULL) {
-  if (x$macro$newdata) {
-    x$macro$macro <- x$RObj$get_macro_clustering()
-    x$macro$newdata <- FALSE
-  }
+microToMacro.DSC_DBSTREAM <- function(x, micro = NULL, ...) {
+  .nodots(...)
+  .dbstream_update_macro(x)
+  assignment <- x$macro$RObj$microToMacro
 
-  assignment <- x$macro$macro$microToMacro
   if (!is.null(micro))
     assignment <- assignment[micro]
   assignment
@@ -545,7 +548,7 @@ get_shared_density <- function(x, use_alpha = TRUE)
 change_alpha <- function(x, alpha) {
   x$RObj$alpha <- alpha
   x$RObj$micro$alpha <- alpha
-  x$macro$newdata <- TRUE ### so macro clustering is redone
+  x$state$newdata <- TRUE ### so macro clustering is redone
 }
 
 #' @rdname DSC_DBSTREAM
@@ -631,7 +634,7 @@ plot.DSC_DBSTREAM <- function(x,
       for (i in 1:nrow(p)) {
         lines(
           ellipsePoints(x$RObj$r, x$RObj$r,
-            loc = as.numeric(p[i, ]), n = 60),
+            loc = as.numeric(p[i,]), n = 60),
           col = "black",
           lty = assignment
         )
@@ -668,11 +671,10 @@ plot.DSC_DBSTREAM <- function(x,
         edges <- cbind(edges, map(edges[, 3], range = c(1, 4)))
 
         for (i in 1:nrow(edges)) {
-          lines(rbind(p[edges[i, 1], ], p[edges[i, 2], ]),
+          lines(rbind(p[edges[i, 1],], p[edges[i, 2],]),
             col = "black", lwd = edges[i, 4])
         }
       }
     }
   }
 }
-

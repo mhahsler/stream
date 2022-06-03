@@ -90,6 +90,11 @@ get_outlier_positions.default <- function(x, ...) {
 #' @export
 get_outlier_positions.DSOutlier <- get_outlier_positions.default
 
+#' @export
+get_outlier_positions.DSC_TwoStage <-
+  function(x, ...)
+    get_outlier_positions(x$micro_dsc, ...)
+
 #' @describeIn DSOutlier Returns the current number
 #' of outliers.
 #' @export
@@ -113,4 +118,27 @@ noutliers.DSOutlier <- function(x, ...) {
 print.DSOutlier <- function(x, ...) {
   cat(.line_break(paste(x$description)))
   cat("Class:", paste(class(x), collapse = ", "), "\n")
+}
+
+#' @export
+plot.DSOutlier <- function(x,
+  dsd = NULL,
+  n = 500,
+  col_points = NULL,
+  col_clusters = c("red", "blue", "green"),
+  weights = TRUE,
+  scale = c(1, 5),
+  cex = 1,
+  pch = NULL,
+  method = c("pairs", "scatter", "pca"),
+  dim = NULL,
+  type = c("auto", "micro", "macro", "both"),
+  # we keep 'both' for compatibility reasons
+  assignment = FALSE,
+  outliers = TRUE,
+  ...) {
+  NextMethod()
+
+  if (outliers)
+    points(get_outlier_positions(x), pch = .outlier_pch, col = .outlier_col)
 }

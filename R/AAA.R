@@ -21,6 +21,10 @@
 ### noise symbol and color
 .noise_pch <- 20L
 .noise_col <- gray(.5, alpha = .3)
+
+.outlier_pch <- 8L
+.outlier_col <- "#FF0000FF"
+
 .points_col <- gray(.5, alpha = .5)
 
 ### helper for doing things in blocks

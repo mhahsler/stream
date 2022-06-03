@@ -50,13 +50,13 @@ saveDSC <- function(object, file, ...) {
   ### for MOA based objects from streamMOA (rJava)
     if(!is.null(object$javaObj)) rJava::.jcache(object$javaObj)
 
-    if(!is.null(object$micro_dsc$javaObj)) rJava::.jcache(object$micro$javaObj)
-    if(!is.null(object$macro_dsc$javaObj)) rJava::.jcache(object$macro$javaObj)
+    if(!is.null(object$micro$javaObj)) rJava::.jcache(object$micro$javaObj)
+    if(!is.null(object$macro$javaObj)) rJava::.jcache(object$macro$javaObj)
 
   ### for RCpp
     try(object$RObj$cache(), silent = TRUE)
-    try(object$micro_dsc$RObj$cache(), silent = TRUE)
-    try(object$macro_dsc$RObj$cache(), silent = TRUE)
+    try(object$micro$RObj$cache(), silent = TRUE)
+    try(object$macro$RObj$cache(), silent = TRUE)
 
     saveRDS(object, file=file, ...)
 }
@@ -70,8 +70,8 @@ readDSC <- function(file) {
 
     ### for Rcpp
     try(d$RObj$uncache(), silent = TRUE)
-    try(d$micro_dsc$RObj$uncache(), silent = TRUE)
-    try(d$macro_dsc$RObj$uncache(), silent = TRUE)
+    try(d$micro$RObj$uncache(), silent = TRUE)
+    try(d$macro$RObj$uncache(), silent = TRUE)
 
     d
 }

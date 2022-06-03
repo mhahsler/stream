@@ -122,8 +122,12 @@ nclusters(dstream)
 get_weights(dstream)
 
 # D-Stream also has macro-clusters
-get_weights(dstream, type="macro")
+get_weights(dstream, type = "macro")
+get_centers(dstream, type = "macro")
 
+# plot the clustering result
+plot(dstream, stream)
+plot(dstream, stream, type = "both")
 }
 \seealso{
 Other DSC: 

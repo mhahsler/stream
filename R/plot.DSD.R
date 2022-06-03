@@ -63,21 +63,20 @@ plot.DSD <- function(x,
 
 
   d <- get_points(x, n, info = TRUE)
+
   assignment <- d[['.class']]
-  time <- d[['.time']]
-
-  d <- remove_info(d)
-
   ### stream has no assignments!
-  if (length(assignment) == 0)
+  if (is.null(assignment))
     assignment <- rep(1L, nrow(d))
-
-  noise <- is.na(assignment)
-
   ### assignment is not numeric
   if (!is.numeric(assignment))
     assignment <- as.integer(as.factor(assignment))
 
+  noise <- is.na(assignment)
+  time <- d[['.time']]
+  outlier <- d[['.outlier']]
+
+  d <- remove_info(d)
 
   ### add alpha shading to color
   if (is.null(col)) {
@@ -88,12 +87,17 @@ plot.DSD <- function(x,
   }
 
   col[noise] <-  .noise_col
+  if (!is.null(outlier))
+    col[outlier] <-  .outlier_col
+
 
   if (is.null(pch)) {
     #pch <- rep(1, n)
     pch <- as.integer(assignment)
     pch <- pch %% 25
     pch[noise] <- .noise_pch
+    if (!is.null(outlier))
+      pch[outlier] <-  .outlier_pch
   }
 
   if (!is.null(dim))

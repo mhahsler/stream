@@ -59,7 +59,7 @@ plot(two, stream, type="both")
 
 ## if we have time, evaluate additional generations. This can be
 ## called at any time, also between observations.
-two$macro_dsc$RObj$recluster(100)
+two$macro$RObj$recluster(100)
 
 ## plot improved result
 reset_stream(stream)

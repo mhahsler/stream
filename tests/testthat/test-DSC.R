@@ -15,12 +15,13 @@ dbstream <- DSC_DBSTREAM(r = .05)
 update(dbstream, stream, 10000)
 dbstream
 
-saveDSC(dbstream, file="dbstream.Rds")
+saveDSC(dbstream, file = "dbstream.Rds")
 db <- readDSC("dbstream.Rds")
 db
 
 expect_equal(dbstream$RObj$micro, db$RObj$micro)
-expect_equal(dbstream$macro, db$macro)
+expect_equal(dbstream$macro$RObj$centers, db$macro$RObj$centers)
+expect_equal(dbstream$macro$RObj$weights, db$macro$RObj$weights)
 
 # cleanup
 unlink("dbstream.Rds")
@@ -28,17 +29,22 @@ unlink("dbstream.Rds")
 ######################################################################
 context("DSC_TwoStage")
 
-dbstream <- DSC_TwoStage(micro=DSC_DBSTREAM(r = .05),
-			  macro = DSC_Kmeans(k=3))
+dbstream <- DSC_TwoStage(micro = DSC_DBSTREAM(r = .05),
+  macro = DSC_Kmeans(k = 3))
 update(dbstream, stream, 10000)
 dbstream
 
-saveDSC(dbstream, file="dbstream.Rds")
+saveDSC(dbstream, file = "dbstream.Rds")
 db <- readDSC("dbstream.Rds")
 db
 
-expect_equal(dbstream$RObj$micro, db$RObj$micro)
-expect_equal(dbstream$macro, db$macro)
+
+
+for (f in c("centers", "weights", "macro", "microToMacro"))
+  expect_equal(dbstream$micro$RObj[[f]], db$micro$RObj[[f]])
+
+for (f in c("centers", "weights", "macro", "microToMacro"))
+  expect_equal(dbstream$macro$RObj[[f]], db$macro$RObj[[f]])
 
 
 ######################################################################
@@ -48,13 +54,13 @@ dstream <- DSC_DStream(grid = .1)
 update(dstream, stream, 10000)
 dstream
 
-saveDSC(dstream, file="dstream.Rds")
+saveDSC(dstream, file = "dstream.Rds")
 ds <- readDSC("dstream.Rds")
 ds
 
 expect_equal(dstream$RObj$micro, ds$RObj$micro)
-expect_equal(dstream$macro, ds$macro)
+for (f in c("centers", "weights", "macro", "microToMacro"))
+  expect_equal(dstream$macro$RObj[[f]], ds$macro$RObj[[f]])
 
 # cleanup
 unlink(c("dbstream.Rds", "dstream.Rds"))
-

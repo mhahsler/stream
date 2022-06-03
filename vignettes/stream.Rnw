@@ -2936,9 +2936,9 @@ since the clusters in the data stream move very quickly.
 
 <<>>=
 algorithms <- list(
-  'Sample' = DSC_TwoStage(micro = DSC_Sample(k = 100, biased = TRUE),
+  'Sample + k-means' = DSC_TwoStage(micro = DSC_Sample(k = 100, biased = TRUE),
     macro = DSC_Kmeans(k = 2)),
-  'Window' = DSC_TwoStage(micro = DSC_Window(horizon = 100, lambda = .01),
+  'Window + k-means' = DSC_TwoStage(micro = DSC_Window(horizon = 100, lambda = .01),
     macro = DSC_Kmeans(k = 2)),
   'D-Stream' = DSC_DStream(gridsize = .1, lambda = .01),
   'DBSTREAM' = DSC_DBSTREAM(r = .05, lambda = .01)
@@ -2985,9 +2985,9 @@ over the stream as a line plot and we add a boxplot comparing the
 distributions.
 
 <<dynamic, fig=TRUE, include=FALSE, width=10, height=4>>=
-matplot(Position, cRand, type = "l", lwd = 2)
-legend("bottomleft", legend = names(evaluation),
-  col = 1:6, lty = 1:6, bty = "n", lwd = 2)
+matplot(Position, cRand, type = "l", lwd = 1)
+legend("bottomleft",  legend = names(evaluation),
+  col = 1:6, lty = 1:6, lwd = 1)
 @
 % #barplot(colMeans(cRand), las=2)
 <<dynamic_box, fig=TRUE, include=FALSE, width=4, height=4.1, >>=

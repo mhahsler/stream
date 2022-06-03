@@ -89,7 +89,8 @@
 #' @return An object of class \code{DSC_DStream} (subclass of \code{DSC},
 #' \code{DSC_R}, \code{DSC_Micro}).
 #' @author Michael Hahsler
-#' @references Yixin Chen and Li Tu. 2007. Density-based clustering for
+#' @references
+#' Yixin Chen and Li Tu. 2007. Density-based clustering for
 #' real-time stream data. In _Proceedings of the 13th ACM SIGKDD
 #' International Conference on Knowledge Discovery and Data Mining (KDD '07)._
 #' ACM, New York, NY, USA, 133-142.
@@ -146,23 +147,18 @@ DSC_DStream <- function(gridsize,
   epsilon = .3,
   Cm2 = Cm,
   k = NULL,
-  N = 0) {
-  dstream <- dstream$new(gridsize, lambda,
-    gaptime, Cm, Cl, attraction, epsilon,
-    Cm2, k, N)
-
-  macro <- new.env()
-  macro$newdata <- TRUE
-
+  N = 0)
   structure(
     list(
-      description = "DStream",
-      RObj = dstream,
-      macro = macro
+      description = "D-Stream",
+      RObj = dstream$new(gridsize, lambda,
+        gaptime, Cm, Cl, attraction, epsilon,
+        Cm2, k, N),
+      macro = DSC_Static(x = list(centers = data.frame()), type = "macro")
     ),
     class = c("DSC_DStream", "DSC_Micro", "DSC_R", "DSC")
   )
-}
+
 
 dstream <- setRefClass(
   "dstream",
@@ -191,7 +187,10 @@ dstream <- setRefClass(
     ### store the grid
     micro 		      = "ANY",
     serial          = "ANY",
-    decay_factor		= "numeric"
+    decay_factor		= "numeric",
+
+    ### do we need to rerun the reclusterer
+    newdata         = "logical"
   ),
 
   methods = list(
@@ -214,6 +213,8 @@ dstream <- setRefClass(
       epsilon   <<- epsilon
       Cm2       <<- Cm2
       N         <<- N
+
+      newdata  <<- TRUE
 
       if (is.null(k))
         k <<- 0L
@@ -264,6 +265,7 @@ dstream$methods(
     uncache = function() {
       micro <<- new(DStream, serial)
       serial <<- NULL
+      newdata <<- TRUE
     },
 
 
@@ -271,6 +273,7 @@ dstream$methods(
       'Cluster new data.' ### online help
 
       micro$update(as.matrix(newdata), debug)
+      newdata <<- TRUE
     },
 
     ### This is for plotting images.
@@ -542,35 +545,37 @@ get_attraction <-
       grid_type = grid_type,
       dist = dist)
 
+
+# helper to memorize macro clusterings
+.dstream_update_macro <- function(x) {
+  if (!x$RObj$newdata) return()
+
+  cluster_list <- x$RObj$get_macro_clustering()
+  x$macro$RObj$centers <- cluster_list$centers
+  x$macro$RObj$weights <- cluster_list$weights
+  x$macro$RObj$microToMacro <- cluster_list$microToMacro
+  x$RObj$newdata <- FALSE
+}
+
+
 #' @export
 get_macroclusters.DSC_DStream <- function(x, ...) {
-  if (x$macro$newdata) {
-    x$macro$macro <- x$RObj$get_macro_clustering(...)
-    x$macro$newdata <- FALSE
-  }
-
-  x$macro$macro$centers
+  .dstream_update_macro(x)
+  get_centers(x$macro)
 }
 
 #' @export
 get_macroweights.DSC_DStream <- function(x, ...) {
-  if (x$macro$newdata) {
-    x$macro$macro <- x$RObj$get_macro_clustering(...)
-    x$macro$newdata <- FALSE
-  }
-
-  x$macro$macro$weights
+  .dstream_update_macro(x)
+  get_weights(x$macro)
 }
 
 #' @export
 microToMacro.DSC_DStream <- function(x, micro = NULL, ...) {
   .nodots(...)
-  if (x$macro$newdata) {
-    x$macro$macro <- x$RObj$get_macro_clustering()
-    x$macro$newdata <- FALSE
-  }
+  .dstream_update_macro(x)
+  assignment <- x$macro$RObj$microToMacro
 
-  assignment <- x$macro$macro$microToMacro
   if (!is.null(micro))
     assignment <- assignment[micro]
   assignment

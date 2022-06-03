@@ -15,7 +15,16 @@ DSC_TwoStage(micro, macro)
 }
 \value{
 An object of class \code{DSC_TwoStage} (subclass of \link{DSC},
-\link{DSC_Macro}).
+\link{DSC_Macro}) which is a named list with elements:
+\itemize{
+\item \code{description}: a description of the clustering algorithms.
+\item \code{micro}: The \link{DSD} used for creating micro clusters in the online component.
+\item \code{macro}: The \link{DSD} for offline reclustering.
+\item \code{state}: an environment storing state information needed for reclustering.
+}
+
+with the two clusterers. The names are
+``
 }
 \description{
 Combines an \strong{online clustering component} (\link{DSC_Micro})
@@ -23,7 +32,7 @@ and an \strong{offline reclustering component} (\link{DSC_Macro})
 into a single process.
 }
 \details{
-\code{update()} runs the micro-clustering stage and only when macro cluster
+\code{update()} runs the online micro-clustering stage and only when macro cluster
 centers/weights are requested using \code{\link[=get_centers]{get_centers()}} or \code{\link[=get_weights]{get_weights()}}, then the offline stage
 reclustering is automatically performed.
 
@@ -42,8 +51,11 @@ win_km
 
 update(win_km, stream, 200)
 win_km
-plot(win_km, stream, type="both")
-evaluate(win_km, stream, assign="macro")
+win_km$micro
+win_km$macro
+
+plot(win_km, stream, type = "both")
+evaluate(win_km, stream, assign = "macro")
 }
 \seealso{
 Other DSC_TwoStage: 

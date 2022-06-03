@@ -174,7 +174,6 @@ plot(iris[,-5], col = cl, pch = cl)
 
 # macro-clusters
 plot(iris[,-5], col = microToMacro(dbstream, cl))
-
 }
 \references{
 Michael Hahsler and Matthew Bolanos. Clustering data streams

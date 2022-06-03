@@ -53,33 +53,44 @@
 #' @export
 DSC_Macro <- abstract_class_generator("DSC")
 
+#' @export
+get_centers.DSC_Macro <-
+  function(x, type = c("auto", "micro", "macro"), ...) {
+    type <- match.arg(type)
+    if (type == "auto")
+      type <- "macro"
+
+    if (type == "macro")
+      return(get_macroclusters(x, ...))
+    else
+      return(get_microclusters(x, ...))
+  }
 
 #' @export
-get_centers.DSC_Macro <- function(x, type=c("auto", "micro", "macro"), ...) {
+get_weights.DSC_Macro <-
+  function(x,
+    type = c("auto", "micro", "macro"),
+    scale = NULL,
+    ...) {
     type <- match.arg(type)
-    if(type=="auto") type <- "macro"
+    if (type == "auto")
+      type <- "macro"
 
-    if(type=="macro") return(get_macroclusters(x, ...))
-    else return(get_microclusters(x, ...))
-}
+    if (type == "macro")
+      w <- get_macroweights(x, ...)
+    else
+      w <- get_microweights(x, ...)
 
-#' @export
-get_weights.DSC_Macro <- function(x, type=c("auto", "micro", "macro"),
-	scale=NULL, ...) {
-    type <- match.arg(type)
-    if(type=="auto") type <- "macro"
-
-    if(type=="macro") w <- get_macroweights(x, ...)
-    else w <- get_microweights(x, ...)
-
-    if(!is.null(scale)) {
-	if(length(unique(w)) ==1) w <- rep(mean(scale), length(w))
-	else w <- map(w, range=scale, from.range=c(0,
-			    max(w, na.rm=TRUE)))
+    if (!is.null(scale)) {
+      if (length(unique(w)) == 1L)
+        w <- rep(mean(scale), length(w))
+      else
+        w <- map(w, range = scale, from.range = c(0,
+          max(w, na.rm = TRUE)))
     }
 
     w
-}
+  }
 
 #' @rdname DSC_Macro
 #' @param x a `DSC_Macro` object that also contains information about
@@ -89,9 +100,12 @@ get_weights.DSC_Macro <- function(x, type=c("auto", "micro", "macro"),
 #' @return A vector of the same length as `micro` with the macro-cluster
 #' ids.
 #' @export
-microToMacro <- function(x, micro=NULL) UseMethod("microToMacro")
+microToMacro <- function(x, micro = NULL)
+  UseMethod("microToMacro")
 
-microToMacro.default <- function(x, micro=NULL) {
-  stop(gettextf("microToMacro not implemented for class '%s'.",
-    paste(class(x), collapse=", ")))
+microToMacro.default <- function(x, micro = NULL) {
+  stop(gettextf(
+    "microToMacro not implemented for class '%s'.",
+    paste(class(x), collapse = ", ")
+  ))
 }

@@ -102,7 +102,6 @@ plot.DSC <- function(x,
     ### both
     centers_mi <- get_centers(x, type = "micro")
     centers_ma <- get_centers(x, type = "macro")
-    centers_out <- data.frame()
 
     k_mi <- nrow(centers_mi)
     k_ma <- nrow(centers_ma)
