@@ -38,7 +38,7 @@
 #'
 #' * [update()] Add new data points from a stream to a clustering.
 #' * [plot()] function is also provides for `DSC`.
-#' * [get_assignment()] Predict the cluster assignment for new data points.
+#' * [predict()] Predict the cluster assignment for new data points.
 #'
 #' `get_centers()` and `get_weights()` are typically overwritten by
 #' subclasses of `DSC`.
@@ -47,6 +47,7 @@
 #' reading operations will fail. Use [saveDSC()] and [readDSC()]
 #' which will serialize the objects first appropriately.
 #'
+#' @family DST
 #' @family DSC
 #'
 #' @param x,object a DSC object.
@@ -63,9 +64,9 @@
 #' DSC()
 #'
 #' set.seed(1000)
-#' stream <- DSD_Gaussians(k = 3, d = 2)
-#' dstream <- DSC_DStream(gridsize = .1)
-#' update(dstream, stream, 1000)
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
+#' dstream <- DSC_DStream(gridsize = .1, gaptime = 100)
+#' update(dstream, stream, 500)
 #' dstream
 #'
 #' # get micro-cluster centers
@@ -84,6 +85,12 @@
 #' # plot the clustering result
 #' plot(dstream, stream)
 #' plot(dstream, stream, type = "both")
+#'
+#' # predict macro clusters for new points (see predict())
+#' points <- get_points(stream, n = 5)
+#' points
+#'
+#' predict(dstream, points, type = "macro")
 #' @export
 DSC <- abstract_class_generator("DSC")
 
@@ -93,7 +100,7 @@ DSC <- abstract_class_generator("DSC")
 #' @section Functions
 #' @export
 update.DSC <- function(object, dsd, n = 1, ...) {
-  stop("No implementaiton for update found!")
+  stop("No implementation for update found for class", paste0(class(object), collapse = ", "))
 }
 
 #' @describeIn DSC Gets the cluster centers (micro- or macro-clusters) from a DSC object.
@@ -101,17 +108,12 @@ update.DSC <- function(object, dsd, n = 1, ...) {
 get_centers <- function(x, type = c("auto", "micro", "macro"), ...)
   UseMethod("get_centers")
 
-get_centers.default <- function(x, type = c("auto", "micro", "macro"), ...) {
-  stop(gettextf("get_centers not implemented for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
 #' @describeIn DSC Get the weights of the clusters in the DSC (returns 1s if not implemented by the clusterer)
 #' @export get_weights
 get_weights <- function(x, type=c("auto", "micro", "macro"), scale=NULL, ...)
   UseMethod("get_weights")
 
-get_weights.default <- function(x, type=c("auto", "micro", "macro"),
+get_weights.DSC <- function(x, type=c("auto", "micro", "macro"),
   scale=NULL, ...) {
   .nodots(...)
   m <- rep(1, nclusters(x, type=type))
@@ -169,20 +171,15 @@ get_macroweights.DSC <- function(x, ...) {
 }
 
 
-#' @describeIn DSC Returns the number of micro-clusters from the DSC object.
-#' @export
-nclusters <- function(x, type=c("auto", "micro", "macro"), ...)
-  UseMethod("nclusters")
-
 ### make a deep copy of the
 #' @describeIn DSC Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
 #' @export
 get_copy <- function(x) UseMethod("get_copy")
 
-get_copy.default <- function(x, ...) {
-  stop(gettextf("get_copy not implemented for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
+#' @describeIn DSC Returns the number of micro-clusters from the DSC object.
+#' @export
+nclusters <- function(x, type=c("auto", "micro", "macro"), ...)
+  UseMethod("nclusters")
 
 #' @export
 nclusters.DSC <- function(x, type=c("auto", "micro", "macro"), ...) {

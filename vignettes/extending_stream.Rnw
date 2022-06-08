@@ -184,10 +184,7 @@ The implemented \code{get_points()} needs to dispatch for the class
 and create as the output a data frame  containing the new data points as
 rows. Also, if the ground truth (true cluster assignment as an integer vector;
 noise is represented by \code{NA}) is available, then this can be attached to
-the data frame as an attribute called \code{"cluster"}. If the new DSD
-implementation is capable of generating outliers, all outliers in the output
-data frame should be marked in a logical vector added as an attribute called
-\code{"outlier"}.
+the data frame as an attribute called \code{"cluster"}.
 
 For a very simple example, we show here the implementation of
 \code{DSD_UniformNoise} available in the package's source code
@@ -240,30 +237,6 @@ The resulting plot is shown in Figure~\ref{figure:dsd_example}.
 \caption{Sample points from the newly implemented \code{DSD\_UniformNoise} object.}
 \label{figure:dsd_example}
 \end{figure}
-
-For the outlier data stream generator, we can take \code{DSD_Gaussians}. If
-we generate one cluster and one outlier for the horizon of 10 data points
-<<>>=
-stream <- DSD_Gaussians(k = 1, d = 2, outliers = 1, space_limit = c(0,0.5),
-                        outlier_options = list(outlier_horizon = 5))
-@
-we can obtain the first 10 data points, simultaneously looking for the cluster
-and outlier information. The data points obtained from the data stream are
-<<>>=
-points <- get_points(stream, n = 10, cluster = TRUE, outlier = TRUE)
-points
-@
-we can extract cluster information as
-<<>>=
-attr(points, "cluster")
-@
-and outlier marks as
-<<>>=
-attr(points, "outlier")
-@
-
-Several more complicated examples are available in the package's source code
-directory in files starting with \code{DSD_}.
 
 \subsection{Adding a new data stream tasks (DST)}
 DST refers to any data mining task that can be applied to data streams.  The design
@@ -337,7 +310,7 @@ contain the following methods:
 \item \code{cluster(newdata, ...)}, where \code{newdata} is a data frame
 with new data points.
 \item \code{get_assignment(dsc, points, ...)}, where the clusterer \code{dsc}
-returns cluster assignments, outlier marks, and outlier identifiers for the
+returns cluster assignments for the
 input \code{points} data frame.
 \item For micro-clusters: \code{get_microclusters(...)} and
  \code{get_microweights(...)}
@@ -374,55 +347,6 @@ the methods in RObj via the \proglang{R} interface in class \code{DSC_R}.
 \caption{Interaction between the DSD and DSC classes.}
 \label{figure:interaction}
 \end{figure}
-
-\subsubsection{Single-pass clusterers and outlier detectors}
-
-Single-pass clusterers are processing input each data point separately. Processing
-is done in two steps. In the first step clusterer makes the classification and assessment.
-This classification is taken as the output result. In the second step, the clusterer
-makes necessary model updates using the input data point. Single-pass clusterers need to
-use the abstract class \code{DSC_SinglePass} anywhere between the abstract class \code{DSC}
-and the final clusterer class. For example:
-<<eval=FALSE,error=TRUE>>=
-DSC_MyClusterer <- function(x) {
-  structure(
-    list(
-      description = "My new clusterer",
-      RObj = x
-    ), class = c("DSC_MyClusterer", "DSC_SinglePass", "DSC_Outlier",
-                 "DSC_Micro", "DSC_R", "DSC")
-  )
-}
-@
-Figure~\ref{figure:interaction_singlepass} shows the interaction in case of single-pass
-clusterers. Obviously, since the model update is done at the end of processing for each
-data point, there is no need to perform \code{update()} before \code{get_assignment()}.
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{interaction_singlepass}
-\caption{Interaction between the DSD and DSC classes for single-pass clusterers.}
-\label{figure:interaction_singlepass}
-\end{figure}
-
-Outlier detectors are the clusterers that inherit the abstract class \code{DSC_Outlier}, placed
-anywhere between the abstract class \code{DSC} and the concrete final class, as seen in the
-previous code example. Besides all the method enumerated previously, outlier detectors
-must return additional structures from their \code{get_assignment()} method. For example:
-<<eval=FALSE>>=
-stream <- DSD_Gaussians(k = 1, d = 2, outliers = 1,
-                        space_limit = c(0, 1), variance_limit = .01,
-                        outlier_options = list(outlier_horizon = 20))
-points <- get_points(stream, n=20, cluster = TRUE, outlier = TRUE)
-dsc <- DSC_MyClusterer()
-assigns <- get_assignment(dsc, points, type="micro")
-@
-<<echo=FALSE>>=
-assigns <- readRDS("outlier_assignment.RDS")
-@
-
-All outlier must have present their identifiers in the \code{attr(assigns, "outlier_corrid")}.
-Using these identifiers, calling the method \code{recheck_outlier(dsc, outlier_id, ...)} we can
-re-check the outlier validity.
 
 For a comprehensive example of a clustering algorithm implemented in \proglang{R},
 we refer the reader to \code{DSC_DStream} (in file \code{DSC_DStream.R}) in the

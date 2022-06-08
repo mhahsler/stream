@@ -7,17 +7,16 @@
 DSD_Gaussians(
   k = 3,
   d = 2,
+  p,
   mu,
   sigma,
-  p,
-  noise = 0,
-  noise_range,
-  separation_type = c("auto", "Euclidean", "Mahalanobis"),
-  separation = 0.2,
+  variance_limit = c(0.001, 0.002),
+  separation = 6,
   space_limit = c(0.2, 0.8),
-  variance_limit = 0.01,
-  outliers = 0,
-  outlier_options = NULL,
+  noise = 0,
+  noise_limit = c(0, 1),
+  noise_separation = 3,
+  separation_type = c("Euclidean", "Mahalanobis"),
   verbose = FALSE
 )
 }
@@ -26,75 +25,40 @@ DSD_Gaussians(
 
 \item{d}{Determines the number of dimensions.}
 
+\item{p}{A vector of probabilities that determines the likelihood of
+generated a data point from a particular cluster.}
+
 \item{mu}{A matrix of means for each dimension of each cluster.}
 
 \item{sigma}{A list of length \code{k} of covariance matrices.}
 
-\item{p}{A vector of probabilities that determines the likelihood of
-generated a data point from a particular cluster.}
+\item{variance_limit}{Lower and upper limit for the randomly generated variance when
+creating cluster covariance matrices.}
 
-\item{noise}{Noise probability between 0 and 1.  Noise is uniformly
-distributed within noise range (see below).}
-
-\item{noise_range}{A matrix with d rows and 2 columns. The first column
-contains the minimum values and the second column contains the maximum
-values for noise.}
-
-\item{separation_type}{The type of the separation distance calculation. It
-can be either Euclidean norm or Mahalanobis distance.}
-
-\item{separation}{Depends on the \code{separation_type} parameter. It means
-minimum separation distance between clusters (and outliers, if any).}
+\item{separation}{Minimum separation distance between clusters
+(measured in standard deviations according to \code{separation_type}).}
 
 \item{space_limit}{Defines the space bounds. All constructs are generated
 inside these bounds. For clusters this means that their centroids must be
 within these space bounds.}
 
-\item{variance_limit}{Upper limit for the randomly generated variance when
-creating cluster covariance matrices.}
+\item{noise}{Noise probability between 0 and 1.  Noise is uniformly
+distributed within noise range (see below).}
 
-\item{outliers}{Determines the number of outlier data points created.
-Outliers generated are statistically separated
-enough from clusters, so that outlier detectors can find them in the overall
-data stream.}
+\item{noise_limit}{A matrix with d rows and 2 columns. The first column
+contains the minimum values and the second column contains the maximum
+values for noise.}
 
-\item{outlier_options}{A list with the following options:
-\itemize{
-\item \code{predefined_outlier_space_positions} A list of predefined outlier spatial positions.
-\item \code{predefined_outlier_stream_positions} A list of predefined outlier stream positions.
-\item \code{outlier_horizon} The horizon in the generated data stream in which the requested number of
-outliers is added.
-\item \code{outlier_virtual_variance} The variance used to create the virtual covariance matrices for outliers. Such virtual
-statistical distribution helps to define an empty space around outliers that
-separates them from other constructs, both clusters and outliers.
-}}
+\item{noise_separation}{Minimum separation distance between cluster centers and noise
+points (measured in standard deviations according to \code{separation_type}). \code{0} means separation is ignored.}
+
+\item{separation_type}{The type of the separation distance calculation. It
+can be either Euclidean distance or Mahalanobis distance.}
 
 \item{verbose}{Report cluster and outlier generation process.}
 }
 \value{
-Returns a  object (subclass of \code{DSD_R}, \code{DSD})
-which is a list of the defined params. The params are either
-passed in from the function or created internally. They include:
-
-\item{description}{A brief description of the DSD object.}
-
-\item{k}{The number of clusters.}
-
-\item{d}{The number of dimensions.}
-
-\item{mu}{The matrix of means of the dimensions in each cluster.}
-
-\item{sigma}{The covariance matrix.}
-
-\item{p}{The probability vector for the clusters.}
-
-\item{noise}{A flag that determines if or if not noise is generated.}
-
-\item{outs}{Outlier spatial positions.}
-
-\item{outs_pos}{Outlier stream positions.}
-
-\item{outs_vv}{Outlier virtual variance.}
+Returns a  object of class \code{DSD_Gaussian} (subclass of \link{DSD_R}, \link{DSD}).
 }
 \description{
 A data stream generator that produces a data stream with a mixture of static
@@ -114,7 +78,7 @@ Euclidean or Mahalanobis distance, which is controlled by the
 The generation method is similar to the one
 suggested by Jain and Dubes (1988).
 
-Noise points which are uniformly chosen from \code{noise_range} can be added.
+Noise points which are uniformly chosen from \code{noise_limit} can be added.
 
 Outlier points can be added. The outlier spatial positions
 \code{predefined_outlier_space_positions} and the outlier stream positions
@@ -129,57 +93,44 @@ find them in data streams. For more details, read the "Introduction to
 }
 \examples{
 # Example 1: create data stream with three clusters in 3-dimensional data space
+#            with 5 times sqrt(variance_limit) separation.
+set.seed(1)
 stream1 <- DSD_Gaussians(k = 3, d = 3)
 stream1
 
 get_points(stream1, n = 5)
-plot(stream1)
+plot(stream1, xlim = c(0, 1), ylim = c(0, 1))
+
 
 # Example 2: create data stream with specified cluster positions,
-# 20\% noise in a given bounding box and
+# 5\% noise in a given bounding box and
 # with different densities (1 to 9 between the two clusters)
 stream2 <- DSD_Gaussians(k = 2, d = 2,
     mu = rbind(c(-.5, -.5), c(.5, .5)),
-    noise = 0.2,
-    noise_range = rbind(c(-1, 1),c(-1, 1)),
-    p = c(.1, .9))
+    p = c(.1, .9),
+    variance_limit = c(0.02, 0.04),
+    noise = 0.05,
+    noise_limit = rbind(c(-1, 1), c(-1, 1)))
+
 get_points(stream2, n = 5)
-plot(stream2)
+plot(stream2, xlim = c(-1, 1), ylim = c(-1, 1))
 
-# Example 3: create 2 clusters and 2 outliers. Clusters and outliers
-# are separated by Euclidean distance of 0.5 or more.
-stream3 <- DSD_Gaussians(k = 2, d = 2,
-    separation_type = "Euclidean",
-    separation = 0.5,
-    space_limit = c(0, 1),
-    outliers = 2)
+
+# Example 3: create 4 clusters and noise separated by a Mahalanobis
+# distance. Distance to noise is increased to 6 standard deviations to make them
+# easier detectable outliers.
+stream3 <- DSD_Gaussians(k = 4, d = 2,
+  separation_type = "Mahalanobis",
+  space_limit = c(5, 20),
+  variance_limit = c(1, 2),
+  noise = 0.05,
+  noise_limit = c(0, 25),
+  noise_separation = 6
+  )
 plot(stream3)
-
-# Example 4: create 2 clusters and 2 outliers separated by a Mahalanobis
-# distance of 6 or more.
-stream4 <- DSD_Gaussians(k = 2, d = 2,
-  separation_type = "Mahalanobis",
-  separation = 6,
-  space_limit = c(0, 25),
-  variance_limit = 2,
-  outliers = 2)
-plot(stream4)
-
-# Example 5: spread outliers over 20000 data instances
-stream5 <- DSD_Gaussians(k = 2, d = 2,
-  separation_type = "Mahalanobis",
-  separation = 6,
-  space_limit = c(0, 45),
-  variance_limit = 2,
-  outliers = 20,
-  outlier_options = list(
-    outlier_horizon = 20000,
-    outlier_virtual_variance = 0.3)
-   )
-plot(stream5, n = 20000)
 }
 \references{
-Jain and Dubes(1988) Algorithms for clustering data,
+Jain and Dubes (1988) Algorithms for clustering data,
 Prentice-Hall, Inc., Upper Saddle River, NJ, USA.
 }
 \seealso{
@@ -206,6 +157,6 @@ Other DSD:
 \code{\link{write_stream}()}
 }
 \author{
-Michael Hahsler, Dalibor Krleža
+Michael Hahsler
 }
 \concept{DSD}

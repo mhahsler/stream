@@ -18,7 +18,16 @@ DSClassify()
 }
 \seealso{
 \link{DST}
+
+Other DST: 
+\code{\link{DSAggregate}()},
+\code{\link{DSC}()},
+\code{\link{DSOutlier}()},
+\code{\link{DST}()},
+\code{\link{predict}()},
+\code{\link{update}()}
 }
 \author{
 Michael Hahsler
 }
+\concept{DST}

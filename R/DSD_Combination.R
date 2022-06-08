@@ -77,7 +77,7 @@ get_points.DSD_Combination <- function(x,
       seq_along(x$streams),
       size = n,
       replace = TRUE,
-      prob = prob
+      prob = x$prob
     )
 
   points <- NULL
@@ -86,7 +86,7 @@ get_points.DSD_Combination <- function(x,
 
   for (str_id in names(tbl)) {
     pts <-
-      get_points(streams[[as.integer(str_id)]], n = tbl[str_id], info = info)
+      get_points(x$streams[[as.integer(str_id)]], n = tbl[str_id], info = info)
     pts[[".stream"]] <- as.integer(str_id)
 
     if (is.null(points)) {

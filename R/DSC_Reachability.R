@@ -34,7 +34,10 @@
 #'
 #' Reachability uses internally \code{DSC_Hierarchical} with single link.
 #'
-#' Note that this clustering cannot be updated iteratively and every time it is
+#' [update()] and [`recluster()`] invisibly return the assignment of the data points
+#' to clusters.
+#'
+#' **Note** that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
 #' @family DSC_Macro
@@ -44,20 +47,19 @@
 #' ignored for reclustering.
 #' @param description optional character string to describe the clustering
 #' method.
-#' @return An object of class \code{DSC_Reachability}. The object contains the
+#' @return An object of class `DSC_Reachability`. The object contains the
 #' following items:
 #'
 #' \item{description}{The name of the algorithm in the DSC object.}
 #' \item{RObj}{The underlying R object.}
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
-#' @references Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
+#' @references
+#' Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
 #' (1996). A density-based algorithm for discovering clusters in large spatial
 #' databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
-#' \emph{Proceedings of the Second International Conference on Knowledge
-#' Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
+#' _Proceedings of the Second International Conference on Knowledge
+#' Discovery and Data Mining (KDD-96)._ AAAI Press. pp. 226-231.
 #' @examples
-#'
 #' stream <- DSD_mlbenchGenerator("cassini")
 #'
 #' # Recluster micro-clusters from DSC_Sample with reachability
@@ -76,17 +78,24 @@
 #' update(reach, stream, 500)
 #' reach
 #' plot(reach, stream)
-#'
 #' @export
-DSC_Reachability <- function(epsilon, min_weight=NULL, description=NULL) {
+DSC_Reachability <-
+  function(epsilon,
+    min_weight = NULL,
+    description = NULL) {
+    hierarchical <- hierarchical$new(h = epsilon,
+      method = "single",
+      min_weight = min_weight)
 
-  hierarchical <- hierarchical$new(
-    h=epsilon, method="single", min_weight=min_weight)
+    if (is.null(description))
+      description <- "Reachability"
 
-  if(is.null(description)) description <- "Reachability"
-
-  l <- list(description = description, RObj = hierarchical)
-  class(l) <- c("DSC_Reachability", "DSC_Hierarchical", "DSC_Macro", "DSC_R", "DSC")
-  l
-}
-
+    l <- list(description = description, RObj = hierarchical)
+    class(l) <-
+      c("DSC_Reachability",
+        "DSC_Hierarchical",
+        "DSC_Macro",
+        "DSC_R",
+        "DSC")
+    l
+  }

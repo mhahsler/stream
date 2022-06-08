@@ -116,12 +116,6 @@ get_points <-
   function(x, ...)
     UseMethod("get_points")
 
-get_points.default <- function(x, ...)
-  stop(gettextf(
-    "get_points not implemented for class '%s'.",
-    paste(class(x), collapse = ", ")
-  ))
-
 #' @rdname get_points
 #' @method get_points DSD
 #' @export

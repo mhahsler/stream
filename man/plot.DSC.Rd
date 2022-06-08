@@ -88,6 +88,7 @@ Other DSC:
 \code{\link{animate_cluster}()},
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
+\code{\link{predict}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}

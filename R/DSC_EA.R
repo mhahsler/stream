@@ -143,6 +143,8 @@ EA_R$methods(
 
     ## recluster based on number of generations or time
     .self$C$recluster(.self$generations)
+
+    NULL
   },
 
   get_microclusters = function(...) {

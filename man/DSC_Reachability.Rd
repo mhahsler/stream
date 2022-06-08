@@ -36,11 +36,13 @@ micro-clusters are put in the same cluster.
 
 Reachability uses internally \code{DSC_Hierarchical} with single link.
 
-Note that this clustering cannot be updated iteratively and every time it is
+\code{\link[=update]{update()}} and \code{\link[=recluster]{recluster()}} invisibly return the assignment of the data points
+to clusters.
+
+\strong{Note} that this clustering cannot be updated iteratively and every time it is
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
-
 stream <- DSD_mlbenchGenerator("cassini")
 
 # Recluster micro-clusters from DSC_Sample with reachability
@@ -59,7 +61,6 @@ reach <- DSC_Reachability(epsilon=0.2)
 update(reach, stream, 500)
 reach
 plot(reach, stream)
-
 }
 \references{
 Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
@@ -69,8 +70,6 @@ databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
 Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Macro}}
-
 Other DSC_Macro: 
 \code{\link{DSC_DBSCAN}()},
 \code{\link{DSC_EA}()},

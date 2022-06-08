@@ -66,39 +66,35 @@ update.DSC_R <- function(object,
   if (is.data.frame(dsd) || is.matrix(dsd)) {
     if (verbose)
       cat("Clustering all data at once for matrix/data.frame.")
-    object$RObj$cluster(dsd, ...)
-    return(invisible(object))
+    res <- object$RObj$cluster(dsd, ...)
+    return(res)
   }
 
   n <- as.integer(n)
   block <- as.integer(block)
-  if (n > 0) {
 
-    ### for clusterers which also create macro-clusterings
-    if (is.environment(object$state))
-      object$state$newdata <- TRUE
+  if (n <= 1L)
+    return(integer(0))
 
-    ### TODO: Check data
-    if (verbose)
-      total <- 0L
-    for (bl in .make_block(n, block)) {
-      p <- get_points(dsd, bl, info = FALSE)
-      object$RObj$cluster(p, ...)
-      if (verbose) {
-        total <- total + bl
-        cat("Processed",
-          total,
-          "/",
-          n,
-          "points -",
-          nclusters(object),
-          "clusters\n")
-      }
+  ### TODO: Check data
+  if (verbose)
+    total <- 0L
+  for (bl in .make_block(n, block)) {
+    p <- get_points(dsd, bl, info = FALSE)
+    res <- object$RObj$cluster(p, ...)
+    if (verbose) {
+      total <- total + bl
+      cat("Processed",
+        total,
+        "/",
+        n,
+        "points -",
+        nclusters(object),
+        "clusters\n")
     }
   }
 
-  # so cl <- cluster(cl, ...) also works
-  invisible(object)
+  invisible(res)
 }
 
 ### accessors

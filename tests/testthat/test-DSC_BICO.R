@@ -10,7 +10,12 @@ stream <- DSD_Gaussians(k = 3, noise = 0.05)
 context("DSC_BICO")
 
 # create clusterer with r = 0.05
-BICO <- DSC_BICO(k = 3, p = 10, space = 100, iterations = 10)
+BICO <- DSC_BICO(
+  k = 3,
+  p = 10,
+  space = 100,
+  iterations = 10
+)
 update(BICO, stream, n = 10000)
 
 BICO
@@ -23,4 +28,3 @@ BICO
 #expect_equal(BICO$macro, db$macro)
 #
 #unlink("BICO.Rds")
-

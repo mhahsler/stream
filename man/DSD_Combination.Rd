@@ -26,8 +26,8 @@ stream2 <- DSD_UniformNoise(d = 2,  range = rbind(c(-.5, 1.5), c(-.5, 1.5)))
 
 combinedStream <- DSD_Combination(stream1, stream2, prob = c(.9, .1))
 
-get_points(combinedStream, n = 5)
-plot(combinedStream, n = 100)
+get_points(combinedStream, n = 20)
+plot(combinedStream, n = 200)
 }
 \seealso{
 Other DSD: 

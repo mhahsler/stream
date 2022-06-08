@@ -53,21 +53,24 @@
 #' ### plot clustering
 #' plot(kmeans, stream, type = "both", main = "Macro-clusters (Sampling + k-means)")
 #' @export
-recluster <- function(macro, micro, type="auto", ...) UseMethod("recluster")
+recluster <-
+  function(macro, micro, type = "auto", ...)
+    UseMethod("recluster")
 
-recluster.DSC <- function(macro, micro, type="auto", ...) {
-    stop(gettextf("recluster not implemented for class '%s'.",
-		    paste(class(macro), collapse=", ")))
+recluster.DSC <- function(macro, micro, type = "auto", ...) {
+  stop(gettextf(
+    "recluster not implemented for class '%s'.",
+    paste(class(macro), collapse = ", ")
+  ))
 }
 
 ### reclustering is done with a DSC_Macro object!
 
 #' @rdname recluster
 #' @export
-recluster.DSC_Macro <- function(macro, micro, type="auto", ...) {
-    cen <- get_centers(micro, type=type)
-    dsd <- DSD_Memory(cen)
-    weight <- get_weights(micro, scale=NULL, type=type)
-    update(macro, dsd, n=nrow(cen), weight=weight, ...)
+recluster.DSC_Macro <- function(macro, micro, type = "auto", ...) {
+  cen <- get_centers(micro, type = type)
+  dsd <- DSD_Memory(cen)
+  weight <- get_weights(micro, scale = NULL, type = type)
+  update(macro, dsd, n = nrow(cen), weight = weight, ...)
 }
-

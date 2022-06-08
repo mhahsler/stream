@@ -9,8 +9,8 @@
 \alias{get_microweights}
 \alias{get_macroclusters}
 \alias{get_macroweights}
-\alias{nclusters}
 \alias{get_copy}
+\alias{nclusters}
 \title{Data Stream Clustering Base Class}
 \usage{
 DSC(...)
@@ -29,9 +29,9 @@ get_macroclusters(x, ...)
 
 get_macroweights(x, ...)
 
-nclusters(x, type = c("auto", "micro", "macro"), ...)
-
 get_copy(x)
+
+nclusters(x, type = c("auto", "micro", "macro"), ...)
 }
 \arguments{
 \item{...}{further parameter}
@@ -70,7 +70,7 @@ Additional, separately documented methods are:
 \itemize{
 \item \code{\link[=update]{update()}} Add new data points from a stream to a clustering.
 \item \code{\link[=plot]{plot()}} function is also provides for \code{DSC}.
-\item \code{\link[=get_assignment]{get_assignment()}} Predict the cluster assignment for new data points.
+\item \code{\link[=predict]{predict()}} Predict the cluster assignment for new data points.
 }
 
 \code{get_centers()} and \code{get_weights()} are typically overwritten by
@@ -94,9 +94,9 @@ which will serialize the objects first appropriately.
 
 \item \code{get_macroweights}: Get macro-cluster weights if the object is a \link{DSC_Macro} object.
 
-\item \code{nclusters}: Returns the number of micro-clusters from the DSC object.
-
 \item \code{get_copy}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
+
+\item \code{nclusters}: Returns the number of micro-clusters from the DSC object.
 }}
 
 \section{Functions}{
@@ -107,9 +107,9 @@ NA
 DSC()
 
 set.seed(1000)
-stream <- DSD_Gaussians(k = 3, d = 2)
-dstream <- DSC_DStream(gridsize = .1)
-update(dstream, stream, 1000)
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
+dstream <- DSC_DStream(gridsize = .1, gaptime = 100)
+update(dstream, stream, 500)
 dstream
 
 # get micro-cluster centers
@@ -128,8 +128,22 @@ get_centers(dstream, type = "macro")
 # plot the clustering result
 plot(dstream, stream)
 plot(dstream, stream, type = "both")
+
+# predict macro clusters for new points (see predict())
+points <- get_points(stream, n = 5)
+points
+
+predict(dstream, points, type = "macro")
 }
 \seealso{
+Other DST: 
+\code{\link{DSAggregate}()},
+\code{\link{DSClassify}()},
+\code{\link{DSOutlier}()},
+\code{\link{DST}()},
+\code{\link{predict}()},
+\code{\link{update}()}
+
 Other DSC: 
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
@@ -140,6 +154,7 @@ Other DSC:
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
+\code{\link{predict}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
@@ -148,3 +163,4 @@ Other DSC:
 Michael Hahsler
 }
 \concept{DSC}
+\concept{DST}

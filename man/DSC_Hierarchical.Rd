@@ -18,17 +18,16 @@ DSC_Hierarchical(
 \item{h}{Height where to cut the dendrogram.}
 
 \item{method}{the agglomeration method to be used. This should be (an
-unambiguous abbreviation of) one of "ward", "single", "complete", "average",
-"mcquitty", "median" or "centroid".}
+unambiguous abbreviation of) one of \code{"ward"}, \code{"single"}, \code{"complete"}, "\verb{average"},
+\code{"mcquitty"}, \code{"median"} or \code{"centroid"}.}
 
 \item{min_weight}{micro-clusters with a weight less than this will be
 ignored for reclustering.}
 
-\item{description}{optional character string to describe the clustering
-method.}
+\item{description}{optional character string to describe the clustering method.}
 }
 \value{
-A list of class \code{DSC}, \code{DSC_R}, \code{DSC_Macro}, and
+A list of class \link{DSC}, \link{DSC_R}, \link{DSC_Macro}, and
 \code{DSC_Hierarchical}. The list contains the following items:
 
 \item{description}{The name of the algorithm in the DSC object.}
@@ -40,14 +39,16 @@ Implementation of hierarchical clustering to recluster a set of
 micro-clusters.
 }
 \details{
-Please refer to \code{hclust} for more details on the behavior of the
+Please refer to \code{\link[=hclust]{hclust()}} for more details on the behavior of the
 algorithm.
 
-Note that this clustering cannot be updated iteratively and every time it is
+\code{\link[=update]{update()}} and \code{\link[=recluster]{recluster()}} invisibly return the assignment of the data points
+to clusters.
+
+\strong{Note} that this clustering cannot be updated iteratively and every time it is
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
-
 # Cassini dataset
 stream <- DSD_mlbenchGenerator("cassini")
 
@@ -70,13 +71,12 @@ plot(hc, stream, type = "both")
 # For comparison we use hierarchical clustering directly on the data
 # Note: hierarchical clustering is not a data stream clustering algorithm!
 hc <- DSC_Hierarchical(k = 3, method = "single")
-update(hc, stream, 500)
+assignment <- update(hc, stream, 500)
 plot(hc, stream)
 
+head(assignment)
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Macro}}
-
 Other DSC_Macro: 
 \code{\link{DSC_DBSCAN}()},
 \code{\link{DSC_EA}()},

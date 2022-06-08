@@ -5,16 +5,9 @@
 \alias{DSD_ScaleStream}
 \title{Scale a Data Stream}
 \usage{
-DSF_Scale(dsd, dim = NULL, center = TRUE, scale = TRUE, n = 100, reset = FALSE)
+DSF_Scale(dsd, dim = NULL, center = TRUE, scale = TRUE, n = 100)
 
-DSD_ScaleStream(
-  dsd,
-  dim = NULL,
-  center = TRUE,
-  scale = TRUE,
-  n = 100,
-  reset = FALSE
-)
+DSD_ScaleStream(dsd, dim = NULL, center = TRUE, scale = TRUE, n = 100)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD} that will be scaled.}
@@ -25,9 +18,6 @@ DSD_ScaleStream(
 number of columns (selected with dim) used for centering/scaling (see function \link{scale}).}
 
 \item{n}{The number of points used by \code{scale_stream()} to creating the centering/scaling}
-
-\item{reset}{Try to reset the stream to its beginning after taking \code{n}
-points for calculating scaling factors.}
 }
 \value{
 An object of class \code{DSF_Scale} (subclass of \link{DSF} and \link{DSD}).

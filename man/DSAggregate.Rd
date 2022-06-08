@@ -39,6 +39,14 @@ and \code{\link[=get_weights]{get_weights()}} (if available).
 DSAggregate()
 }
 \seealso{
+Other DST: 
+\code{\link{DSClassify}()},
+\code{\link{DSC}()},
+\code{\link{DSOutlier}()},
+\code{\link{DST}()},
+\code{\link{predict}()},
+\code{\link{update}()}
+
 Other DSAggregate: 
 \code{\link{DSAggregate_Sample}()},
 \code{\link{DSAggregate_Window}()}
@@ -47,3 +55,4 @@ Other DSAggregate:
 Michael Hahsler
 }
 \concept{DSAggregate}
+\concept{DST}

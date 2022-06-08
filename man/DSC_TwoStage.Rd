@@ -39,13 +39,13 @@ reclustering is automatically performed.
 Available clustering methods can be found in the See Also section below.
 }
 \examples{
-stream <- DSD_Gaussians(k=3)
+stream <- DSD_Gaussians(k = 3)
 
 # Create a clustering process that uses a window for the online stage and
 # k-means for the offline stage (reclustering)
 win_km <- DSC_TwoStage(
-  micro=DSC_Window(horizon=100),
-  macro=DSC_Kmeans(k=3)
+  micro = DSC_Window(horizon = 100),
+  macro = DSC_Kmeans(k = 3)
   )
 win_km
 
@@ -73,6 +73,7 @@ Other DSC:
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
+\code{\link{predict}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}

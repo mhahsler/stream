@@ -15,7 +15,7 @@ context("DSD_Memory")
 stream <- DSD_Memory(df)
 reset_stream(stream)
 points <- get_points(stream, n = 10, info = TRUE)
-expect_equal(points, df[1:10, ])
+expect_equal(points, df[1:10,])
 
 ### returned all 100 points
 reset_stream(stream)
@@ -49,7 +49,7 @@ stream <- DSD_ReadCSV("test.stream", header = TRUE)
 
 reset_stream(stream)
 points <- get_points(stream, n = 10, info = TRUE)
-expect_equal(points, df[1:10, ])
+expect_equal(points, df[1:10,])
 
 reset_stream(stream)
 points <- get_points(stream, n = 100)

@@ -28,6 +28,7 @@
 #' [DSD] stream. The result of the operator can be obtained via [get_points()]
 #' and [get_weights()] (if available).
 #'
+#' @family DST
 #' @family DSAggregate
 #'
 #' @param x,object a concrete implementation of `DSAggregate`.

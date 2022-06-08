@@ -18,23 +18,25 @@
 
 #' Conceptual Base Class for All Data Stream Mining Tasks
 #'
-#' Conceptual base class for all data stream mining tasks. Current tasks are data
-#' stream clustering [DSC], outlier detection [DSOutlier], classification on data streams
-#' [DSClassify] and frequent pattern mining on data streams [DSFP].
+#' Conceptual base class for all data stream mining tasks.
 #'
-#' The basic interface for all `DST` classes can be found in the Methods Section.
-#' Types of `DST` are
+#' Base class for data stream mining tasks. Types of `DST` are
 #'   - [DSC] for data stream clustering.
 #'   - [DSAggregate] to aggregate data streams (e.g., with a sliding window).
 #'   - [DSFP] frequent pattern mining for data stream clustering.
 #'   - [DSClassify] classification for data streams.
 #'   - [DSOutlier] outlier detection for data streams.
 #'
-#' @aliases update
+#' The common interface for all [DST] classes consists of
 #'
-#' @param x,object an object of a concrete implementation of a DST.
-#' @param dsd a data stream.
-#' @param n the number of data points used for the update.
+#'   - [update()]
+#'   - [predict()]
+#'
+#' and the methods in the Methods Section below.
+#'
+#' @family DST
+#'
+#' @param x an object of a concrete implementation of a DST.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
 #' @examples
@@ -52,12 +54,6 @@ DST <- function(...) {
   invisible(NULL)
 }
 
-#' @describeIn DST update the data stream task with new data points coming from a data stream.
-#' @export
-update.DST <- function(object, dsd, n = 1, ...) {
-  stop("No implementation for update found!")
-}
-
 #' @export
 print.DST <- function(x, ...) {
   cat("Class:", paste(class(x), collapse = ", "), "\n")
@@ -68,10 +64,6 @@ print.DST <- function(x, ...) {
 #' @export
 description <- function(x, ...)
   UseMethod("description")
-
-description.default <- function(x, ...)
-  stop("description() not implemented for this class!")
-
 
 .desc <- function(x) {
   if (is.list(x) &&

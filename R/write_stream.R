@@ -60,20 +60,6 @@ write_stream <- function(dsd,
   ...)
   UseMethod("write_stream")
 
-write_stream.default <- function(dsd,
-  file,
-  n = 100,
-  block = 100000L,
-  info = FALSE,
-  append = FALSE,
-  sep = ",",
-  header = FALSE,
-  row.names = FALSE,
-  close = TRUE,
-  ...) {
-  stop(gettextf("write_stream not implemented for class '%s'.", class(dsd)))
-}
-
 #' @export
 write_stream.DSD <- function(dsd,
   file,

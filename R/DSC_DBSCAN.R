@@ -30,7 +30,9 @@
 #' eps-neighborhood. Then core points are joined into clusters using
 #' reachability (overlapping eps-neighborhoods).
 #'
-#' Note that this clustering cannot be updated iteratively and every time it is
+#' [update()] and [recluster()] invisibly return the assignment of the data points to clusters.
+#'
+#' **Note** that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
 #' @aliases DBSCAN dbscan
@@ -52,23 +54,24 @@
 #' \emph{Proceedings of the Second International Conference on Knowledge
 #' Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 #' @examples
-#'
 #' # 3 clusters with 5% noise
-#' stream <- DSD_Gaussians(k=3, d=2, noise=0.05)
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 #'
 #' # Use DBSCAN to recluster micro clusters (a sample)
-#' sample <- DSC_Sample(k=101)
+#' sample <- DSC_Sample(k = 101)
 #' update(sample, stream, 500)
 #'
 #' dbscan <- DSC_DBSCAN(eps = .05)
 #' recluster(dbscan, sample)
-#' plot(dbscan, stream, type="both")
+#' plot(dbscan, stream, type = "both")
 #'
 #' # For comparison we can cluster some data with DBSCAN directly
 #' # Note: DBSCAN is not suitable for data streams since it passes over the data
 #' # several times.
 #' dbscan <- DSC_DBSCAN(eps = .05)
-#' update(dbscan, stream, 500)
+#' assignment <- update(dbscan, stream, 500)
+#' head(assignment)
+#'
 #' plot(dbscan, stream)
 #' @export
 DSC_DBSCAN <-
@@ -167,6 +170,7 @@ DBSCAN$methods(
           function(i)
             colMeans(data[assignment == i, , drop = FALSE])
       )))
+
       clusterWeights <<- sapply(
         1:k,
         FUN =
@@ -179,6 +183,10 @@ DBSCAN$methods(
       clusterCenters <<- data.frame()
       clusterWeights <<- numeric(0)
     }
+
+    asgn <- DBSCAN$cluster
+    asgn[asgn == 0] <- NA
+    invisible(data.frame(.class = asgn))
   },
 
   get_microclusters = function(...) {

@@ -51,6 +51,7 @@ Other DSC:
 \code{\link{evaluate}()},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
+\code{\link{predict}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
 }

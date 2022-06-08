@@ -135,8 +135,6 @@ save() or saveRDS(). This functionality will be added later!
 \examples{
 stream <- DSD_BarsAndGaussians(noise = .05)
 plot(stream)
-
-# we set Cm=.8 to pick up the lower density clusters
 dstream1 <- DSC_DStream(gridsize = 1, Cm = 1.5)
 update(dstream1, stream, 1000)
 dstream1

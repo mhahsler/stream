@@ -16,17 +16,31 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#' Abstract Class for Data Stream Classifiers
+#' Update a Data Stream Mining Task Model with Points from a Stream
 #'
-#' Abstract class for data stream classifiers. Currently, \pkg{stream} does not
-#' implement classification algorithms.
+#' `update()` for data stream mining tasks [DST].
+#'
+#' @name update
 #'
 #' @family DST
 #'
-#' @param ... Further arguments.
+#' @param object The [DST] object.
+#' @param dsd A [DSD] object with the data stream.
+#' @param n number of points to use for the update.
+#' @param ... Additional arguments are passed on.
+#' @return `NULL` or a data.frame `n` rows containing update information for each data point.
 #' @author Michael Hahsler
-#' @seealso [DST]
 #' @examples
-#' DSClassify()
+#' set.seed(1500)
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = .1)
+#'
+#' dbstream <- DSC_DBSTREAM(r = .1)
+#' info <- update(dbstream, stream, n = 100)
+#' plot(dbstream, stream, type = "both")
+#'
+#' # DBSTREAM returns cluster assignments (see DSC_DBSTREAM).
+#' head(info)
 #' @export
-DSClassify <- abstract_class_generator("DSClassify")
+update.DST <- function(object, dsd, n = 1, ...) {
+  stop("No implementation for update found!")
+}

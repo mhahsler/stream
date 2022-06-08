@@ -43,23 +43,35 @@ The abstract class for all outlier detection clusterers. Cannot be
 instantiated. An implementation is available in package
 \pkg{streamMOA}.
 }
+\details{
+\code{\link[=plot]{plot()}} has an extra logical argument to specify if outliers should be plotted
+as red crosses.
+}
 \section{Functions}{
 \itemize{
-\item \code{clean_outliers}: Clean Outliers from the Outlier Detecting Clusterer.
+\item \code{clean_outliers}: forget detected outliers from the outlier detector.
 
 \item \code{recheck_outlier}: Re-checks the outlier having \code{outlier_correlated_id}.
-If this object is still an outlier, the method
-returns TRUE.
+If this object is still an outlier, the method returns \code{TRUE}.
 
 \item \code{get_outlier_positions}: Returns spatial positions of all current outliers.
 
-\item \code{noutliers}: Returns the current number
-of outliers.
+\item \code{noutliers}: Returns the current number of outliers.
 }}
 
 \examples{
 DSOutlier()
 }
+\seealso{
+Other DST: 
+\code{\link{DSAggregate}()},
+\code{\link{DSClassify}()},
+\code{\link{DSC}()},
+\code{\link{DST}()},
+\code{\link{predict}()},
+\code{\link{update}()}
+}
 \author{
 Dalibor Krleža
 }
+\concept{DST}

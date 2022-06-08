@@ -2,15 +2,11 @@
 % Please edit documentation in R/DST.R
 \name{DST}
 \alias{DST}
-\alias{update}
-\alias{update.DST}
 \alias{description}
 \alias{description.DST}
 \title{Conceptual Base Class for All Data Stream Mining Tasks}
 \usage{
 DST(...)
-
-\method{update}{DST}(object, dsd, n = 1, ...)
 
 description(x, ...)
 
@@ -19,20 +15,17 @@ description(x, ...)
 \arguments{
 \item{...}{Further arguments.}
 
+\item{x, object}{an object of a concrete implementation of a DST.}
+
 \item{dsd}{a data stream.}
 
 \item{n}{the number of data points used for the update.}
-
-\item{x, object}{an object of a concrete implementation of a DST.}
 }
 \description{
-Conceptual base class for all data stream mining tasks. Current tasks are data
-stream clustering \link{DSC}, outlier detection \link{DSOutlier}, classification on data streams
-\link{DSClassify} and frequent pattern mining on data streams \link{DSFP}.
+Conceptual base class for all data stream mining tasks.
 }
 \details{
-The basic interface for all \code{DST} classes can be found in the Methods Section.
-Types of \code{DST} are
+Base class for data stream mining tasks. Types of \code{DST} are
 \itemize{
 \item \link{DSC} for data stream clustering.
 \item \link{DSAggregate} to aggregate data streams (e.g., with a sliding window).
@@ -40,17 +33,33 @@ Types of \code{DST} are
 \item \link{DSClassify} classification for data streams.
 \item \link{DSOutlier} outlier detection for data streams.
 }
+
+The common interface for all \link{DST} classes consists of
+\itemize{
+\item \code{\link[=update]{update()}}
+\item \code{\link[=predict]{predict()}}
+}
+
+and the methods in the Methods Section below.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{update}: update the data stream task with new data points coming from a data stream.
-
 \item \code{description}: Get a description of the task as a character string.
 }}
 
 \examples{
 DST()
 }
+\seealso{
+Other DST: 
+\code{\link{DSAggregate}()},
+\code{\link{DSClassify}()},
+\code{\link{DSC}()},
+\code{\link{DSOutlier}()},
+\code{\link{predict}()},
+\code{\link{update}()}
+}
 \author{
 Michael Hahsler
 }
+\concept{DST}

@@ -23,10 +23,13 @@
 #' Class implements the k-means algorithm for reclustering a set of
 #' micro-clusters.
 #'
+#' [update()] and [`recluster()`] invisibly return the assignment of the data points
+#' to clusters.
+#'
 #' Please refer to function [stats::kmeans()] for more details on
 #' the algorithm.
 #'
-#' Note that this clustering cannot be updated iteratively and every time it is
+#' **Note** that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
 #' @family DSC_Macro
@@ -56,8 +59,12 @@
 #'
 #' # recluster micro-clusters
 #' kmeans <- DSC_Kmeans(k=3)
-#' recluster(kmeans, sample)
+#' assignment <- recluster(kmeans, sample)
 #' plot(kmeans, stream, type = "both")
+#'
+#' # assignment of the micro clusters
+#' assignment
+#'
 #'
 #' # For comparison we use k-means directly to cluster data
 #' # Note: k-means is not a data stream clustering algorithm
@@ -69,7 +76,7 @@ DSC_Kmeans <-
   function(k,
     weighted = TRUE,
     iter.max = 10,
-    nstart = 1,
+    nstart = 10,
     algorithm = c("Hartigan-Wong", "Lloyd", "Forgy",
       "MacQueen"),
     min_weight = NULL,
@@ -195,6 +202,7 @@ kmeans_refClass$methods(
           sum(weights[assignment == i])
     )
 
+    invisible(data.frame(.class = assignment))
   },
 
   get_macroclusters = function(...) {

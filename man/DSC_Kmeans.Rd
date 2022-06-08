@@ -8,7 +8,7 @@ DSC_Kmeans(
   k,
   weighted = TRUE,
   iter.max = 10,
-  nstart = 1,
+  nstart = 10,
   algorithm = c("Hartigan-Wong", "Lloyd", "Forgy", "MacQueen"),
   min_weight = NULL,
   description = NULL
@@ -43,10 +43,13 @@ Class implements the k-means algorithm for reclustering a set of
 micro-clusters.
 }
 \details{
+\code{\link[=update]{update()}} and \code{\link[=recluster]{recluster()}} invisibly return the assignment of the data points
+to clusters.
+
 Please refer to function \code{\link[stats:kmeans]{stats::kmeans()}} for more details on
 the algorithm.
 
-Note that this clustering cannot be updated iteratively and every time it is
+\strong{Note} that this clustering cannot be updated iteratively and every time it is
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
@@ -60,8 +63,12 @@ sample
 
 # recluster micro-clusters
 kmeans <- DSC_Kmeans(k=3)
-recluster(kmeans, sample)
+assignment <- recluster(kmeans, sample)
 plot(kmeans, stream, type = "both")
+
+# assignment of the micro clusters
+assignment
+
 
 # For comparison we use k-means directly to cluster data
 # Note: k-means is not a data stream clustering algorithm

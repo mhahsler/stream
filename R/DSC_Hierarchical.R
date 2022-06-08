@@ -23,10 +23,13 @@
 #' Implementation of hierarchical clustering to recluster a set of
 #' micro-clusters.
 #'
-#' Please refer to \code{hclust} for more details on the behavior of the
+#' Please refer to [hclust()] for more details on the behavior of the
 #' algorithm.
 #'
-#' Note that this clustering cannot be updated iteratively and every time it is
+#' [update()] and [`recluster()`] invisibly return the assignment of the data points
+#' to clusters.
+#'
+#' **Note** that this clustering cannot be updated iteratively and every time it is
 #' used for (re)clustering, the old clustering is deleted.
 #'
 #' @family DSC_Macro
@@ -34,21 +37,18 @@
 #' @param k The number of desired clusters.
 #' @param h Height where to cut the dendrogram.
 #' @param method the agglomeration method to be used. This should be (an
-#' unambiguous abbreviation of) one of "ward", "single", "complete", "average",
-#' "mcquitty", "median" or "centroid".
+#'   unambiguous abbreviation of) one of `"ward"`, `"single"`, `"complete"`, "`average"`,
+#'   `"mcquitty"`, `"median"` or `"centroid"`.
 #' @param min_weight micro-clusters with a weight less than this will be
-#' ignored for reclustering.
-#' @param description optional character string to describe the clustering
-#' method.
-#' @return A list of class \code{DSC}, \code{DSC_R}, \code{DSC_Macro}, and
-#' \code{DSC_Hierarchical}. The list contains the following items:
+#'   ignored for reclustering.
+#' @param description optional character string to describe the clustering method.
+#' @return A list of class [DSC], [DSC_R], [DSC_Macro], and
+#'   `DSC_Hierarchical`. The list contains the following items:
 #'
 #' \item{description}{The name of the algorithm in the DSC object.}
 #' \item{RObj}{The underlying R object.}
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
 #' @examples
-#'
 #' # Cassini dataset
 #' stream <- DSD_mlbenchGenerator("cassini")
 #'
@@ -71,9 +71,10 @@
 #' # For comparison we use hierarchical clustering directly on the data
 #' # Note: hierarchical clustering is not a data stream clustering algorithm!
 #' hc <- DSC_Hierarchical(k = 3, method = "single")
-#' update(hc, stream, 500)
+#' assignment <- update(hc, stream, 500)
 #' plot(hc, stream)
 #'
+#' head(assignment)
 #' @export
 DSC_Hierarchical <- function(k=NULL, h=NULL, method = "complete",
   min_weight=NULL, description=NULL) {
@@ -195,6 +196,8 @@ hierarchical$methods(
       centers <<- centroids$centers
       weights <<- centroids$weights
     }
+
+    invisible(data.frame(.class = assignment))
   },
 
   get_microclusters = function(...) { .nodots(...); data },

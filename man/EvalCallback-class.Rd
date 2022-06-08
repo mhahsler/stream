@@ -17,51 +17,59 @@ The abstract class for all evaluation callbacks. Cannot be instantiated.
 Must be inherited. Evaluation is the process of the clustering quality
 assessment. This assessment can include clustering results, as well as the
 clustering process, e.g., duration, spatial query performance, and similar.
-The \pkg{stream} package has some measurements (see \link{evaluate} for
+The \pkg{stream} package has some measurements (see \code{\link[=evaluate]{evaluate()}} for
 details) already implemented. All other measurements can be externally
-implemented without need to extend the \emph{stream} package, by using
+implemented without need to extend the \pkg{stream} package, by using
 callbacks.
 }
 \section{Fields}{
- \describe{ \item{all_measures}{ A list of all measures this
+
+\describe{
+\item{all_measures}{ A list of all measures this
 object contributes to the evaluation. Union of all callback measures defines
-measures the end-user can use. } \item{internal_measures}{ A list of
+measures the end-user can use. }
+\item{internal_measures}{ A list of
 internal measures. A subset of \code{all_measures}. }
 \item{external_measures}{ A list of external measures. A subset of
-\code{all_measures}. } \item{outlier_measures}{ A list of outlier measures.
-A subset of \code{all_measures}. } }
+\code{all_measures}. }
+\item{outlier_measures}{ A list of outlier measures.
+A subset of \code{all_measures}. }
+}
 }
 
 \examples{
-
-CustomCallback <- function() {
+# 1. define a class constructor to hold the evaluation information
+LWP_Callback <- function() {
   env <- environment()
   all_measures <- c("LowestWeightPercentage")
   internal_measures <- c()
   external_measures <- all_measures
   outlier_measures <- c()
-  this <- list(description = "Custom evaluation callback",
-               env = environment())
-  class(this) <- c("CustomCallback", "EvalCallback")
-  this
+  structure(list(description = "Custom evaluation callback",
+           env = environment()),
+           class = c("LWP_Callback", "EvalCallback"))
 }
-evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
+
+# 2. define the evaluation method for the class and calculate the
+#    custom measure if it is requested in measure.
+evaluate_callback.LWP_Callback <- function(cb_obj, dsc, measure, points,
                                              actual, predict, outliers,
                                              predict_outliers,
                                              predict_outliers_corrid,
                                              centers, noise) {
     r <- list()
     if("LowestWeightPercentage" \%in\% measure)
-        r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
+        r$LowestWeightPercentage = min(get_weights(dsc)) / sum(get_weights(dsc))
     r
 }
+
+# 3. evaluate with callbacks
 stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
 km <- DSC_Kmeans(3)
 update(km, stream, n=500)
 evaluate(km, stream, type="macro", n=500,
                         measure = c("crand","LowestWeightPercentage"),
-                        callbacks = list(cc=CustomCallback()))
-
+                        callbacks = list(cc = LWP_Callback()))
 }
 \author{
 Dalibor Krleža

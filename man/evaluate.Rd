@@ -2,14 +2,17 @@
 % Please edit documentation in R/evaluate.R
 \name{evaluate}
 \alias{evaluate}
+\alias{evaluate.DSC}
 \alias{evaluate_cluster}
 \title{Evaluate Clusterings}
 \usage{
-evaluate(
+evaluate(...)
+
+\method{evaluate}{DSC}(
   dsc,
   dsd,
   measure,
-  callbacks = NULL,
+  callbacks = list(),
   n = 100,
   type = c("auto", "micro", "macro"),
   assign = "micro",
@@ -34,21 +37,23 @@ evaluate_cluster(
 )
 }
 \arguments{
-\item{dsc}{The DSC object that the evaluation measure is being requested
+\item{...}{Unused arguments are ignored.}
+
+\item{dsc}{The \link{DSC} object that the evaluation measure is being requested
 from.}
 
-\item{dsd}{The DSD object that holds the initial training data for the DSC.}
+\item{dsd}{The \link{DSD} object that holds the initial training data for the DSC.}
 
 \item{measure}{Evaluation measure(s) to use. If missing then all available
 measures are returned.}
 
-\item{callbacks}{A list of \code{\link{EvalCallback}} objects, invoked when
+\item{callbacks}{A list of \link{EvalCallback} objects, invoked when
 measurement is calculated.}
 
 \item{n}{The number of data points being requested.}
 
 \item{type}{Use micro- or macro-clusters for evaluation. Auto used the class
-of dsc to decide.}
+of \link{DSC} to decide.}
 
 \item{assign}{Assign points to micro or macro-clusters?}
 
@@ -57,8 +62,6 @@ of dsc to decide.}
 
 \item{noise}{How to handle noise points in the data. Options are to treat as
 a separate class (default) or to exclude them from evaluation.}
-
-\item{...}{Unused arguments are ignored.}
 
 \item{horizon}{Evaluation is done using horizon many previous points (see
 detail section).}
@@ -89,6 +92,8 @@ is \emph{prequential error estimation} (see Gama, Sebastiao and Rodrigues; 2013)
 in the horizon are first used to calculate the evaluation measure and then
 they are used for updating the cluster model.
 }
+
+\strong{Evaluation Measures}
 
 Many evaluation measures are available using
 code from other packages including \code{\link[cluster:silhouette]{cluster::silhouette()}},
@@ -204,13 +209,14 @@ the method described by Wan et al. (2009). Of the \code{n} data points
 calculated on the same data points. The idea is to find out if the
 clustering algorithm was able to adapt to the changing stream.
 
-\code{evaluate_with_callbacks()} and
-\code{evaluate_cluster_with_callbacks()} can be used to add external measure
-calculations, without need to update \emph{stream} package. At the end of
-each evaluation, a set of callbacks is done. Measurements described hereby
-are placed in the \code{\link{DefaultEvalCallback}} class. All other
-callbacks are done through objects inheriting the \code{\link{EvalCallback}}
-class.
+\strong{Custom Evaluation Measures}
+
+The parameter \code{callbacks} can
+be used to add user-defined measure
+calculations. The user can define a measure by creating a sub-class of \code{EvalCallback}
+and adding it to a list of callbacks (see \link{EvalCallback} for details).
+At the end of each evaluation, the set of \code{callbacks} are performed and the results
+are reported.
 }
 \examples{
 set.seed(0)
@@ -222,7 +228,10 @@ plot(dstream, stream)
 
 # Evaluate the micro-clusters in the clustering
 # Note: we use here only n = 100 points for evaluation to speed up execution
-evaluate(dstream, stream, measure=c("numMicro", "numMacro", "purity", "crand", "SSQ"),
+evaluate(dstream, stream, n = 100)
+
+evaluate(dstream, stream,
+  measure=c("numMicro", "numMacro", "purity", "crand", "SSQ"),
   n = 100)
 
 # DStream also provides macro clusters. Evaluate macro clusters with type="macro"
@@ -251,40 +260,9 @@ if (interactive()){
 reset_stream(stream)
 dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 animate_cluster(dstream, stream, horizon = 100, n = 5000,
-  measure=c("crand"), type = "macro", assign = "micro",
+  measure = c("crand"), type = "macro", assign = "micro",
   plot.args = list(type = "both", xlim = c(0,1), ylim = c(0,1)))
 }
-
-# a simple callback example
-# this example requires DSC_MCOD in the streamMOA package
-CustomCallback <- function() {
-  env <- environment()
-  all_measures <- c("LowestWeightPercentage")
-  internal_measures <- c()
-  external_measures <- all_measures
-  outlier_measures <- c()
-  this <- list(description = "Custom evaluation callback",
-               env = environment())
-  class(this) <- c("CustomCallback", "EvalCallback")
-  this
-}
-
-evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
-                                             actual, predict, outliers,
-                                             predict_outliers,
-                                             predict_outliers_corrid,
-                                             centers, noise) {
-    r <- list()
-    if("LowestWeightPercentage" \%in\% measure)
-        r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
-    r
-}
-stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
-km <- DSC_Kmeans(3)
-update(km, stream, n = 500)
-evaluate(km, stream, type = "macro", n = 500,
-                        measure = c("crand","LowestWeightPercentage"),
-                        callbacks = list(cc = CustomCallback()))
 }
 \references{
 Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On
@@ -292,19 +270,20 @@ evaluating stream learning algorithms. \emph{Machine Learning,} March 2013,
 Volume 90, Issue 3, pp 317-346.
 
 F. Cao, M. Ester, W. Qian, A. Zhou (2006). Density-Based Clustering over an
-Evolving Data Stream with Noise. \emph{Proceeding of the 2006 SIAM
-Conference on Data Mining,} 326-337.
+Evolving Data Stream with Noise.
+\emph{Proceeding of the 2006 SIAM Conference on Data Mining,} 326-337.
 
 E. Dimitriadou, A. Weingessel and K. Hornik (2002).  A combination scheme
-for fuzzy clustering.  \emph{International Journal of Pattern Recognition
-and Artificial Intelligence,} 16, 901-912.
+for fuzzy clustering.
+\emph{International Journal of Pattern Recognition and Artificial Intelligence,}
+16, 901-912.
 
 E. B. Fowlkes and C. L. Mallows (1983).  A method for comparing two
-hierarchical clusterings.  \emph{Journal of the American Statistical
-Association,} 78, 553-569.
+hierarchical clusterings.
+\emph{Journal of the American Statistical Association,} 78, 553-569.
 
-L. Hubert and P. Arabie (1985).  Comparing partitions.  \emph{Journal of
-Classification,} 2, 193-218.
+L. Hubert and P. Arabie (1985).  Comparing partitions.
+\emph{Journal of Classification,} 2, 193-218.
 
 W. M. Rand (1971).  Objective criteria for the evaluation of clustering
 methods.  \emph{Journal of the American Statistical Association,} 66,
@@ -314,11 +293,11 @@ L. Katz and J. H. Powell (1953).  A proposed index of the conformity of one
 sociometric measurement to another. \emph{Psychometrika,} 18, 249-256.
 
 A. Strehl and J. Ghosh (2002).  Cluster ensembles - A knowledge reuse
-framework for combining multiple partitions.  \emph{Journal of Machine
-Learning Research,} 3, 583-617.
+framework for combining multiple partitions.
+\emph{Journal of Machine Learning Research,} 3, 583-617.
 
 R. Tibshirani and G. Walter (2005).  Cluster validation by Prediction
-Strength.  \emph{Journal of Computational and Graphical Statistics,} 14/3,
+Strength. \emph{Journal of Computational and Graphical Statistics,} 14/3,
 511-528.
 
 L Wan, W.K. Ng, X.H. Dang, P.S. Yu and K. Zhang (2009). Density-Based
@@ -342,6 +321,7 @@ Other DSC:
 \code{\link{animate_cluster}()},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
+\code{\link{predict}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}

@@ -32,12 +32,9 @@
 #' Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters and
 #' weights are available.
 #'
-#' [get_cluster_assignments()] can be used to extract the MC assignment
-#' for each data point clustered during the last update operation (note: update
-#' needs to be called with `assignments = TRUE` and the block size needs
-#' to be large enough). The function returns the MC index (in the current set
-#' of MCs obtained with, e.g., [get_centers()] and as an attribute the
-#' permanent MC ids.
+#' [update()]  invisibly return the assignment of the data points to clusters.
+#' The columns are `.class` with the index of the strong micro-cluster and `.mc_id`
+#' with the permanent id of the strong micro-cluster.
 #'
 #' [plot()] for DSC_DBSTREAM has two extra logical parameters called
 #' `assignment` and `shared_density` which show the assignment area
@@ -114,21 +111,18 @@
 #' evaluate(dbstream, stream, measure="purity")
 #' evaluate(dbstream, stream, measure="cRand", type="macro")
 #'
-#' # use DBSTREAM for conventional clustering (with assignments = TRUE so we can
+#' # use DBSTREAM also returns the cluster assignment
 #' # later retrieve the cluster assignments for each point)
 #' data("iris")
 #' dbstream <- DSC_DBSTREAM(r = 1)
-#' update(dbstream, iris[,-5], assignments = TRUE)
-#' dbstream
-#'
-#' cl <- get_cluster_assignments(dbstream)
-#' cl
+#' cl <- update(dbstream, iris[,-5], assignments = TRUE)
+#' head(cl)
 #'
 #' # micro-clusters
-#' plot(iris[,-5], col = cl, pch = cl)
+#' plot(iris[,-5], col = cl$.class, pch = cl$.class)
 #'
 #' # macro-clusters
-#' plot(iris[,-5], col = microToMacro(dbstream, cl))
+#' plot(iris[,-5], col = microToMacro(dbstream, cl$.class))
 #' @export
 DSC_DBSTREAM <- function(r,
   lambda = 1e-3,
@@ -142,6 +136,7 @@ DSC_DBSTREAM <- function(r,
   structure(
     list(
       description = "DBSTREAM - density-based stream clustering with shared-density-based reclustering",
+      ## this is the micro clusterer
       RObj = dbstream$new(
         r,
         lambda,
@@ -182,7 +177,7 @@ dbstream <- setRefClass(
     metric_name   = "character",
 
     ### micro-clusters
-    micro         = "ANY",
+    CppObj        = "ANY",
     serial        = "ANY",
 
     ### do we need to rerun the reclusterer
@@ -241,7 +236,7 @@ dbstream <- setRefClass(
       else
         k <<- as.integer(k)
 
-      micro <<- new(DBSTREAM, r, decay_factor, gaptime,
+      CppObj <<- new(DBSTREAM, r, decay_factor, gaptime,
         shared_density, alpha, m)
 
       .self
@@ -266,34 +261,45 @@ dbstream$methods(
         metric)
 
       ### copy Rcpp object
-      n$micro <- new(DBSTREAM, micro$serializeR())
+      n$CppObj <- new(DBSTREAM, CppObj$serializeR())
 
       n
     },
 
     cache = function() {
-      serial <<- micro$serializeR()
+      serial <<- CppObj$serializeR()
     },
 
     uncache = function() {
-      micro <<- new(DBSTREAM, serial)
+      CppObj <<- new(DBSTREAM, serial)
       serial <<- NULL
       newdata <<- TRUE
     },
 
-
     cluster = function(newdata,
       debug = FALSE,
-      assignments = FALSE) {
+      assignments = TRUE) {
       'Cluster new data.' ### online help
 
-      micro$update(as.matrix(newdata), debug, assignments)
       newdata <<- TRUE
+      assignment <- CppObj$update(as.matrix(newdata), debug, assignments)
+
+      if (!assignments)
+        return (NULL)
+
+      ### remove weak MCS
+      strong <- strong_mcs()
+      ids <- attr(CppObj$centers(), "ids")
+      assignment[assignment %in% ids[!strong]] <- NA
+      ids <- ids[strong]
+      ids <- match(assignment, ids)
+
+      data.frame(.class = assignment, .mc_id = ids)
     },
 
     # find strong MCs
     strong_mcs = function(weak = FALSE) {
-      ws <- micro$weights()
+      ws <- CppObj$weights()
 
       # without noise all are strong!
       if (Cm <= 0) {
@@ -313,8 +319,8 @@ dbstream$methods(
       if (!shared_density)
         stop("No shared density available (use shared_density=TRUE)!")
 
-      vals <- as.matrix(micro$getSharedDensity())
-      ws <- micro$weights()
+      vals <- as.matrix(CppObj$getSharedDensity())
+      ws <- CppObj$weights()
 
       ## normalize weight (avg, min, max)
       norm_weights <- outer(
@@ -346,7 +352,7 @@ dbstream$methods(
     get_microclusters = function(cluster_type = c("strong", "all"), ...) {
       cluster_type <- match.arg(cluster_type)
 
-      mc <- data.frame(micro$centers())
+      mc <- data.frame(CppObj$centers())
 
       if (cluster_type == "strong")
         mc <- mc[strong_mcs(), , drop = FALSE]
@@ -361,7 +367,7 @@ dbstream$methods(
     get_microweights = function(cluster_type = c("strong", "all"), ...) {
       cluster_type <- match.arg(cluster_type)
 
-      w <- micro$weights()
+      w <- CppObj$weights()
       if (cluster_type == "strong")
         w <- w[strong_mcs()]
       w
@@ -547,26 +553,8 @@ get_shared_density <- function(x, use_alpha = TRUE)
 #' @export
 change_alpha <- function(x, alpha) {
   x$RObj$alpha <- alpha
-  x$RObj$micro$alpha <- alpha
+  x$RObj$CppObj$alpha <- alpha
   x$state$newdata <- TRUE ### so macro clustering is redone
-}
-
-#' @rdname DSC_DBSTREAM
-#' @export
-get_cluster_assignments <- function(x) {
-  if (length(x$RObj$micro$last) < 1)
-    stop("Run update with assignments = TRUE first.")
-
-  ### remove weak MCS
-  strong <- x$RObj$strong_mcs()
-  last <- x$RObj$micro$last
-  ids <- attr(x$RObj$micro$centers(), "ids")
-  last[last %in% ids[!strong]] <- NA
-  ids <- ids[strong]
-
-  last <- match(last, ids)
-
-  structure(last, ids = ids)
 }
 
 ### special plotting for DSC_DBSTREAM

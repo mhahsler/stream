@@ -48,13 +48,13 @@
 #' ``
 #' @author Michael Hahsler
 #' @examples
-#' stream <- DSD_Gaussians(k=3)
+#' stream <- DSD_Gaussians(k = 3)
 #'
 #' # Create a clustering process that uses a window for the online stage and
 #' # k-means for the offline stage (reclustering)
 #' win_km <- DSC_TwoStage(
-#'   micro=DSC_Window(horizon=100),
-#'   macro=DSC_Kmeans(k=3)
+#'   micro = DSC_Window(horizon = 100),
+#'   macro = DSC_Kmeans(k = 3)
 #'   )
 #' win_km
 #'
@@ -101,7 +101,7 @@ update.DSC_TwoStage <- function(object,
 
     ### TODO: Check data
     for (bl in .make_block(n, block)) {
-      update(object$micro, dsd, n = bl, ...)
+      res <- update(object$micro, dsd, n = bl, ...)
       if (verbose)
         cat("Processed",
           bl,
@@ -111,8 +111,7 @@ update.DSC_TwoStage <- function(object,
     }
   }
 
-  # so cl <- cluster(cl, ...) also works
-  invisible(object)
+  invisible(res)
 }
 
 ### accessors

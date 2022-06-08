@@ -1095,44 +1095,6 @@ package~\pkg{animation}.
 %To see the life animation, we refer the reader to the example code in
 %the manual page for \code{animate_data}.
 
-\subsection{Example: Outlier generating data streams} \label{examples:outlier_gen}
-
-We can use \code{DSD_Gaussians} to generate and mark outliers as well. We define
-a data stream consisting of 10000 data points.
-<<>>=
-set.seed(1000)
-stream <- DSD_Gaussians(k = 3, d = 2, outliers = 4,
-                        outlier_options = list(outlier_horizon = 10000),
-                        separation = 0.3, space_limit = c(0,1))
-@
-Next, we plot 10000 points from the data stream, which can be seen in Figure \ref{figure:dsd_outliers}.
-<<out1, fig=TRUE, include=FALSE, echo=FALSE>>=
-plot(stream, 10000, xlim = c(0, 1), ylim = c(0, 1))
-@
-
-\begin{figure}
-\centering
-\includegraphics[width=.4\linewidth]{stream-out1}
-\caption{Plotting 10000 data instances from the data stream comprising outliers.}
-\label{figure:dsd_outliers}
-\end{figure}
-
-We can obtain data points from the stream, asking for the outlier marks.
-<<>>=
-reset_stream(stream)
-p <- get_points(stream, n = 10000, info = TRUE)
-head(p)
-@
-
-Outlier marks can be retrieved from the \code{.outlier} information column. These outliers were generated at positions
-<<>>=
-out_marks <- p[['.outlier']]
-which(out_marks)
-@
-and can be seen also in Figure \ref{figure:dsd_outliers}. Such data stream generators can
-be used in outlier detector assessment, since they generate the ground truth for the true
-positive outliers.
-
 \subsection{Example: Advanced statistical data streams} \label{examples:advanced_stat}
 
 \code{DSD_Gaussians} has capabilities to generate more complex statistical data streams.
@@ -1145,9 +1107,9 @@ matrices can be limited, which comes together with space limitation to fit clust
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 3, d = 2, variance_limit = 0.2,
+stream1 <- DSD_Gaussians(k = 3, d = 2, variance_limit = c(0, 0.01),
                          space_limit = c(0, 5))
-stream2 <- DSD_Gaussians(k = 3, d = 2, variance_limit = 2,
+stream2 <- DSD_Gaussians(k = 3, d = 2, variance_limit = c(.05, .1),
                          space_limit = c(0, 5))
 @
 Next, we plot 1000 points from the data stream, which can be seen in Figure \ref{figure:dsd_gauss_limits}.
@@ -1159,10 +1121,10 @@ plot(stream2, 1000)
 @
 \begin{figure}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-lim1} \\(a) Maximal variance = 0.2
+\includegraphics[width=\linewidth]{stream-dsd-lim1} \\(a) Variance between 0 and 0.01
 \end{minipage}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-lim2} \\(b) Maximal variance = 2
+\includegraphics[width=\linewidth]{stream-dsd-lim2} \\(b) Variance between .05 and 0.1
 \end{minipage}
 \caption{Data points from \code{DSD\_Gaussians} having maximal variance limit and space limits.}
 \label{figure:dsd_gauss_limits}
@@ -1180,15 +1142,15 @@ on the related covariance matrix. This is the reason why we want do use statisti
 <<>>=
 library("stream")
 set.seed(1000)
-stream1 <- DSD_Gaussians(k = 5, d = 2, variance_limit = 0.2,
+stream1 <- DSD_Gaussians(k = 5, d = 2, variance_limit = c(0.01, 0.03),
                          space_limit = c(0, 7),
                          separation_type = "Mahalanobis",
-                         separation = 4)
+                         separation = 3)
 @
 <<>>=
 set.seed(1000)
-stream2 <- DSD_Gaussians(k = 5, d = 2, variance_limit = 0.2,
-                         space_limit = c(0, 15),
+stream2 <- DSD_Gaussians(k = 5, d = 2, variance_limit = c(0.01, 0.03),
+                         space_limit = c(0, 7),
                          separation_type = "Mahalanobis",
                          separation = 10)
 @
@@ -1201,7 +1163,7 @@ plot(stream2, 1000)
 @
 \begin{figure}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-ms1} \\(a) Mahalanobis separation = 4
+\includegraphics[width=\linewidth]{stream-dsd-ms1} \\(a) Mahalanobis separation = 3
 \end{minipage}
 \begin{minipage}{.48\linewidth} \centering
 \includegraphics[width=\linewidth]{stream-dsd-ms2} \\(b) Mahalanobis separation = 10
@@ -1210,50 +1172,6 @@ plot(stream2, 1000)
 \label{figure:dsd_gauss_mahasep}
 \end{figure}
 
-\subsubsection{Adding outliers}
-
-For assessment of outlier detectors, we want to generate some number of outliers in the data stream.
-Each data point (\code{o} in total) that represents an outlier need to be marked and statistically just enough
-separated from clusters so that outlier detectors could pick this separation. In
-\code{DSD_Gaussians}, a concept of virtual covariance (\cite{krleza2020shc}) is used to
-create a statistically significant free area around outliers. This can be controlled through
-\code{outlier_virtual_variance} parameter.
-<<>>=
-library("stream")
-set.seed(1000)
-stream1 <- DSD_Gaussians(k = 5, d = 2, outliers = 5, variance_limit = 0.2,
-                         space_limit = c(0, 15), separation = 4,
-                         separation_type = "Mahalanobis",
-                         outlier_options = list(
-                             outlier_virtual_variance = 0.3))
-@
-<<>>=
-set.seed(1000)
-stream2 <- DSD_Gaussians(k = 5, d = 2, outliers = 5, variance_limit = 0.2,
-                         space_limit = c(0, 40), separation = 4,
-                         separation_type = "Mahalanobis",
-                         outlier_options = list(
-                             outlier_virtual_variance = 3))
-@
-Plots comprising 1000 points from the data stream can be seen in Figure \ref{figure:dsd_gauss_mahasep}.
-<<dsd-mso1, fig=TRUE, include=FALSE, echo=FALSE>>=
-plot(stream1, 1000)
-@
-<<dsd-mso2, fig=TRUE, include=FALSE, echo=FALSE>>=
-plot(stream2, 1000)
-@
-\begin{figure}
-\begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-mso1} \\(a) Outlier virt. variance = 0.3
-\end{minipage}
-\begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-mso2} \\(b) Outlier virt. variance = 3
-\end{minipage}
-\caption{Data points from \code{DSD\_Gaussians} having distinct outlier virtual variances.}
-\label{figure:dsd_gauss_outsep}
-\end{figure}
-The separation of outliers is clear when comparing Figures \ref{figure:dsd_gauss_outsep}a and \ref{figure:dsd_gauss_outsep}b.
-\newpage
 \subsection{Example: Reading and writing data streams} \label{examples:disk}
 
 Although data streams are potentially unbounded by definition and thus
@@ -2468,7 +2386,7 @@ assignment
 \centering
 \includegraphics[width=.5\linewidth]{stream-silhouette}
 \caption{Silhouette plot for D-Stream clustering with two macro-clusters and
-a cluster ($j=0$) representing the unassigned points.}
+a cluster ($j = 0$) representing the unassigned points.}
 \label{figure:silhouette}
 \end{figure}
 
@@ -2529,12 +2447,12 @@ evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
 }
 @
 
-Since \code{DSC_Kmeans} clusterer returns the number of data points assignment to each
-macro-cluster, we use this to calculate population percentage for the minimally populated
+Since the \code{DSC_Kmeans} clusterer returns the number of data points assignment to each
+macro-cluster, we use this to calculate population percentage for the least populated
 cluster.
 
-We take \code{DSD_Gaussians} data stream generator i and generate 3 clusters, each with his
-own probablity. Distinct probablities direct how many data points is going to be generated
+We use a \code{DSD_Gaussians} data stream generator i and generate 3 clusters, each with his
+own probability. Distinct probabilities direct how many data points is going to be generated
 for each cluster. We expect the smallest cluster to have around 20\% of generated data points.
 
 <<>>=
@@ -2975,7 +2893,6 @@ corrected Rand index values. Note that the first evaluation values are
 again \code{NA} since we start with empty clusterings.
 
 <<>>=
-Position <- evaluation[[1]][ , "points"]
 cRand <- sapply(evaluation, FUN = function(x) x[ , "cRand"])
 head(cRand)
 @
@@ -2985,7 +2902,8 @@ over the stream as a line plot and we add a boxplot comparing the
 distributions.
 
 <<dynamic, fig=TRUE, include=FALSE, width=10, height=4>>=
-matplot(Position, cRand, type = "l", lwd = 1)
+pos <- evaluation[[1]][ , "points"]
+matplot(pos, cRand, type = "l", lwd = 1)
 legend("bottomleft",  legend = names(evaluation),
   col = 1:6, lty = 1:6, lwd = 1)
 @

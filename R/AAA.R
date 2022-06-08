@@ -22,7 +22,7 @@
 .noise_pch <- 20L
 .noise_col <- gray(.5, alpha = .3)
 
-.outlier_pch <- 8L
+.outlier_pch <- 4L
 .outlier_col <- "#FF0000FF"
 
 .points_col <- gray(.5, alpha = .5)

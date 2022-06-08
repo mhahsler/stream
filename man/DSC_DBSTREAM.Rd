@@ -6,7 +6,6 @@
 \alias{dbstream}
 \alias{get_shared_density}
 \alias{change_alpha}
-\alias{get_cluster_assignments}
 \alias{plot.DSC_DBSTREAM}
 \title{DBSTREAM clustering algorithm}
 \usage{
@@ -25,8 +24,6 @@ DSC_DBSTREAM(
 get_shared_density(x, use_alpha = TRUE)
 
 change_alpha(x, alpha)
-
-get_cluster_assignments(x)
 
 \method{plot}{DSC_DBSTREAM}(
   x,
@@ -107,12 +104,9 @@ Otherwise, a new micro-cluster is created to accommodate the new data point.
 Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters and
 weights are available.
 
-\code{\link[=get_cluster_assignments]{get_cluster_assignments()}} can be used to extract the MC assignment
-for each data point clustered during the last update operation (note: update
-needs to be called with \code{assignments = TRUE} and the block size needs
-to be large enough). The function returns the MC index (in the current set
-of MCs obtained with, e.g., \code{\link[=get_centers]{get_centers()}} and as an attribute the
-permanent MC ids.
+\code{\link[=update]{update()}}  invisibly return the assignment of the data points to clusters.
+The columns are \code{.class} with the index of the strong micro-cluster and \code{.mc_id}
+with the permanent id of the strong micro-cluster.
 
 \code{\link[=plot]{plot()}} for DSC_DBSTREAM has two extra logical parameters called
 \code{assignment} and \code{shared_density} which show the assignment area
@@ -159,21 +153,18 @@ microToMacro(dbstream)
 evaluate(dbstream, stream, measure="purity")
 evaluate(dbstream, stream, measure="cRand", type="macro")
 
-# use DBSTREAM for conventional clustering (with assignments = TRUE so we can
+# use DBSTREAM also returns the cluster assignment
 # later retrieve the cluster assignments for each point)
 data("iris")
 dbstream <- DSC_DBSTREAM(r = 1)
-update(dbstream, iris[,-5], assignments = TRUE)
-dbstream
-
-cl <- get_cluster_assignments(dbstream)
-cl
+cl <- update(dbstream, iris[,-5], assignments = TRUE)
+head(cl)
 
 # micro-clusters
-plot(iris[,-5], col = cl, pch = cl)
+plot(iris[,-5], col = cl$.class, pch = cl$.class)
 
 # macro-clusters
-plot(iris[,-5], col = microToMacro(dbstream, cl))
+plot(iris[,-5], col = microToMacro(dbstream, cl$.class))
 }
 \references{
 Michael Hahsler and Matthew Bolanos. Clustering data streams

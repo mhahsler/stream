@@ -32,8 +32,6 @@
 #' @param center,scale logical or a numeric vector of length equal to the
 #'   number of columns (selected with dim) used for centering/scaling (see function [scale]).
 #' @param n The number of points used by `scale_stream()` to creating the centering/scaling
-#' @param reset Try to reset the stream to its beginning after taking `n`
-#'   points for calculating scaling factors.
 #' @return An object of class `DSF_Scale` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @seealso [scale] in \pkg{base}
@@ -64,8 +62,7 @@ DSF_Scale <-
     dim = NULL,
     center = TRUE,
     scale = TRUE,
-    n = 100,
-    reset = FALSE) {
+    n = 100) {
     # creating the DSD object
     l <- list(
       description = paste0(dsd$description, "\n  + scaled"),
@@ -79,17 +76,23 @@ DSF_Scale <-
     class(l) <-
       c("DSF_Scale", "DSF", "DSD_R", "DSD")
 
-    # user specified factors
-    if (is.numeric(center) && is.numeric(scale)) {
-      return(l)
-    }
-
     # estimate factors from stream
     points <- get_points(dsd, n = n, info = TRUE)
 
-    if (!is.null(dim))
-      points <- points[, dim, drop = FALSE]
+    # translate dim to index and subset
+    if (is.null(dim)) {
+      l$dim <- grep('^\\.', colnames(points), invert = TRUE)
+    } else {
+      if (is.numeric(dim))
+        l$dim <- as.integer(dim)
+      else {
+        l$dim <- pmatch(dim, colnames(points))
+        if (any(na_idx <- is.na(dim)))
+          stop("Unknown dimname(s): ", paste0(dim[na_idx], collapse = ", "))
+      }
+    }
 
+    points <- points[, l$dim, drop = FALSE]
     points <- remove_info(points)
 
     sc <- scale(points, center = center, scale = scale)
@@ -98,9 +101,6 @@ DSF_Scale <-
     l$scale <- attr(sc, "scaled:scale")
     # fix division by 0 if all values were the same
     l$scale[l$scale == 0] <- 1
-
-    if (reset)
-      try(reset_stream(dsd), silent = TRUE)
 
     l
   }
@@ -127,14 +127,7 @@ get_points.DSF_Scale <- function(x,
       n,
       info = TRUE)
 
-  dim <- x$dim
-  if (is.null(dim))
-    dim <- grep('^\\.', colnames(points), invert = TRUE)
-
-  d <- points[, dim, drop = FALSE]
-  d <- as.data.frame(scale(d, center = x$center, scale = x$scale))
-
-  points[, dim] <- d
+  points[, x$dim] <- scale(points[, x$dim, drop = FALSE], center = x$center, scale = x$scale)
 
   if (!info)
     points <- remove_info(points)

@@ -176,8 +176,9 @@ public:
 
 
   // update
-  void update(Rcpp::NumericMatrix& data,
+  Rcpp::IntegerVector update(Rcpp::NumericMatrix& data,
     bool debug = FALSE, bool assignments = FALSE) {
+    Rcpp::IntegerVector last;
 
     // check dimensions of new data against the dimenstions for the first cluster
     if (mcs.size()>0) {
@@ -383,6 +384,8 @@ public:
         }
       }
     }
+  if (assignments) return(last);
+  return (Rcpp::IntegerVector(0));
   }
 
   double r;
@@ -397,7 +400,6 @@ public:
   double w_removed;           // weight removed
   int t;
   int topID;                  // id for the next MC
-  Rcpp::IntegerVector last;   // MC assignment of the recently clustered points
   dist_metric metric;
 
 private:
@@ -487,7 +489,6 @@ RCPP_MODULE(MOD_DBSTREAM){
   .field_readonly("t", &DBSTREAM::t)
   .field_readonly("w_removed", &DBSTREAM::w_removed)
   .field("alpha", &DBSTREAM::alpha)
-  .field_readonly("last", &DBSTREAM::last)
 
   .method("centers", &DBSTREAM::getCenters)
   .method("weights", &DBSTREAM::getWeights)

@@ -37,6 +37,8 @@
 #'   in the horizon are first used to calculate the evaluation measure and then
 #'   they are used for updating the cluster model.
 #'
+#' **Evaluation Measures**
+#'
 #' Many evaluation measures are available using
 #' code from other packages including [cluster::silhouette()],
 #' [clue:: cl_agreement()], and [fpc::cluster.stats()].
@@ -138,31 +140,32 @@
 #' (see [DSD_Gaussians]) and outlier detection clusterers that
 #' inherits [DSOutlier] class.
 #'
-#' \code{evaluate_cluster()} is used to evaluate an evolving data stream using
+#' `evaluate_cluster()` is used to evaluate an evolving data stream using
 #' the method described by Wan et al. (2009). Of the `n` data points
 #' `horizon` many points are clustered and then the evaluation measure is
 #' calculated on the same data points. The idea is to find out if the
 #' clustering algorithm was able to adapt to the changing stream.
 #'
-#' \code{evaluate_with_callbacks()} and
-#' \code{evaluate_cluster_with_callbacks()} can be used to add external measure
-#' calculations, without need to update \emph{stream} package. At the end of
-#' each evaluation, a set of callbacks is done. Measurements described hereby
-#' are placed in the \code{\link{DefaultEvalCallback}} class. All other
-#' callbacks are done through objects inheriting the \code{\link{EvalCallback}}
-#' class.
+#' **Custom Evaluation Measures**
+#'
+#' The parameter `callbacks` can
+#' be used to add user-defined measure
+#' calculations. The user can define a measure by creating a sub-class of `EvalCallback`
+#' and adding it to a list of callbacks (see [EvalCallback] for details).
+#' At the end of each evaluation, the set of `callbacks` are performed and the results
+#' are reported.
 #'
 #' @family DSC
 #' @family evaluation
 #'
-#' @param dsc The DSC object that the evaluation measure is being requested
+#' @param dsc The [DSC] object that the evaluation measure is being requested
 #' from.
-#' @param dsd The DSD object that holds the initial training data for the DSC.
+#' @param dsd The [DSD] object that holds the initial training data for the DSC.
 #' @param measure Evaluation measure(s) to use. If missing then all available
 #' measures are returned.
 #' @param n The number of data points being requested.
 #' @param type Use micro- or macro-clusters for evaluation. Auto used the class
-#' of dsc to decide.
+#' of [DSC] to decide.
 #' @param assign Assign points to micro or macro-clusters?
 #' @param assignmentMethod How are points assigned to clusters for evaluation
 #' (see `get_assignment`)?
@@ -171,7 +174,7 @@
 #' @param verbose Report progress?
 #' @param noise How to handle noise points in the data. Options are to treat as
 #' a separate class (default) or to exclude them from evaluation.
-#' @param callbacks A list of \code{\link{EvalCallback}} objects, invoked when
+#' @param callbacks A list of [EvalCallback] objects, invoked when
 #' measurement is calculated.
 #' @param ... Unused arguments are ignored.
 #' @return `evaluate` returns an object of class `stream_eval` which
@@ -182,46 +185,47 @@
 #' @seealso [cluster::silhouette()], [clue:: cl_agreement()], and [fpc::cluster.stats()].
 #' @references
 #' Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On
-#' evaluating stream learning algorithms. \emph{Machine Learning,} March 2013,
+#' evaluating stream learning algorithms. _Machine Learning,_ March 2013,
 #' Volume 90, Issue 3, pp 317-346.
 #'
 #' F. Cao, M. Ester, W. Qian, A. Zhou (2006). Density-Based Clustering over an
-#' Evolving Data Stream with Noise. \emph{Proceeding of the 2006 SIAM
-#' Conference on Data Mining,} 326-337.
+#' Evolving Data Stream with Noise.
+#' _Proceeding of the 2006 SIAM Conference on Data Mining,_ 326-337.
 #'
 #' E. Dimitriadou, A. Weingessel and K. Hornik (2002).  A combination scheme
-#' for fuzzy clustering.  \emph{International Journal of Pattern Recognition
-#' and Artificial Intelligence,} 16, 901-912.
+#' for fuzzy clustering.
+#' _International Journal of Pattern Recognition and Artificial Intelligence,_
+#' 16, 901-912.
 #'
 #' E. B. Fowlkes and C. L. Mallows (1983).  A method for comparing two
-#' hierarchical clusterings.  \emph{Journal of the American Statistical
-#' Association,} 78, 553-569.
+#' hierarchical clusterings.
+#' _Journal of the American Statistical Association,_ 78, 553-569.
 #'
-#' L. Hubert and P. Arabie (1985).  Comparing partitions.  \emph{Journal of
-#' Classification,} 2, 193-218.
+#' L. Hubert and P. Arabie (1985).  Comparing partitions.
+#' _Journal of Classification,_ 2, 193-218.
 #'
 #' W. M. Rand (1971).  Objective criteria for the evaluation of clustering
-#' methods.  \emph{Journal of the American Statistical Association,} 66,
+#' methods.  _Journal of the American Statistical Association,_ 66,
 #' 846-850.
 #'
 #' L. Katz and J. H. Powell (1953).  A proposed index of the conformity of one
-#' sociometric measurement to another. \emph{Psychometrika,} 18, 249-256.
+#' sociometric measurement to another. _Psychometrika,_ 18, 249-256.
 #'
 #' A. Strehl and J. Ghosh (2002).  Cluster ensembles - A knowledge reuse
-#' framework for combining multiple partitions.  \emph{Journal of Machine
-#' Learning Research,} 3, 583-617.
+#' framework for combining multiple partitions.
+#' _Journal of Machine Learning Research,_ 3, 583-617.
 #'
 #' R. Tibshirani and G. Walter (2005).  Cluster validation by Prediction
-#' Strength.  \emph{Journal of Computational and Graphical Statistics,} 14/3,
+#' Strength. _Journal of Computational and Graphical Statistics,_ 14/3,
 #' 511-528.
 #'
 #' L Wan, W.K. Ng, X.H. Dang, P.S. Yu and K. Zhang (2009). Density-Based
-#' Clustering of Data Streams at Multiple Resolutions, \emph{ACM Transactions
-#' on Knowledge Discovery from Data,} 3(3).
+#' Clustering of Data Streams at Multiple Resolutions, _ACM Transactions
+#' on Knowledge Discovery from Data,_ 3(3).
 #'
 #' D. Krleža, B. Vrdoljak, and M. Brčić (2020). Statistical Hierarchical
 #' Clustering Algorithm for Outlier Detection in Evolving Data Streams,
-#' \emph{Springer Machine Learning}.
+#' _Springer Machine Learning_.
 #' @examples
 #' set.seed(0)
 #' stream <- DSD_Gaussians(k = 3, d = 2)
@@ -232,7 +236,10 @@
 #'
 #' # Evaluate the micro-clusters in the clustering
 #' # Note: we use here only n = 100 points for evaluation to speed up execution
-#' evaluate(dstream, stream, measure=c("numMicro", "numMacro", "purity", "crand", "SSQ"),
+#' evaluate(dstream, stream, n = 100)
+#'
+#' evaluate(dstream, stream,
+#'   measure=c("numMicro", "numMacro", "purity", "crand", "SSQ"),
 #'   n = 100)
 #'
 #' # DStream also provides macro clusters. Evaluate macro clusters with type="macro"
@@ -261,116 +268,89 @@
 #' reset_stream(stream)
 #' dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 #' animate_cluster(dstream, stream, horizon = 100, n = 5000,
-#'   measure=c("crand"), type = "macro", assign = "micro",
+#'   measure = c("crand"), type = "macro", assign = "micro",
 #'   plot.args = list(type = "both", xlim = c(0,1), ylim = c(0,1)))
 #' }
-#'
-#' # a simple callback example
-#' # this example requires DSC_MCOD in the streamMOA package
-#' CustomCallback <- function() {
-#'   env <- environment()
-#'   all_measures <- c("LowestWeightPercentage")
-#'   internal_measures <- c()
-#'   external_measures <- all_measures
-#'   outlier_measures <- c()
-#'   this <- list(description = "Custom evaluation callback",
-#'                env = environment())
-#'   class(this) <- c("CustomCallback", "EvalCallback")
-#'   this
-#' }
-#'
-#' evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
-#'                                              actual, predict, outliers,
-#'                                              predict_outliers,
-#'                                              predict_outliers_corrid,
-#'                                              centers, noise) {
-#'     r <- list()
-#'     if("LowestWeightPercentage" %in% measure)
-#'         r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
-#'     r
-#' }
-#' stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
-#' km <- DSC_Kmeans(3)
-#' update(km, stream, n = 500)
-#' evaluate(km, stream, type = "macro", n = 500,
-#'                         measure = c("crand","LowestWeightPercentage"),
-#'                         callbacks = list(cc = CustomCallback()))
 #' @export
-evaluate <-
+evaluate <- function(...)
+  UseMethod("evaluate")
+
+#' @rdname evaluate
+#' @export
+evaluate.DSC <-
   function (dsc,
     dsd,
     measure,
-    callbacks = NULL,
+    callbacks = list(),
     n = 100,
     type = c("auto", "micro", "macro"),
     assign = "micro",
     assignmentMethod = c("auto", "model", "nn"),
     noise = c("class", "exclude"),
     ...) {
-    if (is.null(callbacks))
-      callbacks <- list(default = DefaultEvalCallback())
-
-    if (is.null(callbacks) ||
-        !is.list(callbacks) || length(callbacks) < 1)
-      stop("Callbacks must comprise a list of objects")
-
-    for (x in callbacks)
-      if (!is.object(x) || !is(x, "EvalCallback"))
-        stop("All callbacks must be derived from EvalCallback")
-
     assignmentMethod <- match.arg(assignmentMethod)
     noise <- match.arg(noise)
     type <- get_type(dsc, type)
 
+    if (!is.list(callbacks))
+      callbacks <- list(callbacks)
+
+    callbacks$default <- DefaultEvalCallback()
+
+    if (!all(sapply(callbacks, is, "EvalCallback")))
+      stop("Callbacks must comprise a list of 'EvalCallback' objects!")
+
+    ## get points
     points <- get_points(dsd, n, info = TRUE)
     actual <- points[[".class"]]
     outliers <- points[[".outliers"]]
+
     if (is.null(actual))
-      warning("the stream (dsd) does not provide true class/cluster labels in '.class'.")
+      stop("The stream (dsd) does not provide true class/cluster labels in '.class'.")
+
+    if (is.null(outliers) && any(is.na(actual)))
+      outliers <- is.na(actual)
+
     if (all(is.na(actual)))
       warning(
-        "all points used for evaluation have a missing class/cluster label. Evaluation results will not be useful!"
+        "All points used for evaluation have a missing class/cluster label. Evaluation results will not be useful!"
       )
     points <- remove_info(points)
 
-    if (missing(measure) || is.null(measure)) {
-      if (!is.null(actual))
-        m <- c(sapply(callbacks, function(cb_obj)
-          cb_obj$env$all_measures))
-      else
-        m <-
-          c(sapply(callbacks, function(cb_obj)
-            cb_obj$env$internal_measures))
-    } else
-      m <-
+    # find all applicable default measures
+    m <-
       c(sapply(callbacks, function(cb_obj)
-        cb_obj$env$all_measures[pmatch(tolower(measure), tolower(cb_obj$env$all_measures))]))
-    m <- unname(m[!is.na(m)])
+        cb_obj$env$internal_measures))
 
-    if (any(is.na(m)))
-      stop("Invalid measure: ", paste(measure[is.na(m)], collapse = ', '))
+    if (!is.null(actual))
+      m <- append(m, c(
+        sapply(callbacks, function(cb_obj)
+          cb_obj$env$external_measures)
+      ))
 
-    if (is.null(actual)) {
-      .m_ext <-
-        c(sapply(callbacks, function(cb_obj)
-          cb_obj$env$external_measures))
-      .m_ext <- unname(.m_ext[!is.na(.m_ext)])
-      if (any(m %in% .m_ext))
-        stop("External evaluation measures not available for streams without cluster labels!")
+    if (!is.null(outliers))
+      m <- append(m, c(sapply(callbacks, function(cb_obj)
+        cb_obj$env$outlier_measures)))
+
+    m <- unlist(m)
+
+    if (missing(measure) || is.null(measure))
+      measure <- m
+    else {
+      matchm <- pmatch(tolower(measure), tolower(m))
+
+      if (any(is.na(matchm)))
+        stop("Invalid or not applicable measure: ", paste(measure[is.na(matchm)], collapse = ', '))
+
+      m <- m[matchm]
     }
 
-    if (is.null(outliers)) {
-      .m_out <-
-        c(sapply(callbacks, function(cb_obj)
-          cb_obj$env$outlier_measures))
-      .m_out <- unname(.m_out[!is.na(.m_out)])
-      m <- m[!m %in% .m_out]
-    }
 
     ## assign points
     predict <-
       get_assignment(dsc, points, type = assign, method = assignmentMethod, ...)
     #print(table(actual,predict))
+
     # if we have an outlier detecting clusterer, assignment must have returned both predicted
     # classes and outlier flags
     predict_outliers <- attr(predict, "outliers")
@@ -493,53 +473,61 @@ evaluate <-
 #' Must be inherited. Evaluation is the process of the clustering quality
 #' assessment. This assessment can include clustering results, as well as the
 #' clustering process, e.g., duration, spatial query performance, and similar.
-#' The \pkg{stream} package has some measurements (see \link{evaluate} for
+#' The \pkg{stream} package has some measurements (see [evaluate()] for
 #' details) already implemented. All other measurements can be externally
-#' implemented without need to extend the \emph{stream} package, by using
+#' implemented without need to extend the \pkg{stream} package, by using
 #' callbacks.
 #'
 #' @param ... further arguments.
 #' @name EvalCallback-class
 #' @aliases EvalCallback evaluate_callback
 #' @docType class
-#' @section Fields: \describe{ \item{all_measures}{ A list of all measures this
+#' @section Fields:
+#' \describe{
+#'   \item{all_measures}{ A list of all measures this
 #' object contributes to the evaluation. Union of all callback measures defines
-#' measures the end-user can use. } \item{internal_measures}{ A list of
+#' measures the end-user can use. }
+#'   \item{internal_measures}{ A list of
 #' internal measures. A subset of `all_measures`. }
-#' \item{external_measures}{ A list of external measures. A subset of
-#' `all_measures`. } \item{outlier_measures}{ A list of outlier measures.
-#' A subset of `all_measures`. } }
+#'   \item{external_measures}{ A list of external measures. A subset of
+#' `all_measures`. }
+#'   \item{outlier_measures}{ A list of outlier measures.
+#' A subset of `all_measures`. }
+#' }
 #' @author Dalibor Krleža
 #' @examples
-#'
-#' CustomCallback <- function() {
+#' # 1. define a class constructor to hold the evaluation information
+#' LWP_Callback <- function() {
 #'   env <- environment()
 #'   all_measures <- c("LowestWeightPercentage")
 #'   internal_measures <- c()
 #'   external_measures <- all_measures
 #'   outlier_measures <- c()
-#'   this <- list(description = "Custom evaluation callback",
-#'                env = environment())
-#'   class(this) <- c("CustomCallback", "EvalCallback")
-#'   this
+#'   structure(list(description = "Custom evaluation callback",
+#'            env = environment()),
+#'            class = c("LWP_Callback", "EvalCallback"))
 #' }
-#' evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
+#'
+#' # 2. define the evaluation method for the class and calculate the
+#' #    custom measure if it is requested in measure.
+#' evaluate_callback.LWP_Callback <- function(cb_obj, dsc, measure, points,
 #'                                              actual, predict, outliers,
 #'                                              predict_outliers,
 #'                                              predict_outliers_corrid,
 #'                                              centers, noise) {
 #'     r <- list()
 #'     if("LowestWeightPercentage" %in% measure)
-#'         r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
+#'         r$LowestWeightPercentage = min(get_weights(dsc)) / sum(get_weights(dsc))
 #'     r
 #' }
+#'
+#' # 3. evaluate with callbacks
 #' stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
 #' km <- DSC_Kmeans(3)
 #' update(km, stream, n=500)
 #' evaluate(km, stream, type="macro", n=500,
 #'                         measure = c("crand","LowestWeightPercentage"),
-#'                         callbacks = list(cc=CustomCallback()))
-#'
+#'                         callbacks = list(cc = LWP_Callback()))
 EvalCallback <-
   function(...)
     stop("EvalCallback is an abstract class and cannot be instantiated!")
@@ -559,43 +547,13 @@ evaluate_callback <-
     ...)
 UseMethod("evaluate_callback")
 
-evaluate_callback.default <-
-  function(cb_obj,
-    dsc,
-    measure,
-    points,
-    actual,
-    predict,
-    outliers,
-    predict_outliers,
-    predict_outliers_corrid,
-    centers,
-    noise,
-    ...) {
-    stop(gettextf(
-      "evaluate_callback not implemented for class '%s'.",
-      paste(class(cb_obj), collapse = ", ")
-    ))
-  }
-
-#' Default Class for Evaluation Callbacks
-#'
-#' The default callback class for the \emph{stream} package. Implicitly
-#' instantiated for each \code{\link{evaluate}} call.
-#'
-#'
-#' @name DefaultEvalCallback-class
-#' @aliases DefaultEvalCallback
-#' @docType class
-#' @author Dalibor Krleža
 DefaultEvalCallback <- function() {
   env <- environment()
   all_measures <- .all_measures
   internal_measures <- c(.eval_measures_int, .eval_measures_fpc_int)
   external_measures <-
     c(.eval_measures_ext,
-      .eval_measures_fpc_ext,
-      .eval_measures_outlier)
+      .eval_measures_fpc_ext)
   outlier_measures <- c(.eval_measures_outlier)
   this <-
     list(description = "Default evaluation callback", env = environment())
@@ -855,18 +813,18 @@ evaluate_cluster <-
       recall	   = recall(actual, predict),
       F1		     = f1(actual, predict),
 
-      Euclidean	 = clue_agreement(predict, actual, "euclidean"),
-      Manhattan	 = clue_agreement(predict, actual, "manhattan"),
-      Rand	     = clue_agreement(predict, actual, "rand"),
-      cRand	     = clue_agreement(predict, actual, "crand"),
-      NMI		     = clue_agreement(predict, actual, "NMI"),
-      KP		     = clue_agreement(predict, actual, "KP"),
-      angle	     = clue_agreement(predict, actual, "angle"),
-      diag	     = clue_agreement(predict, actual, "diag"),
-      FM		     = clue_agreement(predict, actual, "FM"),
-      Jaccard	   = clue_agreement(predict, actual, "jaccard"),
-      #purity	    = clue_agreement(predict, actual, "purity"),
-      PS		     = clue_agreement(predict, actual, "PS"),
+      Euclidean	 = agreement(predict, actual, "euclidean"),
+      Manhattan	 = agreement(predict, actual, "manhattan"),
+      Rand	     = agreement(predict, actual, "rand"),
+      cRand	     = agreement(predict, actual, "crand"),
+      NMI		     = agreement(predict, actual, "NMI"),
+      KP		     = agreement(predict, actual, "KP"),
+      angle	     = agreement(predict, actual, "angle"),
+      diag	     = agreement(predict, actual, "diag"),
+      FM		     = agreement(predict, actual, "FM"),
+      Jaccard	   = agreement(predict, actual, "jaccard"),
+      #purity	    = agreement(predict, actual, "purity"),
+      PS		     = agreement(predict, actual, "PS"),
 
       purity     = purity(predict, actual),
       #classPurity	    = classPurity(actual, predict),
@@ -1040,12 +998,6 @@ silhouette <- function(points, actual, predict) {
   mean(cluster::silhouette(predict, dist(points))[, "sil_width"])
 }
 
-clue_agreement <- function(predict, actual, measure) {
-  predict <- clue::as.cl_hard_partition(predict)
-  actual <- clue::as.cl_hard_partition(actual)
-  as.numeric(clue::cl_agreement(clue::cl_ensemble(predict, actual), method =
-      measure))
-}
 
 ## this would need package Matrix
 #get_confusionMatrix <- function(d,c,predict) {

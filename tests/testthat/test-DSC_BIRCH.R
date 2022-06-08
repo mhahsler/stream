@@ -10,7 +10,9 @@ stream <- DSD_Gaussians(k = 3, noise = 0.05)
 context("DSC_BIRCH")
 
 # create clusterer with r = 0.05
-BIRCH <- DSC_BIRCH(threshold = .1, branching = 8, maxLeaf = 20)
+BIRCH <- DSC_BIRCH(threshold = .1,
+  branching = 8,
+  maxLeaf = 20)
 update(BIRCH, stream, n = 10000)
 
 BIRCH
@@ -23,4 +25,3 @@ BIRCH
 #expect_equal(BIRCH$macro, db$macro)
 #
 #unlink("BIRCH.Rds")
-

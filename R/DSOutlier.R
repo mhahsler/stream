@@ -30,6 +30,11 @@
 #' instantiated. An implementation is available in package
 #' \pkg{streamMOA}.
 #'
+#' [plot()] has an extra logical argument to specify if outliers should be plotted
+#' as red crosses.
+#'
+#' @family DST
+#'
 #' @param x The DSC object.
 #' @param outlier_correlated_id ids of outliers.
 #' @param ... further arguments.
@@ -40,73 +45,61 @@
 #' @export
 DSOutlier <- abstract_class_generator("DSOutlier")
 
-#' @describeIn DSOutlier Clean Outliers from the Outlier Detecting Clusterer.
+#' @describeIn DSOutlier forget detected outliers from the outlier detector.
 #' @export
 clean_outliers <- function(x, ...)
   UseMethod("clean_outliers")
 
-clean_outliers.default <- function(x, ...) {
+
+#' @rdname DSOutlier
+#' @export
+clean_outliers.DSOutlier <- function(x, ...) {
   stop(gettextf(
     "clean_outlier not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
 
-#' @rdname DSOutlier
-#' @export
-clean_outliers.DSOutlier <- clean_outliers.default
-
 #' @describeIn DSOutlier Re-checks the outlier having `outlier_correlated_id`.
-#' If this object is still an outlier, the method
-#' returns TRUE.
+#'   If this object is still an outlier, the method returns `TRUE`.
 #' @export
 recheck_outlier <- function(x, outlier_correlated_id, ...)
   UseMethod("recheck_outlier")
 
-recheck_outlier.default <- function(x, outlier_correlated_id, ...) {
+
+#' @rdname DSOutlier
+#' @export
+recheck_outlier.DSOutlier <- function(x, outlier_correlated_id, ...) {
   stop(gettextf(
     "recheck_outlier not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
 
-#' @rdname DSOutlier
-#' @export
-recheck_outlier.DSOutlier <- recheck_outlier.default
-
 #' @describeIn DSOutlier Returns spatial positions of all current outliers.
 #' @export
 get_outlier_positions <- function(x, ...)
   UseMethod("get_outlier_positions")
 
-get_outlier_positions.default <- function(x, ...) {
+#' @rdname DSOutlier
+#' @export
+get_outlier_positions.DSOutlier <- function(x, ...) {
   stop(gettextf(
     "check_outlier not implemented for class '%s'.",
     paste(class(x), collapse = ", ")
   ))
 }
 
-#' @rdname DSOutlier
-#' @export
-get_outlier_positions.DSOutlier <- get_outlier_positions.default
 
 #' @export
 get_outlier_positions.DSC_TwoStage <-
   function(x, ...)
     get_outlier_positions(x$micro_dsc, ...)
 
-#' @describeIn DSOutlier Returns the current number
-#' of outliers.
+#' @describeIn DSOutlier Returns the current number of outliers.
 #' @export
 noutliers <- function(x, ...)
   UseMethod("noutliers")
-
-noutliers.default <- function(x, ...) {
-  stop(gettextf(
-    "noutliers not implemented for class '%s'.",
-    paste(class(x), collapse = ", ")
-  ))
-}
 
 #' @rdname DSOutlier
 #' @export
@@ -116,8 +109,8 @@ noutliers.DSOutlier <- function(x, ...) {
 
 #' @export
 print.DSOutlier <- function(x, ...) {
-  cat(.line_break(paste(x$description)))
-  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  NextMethod()
+  cat(paste('Number of outliers:', noutliers(x), '\n'))
 }
 
 #' @export
@@ -137,7 +130,7 @@ plot.DSOutlier <- function(x,
   assignment = FALSE,
   outliers = TRUE,
   ...) {
-  NextMethod()
+  NextMethod("plot", x, outliers = NULL)
 
   if (outliers)
     points(get_outlier_positions(x), pch = .outlier_pch, col = .outlier_col)

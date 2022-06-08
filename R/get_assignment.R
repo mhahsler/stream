@@ -16,7 +16,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#' Assignment Data Points to Clusters
+#' Assignment Data Points to Clusters [deprecated]
+#'
+#' **Deprecation Notice:** use [stream::predict()] for a more general interface to apply
+#' a data stream model to new data. `get_assignment()` is deprecated.
 #'
 #' Get the assignment of data points to clusters in a \code{DSC} using the
 #' model's assignment rules or nearest neighbor assignment. The clustering is
@@ -51,17 +54,18 @@
 #' # find the assignment for the next 100 points to
 #' # micro-clusters in dsc. This uses the model's assignment function
 #' points <- get_points(stream, n = 100)
-#' a <- get_assignment(dbstream, points)
-#' a
+#' a <- predict(dbstream, points)
+#' head(a)
 #'
 #' # show the MC assignment areas. Assigned points as blue circles and
 #' # the unassigned points as red dots
 #' plot(dbstream, stream, assignment = TRUE, type = "none")
-#' points(points[!is.na(a),], col = "blue")
-#' points(points[is.na(a),], col = "red", pch = 20)
+#' points(points[!is.na(a[, ".class"]),], col = "blue")
+#' points(points[is.na(a[, ".class"]),], col = "red", pch = 20)
 #'
 #' # use nearest neighbor assignment instead
-#' get_assignment(dbstream, points, method = "nn")
+#' a <- predict(dbstream, points, method = "nn")
+#' head(a)
 #' @export
 get_assignment <-
   function(dsc,

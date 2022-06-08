@@ -8,6 +8,8 @@
 * DSD_ReadCSV gained parameter col.names
 * Added DSD_ReadStream as an alias for DSD_ReadCSV.
 * Added DSD_Combination to combine streams.
+* stream now implements a standard predict function (get_assignment() is now deprecated).
+* update now returns information like cluster assignments as a data.frame.
 
 ## Changes
 * class information and extra information is now stored as columns starting with . 
@@ -15,6 +17,9 @@
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
 * DSO is now called DSAggregate.
 * The NAMESPACE is now managed using roxygen.
+* evaluate is now a generic.
+* noise and outliers are now the same concept. DS_Gaussian can make sure that noise points are 
+  separated from clusters.
 
 
 # stream 1.5-1 (05/09/22)

@@ -101,8 +101,6 @@
 #' @examples
 #' stream <- DSD_BarsAndGaussians(noise = .05)
 #' plot(stream)
-#'
-#' # we set Cm=.8 to pick up the lower density clusters
 #' dstream1 <- DSC_DStream(gridsize = 1, Cm = 1.5)
 #' update(dstream1, stream, 1000)
 #' dstream1
@@ -272,8 +270,11 @@ dstream$methods(
     cluster = function(newdata, debug = FALSE) {
       'Cluster new data.' ### online help
 
-      micro$update(as.matrix(newdata), debug)
       newdata <<- TRUE
+      micro$update(as.matrix(newdata), debug)
+
+      ### assignment is not implemented.
+      NULL
     },
 
     ### This is for plotting images.

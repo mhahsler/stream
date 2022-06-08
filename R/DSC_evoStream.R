@@ -163,6 +163,8 @@ evoStream_R$methods(
 evoStream_R$methods(
   cluster = function(newdata) {
     .self$C$cluster(as.matrix(newdata))
+
+    NULL
   }
 )
 

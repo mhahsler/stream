@@ -3,7 +3,7 @@
 \name{get_assignment}
 \alias{get_assignment}
 \alias{get_assignment.DSC}
-\title{Assignment Data Points to Clusters}
+\title{Assignment Data Points to Clusters \link{deprecated}}
 \usage{
 get_assignment(
   dsc,
@@ -44,11 +44,14 @@ A vector containing the assignment of each point. \code{NA} means
 that a data point was not assigned to a cluster.
 }
 \description{
+\strong{Deprecation Notice:} use \code{\link[=predict]{predict()}} for a more general interface to apply
+a data stream model to new data. \code{get_assignment()} is deprecated.
+}
+\details{
 Get the assignment of data points to clusters in a \code{DSC} using the
 model's assignment rules or nearest neighbor assignment. The clustering is
 not modified.
-}
-\details{
+
 Each data point is assigned either using the original model's assignment
 rule or Euclidean nearest neighbor assignment. If the user specifies the
 model's assignment strategy, but is not available, then nearest neighbor
@@ -63,17 +66,18 @@ update(dbstream, stream, n = 100)
 # find the assignment for the next 100 points to
 # micro-clusters in dsc. This uses the model's assignment function
 points <- get_points(stream, n = 100)
-a <- get_assignment(dbstream, points)
-a
+a <- predict(dbstream, points)
+head(a)
 
 # show the MC assignment areas. Assigned points as blue circles and
 # the unassigned points as red dots
 plot(dbstream, stream, assignment = TRUE, type = "none")
-points(points[!is.na(a),], col = "blue")
-points(points[is.na(a),], col = "red", pch = 20)
+points(points[!is.na(a[, ".class"]),], col = "blue")
+points(points[is.na(a[, ".class"]),], col = "red", pch = 20)
 
 # use nearest neighbor assignment instead
-get_assignment(dbstream, points, method = "nn")
+a <- predict(dbstream, points, method = "nn")
+head(a)
 }
 \seealso{
 Other DSC: 
@@ -86,6 +90,7 @@ Other DSC:
 \code{\link{animate_cluster}()},
 \code{\link{evaluate}()},
 \code{\link{plot.DSC}()},
+\code{\link{predict}()},
 \code{\link{prune_clusters}()},
 \code{\link{read_saveDSC}},
 \code{\link{recluster}()}
