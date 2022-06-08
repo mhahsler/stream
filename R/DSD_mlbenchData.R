@@ -174,7 +174,7 @@ DSD_mlbenchData <-
       a[which(x[, 1] == 'democrat')] <- 1
     }
 
-    complete <- complete.cases(d)
+    complete <- stats::complete.cases(d)
     a <- a[complete]
     d <- d[complete,]
 

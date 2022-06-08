@@ -58,7 +58,7 @@ of \link{DSC} to decide.}
 \item{assign}{Assign points to micro or macro-clusters?}
 
 \item{assignmentMethod}{How are points assigned to clusters for evaluation
-(see \code{get_assignment})?}
+(see \code{\link[=predict]{predict()}})?}
 
 \item{noise}{How to handle noise points in the data. Options are to treat as
 a separate class (default) or to exclude them from evaluation.}

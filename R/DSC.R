@@ -36,9 +36,9 @@
 #' DSC subclasses. See Usage and Functions sections for methods.
 #' Additional, separately documented methods are:
 #'
-#' * [update()] Add new data points from a stream to a clustering.
-#' * [plot()] function is also provides for `DSC`.
-#' * [predict()] Predict the cluster assignment for new data points.
+#' * [update()] adds new data points from a stream to a clustering.
+#' * [predict()] predicts the cluster assignment for new data points.
+#' * `plot()` plots cluster centers (see [plot.DSC()]).
 #'
 #' `get_centers()` and `get_weights()` are typically overwritten by
 #' subclasses of `DSC`.
@@ -50,9 +50,7 @@
 #' @family DST
 #' @family DSC
 #'
-#' @param x,object a DSC object.
-#' @param dsd a [DSD] data stream object.
-#' @param n number of data points taken from the stream.
+#' @param x a DSC object.
 #' @param type Return weights of micro- or macro-clusters in x.  Auto uses the
 #' class of x to decide.
 #' @param scale a range (from, to) to scale the weights.  Returns by default
@@ -96,106 +94,112 @@ DSC <- abstract_class_generator("DSC")
 
 ### all DSC classes have these interface methods
 
-#' @rdname DSC
-#' @section Functions
-#' @export
-update.DSC <- function(object, dsd, n = 1, ...) {
-  stop("No implementation for update found for class", paste0(class(object), collapse = ", "))
-}
-
 #' @describeIn DSC Gets the cluster centers (micro- or macro-clusters) from a DSC object.
-#' @export get_centers
+#' @export
 get_centers <- function(x, type = c("auto", "micro", "macro"), ...)
   UseMethod("get_centers")
 
 #' @describeIn DSC Get the weights of the clusters in the DSC (returns 1s if not implemented by the clusterer)
-#' @export get_weights
-get_weights <- function(x, type=c("auto", "micro", "macro"), scale=NULL, ...)
-  UseMethod("get_weights")
+#' @export
+get_weights <-
+  function(x,
+    type = c("auto", "micro", "macro"),
+    scale = NULL,
+    ...)
+    UseMethod("get_weights")
 
-get_weights.DSC <- function(x, type=c("auto", "micro", "macro"),
-  scale=NULL, ...) {
+#' @export
+get_weights.DSC <- function(x,
+  type = c("auto", "micro", "macro"),
+  scale = NULL,
+  ...) {
   .nodots(...)
-  m <- rep(1, nclusters(x, type=type))
-  if(!is.null(scale)) {
-    if(length(unique(m)) ==1)  w <- rep(mean(scale), length(w))
-    else m <- map(m, range=scale, from.range=c(0,
-      max(m, na.rm=TRUE)))
+  m <- rep(1, nclusters(x, type = type))
+  if (!is.null(scale)) {
+    if (length(unique(m)) == 1L)
+      w <- rep(mean(scale), length(w))
+    else
+      m <- map(m, range = scale, from.range = c(0,
+        max(m, na.rm = TRUE)))
   }
   m
 }
 
-### End of interface
-#####################################################################3
-
-#' @describeIn DSC Get micro-clusters if the object is a [DSC_Micro] object.
-#' @export
-get_microclusters <- function(x, ...) UseMethod("get_microclusters")
-
-#' @export
-get_microclusters.DSC <- function(x, ...) {
-  stop(gettextf("No micro-clusters available for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
-#' @describeIn DSC Get micro-cluster weights if the object is a [DSC_Micro] object.
-#' @export
-get_microweights <- function(x, ...) UseMethod("get_microweights")
-
-#' @export
-get_microweights.DSC <- function(x, ...) {
-  stop(gettextf("No weights for micro-clusters available for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
-
-#' @describeIn DSC Get micro-clusters if the the object is a [DSC_Macro] object.
-#' @export
-get_macroclusters <- function(x, ...) UseMethod("get_macroclusters")
-
-#' @export
-get_macroclusters.DSC <- function(x, ...) {
-  stop(gettextf("No macro-clusters available for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
-
-#' @describeIn DSC Get macro-cluster weights if the object is a [DSC_Macro] object.
-#' @export
-get_macroweights <- function(x, ...) UseMethod("get_macroweights")
-
-#' @export
-get_macroweights.DSC <- function(x, ...) {
-  stop(gettextf("No weights for macro-clusters available for class '%s'.",
-    paste(class(x), collapse=", ")))
-}
-
-
 ### make a deep copy of the
 #' @describeIn DSC Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
 #' @export
-get_copy <- function(x) UseMethod("get_copy")
+get_copy <- function(x)
+  UseMethod("get_copy")
 
 #' @describeIn DSC Returns the number of micro-clusters from the DSC object.
 #' @export
-nclusters <- function(x, type=c("auto", "micro", "macro"), ...)
+nclusters <- function(x, type = c("auto", "micro", "macro"), ...)
   UseMethod("nclusters")
 
 #' @export
-nclusters.DSC <- function(x, type=c("auto", "micro", "macro"), ...) {
-  nrow(get_centers(x, type=type, ...))
-}
+nclusters.DSC <-
+  function(x, type = c("auto", "micro", "macro"), ...) {
+    nrow(get_centers(x, type = type, ...))
+  }
 
 #' @export
 print.DSC <- function(x, ...) {
   cat(.line_break(paste(x$description)))
-  cat("Class:", paste(class(x), collapse=", "), "\n")
-  if(!is(nc <- try(nclusters(x, type="micro"), silent=TRUE), "try-error"))
+  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  if (!is(nc <-
+      try(nclusters(x, type = "micro"), silent = TRUE)
+    , "try-error"))
     cat(paste('Number of micro-clusters:', nc, '\n'))
-  if(!is(nc <- try(nclusters(x, type="macro"), silent=TRUE), "try-error"))
+  if (!is(nc <-
+      try(nclusters(x, type = "macro"), silent = TRUE)
+    , "try-error"))
     cat(paste('Number of macro-clusters:', nc, '\n'))
 }
 
 #' @export
-summary.DSC <- function(object, ...) print(object)
+summary.DSC <- function(object, ...)
+  print(object)
 
+
+### End of interface
+#####################################################################3
+
+get_microclusters <- function(x, ...)
+  UseMethod("get_microclusters")
+
+get_microclusters.DSC <- function(x, ...) {
+  stop(gettextf(
+    "No micro-clusters available for class '%s'.",
+    paste(class(x), collapse = ", ")
+  ))
+}
+
+get_microweights <- function(x, ...)
+  UseMethod("get_microweights")
+
+get_microweights.DSC <- function(x, ...) {
+  stop(gettextf(
+    "No weights for micro-clusters available for class '%s'.",
+    paste(class(x), collapse = ", ")
+  ))
+}
+
+get_macroclusters <- function(x, ...)
+  UseMethod("get_macroclusters")
+
+get_macroclusters.DSC <- function(x, ...) {
+  stop(gettextf(
+    "No macro-clusters available for class '%s'.",
+    paste(class(x), collapse = ", ")
+  ))
+}
+
+get_macroweights <- function(x, ...)
+  UseMethod("get_macroweights")
+
+get_macroweights.DSC <- function(x, ...) {
+  stop(gettextf(
+    "No weights for macro-clusters available for class '%s'.",
+    paste(class(x), collapse = ", ")
+  ))
+}

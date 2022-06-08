@@ -2,32 +2,17 @@
 % Please edit documentation in R/DSC.R
 \name{DSC}
 \alias{DSC}
-\alias{update.DSC}
 \alias{get_centers}
 \alias{get_weights}
-\alias{get_microclusters}
-\alias{get_microweights}
-\alias{get_macroclusters}
-\alias{get_macroweights}
 \alias{get_copy}
 \alias{nclusters}
 \title{Data Stream Clustering Base Class}
 \usage{
 DSC(...)
 
-\method{update}{DSC}(object, dsd, n = 1, ...)
-
 get_centers(x, type = c("auto", "micro", "macro"), ...)
 
 get_weights(x, type = c("auto", "micro", "macro"), scale = NULL, ...)
-
-get_microclusters(x, ...)
-
-get_microweights(x, ...)
-
-get_macroclusters(x, ...)
-
-get_macroweights(x, ...)
 
 get_copy(x)
 
@@ -36,11 +21,7 @@ nclusters(x, type = c("auto", "micro", "macro"), ...)
 \arguments{
 \item{...}{further parameter}
 
-\item{dsd}{a \link{DSD} data stream object.}
-
-\item{n}{number of data points taken from the stream.}
-
-\item{x, object}{a DSC object.}
+\item{x}{a DSC object.}
 
 \item{type}{Return weights of micro- or macro-clusters in x.  Auto uses the
 class of x to decide.}
@@ -68,9 +49,9 @@ Class \code{DSC} provides several generic functions that can operate on all
 DSC subclasses. See Usage and Functions sections for methods.
 Additional, separately documented methods are:
 \itemize{
-\item \code{\link[=update]{update()}} Add new data points from a stream to a clustering.
-\item \code{\link[=plot]{plot()}} function is also provides for \code{DSC}.
-\item \code{\link[=predict]{predict()}} Predict the cluster assignment for new data points.
+\item \code{\link[=update]{update()}} adds new data points from a stream to a clustering.
+\item \code{\link[=predict]{predict()}} predicts the cluster assignment for new data points.
+\item \code{plot()} plots cluster centers (see \code{\link[=plot.DSC]{plot.DSC()}}).
 }
 
 \code{get_centers()} and \code{get_weights()} are typically overwritten by
@@ -86,22 +67,10 @@ which will serialize the objects first appropriately.
 
 \item \code{get_weights}: Get the weights of the clusters in the DSC (returns 1s if not implemented by the clusterer)
 
-\item \code{get_microclusters}: Get micro-clusters if the object is a \link{DSC_Micro} object.
-
-\item \code{get_microweights}: Get micro-cluster weights if the object is a \link{DSC_Micro} object.
-
-\item \code{get_macroclusters}: Get micro-clusters if the the object is a \link{DSC_Macro} object.
-
-\item \code{get_macroweights}: Get macro-cluster weights if the object is a \link{DSC_Macro} object.
-
 \item \code{get_copy}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
 
 \item \code{nclusters}: Returns the number of micro-clusters from the DSC object.
 }}
-
-\section{Functions}{
-NA
-}
 
 \examples{
 DSC()
@@ -139,6 +108,7 @@ predict(dstream, points, type = "macro")
 Other DST: 
 \code{\link{DSAggregate}()},
 \code{\link{DSClassify}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
 \code{\link{predict}()},

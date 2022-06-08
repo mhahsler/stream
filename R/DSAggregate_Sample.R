@@ -96,14 +96,12 @@ update.DSAggregate_Sample <-
   }
 
 #' @export
-get_points.DSAggregate_Sample <- function(x, info = TRUE, ...) {
+get_points.DSAggregate_Sample <- function(x, info = TRUE, ...)
   x$RObj$get_points(info = info, ...)
-}
 
 #' @export
-get_weights.DSAggregate_Sample <- function(x, ...) {
+get_weights.DSAggregate_Sample <- function(x, ...)
   x$RObj$get_weights(...)
-}
 
 
 SampleDSAggregate <- setRefClass(
@@ -139,6 +137,9 @@ SampleDSAggregate <- setRefClass(
         update_data.frame(x)
       else
         update_list(x)
+
+      # sample does not return a cluster assignment
+      NULL
     },
 
     update_data.frame = function(x, ...) {

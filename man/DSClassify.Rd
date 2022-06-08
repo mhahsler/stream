@@ -17,11 +17,10 @@ implement classification algorithms.
 DSClassify()
 }
 \seealso{
-\link{DST}
-
 Other DST: 
 \code{\link{DSAggregate}()},
 \code{\link{DSC}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
 \code{\link{predict}()},

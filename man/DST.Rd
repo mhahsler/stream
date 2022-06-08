@@ -15,11 +15,7 @@ description(x, ...)
 \arguments{
 \item{...}{Further arguments.}
 
-\item{x, object}{an object of a concrete implementation of a DST.}
-
-\item{dsd}{a data stream.}
-
-\item{n}{the number of data points used for the update.}
+\item{x}{an object of a concrete implementation of a DST.}
 }
 \description{
 Conceptual base class for all data stream mining tasks.
@@ -55,6 +51,7 @@ Other DST:
 \code{\link{DSAggregate}()},
 \code{\link{DSClassify}()},
 \code{\link{DSC}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{predict}()},
 \code{\link{update}()}

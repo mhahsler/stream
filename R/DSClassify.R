@@ -25,7 +25,6 @@
 #'
 #' @param ... Further arguments.
 #' @author Michael Hahsler
-#' @seealso [DST]
 #' @examples
 #' DSClassify()
 #' @export

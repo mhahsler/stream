@@ -61,14 +61,16 @@ apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 \seealso{
 \link{scale} in \pkg{base}
 
-Other DSF: 
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_dplyr}()},
-\code{\link{DSF}()}
+Other DST: 
+\code{\link{DSAggregate}()},
+\code{\link{DSClassify}()},
+\code{\link{DSC}()},
+\code{\link{DSOutlier}()},
+\code{\link{DST}()},
+\code{\link{predict}()},
+\code{\link{update}()}
 }
 \author{
 Michael Hahsler
 }
-\concept{DSF}
+\concept{DST}

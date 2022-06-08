@@ -168,7 +168,7 @@
 #' of [DSC] to decide.
 #' @param assign Assign points to micro or macro-clusters?
 #' @param assignmentMethod How are points assigned to clusters for evaluation
-#' (see `get_assignment`)?
+#' (see [stream::predict()])?
 #' @param horizon Evaluation is done using horizon many previous points (see
 #' detail section).
 #' @param verbose Report progress?
@@ -303,13 +303,13 @@ evaluate.DSC <-
     ## get points
     points <- get_points(dsd, n, info = TRUE)
     actual <- points[[".class"]]
-    outliers <- points[[".outliers"]]
+    outliers_actual <- points[[".outliers"]]
 
     if (is.null(actual))
       stop("The stream (dsd) does not provide true class/cluster labels in '.class'.")
 
-    if (is.null(outliers) && any(is.na(actual)))
-      outliers <- is.na(actual)
+    if (is.null(outliers_actual) && any(is.na(actual)))
+      outliers_actual <- is.na(actual)
 
     if (all(is.na(actual)))
       warning(
@@ -328,7 +328,7 @@ evaluate.DSC <-
           cb_obj$env$external_measures)
       ))
 
-    if (!is.null(outliers))
+    if (!is.null(outliers_actual))
       m <- append(m, c(sapply(callbacks, function(cb_obj)
         cb_obj$env$outlier_measures)))
 
@@ -345,27 +345,31 @@ evaluate.DSC <-
       m <- m[matchm]
     }
 
-
     ## assign points
-    predict <-
-      get_assignment(dsc, points, type = assign, method = assignmentMethod, ...)
-    #print(table(actual,predict))
+    pred <-
+      predict(dsc, points, type = assign, method = assignmentMethod, ...)
 
     # if we have an outlier detecting clusterer, assignment must have returned both predicted
     # classes and outlier flags
-    predict_outliers <- attr(predict, "outliers")
-    predict_outliers_corrid <- attr(predict, "outliers_corrid")
+    predict_outliers <- pred[[".outliers"]]
+    predict_outliers_corrid <- pred[[".outliers_corrid"]]
+
+    pred <- pred[[".class"]]
+    #print(table(actual,pred))
+
+    if(is.null(predict_outliers))
+      predict_outliers <- is.na(pred)
 
     ## translate micro to macro cluster ids if necessary
     if (type == "macro" &&
         assign == "micro")
-      predict <- microToMacro(dsc, predict)
+      pred <- microToMacro(dsc, pred)
     else if (type != assign)
       stop("type and assign are not compatible!")
-    #print(table(predict,actual))
+    #print(table(pred,actual))
 
     ## predicted noise is still its own class?
-    predict[is.na(predict)] <- 0L
+    pred[is.na(pred)] <- 0L
 
     centers <- get_centers(dsc, type = type)
 
@@ -381,8 +385,8 @@ evaluate.DSC <-
           m_tmp,
           points,
           actual,
-          predict,
-          outliers,
+          pred,
+          outliers_actual,
           predict_outliers,
           predict_outliers_corrid,
           centers,

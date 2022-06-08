@@ -56,7 +56,6 @@ Other DSF:
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()}
 
 Other DSD: 

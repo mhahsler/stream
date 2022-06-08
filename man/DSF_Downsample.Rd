@@ -37,7 +37,6 @@ plot(downsampledStream, dim = 1, n = 40, method = "ts")
 Other DSF: 
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
 }

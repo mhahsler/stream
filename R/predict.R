@@ -69,6 +69,8 @@ predict.DSC <-
     type = c("auto", "micro", "macro"),
     method = "auto",
     ...) {
+
+    ### Note: for now we delegate this to get_assignment
     cl <-
       get_assignment(object, newdata, type = type, method = method, ...)
 

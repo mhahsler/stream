@@ -25,7 +25,7 @@
 #' [scale] in \pkg{base}) using `n` points from the stream and the stream is reset if `reset = TRUE` and the
 #' [DSD] object supports resetting.
 #'
-#' @family DSF
+#' @family DST
 #'
 #' @param dsd A object of class [DSD] that will be scaled.
 #' @param dim integer vector or names of dimensions that should be scaled? Default is all.

@@ -42,5 +42,6 @@
 #' head(info)
 #' @export
 update.DST <- function(object, dsd, n = 1, ...) {
-  stop("No implementation for update found!")
+  stop("No implementation for update found for class", , paste0(class(object), collapse = ", "))
 }
+

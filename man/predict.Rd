@@ -66,6 +66,7 @@ Other DST:
 \code{\link{DSAggregate}()},
 \code{\link{DSClassify}()},
 \code{\link{DSC}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
 \code{\link{update}()}

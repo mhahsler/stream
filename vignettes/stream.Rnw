@@ -1567,33 +1567,10 @@ After reclustering the macro-clusters can be inspected (using \code{get_centers(
 the assignment of micro-clusters to macro-clusters is available via
 \code{microToMacro()}.
 
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{interaction_singlepass}
-\caption{Interaction between the DSD and single-pass / outlier detector DSC classes.}
-\label{figure:interaction_singlepass}
-\end{figure}
-
-Figure \ref{figure:interaction_singlepass} shows interaction for single-pass clusterers
-(\code{DSC_SinglePass}) and outlier detectors (\code{DSC_Outlier}). Single-pass clusterers
-not necessarily need to be outlier detectors. The interaction is slightly modified from the
-default interaction in Figure \ref{figure:interaction}. Since single-pass clusterers perform
-model updates for each data point retrieved from the input data stream, using
-\code{update} to update models before classification becomes unnecessary. However, \code{update}
-method can still be used when we do not care about cluster assignments. Usual way of using
-single-pass clusterers is to call \code{get_assignment} method, which updates the clusterer
-model and returns cluster assignments. In outlier detectors (\code{DSC_Outlier}),
-\code{get_assignment} returns outlier marks and identifiers as well. After that, we can use the
-same methods as in Figure \ref{figure:interaction} on the clusterer instance. For outlier detectors
-there are additional methods, such as \code{get_outlier_positions}, which returns outlier
-spatial positions. Anytime after calling \code{update} or \code{get_assignment}, we can re-check
-outlier validity by calling \code{recheck_outlier} method on the outlier detector instance.
-
 The following data stream clustering algorithms
 are currently available:
 
 \begin{itemize}
-
 
 %\item\code{DSC_BIRCH} uses the first pass of the BIRCH (balanced iterative reducing and %clustering using hierarchies) algorithm by \cite{stream_clust:Zhang:1996}. It generates
 %a cluster feature (CF) tree and the leave notes are used as micro-clusters.
@@ -2634,7 +2611,7 @@ evaluation.
 <<data_bng, fig=TRUE, include=FALSE>>=
 set.seed(1000)
 library("stream")
-stream <- DSD_Memory(DSD_BarsAndGaussians(noise = .05), n = 1500)
+stream <- DSD_BarsAndGaussians(noise = .05) %>% DSD_Memory(n = 1500)
 stream
 plot(stream)
 @
