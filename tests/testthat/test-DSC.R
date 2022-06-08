@@ -35,7 +35,7 @@ up <- lapply(
     if (interactive())
       cat(paste("update:", short_desc(a)), "\n")
     reset_stream(stream)
-    u <- update(a, stream, n = 1000L)
+    u <- update(a, stream, n = 1000L, assignment = TRUE)
     expect_true(is.null(u) ||
         (is.data.frame(u) && nrow(u) == 1000L && !is.null(u[[".class"]])))
     u
@@ -58,7 +58,7 @@ evals <- sapply(
     if (interactive())
       cat(paste("evaluate:", short_desc(a)), "\n")
     reset_stream(stream, pos = 1001)
-    e <- evaluate(a,
+    e <- evaluate_static(a,
       stream,
       measure = ms,
       type = "micro",

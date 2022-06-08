@@ -134,7 +134,7 @@ plot(dbstream, stream, type = "both", assignment = TRUE)
 
 
 # DBSTREAM with shared density
-dbstream <- DSC_DBSTREAM(r = .05, shared_density = TRUE, Cm=5)
+dbstream <- DSC_DBSTREAM(r = .05, shared_density = TRUE, Cm = 5)
 update(dbstream, stream, 1000)
 dbstream
 plot(dbstream, stream, type = "both")
@@ -150,8 +150,8 @@ plot(dbstream, stream, type = "none", shared_density = TRUE, assignment = TRUE)
 microToMacro(dbstream)
 
 # do some evaluation
-evaluate(dbstream, stream, measure="purity")
-evaluate(dbstream, stream, measure="cRand", type="macro")
+evaluate_static(dbstream, stream, measure="purity")
+evaluate_static(dbstream, stream, measure="cRand", type="macro")
 
 # use DBSTREAM also returns the cluster assignment
 # later retrieve the cluster assignments for each point)

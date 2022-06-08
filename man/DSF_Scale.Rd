@@ -67,6 +67,7 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
+\code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{update}()}
 }

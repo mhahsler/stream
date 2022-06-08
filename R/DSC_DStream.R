@@ -126,7 +126,7 @@
 #' nclusters(dstream1, type = "macro")
 #' get_centers(dstream1, type = "macro")
 #' plot(dstream1, stream, type = "both", grid = TRUE)
-#' evaluate(dstream1, stream, measure = "crand", type = "macro")
+#' evaluate_static(dstream1, stream, measure = "crand", type = "macro")
 #'
 #' # use attraction for reclustering
 #' dstream2 <- DSC_DStream(gridsize = 1, attraction = TRUE, Cm = 1.5)
@@ -134,7 +134,7 @@
 #' dstream2
 #'
 #' plot(dstream2, stream, type = "both", grid = TRUE)
-#' evaluate(dstream2, stream, measure = "crand", type = "macro")
+#' evaluate_static(dstream2, stream, measure = "crand", type = "macro")
 #' @export
 DSC_DStream <- function(gridsize,
   lambda = 1e-3,
@@ -183,7 +183,7 @@ dstream <- setRefClass(
     N               = "numeric",
 
     ### store the grid
-    micro 		      = "ANY",
+    CppObj 		      = "ANY",
     serial          = "ANY",
     decay_factor		= "numeric",
 
@@ -227,7 +227,7 @@ dstream <- setRefClass(
       ### this is what the paper calls lambda!
       decay_factor <<- 2 ^ (-lambda)
 
-      micro <<- new(DStream,
+      CppObj <<- new(DStream,
         gridsize,
         decay_factor,
         gaptime,
@@ -251,17 +251,17 @@ dstream$methods(
         Cl, N, attraction, epsilon)
 
       ### copy Rcpp object
-      n$micro <- new(DStream, micro$serializeR())
+      n$CppObj <- new(DStream, CppObj$serializeR())
 
       n
     },
 
     cache = function() {
-      serial <<- micro$serializeR()
+      serial <<- CppObj$serializeR()
     },
 
     uncache = function() {
-      micro <<- new(DStream, serial)
+      CppObj <<- new(DStream, serial)
       serial <<- NULL
       newdata <<- TRUE
     },
@@ -271,7 +271,7 @@ dstream$methods(
       'Cluster new data.' ### online help
 
       newdata <<- TRUE
-      micro$update(as.matrix(newdata), debug)
+      CppObj$update(as.matrix(newdata), debug)
 
       ### assignment is not implemented.
       NULL
@@ -280,8 +280,8 @@ dstream$methods(
     ### This is for plotting images.
     toMatrix = function(grid_type = "used", dim = NULL) {
       ### nothing clustered yet
-      if (!length(micro$mins) ||
-          !length(micro$maxs))
+      if (!length(CppObj$mins) ||
+          !length(CppObj$maxs))
         return(matrix(0, nrow = 0, ncol = 0))
 
       cs <-
@@ -290,7 +290,7 @@ dstream$methods(
           translate = FALSE)
       ws <- attr(cs, "weight")
 
-      ns <- (micro$maxs - micro$mins) + 1L
+      ns <- (CppObj$maxs - CppObj$mins) + 1L
       mat <- matrix(0, nrow = ns[1], ncol = ns[2])
 
       if (nrow(cs) > 0) {
@@ -301,14 +301,14 @@ dstream$methods(
           cs <- cs[, 1:2, drop = FALSE]
 
         for (i in 1:nrow(cs))
-          mat[cs[i, 1] - micro$mins[1] + 1,
-            cs[i, 2] - micro$mins[2] + 1] <- ws[i]
+          mat[cs[i, 1] - CppObj$mins[1] + 1,
+            cs[i, 2] - CppObj$mins[2] + 1] <- ws[i]
       }
 
       rownames(mat) <-
-        (micro$mins[1]:micro$maxs[1]) * gridsize + gridsize / 2
+        (CppObj$mins[1]:CppObj$maxs[1]) * gridsize + gridsize / 2
       colnames(mat) <-
-        (micro$mins[2]:micro$maxs[2]) * gridsize + gridsize / 2
+        (CppObj$mins[2]:CppObj$maxs[2]) * gridsize + gridsize / 2
       ### FIXME: Colnames!
       attr(mat, "varnames") <- colnames(cs)
 
@@ -325,7 +325,7 @@ dstream$methods(
       if (dist)
         stop("dist not implemented yet...")
 
-      attr_matrix <-  micro$getAttraction()
+      attr_matrix <-  CppObj$getAttraction()
 
       if (relative) {
         w <- attr(get_micro(weight = TRUE), "weight")
@@ -348,8 +348,8 @@ dstream$methods(
       grid_type = c("used", "dense", "transitional", "sparse", "all")) {
       grid_type <- match.arg(grid_type)
 
-      cs <- data.frame(micro$centers(FALSE))  # no decoding
-      ws <- micro$weights()
+      cs <- data.frame(CppObj$centers(FALSE))  # no decoding
+      ws <- CppObj$weights()
 
       if (length(ws) == 0) {
         ret <- data.frame()
@@ -381,12 +381,12 @@ dstream$methods(
     },
 
     mc_type = function(grid_type) {
-      cs <- micro$centers(FALSE)  # no decoding
-      ws <- micro$weights()
+      cs <- CppObj$centers(FALSE)  # no decoding
+      ws <- CppObj$weights()
 
       ## update N?
       if (!N_fixed)
-        N <<- prod(micro$maxs - micro$mins + 1L)
+        N <<- prod(CppObj$maxs - CppObj$mins + 1L)
 
       c_type <- factor(rep.int("sparse", times = length(ws)),
         levels = c("dense", "transitional", "sparse"))
@@ -486,7 +486,7 @@ dstream$methods(
             ### use Cm2
 
             P <-
-              2 * sum(micro$maxs - micro$mins) ### number of possible attraction values
+              2 * sum(CppObj$maxs - CppObj$mins) ### number of possible attraction values
             ### actually we should check each direction independently
             assignment <- cutree(hclust(d_attr, method = "single"),
               h = -2 * Cm2 / P / (1 + decay_factor))
@@ -559,13 +559,11 @@ get_attraction <-
 }
 
 
-#' @export
 get_macroclusters.DSC_DStream <- function(x, ...) {
   .dstream_update_macro(x)
   get_centers(x$macro)
 }
 
-#' @export
 get_macroweights.DSC_DStream <- function(x, ...) {
   .dstream_update_macro(x)
   get_weights(x$macro)
@@ -584,9 +582,11 @@ microToMacro.DSC_DStream <- function(x, micro = NULL, ...) {
 
 ### add plot as a grid
 #' @rdname DSC_DStream
-#' @param dsd a data stream object.
-#' @param n     number of plots taken from the dsd to plot.
-#' @param type Plot micro clusters (`type="micro"`), macro clusters (`type="macro"`), both micro and macro clusters (`type="both"`), outliers(`type="outliers"`), or everything together (`type="all"`). `type="auto"` leaves to the class of DSC to decide.
+#' @param dsd a [DSD] data stream object.
+#' @param n number of plots taken from `dsd` to plot.
+#' @param type Plot micro clusters (`type = "micro"`), macro clusters (`type = "macro"`),
+#'   both micro and macro clusters (`type = "both"`), outliers(`type = "outliers"`),
+#'   or everything together (`type = "all"`). `type = "auto"` leaves to the class of DSC to decide.
 #' @param assignment logical; show assignment area of micro-clusters.
 #' @param grid logical; show the D-Stream grid instead of circles for micro-clusters.
 #' @param ... further argument are passed on.

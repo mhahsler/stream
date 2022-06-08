@@ -34,12 +34,12 @@
 #' @param dsd a [DSD]
 #' @param dsc a [DSC]
 #' @param measure the evaluation measure that should be graphed below the
-#'  animation (see [evaluate_cluster()].)
+#'  animation (see [evaluate_stream()].)
 #' @param horizon the number of points displayed at once/used for evaluation.
 #' @param n the number of points to be plotted
 #' @param wait the time interval between each frame
 #' @param plot.args a list with plotting parameters for the clusters.
-#' @param type,assign,assignmentMethod,noise are passed on to [evaluate_cluster()] to calculate the
+#' @param type,assign,assignmentMethod,noise are passed on to [evaluate_stream()] to calculate the
 #'   evaluation measure.
 #' @param ... extra arguments are added to `plot.args`.
 #' @author Michael Hahsler
@@ -155,11 +155,10 @@ cluster.ani <- function(dsc,
       ## evaluate first
       if (!is.null(measure)) {
         reset_stream(d)
-        evaluation[i, 2] <- evaluate(dsc,
+        evaluation[i, 2] <- evaluate_static(dsc,
           d,
           measure,
-          NULL,
-          horizon,
+          horizon, ### this is n
           type,
           assign,
           assignmentMethod,

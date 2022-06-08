@@ -64,7 +64,7 @@
 #' win_km$macro
 #'
 #' plot(win_km, stream, type = "both")
-#' evaluate(win_km, stream, assign = "macro")
+#' evaluate_static(win_km, stream, assign = "macro")
 #' @export
 DSC_TwoStage <- function(micro, macro) {
   l <- list(

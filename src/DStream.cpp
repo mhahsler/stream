@@ -231,7 +231,7 @@ public:
       Rcpp::NumericVector grid = floor(p/gridsize);
 
       // first data point (guess dimensions)
-      if(t==1) {
+      if(t == 1) {
         d = p.length();
 
         // min/max

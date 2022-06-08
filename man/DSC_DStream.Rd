@@ -83,11 +83,13 @@ weight).}
 
 \item{dist}{make attraction symmetric and transform into a distance.}
 
-\item{dsd}{a data stream object.}
+\item{dsd}{a \link{DSD} data stream object.}
 
-\item{n}{number of plots taken from the dsd to plot.}
+\item{n}{number of plots taken from \code{dsd} to plot.}
 
-\item{type}{Plot micro clusters (\code{type="micro"}), macro clusters (\code{type="macro"}), both micro and macro clusters (\code{type="both"}), outliers(\code{type="outliers"}), or everything together (\code{type="all"}). \code{type="auto"} leaves to the class of DSC to decide.}
+\item{type}{Plot micro clusters (\code{type = "micro"}), macro clusters (\code{type = "macro"}),
+both micro and macro clusters (\code{type = "both"}), outliers(\code{type = "outliers"}),
+or everything together (\code{type = "all"}). \code{type = "auto"} leaves to the class of DSC to decide.}
 
 \item{grid}{logical; show the D-Stream grid instead of circles for micro-clusters.}
 
@@ -160,7 +162,7 @@ plot(dstream1, stream, grid = TRUE, grid_type = "sparse")
 nclusters(dstream1, type = "macro")
 get_centers(dstream1, type = "macro")
 plot(dstream1, stream, type = "both", grid = TRUE)
-evaluate(dstream1, stream, measure = "crand", type = "macro")
+evaluate_static(dstream1, stream, measure = "crand", type = "macro")
 
 # use attraction for reclustering
 dstream2 <- DSC_DStream(gridsize = 1, attraction = TRUE, Cm = 1.5)
@@ -168,7 +170,7 @@ update(dstream2, stream, 1000)
 dstream2
 
 plot(dstream2, stream, type = "both", grid = TRUE)
-evaluate(dstream2, stream, measure = "crand", type = "macro")
+evaluate_static(dstream2, stream, measure = "crand", type = "macro")
 }
 \references{
 Yixin Chen and Li Tu. 2007. Density-based clustering for

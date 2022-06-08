@@ -55,7 +55,7 @@ win_km$micro
 win_km$macro
 
 plot(win_km, stream, type = "both")
-evaluate(win_km, stream, assign = "macro")
+evaluate_static(win_km, stream, assign = "macro")
 }
 \seealso{
 Other DSC_TwoStage: 
@@ -70,7 +70,7 @@ Other DSC:
 \code{\link{DSC_Static}()},
 \code{\link{DSC}()},
 \code{\link{animate_cluster}()},
-\code{\link{evaluate}()},
+\code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
 \code{\link{predict}()},

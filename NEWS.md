@@ -20,7 +20,8 @@
 * evaluate is now a generic.
 * noise and outliers are now the same concept. DS_Gaussian can make sure that noise points are 
   separated from clusters.
-
+* evaluate() is now called evaluate_static() and evaluate_cluster is evaluate_stream(), both are
+  now generics.
 
 # stream 1.5-1 (05/09/22)
 

@@ -111,6 +111,7 @@ Other DST:
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
+\code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{update}()}
 
@@ -121,7 +122,7 @@ Other DSC:
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
 \code{\link{animate_cluster}()},
-\code{\link{evaluate}()},
+\code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
 \code{\link{predict}()},

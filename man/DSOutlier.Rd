@@ -69,6 +69,7 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DST}()},
+\code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{update}()}
 }

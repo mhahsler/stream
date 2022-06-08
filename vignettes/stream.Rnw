@@ -1799,7 +1799,7 @@ is performed in \pkg{stream} via
 
 
 \begin{center}
-\code{evaluate(dsc, dsd, measure, n = 100, type = c("auto", "micro", "macro"),}\\
+\code{evaluate_static(dsc, dsd, measure, n = 100, type = c("auto", "micro", "macro"),}\\
 \code{assign = "micro", assignmentMethod = c("auto", "model", "nn"),}\\
 \code{noise = c("class", "exclude"), ...)},
 \end{center}
@@ -1853,7 +1853,7 @@ which can be found in many text books \citep[e.g.,][]{clust:Jain:1988,Kaufman:19
 or in the documentation supplied with the packages~\pkg{fpc}~\citep{stream:Hennig:2014},
 \pkg{clue}~\citep{stream:Hornik:2013} and
 \pkg{cluster}~\citep{stream:Maechler:2014}.
-Measures currently available for \code{evaluate()}
+Measures currently available for \code{evaluate_static()}
 (method name are under quotation marks and the package that implements the
 evaluation measure is shown in parentheses) include:
 
@@ -1972,7 +1972,7 @@ The F1 measure is the harmonic mean of precision and recall.
 \end{itemize}
 
 
-\code{evaluate()} is appropriate if the data stream does not evolve
+\code{evaluate_static()} is appropriate if the data stream does not evolve
 significantly from the data that is used to learn the clustering to
 the data that is used for evaluation.
 The approach described next might be more appropriate for
@@ -2020,17 +2020,17 @@ Longer horizons have the advantage that evaluation
 can be usually performed more efficiently for larger batches of points.
 
 This prequential evaluation strategy is implemented in \pkg{stream} as function
-\code{evaluate_cluster()}. It shares most parameters with \code{evaluate()}
+\code{evaluate_stream()}. It shares most parameters with \code{evaluate_static()}
 and
 %in addition to the methods sum of squared (\code{"SSQ"}) and purity (\code{"purity"})
-all evaluation measures for \code{evaluate()} described above can be used.
+all evaluation measures for \code{evaluate_static()} described above can be used.
 
 \subsection{Evaluation of clustering done by single-pass clusterers}
 
 The single-pass clusterers and outlier detectors are doing classification and model update
 for every data point retrieved from the input data stream. This makes then more fine-grained.
 Evaluation of single-pass clusterers is a special case of evaluation for dynamic data streams
-having $horizon=1$. For \code{evaluate_cluster(..., horizon=1000, ...)} this means that a
+having $horizon=1$. For \code{evaluate_stream(..., horizon=1000, ...)} this means that a
 single-pass clusterer processes the batch of 1000 data points each data point
 individually, which includes both the model update and returning the assignment. From the caller
 point of view, such evaluation is the same as for all other clustering algorithms in the
@@ -2123,12 +2123,12 @@ update(dstream, stream, n = 2000)
 @
 
 
-The \code{evaluate()} function takes a DSC object
+The \code{evaluate_static()} function takes a DSC object
 containing a clustering and a DSD object with evaluation data to
 compute several quality measures for clustering.
 
 <<>>=
-evaluate(dstream, stream, n = 100)
+evaluate_static(dstream, stream, n = 100)
 @
 
 The number of points taken from \code{dsd} and used for the evaluation are
@@ -2140,11 +2140,11 @@ since calculating some measures is computational quite expensive.
 Individual measures can be calculated using the measure argument.
 
 <<>>=
-evaluate(dstream, stream, measure = c("purity", "crand"), n = 500)
+evaluate_static(dstream, stream, measure = c("purity", "crand"), n = 500)
 @
 
 Note that
-this second call of \code{evaluate()} uses a new and larger set of
+this second call of \code{evaluate_static()} uses a new and larger set of
 500 evaluation data points from the stream and thus the results may
 vary slightly from the first call.
 Purity of the micro-clusters is high since each micro-cluster only covers points
@@ -2153,7 +2153,7 @@ split the points from each true cluster. We will see in one of the
 following examples that reclustering will improve the corrected Rand index.
 
 To evaluate how well a clustering algorithm can adapt to an evolving
-data stream, \pkg{stream} provides \code{evaluate_cluster()} to
+data stream, \pkg{stream} provides \code{evaluate_stream()} to
 perform prequential evaluation with a given horizon.
 %Following
 %the evaluation scheme developed by
@@ -2185,7 +2185,7 @@ quickly and then perform the evaluation over 5000 data points with a horizon of
 set.seed(1000)
 stream <- DSD_Benchmark(1)
 dstream <- DSC_DStream(gridsize = .05, lambda = .01)
-ev <- evaluate_cluster(dstream, stream,
+ev <- evaluate_stream(dstream, stream,
   measure = c("numMicroClusters", "purity"), n = 5000, horizon = 100)
 head(ev)
 @
@@ -2324,13 +2324,13 @@ This assignment is translated into macro-cluster assignments and
 evaluated using the ground truth provided by the
 data stream generator.
 <<>>=
-evaluate(km, stream, measure = c("purity", "crand", "SSQ"), n = 1000)
+evaluate_static(km, stream, measure = c("purity", "crand", "SSQ"), n = 1000)
 @
 
 Alternatively, the new data points can also be directly assigned to the closest
 macro-cluster.
 <<>>=
-evaluate(km, stream, c(measure = "purity", "crand", "SSQ"), n = 1000,
+evaluate_static(km, stream, c(measure = "purity", "crand", "SSQ"), n = 1000,
   assign = "macro")
 @
 
@@ -2436,7 +2436,7 @@ for each cluster. We expect the smallest cluster to have around 20\% of generate
 stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
 km <- DSC_Kmeans(3)
 update(km, stream, n = 500)
-evaluate(km, stream, type = "macro", n = 500,
+evaluate_static(km, stream, type = "macro", n = 500,
                         measure = c("crand","LowestWeightPercentage"),
                         callbacks = list(cc = CustomCallback()))
 @
@@ -2741,7 +2741,7 @@ we want to use data points not seen by the algorithms for evaluation.
 <<>>=
 sapply(algorithms, FUN=function(a) {
   reset_stream(stream, pos = 1001)
-  evaluate(a, stream,
+  evaluate_static(a, stream,
     measure = c("numMicroClusters", "purity"),
     type = "micro",
     n = 500)
@@ -2792,7 +2792,7 @@ correctly, but split the lower density clusters into multiple pieces.
 <<>>=
 sapply(algorithms, FUN = function(a) {
   reset_stream(stream, pos = 1001)
-  evaluate(a, stream, measure = c("numMacroClusters", "purity",
+  evaluate_static(a, stream, measure = c("numMacroClusters", "purity",
       "SSQ", "cRand", "silhouette"),
     n = 500, assign = "micro", type = "macro")
 })
@@ -2840,7 +2840,7 @@ algorithms <- list(
 )
 @
 
-We apply \code{evaluate_cluster()} to each of the clustering algorithms, and
+We apply \code{evaluate_stream()} to each of the clustering algorithms, and
 we evaluate and
 cluster 5000 data points
 using the prequential evaluation method with a horizon of 250 points.
@@ -2851,7 +2851,7 @@ evaluations for each algorithm.
 <<>>=
 evaluation <- lapply(algorithms, FUN = function(a) {
   reset_stream(stream)
-  evaluate_cluster(a, stream, horizon = 100, n = 5000, measure = "crand",
+  evaluate_stream(a, stream, horizon = 100, n = 5000, measure = "crand",
     type = "macro", assign = "micro")
 })
 @

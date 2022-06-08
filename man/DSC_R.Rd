@@ -7,7 +7,15 @@
 \usage{
 DSC_R(...)
 
-\method{update}{DSC_R}(object, dsd, n = 1, verbose = FALSE, block = 10000L, ...)
+\method{update}{DSC_R}(
+  object,
+  dsd,
+  n = 1,
+  verbose = FALSE,
+  block = 10000L,
+  assignment = FALSE,
+  ...
+)
 }
 \arguments{
 \item{...}{further arguments.}
@@ -21,11 +29,17 @@ DSC_R(...)
 \item{verbose}{logical; show progress?}
 
 \item{block}{process blocks of data to improve speed.}
+
+\item{assignment}{logical; return a vector with cluster assignments?}
 }
 \description{
 Abstract class for implementing R-based clusterers.
 }
 \details{
+\link{DSC_R} cannot be instantiated.
+
+\strong{Implementing new Classes}
+
 To implement a new clusterer you need to create an S3 class with elements \code{description} and
 \code{RObj}. \code{RObj} needs to be a reference class with methods:
 \itemize{
@@ -49,7 +63,7 @@ Other DSC:
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC}()},
 \code{\link{animate_cluster}()},
-\code{\link{evaluate}()},
+\code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
 \code{\link{predict}()},

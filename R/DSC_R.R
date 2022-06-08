@@ -21,6 +21,11 @@
 #'
 #' Abstract class for implementing R-based clusterers.
 #'
+#'
+#' [DSC_R] cannot be instantiated.
+#'
+#' **Implementing new Classes**
+#'
 #' To implement a new clusterer you need to create an S3 class with elements `description` and
 #' `RObj`. `RObj` needs to be a reference class with methods:
 #'
@@ -42,6 +47,7 @@
 #' @param n number of data points taken from the stream.
 #' @param verbose logical; show progress?
 #' @param block process blocks of data to improve speed.
+#' @param assignment logical; return a vector with cluster assignments?
 #' @param ... further arguments.
 #' @author Michael Hahsler
 #' @export
@@ -59,6 +65,7 @@ update.DSC_R <- function(object,
   n = 1,
   verbose = FALSE,
   block = 10000L,
+  assignment = FALSE,
   ...) {
   ### object contains an RObj which is  a reference object with a cluster method
 
@@ -82,6 +89,7 @@ update.DSC_R <- function(object,
   for (bl in .make_block(n, block)) {
     p <- get_points(dsd, bl, info = FALSE)
     res <- object$RObj$cluster(p, ...)
+
     if (verbose) {
       total <- total + bl
       cat("Processed",
@@ -94,7 +102,15 @@ update.DSC_R <- function(object,
     }
   }
 
-  invisible(res)
+  if (!assignment)
+    return(invisible(NULL))
+
+  # figure out assignment if the algorithm does not provide it
+  if (is.null(res)) {
+    res <- predict(object, p)
+  }
+
+  res
 }
 
 ### accessors

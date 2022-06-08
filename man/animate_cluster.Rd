@@ -25,13 +25,13 @@ animate_cluster(
 \item{dsd}{a \link{DSD}}
 
 \item{measure}{the evaluation measure that should be graphed below the
-animation (see \code{\link[=evaluate_cluster]{evaluate_cluster()}}.)}
+animation (see \code{\link[=evaluate_stream]{evaluate_stream()}}.)}
 
 \item{horizon}{the number of points displayed at once/used for evaluation.}
 
 \item{n}{the number of points to be plotted}
 
-\item{type, assign, assignmentMethod, noise}{are passed on to \code{\link[=evaluate_cluster]{evaluate_cluster()}} to calculate the
+\item{type, assign, assignmentMethod, noise}{are passed on to \code{\link[=evaluate_stream]{evaluate_stream()}} to calculate the
 evaluation measure.}
 
 \item{wait}{the time interval between each frame}
@@ -76,7 +76,7 @@ Other DSC:
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC}()},
-\code{\link{evaluate}()},
+\code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
 \code{\link{predict}()},
@@ -90,7 +90,8 @@ Other plot:
 \code{\link{plot.DSD}()}
 
 Other evaluation: 
-\code{\link{evaluate}()}
+\code{\link{evaluate.DSC}},
+\code{\link{evaluate}}
 }
 \author{
 Michael Hahsler

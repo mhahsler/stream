@@ -86,7 +86,7 @@ Other DSC:
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC}()},
 \code{\link{animate_cluster}()},
-\code{\link{evaluate}()},
+\code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{predict}()},
 \code{\link{prune_clusters}()},

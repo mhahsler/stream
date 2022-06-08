@@ -45,6 +45,7 @@ Other DST:
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
+\code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{update}()}
 

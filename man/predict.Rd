@@ -69,6 +69,7 @@ Other DST:
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},
+\code{\link{evaluate}},
 \code{\link{update}()}
 
 Other DSC: 
@@ -79,7 +80,7 @@ Other DSC:
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC}()},
 \code{\link{animate_cluster}()},
-\code{\link{evaluate}()},
+\code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
 \code{\link{prune_clusters}()},
