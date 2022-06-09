@@ -153,7 +153,7 @@ get_points.DSD_Memory <- function(x,
         n_left,
         " are available.")
     if (outofpoints == "warn")
-      warning("Not enough data points left in stream! Remaining points returned.")
+      warning("Not enough data points left in stream, returning the remaining ", n_left, " points!")
     n <- n_left
   }
 

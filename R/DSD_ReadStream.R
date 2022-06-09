@@ -122,9 +122,10 @@ DSD_ReadStream <- function(file,
   if (!is(file, "connection"))
     stop("Please pass a valid connection!")
 
-  # open the connection if its closed
+  # open the connection if its closed. We will keep it open
+  # (it holds the position in the stream) till close_stream() is called.
   if (!isOpen(file))
-    open(file)
+    open(file, "r")
 
   # read first point to figure out structure!
   if (skip > 0L)
@@ -139,13 +140,11 @@ DSD_ReadStream <- function(file,
 
   # reset stream if possible (otherwise first point is lost)
   if (isSeekable(file)) {
-    seek(file, where = 0L)
-    if (skip > 0L)
-      readLines(file, n = skip)
-    if (header)
-      readLines(file, n = 1L)
+    seek(file, where = 0L, rw = "r")
+    if (skip + header > 0L)
+      readLines(file, n = skip + header)
   } else
-    warning("Stream is not seekable. Some data points will be lost.")
+    warning("Stream is not seekable. First data point is lost.")
 
   # select columns to take
   if (!is.null(take)) {
@@ -168,13 +167,20 @@ DSD_ReadStream <- function(file,
   d <- ncol(remove_info(point))
 
   # fix data types for reading: integer -> numeric, factor -> character
-  colClasses <- sapply(point[1L, ], class)
+  colClasses <- sapply(point[1L,], class)
   colClasses[colClasses == "integer"] <- "numeric"
   colClasses[colClasses == "factor"] <- "character"
 
   l <- list(
-    description = paste0('File Data Stream: ', basename(summary(file)$description),
-      '(d = ', d, ', k = ', k, ')'),
+    description = paste0(
+      'File Data Stream: ',
+      basename(summary(file)$description),
+      '(d = ',
+      d,
+      ', k = ',
+      k,
+      ')'
+    ),
     d = d,
     k = k,
     file = file,
@@ -208,7 +214,7 @@ get_points.DSD_ReadStream <- function(x,
   ## remember position in case the request fails
   pos <- NA
   if (isSeekable(x$file))
-    pos <- seek(x$file)
+    pos <- seek(x$file, rw = "r")
 
   lines <- character(0)
   try(lines <- readLines(con = x$file, n = n), silent = !.DEBUG)
@@ -216,12 +222,22 @@ get_points.DSD_ReadStream <- function(x,
   if (length(lines) < n) {
     if (outofpoints == "stop") {
       if (is.na(pos))
-        stop("Not enough data points left in the stream! Connection not seekable, so up to n data points are lost.")
-      seek(x$file, where = pos)
-      stop("Not enough data points left in the stream!")
+        stop(
+          "Not enough data points left in the stream! Connection not seekable, ",
+          length(lines),
+          " data points are lost."
+        )
+      seek(x$file, where = pos, rw = "r")
+      stop("Not enough data points left in stream! Only ",
+        length(lines),
+        " are available.")
     }
     if (outofpoints == "warn")
-      warning("Not enough data points left in the stream!")
+      warning(
+        "Not enough data points left in stream, returning the remaining ",
+        length(lines),
+        " points!"
+      )
   }
 
   d <- NULL
@@ -235,9 +251,11 @@ get_points.DSD_ReadStream <- function(x,
       ),
       x$read.table.args
     )),
-    silent = !.DEBUG))
+    silent = !.DEBUG)
+  )
 
-  if (is.null(d)) {
+  if (is.null(d))
+  {
     ## no data: create conforming data.frame with 0 rows
     d <- data.frame()
     for (i in seq_along(x$colClasses))
@@ -267,16 +285,15 @@ reset_stream.DSD_ReadStream <- function(dsd, pos = 1) {
   if (!isSeekable(dsd$file))
     stop("Underlying conneciton does not support seek!")
 
-  # got to the beginning of the file
-  seek(dsd$file, where = 0L)
+  # go to the the first line of the data
+  seek(dsd$file, where = 0L, rw = "r")
+  if (dsd$skip + dsd$header > 0L)
+    readLines(dsd$file, n = dsd$skip + dsd$header)
 
   # skip to the pos
-  if (dsd$skip > 0L)
-    readLines(dsd$file, n = dsd$skip)
-  if (dsd$header)
-    readLines(dsd$file, n = 1L)
   if (pos > 1L)
     readLines(dsd$file, n = pos - 1L)
+
   invisible(NULL)
 }
 

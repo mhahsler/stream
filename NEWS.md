@@ -2,7 +2,7 @@
 
 ## New Features
 * We now support %>%.
-* New base class DSF for data stream Filters.
+* New base class DSF for data stream filters.
 * New DSF: DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
 * New DST: DST_Multi, DSD_NULL
 * DSD_ReadCSV gained parameter col.names
@@ -22,6 +22,7 @@
   separated from clusters.
 * evaluate() is now called evaluate_static() and evaluate_cluster is evaluate_stream(), both are
   now generics.
+* plot for DSC now automatically finds micro and macro-clusters to plot.
 
 # stream 1.5-1 (05/09/22)
 

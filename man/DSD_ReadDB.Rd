@@ -26,7 +26,8 @@ with via \link[DBI:DBI-package]{DBI::DBI}. You need to connect to the data base 
 query using \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}} to obtain a result set. Make sure that your
 query only includes the columns that should be included in the stream
 (including class and outlier marking columns). Do not forget to close the
-result set and the data base connection.
+result set and the data base connection. \code{\link[=reset_stream]{reset_stream()}} is not available
+for this type of stream.
 
 If additional information is available (e.g., class information), then the SQL
 statement needs to make sure that the columns have the appropriate name starting with \code{.}.
