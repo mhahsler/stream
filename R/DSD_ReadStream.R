@@ -211,27 +211,17 @@ get_points.DSD_ReadStream <- function(x,
   n <- as.integer(n)
   outofpoints <- match.arg(outofpoints)
 
-  ## remember position in case the request fails
-  pos <- NA
-  if (isSeekable(x$file))
-    pos <- seek(x$file, rw = "r")
-
   lines <- character(0)
   try(lines <- readLines(con = x$file, n = n), silent = !.DEBUG)
 
   if (length(lines) < n) {
-    if (outofpoints == "stop") {
-      if (is.na(pos))
+    if (outofpoints == "stop")
         stop(
           "Not enough data points left in the stream! Connection not seekable, ",
           length(lines),
           " data points are lost."
         )
-      seek(x$file, where = pos, rw = "r")
-      stop("Not enough data points left in stream! Only ",
-        length(lines),
-        " are available.")
-    }
+
     if (outofpoints == "warn")
       warning(
         "Not enough data points left in stream, returning the remaining ",
@@ -254,8 +244,7 @@ get_points.DSD_ReadStream <- function(x,
     silent = !.DEBUG)
   )
 
-  if (is.null(d))
-  {
+  if (is.null(d)) {
     ## no data: create conforming data.frame with 0 rows
     d <- data.frame()
     for (i in seq_along(x$colClasses))

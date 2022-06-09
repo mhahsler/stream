@@ -66,9 +66,6 @@ expect_equal(ncol(points), ncol(df))
 reset_stream(stream)
 points <- NA
 expect_error(points <- get_points(stream, n = 101))
-points <- get_points(stream, n = 100)
-expect_equivalent(nrow(points), 100L)
-expect_equal(ncol(points), ncol(df))
 expect_error(points <- get_points(stream, n = 1))
 
 reset_stream(stream)
@@ -77,6 +74,7 @@ expect_warning(points <-
     get_points(stream, n = 101, outofpoints = "warn"))
 expect_equivalent(nrow(points), 100L)
 expect_equal(ncol(points), ncol(df))
+expect_error(points <- get_points(stream, n = 1))
 
 close_stream(stream)
 unlink("test.stream")
