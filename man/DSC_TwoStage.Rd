@@ -39,7 +39,7 @@ reclustering is automatically performed.
 Available clustering methods can be found in the See Also section below.
 }
 \examples{
-stream <- DSD_Gaussians(k = 3)
+stream <- DSD_Gaussians(k = 3, d = 2)
 
 # Create a clustering process that uses a window for the online stage and
 # k-means for the offline stage (reclustering)
@@ -54,7 +54,7 @@ win_km
 win_km$micro
 win_km$macro
 
-plot(win_km, stream, type = "both")
+plot(win_km, stream)
 evaluate_static(win_km, stream, assign = "macro")
 }
 \seealso{

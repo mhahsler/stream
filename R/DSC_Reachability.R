@@ -32,7 +32,7 @@
 #' of pairwise directly reachable micro-clusters.  All mutually reachable
 #' micro-clusters are put in the same cluster.
 #'
-#' Reachability uses internally \code{DSC_Hierarchical} with single link.
+#' Reachability uses internally [DSC_Hierarchical] with single link.
 #'
 #' [update()] and [`recluster()`] invisibly return the assignment of the data points
 #' to clusters.
@@ -68,13 +68,14 @@
 #'
 #' reach <- DSC_Reachability(epsilon=0.3)
 #' recluster(reach, sample)
+#' reach
 #'
 #' plot(reach, stream, type="both")
 #'
 #' # For comparison we using reachability clustering directly on data points
 #' # Note: reachability is not a data stream clustering algorithm taking O(n^2)
 #' # time and space.
-#' reach <- DSC_Reachability(epsilon=0.2)
+#' reach <- DSC_Reachability(epsilon = 0.2)
 #' update(reach, stream, 500)
 #' reach
 #' plot(reach, stream)

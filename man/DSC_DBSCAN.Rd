@@ -20,8 +20,8 @@ used.}
 method.}
 }
 \value{
-An object of class \code{DSC_DBSCAN} (a subclass of \code{DSC},
-\code{DSC_R}, \code{DSC_Macro}).
+An object of class \code{DSC_DBSCAN} (a subclass of \link{DSC},
+\link{DSC_R}, \link{DSC_Macro}).
 }
 \description{
 Macro Clusterer.
@@ -52,11 +52,12 @@ update(sample, stream, 500)
 
 dbscan <- DSC_DBSCAN(eps = .05)
 recluster(dbscan, sample)
-plot(dbscan, stream, type = "both")
+plot(dbscan, stream)
+plot(dbscan, stream, type = "macro")
 
-# For comparison we can cluster some data with DBSCAN directly
-# Note: DBSCAN is not suitable for data streams since it passes over the data
-# several times.
+# For comparison, we can cluster some data with DBSCAN directly (the data points are
+# considered micro-clusters). Note: DBSCAN is not suitable for data streams since
+# it passes over the data several times.
 dbscan <- DSC_DBSCAN(eps = .05)
 assignment <- update(dbscan, stream, 500)
 head(assignment)
@@ -71,8 +72,6 @@ databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
 Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Macro}}
-
 Other DSC_Macro: 
 \code{\link{DSC_EA}()},
 \code{\link{DSC_Hierarchical}()},

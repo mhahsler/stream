@@ -1,6 +1,6 @@
 #######################################################################
 # stream -  Infrastructure for Data Stream Mining
-# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest 
+# Copyright (C) 2013 Michael Hahsler, Matthew Bolanos, John Forrest
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,10 +20,12 @@
 ### internal helper to figure out type
 
 get_type <- function(x, type = c("auto", "micro", "macro")) {
-    type <- match.arg(type)
-    if(type=="auto") {
-	if("DSC_Macro" %in% class(x)) type <- "macro"
-	else type <- "micro"
-    }
-    type
+  type <- match.arg(type)
+  if (type == "auto") {
+    if (is(x, "DSC_Macro"))
+      type <- "macro"
+    else
+      type <- "micro"
+  }
+  type
 }

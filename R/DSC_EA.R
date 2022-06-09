@@ -40,26 +40,27 @@
 #' @param populationSize number of solutions that the evolutionary algorithm
 #' maintains
 #' @author Matthias Carnein \email{Matthias.Carnein@@uni-muenster.de}
-#' @references Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary
+#' @references
+#' Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary
 #' Stream Clustering Utilizing Idle Times", Big Data Research.
 #' @examples
-#'
-#' stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 1000)
+#' stream <- DSD_Gaussians(k = 3, d = 2) %>% DSD_Memory(n = 1000)
 #'
 #' ## online algorithm
-#' dbstream <- DSC_DBSTREAM(r=0.1)
+#' dbstream <- DSC_DBSTREAM(r = 0.1)
 #'
 #' ## offline algorithm (note: we use a small number of generations
 #' ##                          to make this run faster.)
-#' EA <- DSC_EA(k=3, generations=100)
+#' EA <- DSC_EA(k = 3, generations = 100)
 #'
 #' ## create pipeline and insert observations
 #' two <- DSC_TwoStage(dbstream, EA)
-#' update(two, stream, n=1000)
+#' update(two, stream, n = 1000)
+#' two
 #'
-#' ## plot resut
+#' ## plot result
 #' reset_stream(stream)
-#' plot(two, stream, type="both")
+#' plot(two, stream)
 #'
 #' ## if we have time, evaluate additional generations. This can be
 #' ## called at any time, also between observations.

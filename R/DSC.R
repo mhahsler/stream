@@ -164,42 +164,22 @@ summary.DSC <- function(object, ...)
 ### End of interface
 #####################################################################3
 
+#' @describeIn DSC Used as internal interface.
+#' @export
 get_microclusters <- function(x, ...)
   UseMethod("get_microclusters")
 
-get_microclusters.DSC <- function(x, ...) {
-  stop(gettextf(
-    "No micro-clusters available for class '%s'.",
-    paste(class(x), collapse = ", ")
-  ))
-}
-
+#' @describeIn DSC Used as internal interface.
+#' @export
 get_microweights <- function(x, ...)
   UseMethod("get_microweights")
 
-get_microweights.DSC <- function(x, ...) {
-  stop(gettextf(
-    "No weights for micro-clusters available for class '%s'.",
-    paste(class(x), collapse = ", ")
-  ))
-}
-
+#' @describeIn DSC Used as internal interface.
+#' @export
 get_macroclusters <- function(x, ...)
   UseMethod("get_macroclusters")
 
-get_macroclusters.DSC <- function(x, ...) {
-  stop(gettextf(
-    "No macro-clusters available for class '%s'.",
-    paste(class(x), collapse = ", ")
-  ))
-}
-
+#' @describeIn DSC Used as internal interface.
+#' @export
 get_macroweights <- function(x, ...)
   UseMethod("get_macroweights")
-
-get_macroweights.DSC <- function(x, ...) {
-  stop(gettextf(
-    "No weights for macro-clusters available for class '%s'.",
-    paste(class(x), collapse = ", ")
-  ))
-}

@@ -45,22 +45,23 @@
 #' indicating no memory restriction.
 #' @author Dennis Assenmacher (\email{Dennis.Assenmacher@@uni-muenster.de}),
 #' Matthias Carnein (\email{Matthias.Carnein@@uni-muenster.de})
-#' @references Zhang T, Ramakrishnan R and Livny M (1996), "BIRCH: An Efficient
-#' Data Clustering Method for Very Large Databases", \emph{In Proceedings of
-#' the 1996 ACM SIGMOD International Conference on Management of Data.}
+#' @references
+#' Zhang T, Ramakrishnan R and Livny M (1996), "BIRCH: An Efficient
+#' Data Clustering Method for Very Large Databases", _In Proceedings of
+#' the 1996 ACM SIGMOD International Conference on Management of Data._
 #' Montreal, Quebec, Canada , pp. 103-114. ACM.
 #'
 #' Zhang T, Ramakrishnan R and Livny M (1997), "BIRCH: A new data clustering
-#' algorithm and its applications", \emph{Data Mining and Knowledge Discovery.}
+#' algorithm and its applications", _Data Mining and Knowledge Discovery._
 #' Vol. 1(2), pp. 141-182.
 #' @examples
-#'
 #' stream <- DSD_Gaussians(k = 3, d = 2)
 #'
 #' BIRCH <- DSC_BIRCH(threshold = .1, branching = 8, maxLeaf = 20)
 #' update(BIRCH, stream, n = 500)
+#' BIRCH
 #'
-#' plot(BIRCH,stream)
+#' plot(BIRCH, stream)
 #' @export
 DSC_BIRCH <-
   function(threshold,

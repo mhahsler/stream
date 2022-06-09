@@ -58,24 +58,29 @@ for \code{"scatter"} the first two dimensions are plotted.}
 Method to plot the result of data stream data clustering. To plot \link{DSD} see \code{\link[=plot.DSD]{plot.DSD()}}.
 }
 \examples{
-stream <- DSD_Gaussians(k=3, d=3)
+stream <- DSD_Gaussians(k = 3, d = 3, noise = 0.05)
 
 ## create and plot micro-clusters
 dstream <- DSC_DStream(gridsize = 0.1)
 update(dstream, stream, 500)
+dstream
+
 plot(dstream)
 
-## plot with data, projected on the first two principal components
-## and dimensions 2 and 3
+## plot with data
 plot(dstream, stream)
+
+## plot micro or macro-clusters only
+plot(dstream, stream, type = "micro")
+plot(dstream, stream, type = "macro")
+
+## plot projected on the first two principal components
+## and on dimensions 2 and 3
 plot(dstream, stream, method = "pca")
 plot(dstream, stream, dim = c(2, 3))
 
-## plot micro and macro-clusters
-plot(dstream, stream, type = "both")
-
-## show assignment area
-plot(dstream, stream, type = "both", assignment = TRUE)
+## D-Stream has a special implementation to show assignment areas
+plot(dstream, stream, assignment = TRUE)
 }
 \seealso{
 Other DSC: 

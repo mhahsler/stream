@@ -28,7 +28,7 @@ get_attraction(x, relative = FALSE, grid_type = "dense", dist = FALSE)
   x,
   dsd = NULL,
   n = 500,
-  type = c("micro", "macro", "both"),
+  type = c("auto", "micro", "macro", "both"),
   grid = FALSE,
   grid_type = "used",
   assignment = FALSE,
@@ -98,8 +98,8 @@ or everything together (\code{type = "all"}). \code{type = "auto"} leaves to the
 \item{...}{further argument are passed on.}
 }
 \value{
-An object of class \code{DSC_DStream} (subclass of \code{DSC},
-\code{DSC_R}, \code{DSC_Micro}).
+An object of class \code{DSC_DStream} (subclass of \link{DSC},
+\link{DSC_R}, \link{DSC_Micro}).
 }
 \description{
 Micro Clusterer with reclustering.
@@ -114,14 +114,14 @@ Every gaptime number of points sporadic grid cells are removed.
 
 For reclustering D-Stream (2007 version) merges adjacent dense grids to form
 macro-clusters and then assigns adjacent transitional grids to
-macro-clusters. This behavior is implemented as \code{attraction=FALSE}.
+macro-clusters. This behavior is implemented as \code{attraction = FALSE}.
 
 The 2009 version of the algorithm adds the concept of attraction between
 grids cells. If \code{attraction=TRUE} is used then the algorithm produces
 macro-clusters based on attraction between dense adjacent grids (uses
 \code{Cm2} which in the original algorithm is equal to \code{Cm}).
 
-For many functions (e.g., \code{get_centers()}, \code{plot()}), D-Stream
+For many functions (e.g., \code{\link[=get_centers]{get_centers()}}, \code{\link[=plot]{plot()}}), D-Stream
 adds a parameter \code{grid_type} with possible values of \code{"dense"},
 \code{"transitional"}, \code{"sparse"}, \code{"all"} and \code{"used"}. This
 only returns the selected type of grid cells. \code{"used"} includes dense
@@ -137,6 +137,7 @@ save() or saveRDS(). This functionality will be added later!
 \examples{
 stream <- DSD_BarsAndGaussians(noise = .05)
 plot(stream)
+
 dstream1 <- DSC_DStream(gridsize = 1, Cm = 1.5)
 update(dstream1, stream, 1000)
 dstream1
@@ -161,7 +162,7 @@ plot(dstream1, stream, grid = TRUE, grid_type = "sparse")
 # standard D-Stream uses reachability
 nclusters(dstream1, type = "macro")
 get_centers(dstream1, type = "macro")
-plot(dstream1, stream, type = "both", grid = TRUE)
+plot(dstream1, stream, type = "macro")
 evaluate_static(dstream1, stream, measure = "crand", type = "macro")
 
 # use attraction for reclustering
@@ -169,7 +170,7 @@ dstream2 <- DSC_DStream(gridsize = 1, attraction = TRUE, Cm = 1.5)
 update(dstream2, stream, 1000)
 dstream2
 
-plot(dstream2, stream, type = "both", grid = TRUE)
+plot(dstream2, stream, grid = TRUE)
 evaluate_static(dstream2, stream, measure = "crand", type = "macro")
 }
 \references{

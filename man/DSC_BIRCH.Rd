@@ -38,13 +38,13 @@ micro-clusters. Rebuilding the tree is realized by inserting all leaf-CF
 nodes into a new tree structure with an increased threshold.
 }
 \examples{
-
 stream <- DSD_Gaussians(k = 3, d = 2)
 
 BIRCH <- DSC_BIRCH(threshold = .1, branching = 8, maxLeaf = 20)
 update(BIRCH, stream, n = 500)
+BIRCH
 
-plot(BIRCH,stream)
+plot(BIRCH, stream)
 }
 \references{
 Zhang T, Ramakrishnan R and Livny M (1996), "BIRCH: An Efficient

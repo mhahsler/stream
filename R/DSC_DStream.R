@@ -29,24 +29,24 @@
 #'
 #' For reclustering D-Stream (2007 version) merges adjacent dense grids to form
 #' macro-clusters and then assigns adjacent transitional grids to
-#' macro-clusters. This behavior is implemented as \code{attraction=FALSE}.
+#' macro-clusters. This behavior is implemented as `attraction = FALSE`.
 #'
 #' The 2009 version of the algorithm adds the concept of attraction between
-#' grids cells. If \code{attraction=TRUE} is used then the algorithm produces
+#' grids cells. If `attraction=TRUE` is used then the algorithm produces
 #' macro-clusters based on attraction between dense adjacent grids (uses
-#' \code{Cm2} which in the original algorithm is equal to \code{Cm}).
+#' `Cm2` which in the original algorithm is equal to `Cm`).
 #'
-#' For many functions (e.g., \code{get_centers()}, \code{plot()}), D-Stream
-#' adds a parameter \code{grid_type} with possible values of \code{"dense"},
-#' \code{"transitional"}, \code{"sparse"}, \code{"all"} and \code{"used"}. This
-#' only returns the selected type of grid cells. \code{"used"} includes dense
+#' For many functions (e.g., [get_centers()], [plot()]), D-Stream
+#' adds a parameter `grid_type` with possible values of `"dense"`,
+#' `"transitional"`, `"sparse"`, `"all"` and `"used"`. This
+#' only returns the selected type of grid cells. `"used"` includes dense
 #' and adjacent transitional cells which are used in D-Stream for reclustering.
 #'
-#' For plot D-Stream also provides extra parameters \code{"grid"} and
-#' \code{"grid_type"} to show micro-clusters as grid cells (density represented
+#' For plot D-Stream also provides extra parameters `"grid"` and
+#' `"grid_type"` to show micro-clusters as grid cells (density represented
 #' by gray values).
 #'
-#' Note that \code{DSC_DStream} can at this point not be saved to disk using
+#' Note that `DSC_DStream` can at this point not be saved to disk using
 #' save() or saveRDS(). This functionality will be added later!
 #'
 #' @aliases DSC_DStream dstream d-stream D-Stream
@@ -64,19 +64,19 @@
 #' @param Cl density threshold to detect sporadic grids (0 > Cl > Cm).
 #' Transitional grids have a density between Cl and Cm.
 #' @param attraction compute and store information about the attraction between
-#' adjacent grids. If \code{TRUE} then attraction is used to create
+#' adjacent grids. If `TRUE` then attraction is used to create
 #' macro-clusters, otherwise macro-clusters are created by merging adjacent
 #' dense grids.
 #' @param epsilon overlap parameter for attraction as a proportion of
-#' \code{gridsize}.
+#' `gridsize`.
 #' @param Cm2 threshold on attraction to join two dense grid cells (as a
 #' proportion on the average expected attraction).  In the original algorithm
-#' \code{Cm2} is equal to \code{Cm}.
+#' `Cm2` is equal to `Cm`.
 #' @param k alternative to Cm2 (not in the original algorithm).  Create k
 #' clusters based on attraction. In case of more than k unconnected components,
 #' closer groups of MCs are joined.
 #' @param N Fix the number of grid cells used for the calculation of the
-#' density thresholds with Cl and Cm. If \code{N} is not given (0) then the
+#' density thresholds with Cl and Cm. If `N` is not given (0) then the
 #' algorithm tries to determine N from the data. Note that this means that N
 #' potentially increases over time and outliers might produce an extremely
 #' large value which will lead to a sudden creation of too many dense
@@ -86,8 +86,8 @@
 #' weight).
 #' @param grid_type the attraction between what grid types should be returned?
 #' @param dist make attraction symmetric and transform into a distance.
-#' @return An object of class \code{DSC_DStream} (subclass of \code{DSC},
-#' \code{DSC_R}, \code{DSC_Micro}).
+#' @return An object of class `DSC_DStream` (subclass of [DSC],
+#' [DSC_R], [DSC_Micro]).
 #' @author Michael Hahsler
 #' @references
 #' Yixin Chen and Li Tu. 2007. Density-based clustering for
@@ -101,6 +101,7 @@
 #' @examples
 #' stream <- DSD_BarsAndGaussians(noise = .05)
 #' plot(stream)
+#'
 #' dstream1 <- DSC_DStream(gridsize = 1, Cm = 1.5)
 #' update(dstream1, stream, 1000)
 #' dstream1
@@ -125,7 +126,7 @@
 #' # standard D-Stream uses reachability
 #' nclusters(dstream1, type = "macro")
 #' get_centers(dstream1, type = "macro")
-#' plot(dstream1, stream, type = "both", grid = TRUE)
+#' plot(dstream1, stream, type = "macro")
 #' evaluate_static(dstream1, stream, measure = "crand", type = "macro")
 #'
 #' # use attraction for reclustering
@@ -133,7 +134,7 @@
 #' update(dstream2, stream, 1000)
 #' dstream2
 #'
-#' plot(dstream2, stream, type = "both", grid = TRUE)
+#' plot(dstream2, stream, grid = TRUE)
 #' evaluate_static(dstream2, stream, measure = "crand", type = "macro")
 #' @export
 DSC_DStream <- function(gridsize,
@@ -594,7 +595,7 @@ microToMacro.DSC_DStream <- function(x, micro = NULL, ...) {
 plot.DSC_DStream <- function(x,
   dsd = NULL,
   n = 500,
-  type = c("micro", "macro", "both"),
+  type = c("auto", "micro", "macro", "both"),
   grid = FALSE,
   grid_type = "used",
   assignment = FALSE,
@@ -609,6 +610,8 @@ plot.DSC_DStream <- function(x,
     col_points <- gray(.1, alpha = .3)
 
   type <- match.arg(type)
+  if (type == "auto")
+    type <- "both"
 
   ### assignment == grid
   if (assignment)
@@ -669,7 +672,7 @@ plot.DSC_DStream <- function(x,
     if (!is.null(dim))
       ps <- ps[, dim]
 
-    ### handle noise (samll circle)
+    ### handle noise (small circle)
     pch[is.na(pch)] <- .noise_pch
     points(ps, col = col_points, pch = pch)
   }

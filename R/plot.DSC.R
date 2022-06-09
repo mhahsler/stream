@@ -26,24 +26,29 @@
 #' \pkg{graphics}.
 #' @author Michael Hahsler
 #' @examples
-#' stream <- DSD_Gaussians(k=3, d=3)
+#' stream <- DSD_Gaussians(k = 3, d = 3, noise = 0.05)
 #'
 #' ## create and plot micro-clusters
 #' dstream <- DSC_DStream(gridsize = 0.1)
 #' update(dstream, stream, 500)
+#' dstream
+#'
 #' plot(dstream)
 #'
-#' ## plot with data, projected on the first two principal components
-#' ## and dimensions 2 and 3
+#' ## plot with data
 #' plot(dstream, stream)
+#'
+#' ## plot micro or macro-clusters only
+#' plot(dstream, stream, type = "micro")
+#' plot(dstream, stream, type = "macro")
+#'
+#' ## plot projected on the first two principal components
+#' ## and on dimensions 2 and 3
 #' plot(dstream, stream, method = "pca")
 #' plot(dstream, stream, dim = c(2, 3))
 #'
-#' ## plot micro and macro-clusters
-#' plot(dstream, stream, type = "both")
-#'
-#' ## show assignment area
-#' plot(dstream, stream, type = "both", assignment = TRUE)
+#' ## D-Stream has a special implementation to show assignment areas
+#' plot(dstream, stream, assignment = TRUE)
 #' @export
 plot.DSC <- function(x,
   dsd = NULL,
@@ -57,97 +62,86 @@ plot.DSC <- function(x,
   method = c("pairs", "scatter", "pca"),
   dim = NULL,
   type = c("auto", "micro", "macro", "both"),
-  # we keep 'both' for compatibility reasons
   assignment = FALSE,
   ### assignment is not implemented
   ...) {
-  type <- match.arg(type)
   method <- match.arg(method)
+  type <- match.arg(type)
 
   if (is.null(col_points))
     col_points <- .points_col
 
-  if (type == "auto")
-    type <- get_type(x)
-
-  ## plot micro or macro clusters
-  if (type != "both") {
-    ## method can be pairs, scatter or pca
-    centers <- get_centers(x, type = type)
-    k <- nrow(centers)
-
-    if (k < 1) {
-      warning("No clusters to plot!")
-      plot(NA, NA, xlim = c(0, 0), ylim = c(0, 0))
-      return()
-    }
-
-    if (weights)
-      cex_clusters <- get_weights(x, type = type, scale = scale)
-    else
-      cex_clusters <- rep(1, k)
-
-    if (type == "micro") {
-      col <- rep(col_clusters[1], k)
-      mpch <- rep(1, k)
-      lwd <- rep(1, k)
-    } else if (type == "macro") {
-      cex_clusters <- cex_clusters * 1.5
-      col <- rep(col_clusters[2], k)
-      mpch <- rep(3, k)
-      lwd <- rep(2, k)
-    }
-
-  } else {
-    ### both
-    centers_mi <- get_centers(x, type = "micro")
-    centers_ma <- get_centers(x, type = "macro")
-
-    k_mi <- nrow(centers_mi)
-    k_ma <- nrow(centers_ma)
-
-    if (k_mi < 1L) {
-      warning("No clusters to plot!")
-      plot(NA, NA, xlim = c(0, 0), ylim = c(0, 0))
-      return()
-    }
-
-    ### fix names if necessary
-    colnames(centers_mi) <- colnames(centers_ma)
-    centers <- rbind(centers_mi, centers_ma)
-
-    if (weights)
-      cex_clusters <- c(
-        get_weights(x, type = "micro", scale = scale),
-        get_weights(x, type = "macro", scale = scale * 1.5)
-      )
-    else
-      cex_clusters <-
-      c(rep(cex, k_mi), rep(cex * 2, k_ma))
-
-    col <-
-      c(rep(col_clusters[1], k_mi),
-        rep(col_clusters[2], k_ma))
-    mpch <- c(rep(1, k_mi), rep(3, k_ma))
-    lwd <- c(rep(1, k_mi), rep(2, k_ma))
+  micros <- NULL
+  macros <- NULL
+  k_micros <- 0L
+  k_macros <- 0L
+  if (type == "micro" || type == "both" || type == "auto") {
+    try(micros <- get_centers(x, type = "micro"), silent = TRUE)
+    if (is.null(micros) && type != "auto")
+      stop("No micro-clusters available!")
+    if (!is.null(micros))
+      k_micros <- nrow(micros)
   }
+  if (type == "macro" || type == "both"|| type == "auto"){
+    try(macros <- get_centers(x, type = "macro"), silent = TRUE)
+    if (is.null(macros) && type != "auto")
+      stop("No macro-clusters available!")
+    if (!is.null(macros))
+      k_macros <- nrow(macros)
+  }
+
+  # if (k_micros < 1L) {
+  #   warning("No clusters to plot!")
+  #   plot(NA, NA, xlim = c(0, 0), ylim = c(0, 0))
+  #   return()
+  # }
+
+
+  # some clusterers may return an empty data.frame
+  if(k_micros == 0L)
+    micros <- NULL
+  if(k_macros == 0L)
+    macros <- NULL
+
+  ### fix names if necessary
+  if(!is.null(macros) && !is.null(micros))
+    colnames(micros) <- colnames(macros)
+
+  centers <- rbind(micros, macros)
+
+  if (weights)
+    cex_clusters <- c(
+      if (k_micros > 0L)
+        get_weights(x, type = "micro", scale = scale),
+      if (k_macros > 0L)
+        get_weights(x, type = "macro", scale = scale * 1.5)
+    )
+  else
+    cex_clusters <-
+    c(rep(cex, k_micros), rep(cex * 2, k_macros))
+
+  col <-
+    c(rep(col_clusters[1], k_micros),
+      rep(col_clusters[2], k_macros))
+  mpch <- c(rep(.micro_pch, k_micros), rep(.macro_pch, k_macros))
+  lwd <- c(rep(1, k_micros), rep(2, k_macros))
 
   ### prepend data if given so it is in the background
   if (!is.null(dsd)) {
     d <- get_points(dsd, n, info = FALSE)
-    #	names(d) <- names(centers)
-    # fix center names
-    colnames(centers) <- colnames(d)
-    centers <- rbind(d, centers)
-
+    if(!is.null(centers)) {
+      colnames(centers) <- colnames(d)
+      centers <- rbind(d, centers)
+    } else
+      centers <- d
 
     col <- c(rep(col_points[1], n), col)
     cex_clusters <- c(rep(cex[1], n), cex_clusters)
+
     ## TODO: we could use cluster labels for pch
     mpch <- c(rep(1L, n), mpch)
+    mpch <- mpch %% 25   ### pch cannot be more than 25
 
-    ## cannot be more than 25
-    mpch <- mpch %% 25
     lwd <- c(rep(1, n), lwd)
 
     ### handle noise
@@ -162,7 +156,7 @@ plot.DSC <- function(x,
     mpch <- pch
 
   if (!is.null(dim))
-    centers <- centers[, dim]
+    centers <- centers[, dim, drop = FALSE]
 
   ### plot
   if (method == "pairs" &&  ncol(centers) > 2L) {

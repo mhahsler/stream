@@ -48,7 +48,7 @@
 #' ``
 #' @author Michael Hahsler
 #' @examples
-#' stream <- DSD_Gaussians(k = 3)
+#' stream <- DSD_Gaussians(k = 3, d = 2)
 #'
 #' # Create a clustering process that uses a window for the online stage and
 #' # k-means for the offline stage (reclustering)
@@ -63,13 +63,13 @@
 #' win_km$micro
 #' win_km$macro
 #'
-#' plot(win_km, stream, type = "both")
+#' plot(win_km, stream)
 #' evaluate_static(win_km, stream, assign = "macro")
 #' @export
 DSC_TwoStage <- function(micro, macro) {
   l <- list(
-    description = paste(micro$description, " + ",
-      macro$description, sep = ''),
+    description = paste0(micro$description, " + ",
+      macro$description),
     micro = micro,
     macro = macro,
     state = as.environment(list(newdata = TRUE))

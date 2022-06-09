@@ -80,8 +80,12 @@ update.DSC_R <- function(object,
   n <- as.integer(n)
   block <- as.integer(block)
 
-  if (n <= 1L)
-    return(integer(0))
+  if (n < 1L) {
+    if (assignment)
+      return(integer(0))
+    else
+      return(NULL)
+  }
 
   ### TODO: Check data
   if (verbose)

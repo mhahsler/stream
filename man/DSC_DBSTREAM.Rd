@@ -113,12 +113,12 @@ with the permanent id of the strong micro-cluster.
 and the shared density graph, respectively.
 }
 \examples{
-set.seed(2000)
-stream <- DSD_Gaussians(k = 3, noise = 0.05)
+set.seed(1000)
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
 # create clusterer with r = .05
-dbstream <- DSC_DBSTREAM(r = .05 )
-update(dbstream, stream, 2000)
+dbstream <- DSC_DBSTREAM(r = .05)
+update(dbstream, stream, 500)
 dbstream
 
 # check micro-clusters
@@ -126,26 +126,22 @@ nclusters(dbstream)
 head(get_centers(dbstream))
 plot(dbstream, stream)
 
-# plot macro-clusters
-plot(dbstream, stream, type = "both")
-
 # plot micro-clusters with assignment area
-plot(dbstream, stream, type = "both", assignment = TRUE)
+plot(dbstream, stream, type = "none", assignment = TRUE)
 
 
 # DBSTREAM with shared density
 dbstream <- DSC_DBSTREAM(r = .05, shared_density = TRUE, Cm = 5)
-update(dbstream, stream, 1000)
+update(dbstream, stream, 500)
 dbstream
-plot(dbstream, stream, type = "both")
+
+plot(dbstream, stream)
 # plot the shared density graph (several options)
-plot(dbstream, stream, type = "both", shared_density = TRUE)
 plot(dbstream, stream, type = "micro", shared_density = TRUE)
-plot(dbstream, stream, type = "micro", shared_density = TRUE, assignment = TRUE)
 plot(dbstream, stream, type = "none", shared_density = TRUE, assignment = TRUE)
 
 # see how micro and macro-clusters relate
-# each microcluster has an entry with the macro-cluster id
+# each micro-cluster has an entry with the macro-cluster id
 # Note: unassigned micro-clusters (noise) have an NA
 microToMacro(dbstream)
 
@@ -158,12 +154,14 @@ evaluate_static(dbstream, stream, measure="cRand", type="macro")
 data("iris")
 dbstream <- DSC_DBSTREAM(r = 1)
 cl <- update(dbstream, iris[,-5], assignments = TRUE)
+dbstream
+
 head(cl)
 
 # micro-clusters
 plot(iris[,-5], col = cl$.class, pch = cl$.class)
 
-# macro-clusters
+# macro-clusters (2 clusters since reachability cannot separate two of the three species)
 plot(iris[,-5], col = microToMacro(dbstream, cl$.class))
 }
 \references{

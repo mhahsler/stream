@@ -39,12 +39,12 @@ the algorithm computes the coreset of the stream. Reclustering is performed
 by using the \code{kmeans++} algorithm on the coreset.
 }
 \examples{
-
 stream <- DSD_Gaussians(k = 3, d = 2)
+
 BICO <- DSC_BICO(k = 3, p = 10, space = 100, iterations = 10)
 update(BICO, stream, n = 500)
-plot(BICO,stream, type = "both")
 
+plot(BICO,stream)
 }
 \references{
 Hendrik Fichtenberger, Marc Gille, Melanie Schmidt, Chris

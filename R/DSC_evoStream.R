@@ -22,15 +22,15 @@
 #' Micro Clusterer with reclustering.
 #' Stream clustering algorithm based on evolutionary optimization.
 #'
-#' The online component uses a simplified version of \code{DBSTREAM} to
+#' The online component uses a simplified version of [DBSTREAM] to
 #' generate micro-clusters. The micro-clusters are then incrementally
-#' reclustered using an evloutionary algorithm. Evolutionary algorithms create
+#' reclustered using an evolutionary algorithm. Evolutionary algorithms create
 #' slight variations by combining and randomly modifying existing solutions. By
 #' iteratively selecting better solutions, an evolutionary pressure is created
 #' which improves the clustering over time. Since the evolutionary algorithm is
 #' incremental, it is possible to apply it between observations, e.g. in the
 #' idle time of the stream. Whenever there is idle time, we can call the
-#' \code{recluster} function of the reference class to improve the
+#' [recluster()] function of the reference class to improve the
 #' macro-clusters (see example). The evolutionary algorithm can also be applied
 #' as a traditional reclustering step, or a combination of both. In addition,
 #' this implementation also allows to evaluate a fixed number of generations
@@ -54,11 +54,11 @@
 #' @param reclusterGenerations number of EA generations performed during
 #' reclustering
 #' @author Matthias Carnein \email{Matthias.Carnein@@uni-muenster.de}
-#' @references Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary
+#' @references
+#' Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary
 #' Stream Clustering Utilizing Idle Times", Big Data Research.
 #' @examples
-#'
-#' stream <- DSD_Memory(DSD_Gaussians(k = 3, d = 2), 500)
+#' stream <- DSD_Gaussians(k = 3, d = 2) %>% DSD_Memory(n = 500)
 #'
 #' ## init evoStream
 #' evoStream <- DSC_evoStream(r = 0.05, k = 3,
@@ -81,9 +81,9 @@
 #'
 #' ## plot result
 #' reset_stream(stream)
-#' plot(evoStream, stream, type = "both")
+#' plot(evoStream, stream)
 #'
-#' ## if we have time, evaluate additional generations.
+#' ## if we have time, then we can evaluate additional generations.
 #' ## This can be called at any time, also between observations.
 #' ## by default, 1 generation is evaluated after each observation and
 #' ## 1000 generations during reclustering but we set it here to 500
@@ -91,11 +91,10 @@
 #'
 #' ## plot improved result
 #' reset_stream(stream)
-#' plot(evoStream, stream, type = "both")
+#' plot(evoStream, stream)
 #'
 #' ## get assignment of micro to macro clusters
 #' microToMacro(evoStream)
-#'
 #' @export
 DSC_evoStream <-
   function(r,

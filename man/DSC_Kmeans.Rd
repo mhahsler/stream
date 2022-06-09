@@ -54,7 +54,7 @@ used for (re)clustering, the old clustering is deleted.
 }
 \examples{
 set.seed(1000)
-stream <- DSD_Gaussians(k = 3, noise = 0)
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0)
 
 # create micro-clusters via sampling
 sample <- DSC_Sample(k = 20)
@@ -63,18 +63,15 @@ sample
 
 # recluster micro-clusters
 kmeans <- DSC_Kmeans(k=3)
-assignment <- recluster(kmeans, sample)
+recluster(kmeans, sample)
 plot(kmeans, stream, type = "both")
-
-# assignment of the micro clusters
-assignment
 
 
 # For comparison we use k-means directly to cluster data
 # Note: k-means is not a data stream clustering algorithm
 kmeans <- DSC_Kmeans(k = 3)
 update(kmeans, stream, 500)
-plot(kmeans, stream)
+plot(kmeans, stream, type = "macro")
 }
 \seealso{
 Other DSC_Macro: 

@@ -33,7 +33,7 @@ need the supporting data structures. It only stores the cluster centers and
 weights.
 }
 \examples{
-stream <- DSD_Gaussians(k = 3, noise = 0.05)
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
 dstream <- DSC_DStream(gridsize = 0.05)
 update(dstream, stream, 500)

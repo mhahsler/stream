@@ -44,15 +44,15 @@
 #' used.
 #' @param description optional character string to describe the clustering
 #' method.
-#' @return An object of class \code{DSC_DBSCAN} (a subclass of \code{DSC},
-#' \code{DSC_R}, \code{DSC_Macro}).
+#' @return An object of class `DSC_DBSCAN` (a subclass of [DSC],
+#' [DSC_R], [DSC_Macro]).
 #' @author Michael Hahsler
-#' @seealso \code{\link{DSC}}, \code{\link{DSC_Macro}}
-#' @references Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
+#' @references
+#' Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu
 #' (1996). A density-based algorithm for discovering clusters in large spatial
 #' databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
-#' \emph{Proceedings of the Second International Conference on Knowledge
-#' Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
+#' _Proceedings of the Second International Conference on Knowledge
+#' Discovery and Data Mining (KDD-96)._ AAAI Press. pp. 226-231.
 #' @examples
 #' # 3 clusters with 5% noise
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
@@ -63,11 +63,12 @@
 #'
 #' dbscan <- DSC_DBSCAN(eps = .05)
 #' recluster(dbscan, sample)
-#' plot(dbscan, stream, type = "both")
+#' plot(dbscan, stream)
+#' plot(dbscan, stream, type = "macro")
 #'
-#' # For comparison we can cluster some data with DBSCAN directly
-#' # Note: DBSCAN is not suitable for data streams since it passes over the data
-#' # several times.
+#' # For comparison, we can cluster some data with DBSCAN directly (the data points are
+#' # considered micro-clusters). Note: DBSCAN is not suitable for data streams since
+#' # it passes over the data several times.
 #' dbscan <- DSC_DBSCAN(eps = .05)
 #' assignment <- update(dbscan, stream, 500)
 #' head(assignment)

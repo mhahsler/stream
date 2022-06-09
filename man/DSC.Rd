@@ -6,6 +6,10 @@
 \alias{get_weights}
 \alias{get_copy}
 \alias{nclusters}
+\alias{get_microclusters}
+\alias{get_microweights}
+\alias{get_macroclusters}
+\alias{get_macroweights}
 \title{Data Stream Clustering Base Class}
 \usage{
 DSC(...)
@@ -17,6 +21,14 @@ get_weights(x, type = c("auto", "micro", "macro"), scale = NULL, ...)
 get_copy(x)
 
 nclusters(x, type = c("auto", "micro", "macro"), ...)
+
+get_microclusters(x, ...)
+
+get_microweights(x, ...)
+
+get_macroclusters(x, ...)
+
+get_macroweights(x, ...)
 }
 \arguments{
 \item{...}{further parameter}
@@ -70,6 +82,14 @@ which will serialize the objects first appropriately.
 \item \code{get_copy}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
 
 \item \code{nclusters}: Returns the number of micro-clusters from the DSC object.
+
+\item \code{get_microclusters}: Used as internal interface.
+
+\item \code{get_microweights}: Used as internal interface.
+
+\item \code{get_macroclusters}: Used as internal interface.
+
+\item \code{get_macroweights}: Used as internal interface.
 }}
 
 \examples{

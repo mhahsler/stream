@@ -27,6 +27,9 @@
 
 .points_col <- gray(.5, alpha = .5)
 
+.micro_pch <- 1L
+.macro_pch <- 3L
+
 ### helper for doing things in blocks
 .make_block <- function(n, block) {
     if(n<block) return(n)

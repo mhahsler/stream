@@ -53,12 +53,12 @@
 #' Schwiegelshohn, Christian Sohler: BICO: BIRCH Meets Coresets for k-Means
 #' Clustering. \emph{ESA 2013:} 481-492.
 #' @examples
-#'
 #' stream <- DSD_Gaussians(k = 3, d = 2)
+#'
 #' BICO <- DSC_BICO(k = 3, p = 10, space = 100, iterations = 10)
 #' update(BICO, stream, n = 500)
-#' plot(BICO,stream, type = "both")
 #'
+#' plot(BICO,stream)
 #' @export
 DSC_BICO <- function(k = 5,
   space = 10,

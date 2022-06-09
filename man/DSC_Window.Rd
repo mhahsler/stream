@@ -9,12 +9,12 @@ DSC_Window(horizon = 100, lambda = 0)
 \arguments{
 \item{horizon}{the window length.}
 
-\item{lambda}{decay factor damped window model. \code{lambda=0} means no
+\item{lambda}{decay factor damped window model. \code{lambda = 0} means no
 dampening.}
 }
 \value{
-An object of class \code{DSC_Window} (subclass of \code{DSC},
-\code{DSC_R}, \code{DSC_Micro}).
+An object of class \code{DSC_Window} (subclass of \link{DSC},
+\link{DSC_R}, \link{DSC_Micro}).
 }
 \description{
 Interface for DSO_Window. Represents the points in the sliding window as
@@ -26,10 +26,9 @@ model (Zhu and Shasha, 2002).  The weight for points in the window follows
 \eqn{2^{-lambda*t}} where \eqn{t} is the age of the point.
 }
 \examples{
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
-stream <- DSD_Gaussians(k=3, d=2, noise=0.05)
-
-window <- DSC_Window(horizon=100)
+window <- DSC_Window(horizon = 100)
 window
 
 update(window, stream, 200)
@@ -41,8 +40,8 @@ plot(window, stream)
 # animation for a window using a damped window model. The weight decays
 # with a half-life of 25
 \dontrun{
-window <- DSC_Window(horizon=25, lambda=1/25)
-animate_cluster(window, stream, horizon=1, n=100, xlim=c(0,1), ylim=c(0,1))
+window <- DSC_Window(horizon = 25, lambda = 1 / 25)
+animate_cluster(window, stream, horizon = 1, n = 100, xlim = c(0, 1), ylim = c(0, 1))
 }
 
 }
@@ -52,8 +51,6 @@ Monitoring of Thousands of Data Streams in Real Time, \emph{International
 Conference of Very Large Data Bases (VLDB'02).}
 }
 \seealso{
-\code{\link{DSC}}, \code{\link{DSC_Micro}}
-
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
