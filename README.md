@@ -1,5 +1,5 @@
-R package stream - Infrastructure for Data Stream Mining
-================
+
+# <img src='man/figures/logo.svg' align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
 
 [![CRAN
 version](http://www.r-pkg.org/badges/version/stream)](https://CRAN.R-project.org/package=stream)
@@ -57,7 +57,7 @@ Cluster a stream of 1000 points using D-Stream.
 ``` r
 dstream <- DSC_DStream(gridsize = 0.1)
 update(dstream, stream, 1000)
-plot(dstream, stream, type = "both", grid = TRUE)
+plot(dstream, stream, grid = TRUE)
 ```
 
 ![](inst/README_files/Dstream-1.png)<!-- -->

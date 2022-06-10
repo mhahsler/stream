@@ -1,7 +1,9 @@
 ---
-title: "R package stream - Infrastructure for Data Stream Mining"
 output: github_document
 ---
+
+# <img src='man/figures/logo.svg' align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
+
 
 ```{r echo=FALSE}
 options(digits = 2)
@@ -57,7 +59,7 @@ Cluster a stream of 1000 points using D-Stream.
 ```{r Dstream}
 dstream <- DSC_DStream(gridsize = .1)
 update(dstream, stream, 1000)
-plot(dstream, stream, type="both", grid = TRUE)
+plot(dstream, stream, grid = TRUE)
 ```
 
 
