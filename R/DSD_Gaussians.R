@@ -132,9 +132,9 @@ DSD_Gaussians <-
     sigma,
     variance_limit = c(.001, .002),
     separation = 6,
-    space_limit = c(.2, .8),
+    space_limit = c(0, 1),
     noise = 0,
-    noise_limit = c(0, 1),
+    noise_limit = space_limit,
     noise_separation = 3,
     separation_type = c("Euclidean", "Mahalanobis"),
     verbose = FALSE) {
@@ -395,3 +395,4 @@ get_points.DSD_Gaussians <- function(x,
 
   data
 }
+
