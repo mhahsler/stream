@@ -58,6 +58,8 @@ DSC_R <- abstract_class_generator("DSC")
 ### needs to make sure that points are processed sequentially
 ### (make especially BIRCH faster by passing block data points at once)
 
+
+
 #' @rdname DSC_R
 #' @export
 update.DSC_R <- function(object,
@@ -71,10 +73,32 @@ update.DSC_R <- function(object,
 
   ### for data frame/matrix we do it all at once
   if (is.data.frame(dsd) || is.matrix(dsd)) {
+    dsd <- remove_info(dsd)
+
+    if (!is.null(object$formula)) {
+      if (is.null(object$RObj$colnames)) {
+        trms <- terms(object$formula, data = dsd)
+        if (attr(trms, "response") != 0)
+          stop("formula for clustering cannot have a response variable before '~'!")
+
+        object$RObj$colnames <- colnames(attr(trms, "factors"))
+      }
+
+      dsd <- dsd[, object$RObj$colnames, drop = FALSE]
+    }
+
     if (verbose)
       cat("Clustering all data at once for matrix/data.frame.")
+
+    if (is.null(object$RObj$colnames))
+      object$RObj$colnames <- colnames(dsd)
+
     res <- object$RObj$cluster(dsd, ...)
-    return(res)
+
+    if (assignment)
+      return(res)
+    else
+      return(invisible(NULL))
   }
 
   n <- as.integer(n)
@@ -84,14 +108,31 @@ update.DSC_R <- function(object,
     if (assignment)
       return(integer(0))
     else
-      return(NULL)
+      return(invisible(NULL))
   }
 
   ### TODO: Check data
+  take <- NULL
   if (verbose)
     total <- 0L
   for (bl in .make_block(n, block)) {
     p <- get_points(dsd, bl, info = FALSE)
+
+    if (!is.null(object$formula)) {
+      if (is.null(object$RObj$colnames)) {
+        trms <- terms(object$formula, data = p)
+        if (attr(trms, "response") != 0)
+          stop("formula for clustering cannot have a response variable before '~'!")
+
+        object$RObj$colnames <- colnames(attr(trms, "factors"))
+      }
+
+      p <- p[, object$RObj$colnames, drop = FALSE]
+    } else
+      if (is.null(object$RObj$colnames))
+        object$RObj$colnames <- colnames(p)
+
+
     res <- object$RObj$cluster(p, ...)
 
     if (verbose) {

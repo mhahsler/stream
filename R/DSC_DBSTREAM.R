@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' DBSTREAM clustering algorithm
+#' DBSTREAM Clustering Algorithm
 #'
 #' Micro Clusterer with reclustering.
 #' Implements a simple density-based stream clustering algorithm that assigns
@@ -44,6 +44,9 @@
 #' @family DSC_Micro
 #' @family DSC_TwoStage
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param r The radius of micro-clusters.
 #' @param lambda The lambda used in the fading function.
 #' @param gaptime weak micro-clusters (and weak shared density entries) are
@@ -52,7 +55,7 @@
 #' @param metric metric used to calculate distances.
 #' @param shared_density Record shared density information. If set to
 #' `TRUE` then shared density is used for reclustering, otherwise
-#' reachability is used (overlapping clusters with less than \eqn{r*(1-alpha)}
+#' reachability is used (overlapping clusters with less than \eqn{r * (1 - alpha)}
 #' distance are clustered together).
 #' @param k The number of macro clusters to be returned if macro is true.
 #' @param alpha For shared density: The minimum proportion of shared points
@@ -121,8 +124,16 @@
 #'
 #' # macro-clusters (2 clusters since reachability cannot separate two of the three species)
 #' plot(iris[,-5], col = microToMacro(dbstream, cl$.class))
+#'
+#' #' # use DBSTREAM with a formula (cluster all variables but X2)
+#' stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
+#' dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
+#'
+#' update(dbstream, stream, 500)
+#' get_centers(dbstream)
 #' @export
-DSC_DBSTREAM <- function(r,
+DSC_DBSTREAM <- function(formula = NULL,
+  r,
   lambda = 1e-3,
   gaptime = 1000L,
   Cm = 3,
@@ -135,6 +146,7 @@ DSC_DBSTREAM <- function(r,
     list(
       description = "DBSTREAM",
       ## this is the micro clusterer
+      formula = formula,
       RObj = dbstream$new(
         r,
         lambda,
@@ -177,6 +189,9 @@ dbstream <- setRefClass(
     ### micro-clusters
     CppObj        = "ANY",
     serial        = "ANY",
+
+    ### column names for centers
+    colnames      = "ANY",
 
     ### do we need to rerun the reclusterer
     newdata         = "logical"
@@ -227,6 +242,7 @@ dbstream <- setRefClass(
       shared_density	<<- shared_density
       decay_factor	  <<- 2 ^ (-lambda)
 
+      colnames  <<- NULL
       newdata  <<- TRUE
 
       if (is.null(k))
@@ -280,6 +296,10 @@ dbstream$methods(
       'Cluster new data.' ### online help
 
       newdata <<- TRUE
+
+      if (is.null(colnames))
+        colnames <<- colnames(newdata)
+
       assignment <- CppObj$update(as.matrix(newdata), debug, assignments)
 
       if (!assignments)
@@ -359,6 +379,7 @@ dbstream$methods(
       if (nrow(mc) < 1)
         return(data.frame())
 
+      colnames(mc) <- colnames
       mc
     },
 
@@ -375,16 +396,15 @@ dbstream$methods(
       mcs <- get_microclusters()
       w <- get_microweights()
 
-
-
       nclusters <- nrow(mcs)
 
       if (nclusters < 1L)
         return(list(
-          centers = data.frame(),
+          centers = empty_df(colnames),
           microToMacro = integer(0L),
           weights = numeric(0L)
         ))
+
       if (nclusters == 1L)
         return(list(
           centers = mcs,
@@ -460,6 +480,7 @@ dbstream$methods(
       macro <- .centroids(mcs, w, assignment)
       macro$microToMacro <- assignment
 
+      colnames(macro$centers) <- colnames
       macro
     }
   )

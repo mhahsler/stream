@@ -12,9 +12,9 @@ DSD_Gaussians(
   sigma,
   variance_limit = c(0.001, 0.002),
   separation = 6,
-  space_limit = c(0.2, 0.8),
+  space_limit = c(0, 1),
   noise = 0,
-  noise_limit = c(0, 1),
+  noise_limit = space_limit,
   noise_separation = 3,
   separation_type = c("Euclidean", "Mahalanobis"),
   verbose = FALSE

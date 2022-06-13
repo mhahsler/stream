@@ -6,9 +6,19 @@
 \alias{dbscan}
 \title{DBSCAN Macro-clusterer}
 \usage{
-DSC_DBSCAN(eps, MinPts = 5, weighted = TRUE, description = NULL)
+DSC_DBSCAN(
+  formula = NULL,
+  eps,
+  MinPts = 5,
+  weighted = TRUE,
+  description = NULL
+)
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{eps}{radius of the eps-neighborhood.}
 
 \item{MinPts}{minimum number of points required in the eps-neighborhood.}

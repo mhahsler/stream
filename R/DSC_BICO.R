@@ -20,15 +20,15 @@
 #' BICO - Fast computation of k-means coresets in a data stream
 #'
 #' Micro Clusterer.
-#' BICO maintains a tree which is inspired by the clustering tree of BIRCH, a
-#' SIGMOD Test of Time award-winning clustering algorithm. Each node in the
+#' BICO maintains a tree which is inspired by the clustering tree of BIRCH.
+#' Each node in the
 #' tree represents a subset of these points. Instead of storing all points as
 #' individual objects, only the number of points, the sum and the squared sum
 #' of the subset's points are stored as key features of each subset. Points are
 #' inserted into exactly one node.
 #'
-#' In this implementation, the nearest neighbour search on the first level of
-#' the tree ist sped up by projecting all points to random 1-d subspaces. The
+#' In this implementation, the nearest neighbor search on the first level of
+#' the tree is sped up by projecting all points to random 1-d subspaces. The
 #' first estimation of the optimal clustering cost is computed in a buffer
 #' phase at the beginning of the algorithm. This implementation interfaces the
 #' original C++ implementation available here:
@@ -39,9 +39,12 @@
 #' @aliases DSC_BICO BICO bico
 #' @family DSC_Micro
 #'
-#' @param k number of centres
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
+#' @param k number of centers
 #' @param space coreset size
-#' @param p number of random projections used for nearest neighbour search in
+#' @param p number of random projections used for nearest neighbor search in
 #' first level
 #' @param iterations number of repetitions for the kmeans++ procedure in the
 #' offline component
@@ -60,21 +63,26 @@
 #'
 #' plot(BICO,stream)
 #' @export
-DSC_BICO <- function(k = 5,
+DSC_BICO <- function(formula = NULL,
+  k = 5,
   space = 10,
   p = 10,
   iterations = 10) {
   BICO <- BICO_R$new(k, space, p, iterations)
 
   structure(
-    list(description = "BICO - Fast computation of k-means coresets",
-      RObj = BICO),
+    list(
+      description = "BICO - Fast computation of k-means coresets",
+      formula = formula,
+      RObj = BICO
+    ),
     class = c("DSC_BICO", "DSC_Micro", "DSC_R", "DSC")
   )
 }
 
 
-BICO_R <- setRefClass("BICO_R", fields = list(C = "ANY"))
+BICO_R <- setRefClass("BICO_R", fields = list(C = "ANY",
+  colnames = "ANY"))
 
 BICO_R$methods(
   cache = function() {
@@ -85,6 +93,8 @@ BICO_R$methods(
 BICO_R$methods(
   initialize = function(k, space, p, iterations) {
     C <<- new(BICO, k, space, p, iterations) ## Exposed C class
+    colnames <<- NULL
+
     .self
   }
 )
@@ -99,7 +109,9 @@ BICO_R$methods(
 
 BICO_R$methods(
   get_microclusters = function() {
-    .self$C$get_microclusters()
+    centers <- .self$C$get_microclusters()
+    colnames(centers) <- .self$colnames
+    centers
   }
 )
 
@@ -111,7 +123,9 @@ BICO_R$methods(
 
 BICO_R$methods(
   get_macroclusters = function() {
-    .self$C$get_macroclusters()
+    centers <- .self$C$get_macroclusters()
+    colnames(centers) <- .self$colnames
+    centers
   }
 )
 

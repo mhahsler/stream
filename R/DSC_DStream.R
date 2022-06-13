@@ -53,6 +53,9 @@
 #' @family DSC_Micro
 #' @family DSC_TwoStage
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param gridsize Size of grid cells.
 #' @param lambda Fading constant used function to calculate the decay factor
 #' \eqn{2^-lambda}.  (Note: in the paper the authors use lamba to denote the
@@ -137,7 +140,8 @@
 #' plot(dstream2, stream, grid = TRUE)
 #' evaluate_static(dstream2, stream, measure = "crand", type = "macro")
 #' @export
-DSC_DStream <- function(gridsize,
+DSC_DStream <- function(formula = NULL,
+  gridsize,
   lambda = 1e-3,
   gaptime = 1000L,
   Cm = 3,
@@ -150,6 +154,7 @@ DSC_DStream <- function(gridsize,
   structure(
     list(
       description = "D-Stream",
+      formula = formula,
       RObj = dstream$new(gridsize, lambda,
         gaptime, Cm, Cl, attraction, epsilon,
         Cm2, k, N),
@@ -188,6 +193,9 @@ dstream <- setRefClass(
     serial          = "ANY",
     decay_factor		= "numeric",
 
+    ### column names for centers
+    colnames      = "ANY",
+
     ### do we need to rerun the reclusterer
     newdata         = "logical"
   ),
@@ -213,6 +221,7 @@ dstream <- setRefClass(
       Cm2       <<- Cm2
       N         <<- N
 
+      colnames  <<- NULL
       newdata  <<- TRUE
 
       if (is.null(k))
@@ -417,7 +426,9 @@ dstream$methods(
     },
 
     get_microclusters = function(...) {
-      data.frame(get_micro(...))
+      centers <- data.frame(get_micro(...))
+      colnames(centers) <- colnames
+      centers
     },
 
     get_microweights = function(...) {
@@ -437,10 +448,11 @@ dstream$methods(
       ### no mcs
       if (nrow(mcs) < 1)
         return(list(
-          centers = data.frame(),
-          weights = numeric(0),
-          microToMacro = integer(0)
+          centers = empty_df(colnames),
+          microToMacro = integer(0L),
+          weights = numeric(0L)
         ))
+
 
       ### single mc
       if (nrow(mcs) == 1)
@@ -454,7 +466,6 @@ dstream$methods(
       dense <- mcs[denseID, , drop = FALSE]
       transID <- c_type == "transitional"
       trans <- mcs[transID, , drop = FALSE]
-
 
       if (attraction) {
         ### use attraction
@@ -531,6 +542,7 @@ dstream$methods(
       macro <- .centroids(mcs, ws, m2m)
       macro$microToMacro <- m2m
 
+      colnames(macro$centers) <- colnames
       macro
     }
   )
@@ -550,7 +562,8 @@ get_attraction <-
 
 # helper to memorize macro clusterings
 .dstream_update_macro <- function(x) {
-  if (!x$RObj$newdata) return()
+  if (!x$RObj$newdata)
+    return()
 
   cluster_list <- x$RObj$get_macro_clustering()
   x$macro$RObj$centers <- cluster_list$centers

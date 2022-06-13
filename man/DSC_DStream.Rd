@@ -10,6 +10,7 @@
 \title{D-Stream Data Stream Clustering Algorithm}
 \usage{
 DSC_DStream(
+  formula = NULL,
   gridsize,
   lambda = 0.001,
   gaptime = 1000L,
@@ -36,6 +37,10 @@ get_attraction(x, relative = FALSE, grid_type = "dense", dist = FALSE)
 )
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{gridsize}{Size of grid cells.}
 
 \item{lambda}{Fading constant used function to calculate the decay factor

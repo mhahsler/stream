@@ -39,6 +39,9 @@
 #' @family DSC_Micro
 #' @family DSC_TwoStage
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param r radius threshold for micro-cluster assignment
 #' @param lambda decay rate
 #' @param tgap time-interval between outlier detection and clean-up
@@ -97,7 +100,8 @@
 #' microToMacro(evoStream)
 #' @export
 DSC_evoStream <-
-  function(r,
+  function(formula = NULL,
+    r,
     lambda = 0.001,
     tgap = 100,
     k = 2,
@@ -123,13 +127,14 @@ DSC_evoStream <-
 
     structure(
       list(description = "evoStream - Evolutionary Stream Clustering",
+        formula = formula,
         RObj = evoStream),
       class = c("DSC_evoStream", "DSC_Micro", "DSC_R", "DSC")
     )
   }
 
 
-evoStream_R <- setRefClass("evoStream_R", fields = list(C = "ANY"))
+evoStream_R <- setRefClass("evoStream_R", fields = list(C = "ANY", colnames = "ANY"))
 
 evoStream_R$methods(
   initialize = function(r,
@@ -155,6 +160,8 @@ evoStream_R$methods(
       incrementalGenerations,
       reclusterGenerations
     ) ## since exposed constructors have limited parameters
+
+    colnames <<- NULL
     .self
   }
 )
@@ -170,7 +177,9 @@ evoStream_R$methods(
 
 evoStream_R$methods(
   get_microclusters = function() {
-    as.data.frame(.self$C$get_microclusters())
+    centers <- as.data.frame(.self$C$get_microclusters())
+    colnames(centers) <- colnames
+    centers
   }
 )
 
@@ -182,7 +191,9 @@ evoStream_R$methods(
 
 evoStream_R$methods(
   get_macroclusters = function() {
-    as.data.frame(.self$C$get_macroclusters())
+    centers <- as.data.frame(.self$C$get_macroclusters())
+    colnames(centers) <- colnames
+    centers
   }
 )
 

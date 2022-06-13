@@ -5,6 +5,7 @@
 \title{Kmeans Macro-clusterer}
 \usage{
 DSC_Kmeans(
+  formula = NULL,
   k,
   weighted = TRUE,
   iter.max = 10,
@@ -15,6 +16,10 @@ DSC_Kmeans(
 )
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{k}{either the number of clusters, say k, or a set of initial
 (distinct) cluster centers. If a number, a random set of (distinct) rows in
 x is chosen as the initial centers.}

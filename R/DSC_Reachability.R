@@ -42,6 +42,9 @@
 #'
 #' @family DSC_Macro
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param epsilon radius of the epsilon-neighborhood.
 #' @param min_weight micro-clusters with a weight less than this will be
 #' ignored for reclustering.
@@ -81,7 +84,8 @@
 #' plot(reach, stream)
 #' @export
 DSC_Reachability <-
-  function(epsilon,
+  function(formula = NULL,
+    epsilon,
     min_weight = NULL,
     description = NULL) {
     hierarchical <- hierarchical$new(h = epsilon,
@@ -91,7 +95,11 @@ DSC_Reachability <-
     if (is.null(description))
       description <- "Reachability"
 
-    l <- list(description = description, RObj = hierarchical)
+    l <-
+      list(description = description,
+        formula = formula,
+        RObj = hierarchical)
+
     class(l) <-
       c("DSC_Reachability",
         "DSC_Hierarchical",

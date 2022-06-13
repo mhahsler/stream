@@ -7,9 +7,10 @@
 \alias{get_shared_density}
 \alias{change_alpha}
 \alias{plot.DSC_DBSTREAM}
-\title{DBSTREAM clustering algorithm}
+\title{DBSTREAM Clustering Algorithm}
 \usage{
 DSC_DBSTREAM(
+  formula = NULL,
   r,
   lambda = 0.001,
   gaptime = 1000L,
@@ -40,6 +41,10 @@ change_alpha(x, alpha)
 )
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{r}{The radius of micro-clusters.}
 
 \item{lambda}{The lambda used in the fading function.}
@@ -53,7 +58,7 @@ removed every \code{gaptime} points.}
 
 \item{shared_density}{Record shared density information. If set to
 \code{TRUE} then shared density is used for reclustering, otherwise
-reachability is used (overlapping clusters with less than \eqn{r*(1-alpha)}
+reachability is used (overlapping clusters with less than \eqn{r * (1 - alpha)}
 distance are clustered together).}
 
 \item{alpha}{For shared density: The minimum proportion of shared points
@@ -163,6 +168,13 @@ plot(iris[,-5], col = cl$.class, pch = cl$.class)
 
 # macro-clusters (2 clusters since reachability cannot separate two of the three species)
 plot(iris[,-5], col = microToMacro(dbstream, cl$.class))
+
+#' # use DBSTREAM with a formula (cluster all variables but X2)
+stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
+dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
+
+update(dbstream, stream, 500)
+get_centers(dbstream)
 }
 \references{
 Michael Hahsler and Matthew Bolanos. Clustering data streams

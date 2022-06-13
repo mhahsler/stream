@@ -65,9 +65,9 @@ evaluate_callback.LWP_Callback <- function(cb_obj, dsc, measure, points,
 
 # 3. evaluate with callbacks
 stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
-km <- DSC_Kmeans(3)
-update(km, stream, n=500)
-evaluate_static(km, stream, type="macro", n=500,
+km <- DSC_Kmeans(k = 3)
+update(km, stream, n = 500)
+evaluate_static(km, stream, type="macro", n = 500,
                         measure = c("crand","LowestWeightPercentage"),
                         callbacks = list(cc = LWP_Callback()))
 }

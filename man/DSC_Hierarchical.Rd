@@ -5,6 +5,7 @@
 \title{Hierarchical Micro-Cluster Reclusterer}
 \usage{
 DSC_Hierarchical(
+  formula = NULL,
   k = NULL,
   h = NULL,
   method = "complete",
@@ -13,6 +14,10 @@ DSC_Hierarchical(
 )
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{k}{The number of desired clusters.}
 
 \item{h}{Height where to cut the dendrogram.}

@@ -10,6 +10,8 @@
 * Added DSD_Combination to combine streams.
 * stream now implements a standard predict function (get_assignment() is now deprecated).
 * update now returns information like cluster assignments as a data.frame.
+* DSC implementation now have a formula argument to decide what variables should be used for 
+  clustering.
 
 ## Changes
 * class information and extra information is now stored as columns starting with . 

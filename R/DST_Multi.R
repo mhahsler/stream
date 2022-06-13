@@ -31,7 +31,7 @@
 #' ## define multiple tasks as a list
 #' tasks <- DST_Multi(list(
 #'    DSAggregate_Window(horizon = 10),
-#'    DSC_DStream(0.1)
+#'    DSC_DStream(gridsize = 0.1)
 #' ))
 #' tasks
 #'
@@ -39,9 +39,11 @@
 #' update(tasks, stream, n = 1000)
 #'
 #' ## inspect the results of the tasks
+#' tasks$dsts[[1]]
 #' get_points(tasks$dsts[[1]])
 #'
-#' get_centers(tasks$dsts[[2]])
+#' tasks$dsts[[2]]
+#' plot(tasks$dsts[[2]])
 #' @export
 DST_Multi <- function(dsts) {
     # creating the DSD object
@@ -57,7 +59,7 @@ DST_Multi <- function(dsts) {
 
 #' @export
 update.DST_Multi <- function(object, dsd, n = 1, ...) {
-  ps <- DSD_Memory(get_points(dsd, n = n, infot = TRUE, ...))
+  ps <- DSD_Memory(get_points(dsd, n = n, info = TRUE, ...))
 
   for (dst in object$dsts) {
     reset_stream(ps)

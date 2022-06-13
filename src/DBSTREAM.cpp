@@ -180,7 +180,7 @@ public:
     bool debug = FALSE, bool assignments = FALSE) {
     Rcpp::IntegerVector last;
 
-    // check dimensions of new data against the dimenstions for the first cluster
+    // check dimensions of new data against the dimensions for the first cluster
     if (mcs.size()>0) {
       if (mcs[0].center.length() != data.ncol()) {
         Rf_error("Dimensions of new data do not match the current DBSTREAM clustering.");

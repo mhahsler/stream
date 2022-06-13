@@ -22,10 +22,10 @@
 #' Macro Clusterer.
 #'
 #' Reclustering using an evolutionary algorithm. This approach was designed for
-#' \code{evoStream} but can also be used for other micro-clustering algorithms.
+#' `evoStream` (see [DSC_evoStream]) but can also be used for other micro-clustering algorithms.
 #'
 #' The evolutionary algorithm uses existing clustering solutions and creates
-#' small variations of them by combining and randomly modfiying them. The
+#' small variations of them by combining and randomly modifying them. The
 #' modified solutions can yield better partitions and thus can improve the
 #' clustering over time. The evolutionary algorithm is incremental, which
 #' allows to improve existing macro-clusters instead of recomputing them every
@@ -33,6 +33,9 @@
 #'
 #' @family DSC_Macro
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param k number of macro-clusters
 #' @param generations number of EA generations performed during reclustering
 #' @param crossoverRate cross-over rate for the evolutionary algorithm
@@ -68,7 +71,7 @@
 #'
 #' ## plot improved result
 #' reset_stream(stream)
-#' plot(two, stream, type="both")
+#' plot(two, stream)
 #'
 #'
 #' ## alternatively: do not create twostage but apply directly
@@ -77,10 +80,10 @@
 #' recluster(EA, dbstream)
 #' reset_stream(stream)
 #' plot(EA, stream)
-#'
 #' @export
 DSC_EA <-
-  function(k,
+  function(formula = NULL,
+    k,
     generations = 2000,
     crossoverRate = .8,
     mutationRate = .001,
@@ -91,6 +94,7 @@ DSC_EA <-
 
     structure(
       list(description = "EA - Reclustering using an evolutionary algorithm",
+        formula = formula,
         RObj = EA),
       class = c("DSC_EA", "DSC_Macro", "DSC_R", "DSC")
     )
@@ -107,7 +111,8 @@ EA_R <- setRefClass(
     data        = "data.frame",
     weights	  = "numeric",
     generations = "integer",
-    C = "ANY"
+    C = "ANY",
+    colnames = "ANY"
   ),
 
   methods = list(
@@ -122,6 +127,10 @@ EA_R <- setRefClass(
       mutationRate <<- mutationRate
       populationSize <<-
         as.integer(populationSize)
+
+      colnames <<- NULL
+
+      .self
     }
   )
 )
@@ -149,15 +158,21 @@ EA_R$methods(
   },
 
   get_microclusters = function(...) {
-    as.data.frame(.self$data)
+    centers <- as.data.frame(.self$data)
+    colnames(centers) <- colnames
+    centers
   },
+
   get_microweights = function(...) {
     .self$weights
   },
 
   get_macroclusters = function(...) {
-    as.data.frame(.self$C$get_macroclusters())
+    centers <- as.data.frame(.self$C$get_macroclusters())
+    colnames(centers) <- colnames
+    centers
   },
+
   get_macroweights = function(...) {
     .self$C$get_macroweights()
   },

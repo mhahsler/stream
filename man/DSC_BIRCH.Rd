@@ -6,14 +6,25 @@
 \alias{birch}
 \title{Balanced Iterative Reducing Clustering using Hierarchies}
 \usage{
-DSC_BIRCH(threshold, branching, maxLeaf, maxMem = 0, outlierThreshold = 0.25)
+DSC_BIRCH(
+  formula = NULL,
+  threshold,
+  branching,
+  maxLeaf,
+  maxMem = 0,
+  outlierThreshold = 0.25
+)
 }
 \arguments{
-\item{threshold}{threshold used to check whether a new datapoint can be
-absorbed or not}
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
+\item{threshold}{threshold used to check whether a new data point can be
+absorbed or not.}
 
 \item{branching}{branching factor (maximum amount of child nodes for a
-nonleaf node) of the CF-Tree.}
+non-leaf node) of the CF-Tree.}
 
 \item{maxLeaf}{maximum number of entries within a leaf node}
 
@@ -21,7 +32,7 @@ nonleaf node) of the CF-Tree.}
 indicating no memory restriction.}
 
 \item{outlierThreshold}{threshold for identifying outliers when rebuilding
-the CF-Tree}
+the CF-Tree.}
 }
 \description{
 Micro Clusterer.

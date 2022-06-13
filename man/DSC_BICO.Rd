@@ -6,14 +6,18 @@
 \alias{bico}
 \title{BICO - Fast computation of k-means coresets in a data stream}
 \usage{
-DSC_BICO(k = 5, space = 10, p = 10, iterations = 10)
+DSC_BICO(formula = NULL, k = 5, space = 10, p = 10, iterations = 10)
 }
 \arguments{
-\item{k}{number of centres}
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
+\item{k}{number of centers}
 
 \item{space}{coreset size}
 
-\item{p}{number of random projections used for nearest neighbour search in
+\item{p}{number of random projections used for nearest neighbor search in
 first level}
 
 \item{iterations}{number of repetitions for the kmeans++ procedure in the
@@ -21,16 +25,16 @@ offline component}
 }
 \description{
 Micro Clusterer.
-BICO maintains a tree which is inspired by the clustering tree of BIRCH, a
-SIGMOD Test of Time award-winning clustering algorithm. Each node in the
+BICO maintains a tree which is inspired by the clustering tree of BIRCH.
+Each node in the
 tree represents a subset of these points. Instead of storing all points as
 individual objects, only the number of points, the sum and the squared sum
 of the subset's points are stored as key features of each subset. Points are
 inserted into exactly one node.
 }
 \details{
-In this implementation, the nearest neighbour search on the first level of
-the tree ist sped up by projecting all points to random 1-d subspaces. The
+In this implementation, the nearest neighbor search on the first level of
+the tree is sped up by projecting all points to random 1-d subspaces. The
 first estimation of the optimal clustering cost is computed in a buffer
 phase at the beginning of the algorithm. This implementation interfaces the
 original C++ implementation available here:

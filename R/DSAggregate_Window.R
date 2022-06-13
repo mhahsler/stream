@@ -169,8 +169,8 @@ WindowDSAggregate <- setRefClass(
 ### DSC interface to WindowDSAggregate
 WindowDSC <- setRefClass(
   "WindowDSC",
+  fields = list(colnames = "ANY"),
   contains = "WindowDSAggregate",
-
   methods = list(
     cluster = function(x, ...)
       update(x, ...),

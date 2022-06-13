@@ -5,6 +5,7 @@
 \title{evoStream - Evolutionary Stream Clustering}
 \usage{
 DSC_evoStream(
+  formula = NULL,
   r,
   lambda = 0.001,
   tgap = 100,
@@ -18,6 +19,10 @@ DSC_evoStream(
 )
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{r}{radius threshold for micro-cluster assignment}
 
 \item{lambda}{decay rate}

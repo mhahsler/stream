@@ -34,6 +34,9 @@
 #'
 #' @family DSC_Macro
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param k either the number of clusters, say k, or a set of initial
 #' (distinct) cluster centers. If a number, a random set of (distinct) rows in
 #' x is chosen as the initial centers.
@@ -70,7 +73,8 @@
 #' plot(kmeans, stream, type = "macro")
 #' @export
 DSC_Kmeans <-
-  function(k,
+  function(formula = NULL,
+    k,
     weighted = TRUE,
     iter.max = 10,
     nstart = 10,
@@ -89,6 +93,7 @@ DSC_Kmeans <-
     structure(
       list(
         description = desc,
+        formula = formula,
         RObj = kmeans_refClass$new(
           k = k,
           weighted = weighted,
@@ -117,7 +122,8 @@ kmeans_refClass <- setRefClass(
     clusterCenters = "data.frame",
     clusterWeights = "numeric",
     details      = "ANY",
-    min_weight   = "numeric"
+    min_weight   = "numeric",
+    colnames = "ANY"
   ),
 
   methods = list(
@@ -143,6 +149,8 @@ kmeans_refClass <- setRefClass(
         min_weight <<- 0
       else
         min_weight <<- min_weight
+
+      colnames <<- NULL
 
       .self
     }

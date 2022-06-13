@@ -2434,7 +2434,7 @@ for each cluster. We expect the smallest cluster to have around 20\% of generate
 
 <<>>=
 stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
-km <- DSC_Kmeans(3)
+km <- DSC_Kmeans(k = 3)
 update(km, stream, n = 500)
 evaluate_static(km, stream, type = "macro", n = 500,
                         measure = c("crand","LowestWeightPercentage"),
@@ -2669,7 +2669,7 @@ sample of the original data.
 <<microclusters, fig=TRUE, include=FALSE, width=8, height=9>>=
 op <- par(no.readonly = TRUE)
 layout(mat = matrix(1:length(algorithms), ncol = 2))
-for(a in algorithms) {
+for (a in algorithms) {
   reset_stream(stream)
   plot(a, stream, main = description(a), type = "micro")
 }
@@ -2707,10 +2707,16 @@ We also disable showing micro-cluster weights to make the plot less cluttered.
 <<microclusters_assignment, fig=TRUE, include=FALSE, width=8, height=9>>=
 op <- par(no.readonly = TRUE)
 layout(mat = matrix(1:length(algorithms), ncol = 2))
-for(a in algorithms) {
+for (a in algorithms) {
   reset_stream(stream)
-  plot(a, stream, main = description(a),
-    assignment = TRUE, weight = FALSE, type = "micro")
+  plot(
+    a,
+    stream,
+    main = description(a),
+    assignment = TRUE,
+    weight = FALSE,
+    type = "micro"
+  )
 }
 par(op)
 @
@@ -2739,13 +2745,19 @@ stream to position 1001 since we have used the first 1000 points for learning an
 we want to use data points not seen by the algorithms for evaluation.
 
 <<>>=
-sapply(algorithms, FUN=function(a) {
-  reset_stream(stream, pos = 1001)
-  evaluate_static(a, stream,
-    measure = c("numMicroClusters", "purity"),
-    type = "micro",
-    n = 500)
-})
+sapply(
+  algorithms,
+  FUN = function(a) {
+    reset_stream(stream, pos = 1001)
+    evaluate_static(
+      a,
+      stream,
+      measure = c("numMicroClusters", "purity"),
+      type = "micro",
+      n = 500
+    )
+  }
+)
 @
 
 We need to be careful with the comparison of these numbers, since they depend
@@ -2767,10 +2779,10 @@ together with weighted $k$-means ($k=4$).
 
 <<macroclusters, fig=TRUE, include=FALSE, width=8, height=9>>=
 op <- par(no.readonly = TRUE)
-layout(mat=matrix(1:length(algorithms), ncol = 2))
-for(a in algorithms) {
+layout(mat = matrix(1:length(algorithms), ncol = 2))
+for (a in algorithms) {
   reset_stream(stream)
-  plot(a, stream, main = description(a), type = "both")
+  plot(a, stream, main = description(a))
 }
 par(op)
 @

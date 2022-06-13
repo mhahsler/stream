@@ -34,15 +34,18 @@
 #' @aliases DSC_BIRCH BIRCH birch
 #' @family DSC_Micro
 #'
-#' @param threshold threshold used to check whether a new datapoint can be
-#' absorbed or not
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
+#' @param threshold threshold used to check whether a new data point can be
+#'   absorbed or not.
 #' @param branching branching factor (maximum amount of child nodes for a
-#' nonleaf node) of the CF-Tree.
+#'   non-leaf node) of the CF-Tree.
 #' @param maxLeaf maximum number of entries within a leaf node
 #' @param outlierThreshold threshold for identifying outliers when rebuilding
-#' the CF-Tree
+#'   the CF-Tree.
 #' @param maxMem memory limitation for the whole CFTree in bytes. Default is 0,
-#' indicating no memory restriction.
+#'   indicating no memory restriction.
 #' @author Dennis Assenmacher (\email{Dennis.Assenmacher@@uni-muenster.de}),
 #' Matthias Carnein (\email{Matthias.Carnein@@uni-muenster.de})
 #' @references
@@ -64,7 +67,8 @@
 #' plot(BIRCH, stream)
 #' @export
 DSC_BIRCH <-
-  function(threshold,
+  function(formula = NULL,
+    threshold,
     branching,
     maxLeaf,
     maxMem = 0,
@@ -72,6 +76,7 @@ DSC_BIRCH <-
     structure(
       list(
         description = "BIRCH - Balanced Iterative Reducing Clustering using Hierarchies",
+        formula = formula,
         RObj = birch$new(
           threshold = threshold,
           branching = branching,
@@ -84,7 +89,8 @@ DSC_BIRCH <-
     )
   }
 
-birch <- setRefClass("BIRCH", fields = list(C = "ANY"))
+birch <- setRefClass("BIRCH", fields = list(C = "ANY",
+  colnames = "ANY"))
 
 #  CF-Tree creation: Initializes an empty CF-Tree.
 # param threshold Specifies the threshold used to check whether a new datapoint can be absorbed or not.
@@ -105,6 +111,8 @@ birch$methods(
         maxLeaf,
         maxMem,
         outlierThreshold) ## Exposed C class
+
+    colnames <<- NULL
     .self
   }
 )
@@ -116,7 +124,7 @@ birch$methods(
   }
 )
 
-# CF-Tree insertion: All data objects of a matrix are rowwise inserted into the CF-Tree
+# CF-Tree insertion: All data objects of a matrix are row wise inserted into the CF-Tree
 birch$methods(
   cluster = function(newdata) {
     .self$C$udpateTree(data.matrix(newdata))
@@ -134,7 +142,9 @@ birch$methods(
 # This function returns all micro clusters of a given CF-Tree.
 birch$methods(
   get_microclusters = function(x, ...) {
-    .self$C$getCentroids()
+    centers <- .self$C$getCentroids()
+    colnames(centers) <- colnames
+    centers
   }
 )
 

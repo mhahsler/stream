@@ -38,6 +38,9 @@
 #' @aliases DBSCAN dbscan
 #' @family DSC_Macro
 #'
+#' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
+#'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
+#'   supported in the formula.
 #' @param eps radius of the eps-neighborhood.
 #' @param MinPts minimum number of points required in the eps-neighborhood.
 #' @param weighted logical indicating if a weighted version of DBSCAN should be
@@ -76,7 +79,8 @@
 #' plot(dbscan, stream)
 #' @export
 DSC_DBSCAN <-
-  function(eps,
+  function(formula = NULL,
+    eps,
     MinPts = 5,
     weighted = TRUE,
     description = NULL) {
@@ -90,7 +94,7 @@ DSC_DBSCAN <-
     else
       desc <- "DBSCAN"
 
-    l <- list(description = desc, RObj = DBSCAN)
+    l <- list(description = desc, formula = formula, RObj = DBSCAN)
     class(l) <- c("DSC_DBSCAN", "DSC_Macro", "DSC_R", "DSC")
     l
   }
@@ -107,7 +111,8 @@ DBSCAN <- setRefClass(
     data        = "data.frame",
     weights	    = "numeric",
     clusterCenters = "data.frame",
-    clusterWeights = "numeric"
+    clusterWeights = "numeric",
+    colnames = "ANY"
   ),
 
   methods = list(
@@ -122,6 +127,8 @@ DBSCAN <- setRefClass(
       weights <<- numeric()
       clusterWeights <<- numeric()
       clusterCenters <<- data.frame()
+
+      colnames <<- NULL
 
       .self
     }

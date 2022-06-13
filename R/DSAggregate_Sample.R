@@ -263,8 +263,8 @@ SampleDSAggregate <- setRefClass(
 ### DSC interface to SampleDSAggregate
 SampleDSC <- setRefClass(
   "SampleDSC",
+  fields = list(colnames = "ANY"),
   contains = "SampleDSAggregate",
-
   methods = list(
     cluster = function(x, ...)
       update(x, ...),

@@ -1,7 +1,8 @@
 library("testthat")
 library("stream")
 
-short_desc <- function(x) strsplit(description(x), " ")[[1L]][1L]
+short_desc <- function(x)
+  strsplit(description(x), " ")[[1L]][1L]
 
 set.seed(0)
 stream <-
@@ -9,8 +10,12 @@ stream <-
 
 algorithms <- list(
   DSC_DBSTREAM(r = .1),
-  DSC_DStream(gridsize = .1, Cm = 1, gaptime = 100),
-  DSC_evoStream(.45),
+  DSC_DStream(
+    gridsize = .1,
+    Cm = 1,
+    gaptime = 100
+  ),
+  DSC_evoStream(r = .45),
   DSC_Kmeans(k = 3),
   DSC_Hierarchical(k = 3),
   DSC_Reachability(epsilon = .1),
@@ -21,7 +26,7 @@ algorithms <- list(
     branching = 8,
     maxLeaf = 20
   ),
-  #  DSC_EA(k = 3, generations=100),
+  DSC_EA(k = 3, generations = 10),
   DSC_Sample(k = 10),
   DSC_Window(horizon = 10)
 )
@@ -37,7 +42,8 @@ up <- lapply(
     reset_stream(stream)
     u <- update(a, stream, n = 1000L, assignment = TRUE)
     expect_true(is.null(u) ||
-        (is.data.frame(u) && nrow(u) == 1000L && !is.null(u[[".class"]])))
+        (is.data.frame(u) &&
+            nrow(u) == 1000L && !is.null(u[[".class"]])))
     u
   }
 )
@@ -50,7 +56,15 @@ if (interactive()) {
 
 context("DSC evaluate")
 
-ms <- c("numMicroClusters", "numMacroClusters", "noiseActual", "noisePredicted", "purity", "CRand")
+ms <-
+  c(
+    "numMicroClusters",
+    "numMacroClusters",
+    "noiseActual",
+    "noisePredicted",
+    "purity",
+    "CRand"
+  )
 
 evals <- sapply(
   algorithms,
@@ -71,3 +85,4 @@ evals <- sapply(
 if (interactive()) {
   print(round(evals, 2))
 }
+

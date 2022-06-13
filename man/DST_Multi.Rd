@@ -21,7 +21,7 @@ stream <- DSD_Gaussians(k = 3, d = 2)
 ## define multiple tasks as a list
 tasks <- DST_Multi(list(
    DSAggregate_Window(horizon = 10),
-   DSC_DStream(0.1)
+   DSC_DStream(gridsize = 0.1)
 ))
 tasks
 
@@ -29,9 +29,11 @@ tasks
 update(tasks, stream, n = 1000)
 
 ## inspect the results of the tasks
+tasks$dsts[[1]]
 get_points(tasks$dsts[[1]])
 
-get_centers(tasks$dsts[[2]])
+tasks$dsts[[2]]
+plot(tasks$dsts[[2]])
 }
 \author{
 Michael Hahsler

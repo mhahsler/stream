@@ -4,9 +4,18 @@
 \alias{DSC_Reachability}
 \title{Reachability Micro-Cluster Reclusterer}
 \usage{
-DSC_Reachability(epsilon, min_weight = NULL, description = NULL)
+DSC_Reachability(
+  formula = NULL,
+  epsilon,
+  min_weight = NULL,
+  description = NULL
+)
 }
 \arguments{
+\item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
+to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
+supported in the formula.}
+
 \item{epsilon}{radius of the epsilon-neighborhood.}
 
 \item{min_weight}{micro-clusters with a weight less than this will be
