@@ -3,64 +3,46 @@
 \docType{class}
 \name{DSOutlier}
 \alias{DSOutlier}
-\alias{clean_outliers}
-\alias{clean_outliers.DSOutlier}
-\alias{recheck_outlier}
-\alias{recheck_outlier.DSOutlier}
-\alias{get_outlier_positions}
-\alias{get_outlier_positions.DSOutlier}
-\alias{noutliers}
-\alias{noutliers.DSOutlier}
-\title{Abstract Class for Outlier Detection Clusterers}
+\title{Abstract Class for Data Stream Outlier Detectors}
 \usage{
 DSOutlier(...)
-
-clean_outliers(x, ...)
-
-\method{clean_outliers}{DSOutlier}(x, ...)
-
-recheck_outlier(x, outlier_correlated_id, ...)
-
-\method{recheck_outlier}{DSOutlier}(x, outlier_correlated_id, ...)
-
-get_outlier_positions(x, ...)
-
-\method{get_outlier_positions}{DSOutlier}(x, ...)
-
-noutliers(x, ...)
-
-\method{noutliers}{DSOutlier}(x, ...)
 }
 \arguments{
 \item{...}{further arguments.}
-
-\item{x}{The DSC object.}
-
-\item{outlier_correlated_id}{ids of outliers.}
 }
 \description{
-The abstract class for all outlier detection clusterers. Cannot be
-instantiated. An implementation is available in package
-\pkg{streamMOA}.
+The abstract class for all data stream outlier detectors. Cannot be
+instantiated. Some \link{DSC} implementations also implement outlier/noise
+detection.
 }
 \details{
 \code{\link[=plot]{plot()}} has an extra logical argument to specify if outliers should be plotted
 as red crosses.
 }
-\section{Functions}{
-\itemize{
-\item \code{clean_outliers}: forget detected outliers from the outlier detector.
-
-\item \code{recheck_outlier}: Re-checks the outlier having \code{outlier_correlated_id}.
-If this object is still an outlier, the method returns \code{TRUE}.
-
-\item \code{get_outlier_positions}: Returns spatial positions of all current outliers.
-
-\item \code{noutliers}: Returns the current number of outliers.
-}}
-
 \examples{
 DSOutlier()
+
+#' @examples
+set.seed(1000)
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.1, noise_separation = 6)
+
+outlier_detector <- DSOutlier_DBSTREAM(r = .05)
+update(outlier_detector, stream, 500)
+outlier_detector
+
+points <- get_points(stream, 20)
+points
+
+# Outliers are predicted as class NA
+predict(outlier_detector, points)
+
+# Plot new points from the stream. Predicted outliers are marked with a red x.
+plot(outlier_detector, stream)
+
+# use a different detector
+outlier_detector2 <- DSOutlier_DStream(gridsize = .05, Cl = 0.5)
+update(outlier_detector2, stream, 500)
+plot(outlier_detector2, stream)
 }
 \seealso{
 Other DST: 
@@ -72,8 +54,13 @@ Other DST:
 \code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{update}()}
+
+Other DSOutlier: 
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSC_DStream}()}
 }
 \author{
-Dalibor Krleža
+Michael Hahsler
 }
+\concept{DSOutlier}
 \concept{DST}

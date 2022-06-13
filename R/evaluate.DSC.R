@@ -244,10 +244,10 @@
 #'   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
 #'   n = 100)
 #'
-#' # DStream also provides macro clusters. Evaluate macro clusters with type="macro"
+#' # DStream also provides macro clusters. Evaluate macro clusters with type = "macro"
 #' plot(dstream, stream, type = "macro")
 #' evaluate_static(dstream, stream, type = "macro",
-#'   measure = c("numMicro","numMacro","purity","crand", "SSQ"),
+#'   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
 #'   n = 100)
 #'
 #' # Points are by default assigned to the closest micro clusters for evaluation.
@@ -256,6 +256,15 @@
 #' evaluate_static(dstream, stream, type = "macro", assign = "macro",
 #'   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
 #'   n = 100)
+#'
+#' # Evaluate Outliers
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
+#' dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
+#' update(dstream, stream, 500)
+#'
+#' plot(dstream, stream, 500)
+#' evaluate_static(dstream, stream, n = 100,
+#'   measure = c("noisePredicted", "noiseActual", "noisePrecision", "outlierJaccard"))
 #'
 #' # Evaluate an evolving data stream
 #' stream <- DSD_Benchmark(1)
@@ -300,18 +309,10 @@ evaluate_static.DSC <-
     ## get points
     points <- get_points(dsd, n, info = TRUE)
     actual <- points[[".class"]]
-    outliers_actual <- points[[".outliers"]]
 
     if (is.null(actual))
       stop("The stream (dsd) does not provide true class/cluster labels in '.class'.")
 
-    if (is.null(outliers_actual) && any(is.na(actual)))
-      outliers_actual <- is.na(actual)
-
-    if (all(is.na(actual)))
-      warning(
-        "All points used for evaluation have a missing class/cluster label. Evaluation results will not be useful!"
-      )
     points <- remove_info(points)
 
     # find all applicable default measures
@@ -319,13 +320,12 @@ evaluate_static.DSC <-
       c(sapply(callbacks, function(cb_obj)
         cb_obj$env$internal_measures))
 
-    if (!is.null(actual))
-      m <- append(m, c(
-        sapply(callbacks, function(cb_obj)
-          cb_obj$env$external_measures)
-      ))
+    m <- append(m, c(
+      sapply(callbacks, function(cb_obj)
+        cb_obj$env$external_measures)
+    ))
 
-    if (!is.null(outliers_actual))
+    if (any(is.na(actual)))
       m <- append(m, c(sapply(callbacks, function(cb_obj)
         cb_obj$env$outlier_measures)))
 
@@ -343,19 +343,11 @@ evaluate_static.DSC <-
     }
 
     ## assign points
+    ## Note: actual == NA and pred == NA means outlier/noise
     pred <-
       predict(object, points, type = assign, method = assignmentMethod, ...)
-
-    # if we have an outlier detecting clusterer, assignment must have returned both predicted
-    # classes and outlier flags
-    predict_outliers <- pred[[".outliers"]]
-    predict_outliers_corrid <- pred[[".outliers_corrid"]]
-
     pred <- pred[[".class"]]
-    #print(table(actual,pred))
-
-    if(is.null(predict_outliers))
-      predict_outliers <- is.na(pred)
+    #print(table(actual, pred))
 
     ## translate micro to macro cluster ids if necessary
     if (type == "macro" &&
@@ -363,10 +355,6 @@ evaluate_static.DSC <-
       pred <- microToMacro(object, pred)
     else if (type != assign)
       stop("type and assign are not compatible!")
-    #print(table(pred,actual))
-
-    ## predicted noise is still its own class?
-    pred[is.na(pred)] <- 0L
 
     centers <- get_centers(object, type = type)
 
@@ -383,9 +371,6 @@ evaluate_static.DSC <-
           points,
           actual,
           pred,
-          outliers_actual,
-          predict_outliers,
-          predict_outliers_corrid,
           centers,
           noise
         )
@@ -397,7 +382,6 @@ evaluate_static.DSC <-
       assign = assign,
       class = "stream_eval")
   }
-
 
 ## evaluate during clustering
 ## uses single-fold prequential error estimate (eval and then learn the data)
@@ -589,9 +573,7 @@ evaluate_stream.DSC <-
 #' # 2. define the evaluation method for the class and calculate the
 #' #    custom measure if it is requested in measure.
 #' evaluate_callback.LWP_Callback <- function(cb_obj, dsc, measure, points,
-#'                                              actual, predict, outliers,
-#'                                              predict_outliers,
-#'                                              predict_outliers_corrid,
+#'                                              actual, predict,
 #'                                              centers, noise) {
 #'     r <- list()
 #'     if("LowestWeightPercentage" %in% measure)
@@ -617,9 +599,6 @@ evaluate_callback <-
     points,
     actual,
     predict,
-    outliers,
-    predict_outliers,
-    predict_outliers_corrid,
     centers,
     noise,
     ...)
@@ -646,13 +625,10 @@ evaluate_callback.DefaultEvalCallback <-
     points,
     actual,
     predict,
-    outliers,
-    predict_outliers,
-    predict_outliers_corrid,
     centers,
     noise) {
     ## no centers available
-    if (nrow(centers) < 1) {
+    if (nrow(centers) < 1L) {
       #warning("No centers available!")
       e <- rep.int(NA_real_, length(measure))
       e[measure %in% c("numMicroClusters", "numMacroClusters")] <- 0
@@ -739,9 +715,6 @@ evaluate_callback.DefaultEvalCallback <-
             actual,
             points,
             centers,
-            outliers,
-            predict_outliers,
-            predict_outliers_corrid,
             dsc,
             cb_obj
           ))
@@ -779,9 +752,6 @@ print.stream_eval <-  function(x, ...) {
     actual,
     points,
     centers,
-    outliers,
-    predict_outliers,
-    predict_outliers_corrid,
     dsc,
     callback_obj) {
     if (is.null(actual) && !measure %in% .eval_measures_int)
@@ -834,13 +804,7 @@ print.stream_eval <-  function(x, ...) {
       #classPurity	    = classPurity(actual, predict),
       OutlierJaccard = outlierJaccard(
         predict,
-        actual,
-        outliers,
-        predict_outliers,
-        predict_outliers_corrid,
-        dsc,
-        callback_obj
-      ),
+        actual),
     )
 
     res
@@ -1021,96 +985,13 @@ silhouette <- function(points, actual, predict) {
 
 outlierJaccard <-
   function(predict,
-    actual,
-    outliers,
-    predict_outliers,
-    predict_outliers_corrid,
-    dsc,
-    callback_obj) {
-    if (missing(dsc))
-      warning("dsc is missing")
-    if (is.null(callback_obj$env$copi))
-      cumulative <-
-        list(
-          go = 0,
-          tp = 0,
-          fp = 0,
-          undet = 0,
-          tp_corrid = c(),
-          fp_corrid = c(),
-          undet_corrid = c()
-        )
-    else
-      cumulative <- callback_obj$env$copi
-    cumulative$go <-
-      cumulative$go + sum(outliers) # the number of generated outliers
-    if (missing(predict_outliers) ||
-        is.null(predict_outliers) ||
-        length(predict_outliers) != length(outliers)) {
-      # we estimate whether the actual class resides in a predicted class that has only one appearance
-      # this is for clusterers that have no explicit outlier recognition
-      conf <- table(predict, actual) # coincidence matrix
-      undet_outliers <-
-        tmp_outliers <- actual[which(outliers == TRUE)]
-      for (rindex in 1:nrow(conf)) {
-        if (sum(conf[rindex,]) == 1) {
-          # This is a detected outlier
-          for (cindex in 1:ncol(conf)) {
-            # pass over generated classes and check which one has this outlier
-            if (conf[rindex, cindex] == 1 &&
-                sum(conf[, cindex] == 1)) {
-              # this is obviously one data instance in its own actual and predicted class
-              actual_out <- colnames(conf)[[cindex]]
-              if (actual_out %in% tmp_outliers) {
-                undet_outliers <- undet_outliers[undet_outliers != actual_out]
-                cumulative$tp <-
-                  cumulative$tp + 1 # it was marked by the stream, therefore true positive
-              } else
-                cumulative$fp <-
-                  cumulative$fp + 1 # it was NOT marked by the stream, therefore false positive
-            }
-          }
-        }
-      }
-      cumulative$undet <- cumulative$undet + length(undet_outliers)
-      if (cumulative$go > 0)
-        cumulative$oji <-
-        cumulative$tp / (cumulative$tp + cumulative$fp + cumulative$undet)
-      else
-        cumulative$oji <- 0.0
-    } else {
-      # this is matching for clusterers that have explicit outlier recognition
-      act_out <- which(outliers)
-      pred_out <- which(predict_outliers)
-      cumulative$undet_corrid <-
-        unique(c(cumulative$undet_corrid, predict_outliers_corrid[act_out[which(!act_out %in% pred_out)]]))
-      cumulative$tp_corrid <-
-        unique(c(cumulative$tp_corrid, predict_outliers_corrid[act_out[which(act_out %in% pred_out)]]))
-      cumulative$fp_corrid <-
-        unique(c(cumulative$fp_corrid, predict_outliers_corrid[pred_out[which(!pred_out %in% act_out)]]))
-      if (!is.null(dsc$recheck_outliers) && dsc$recheck_outliers) {
-        for (o_id in cumulative$tp_corrid)
-          #[which(!cumulative$tp_corrid %in% p2)]) {
-          if (!recheck_outlier(dsc, o_id)) {
-            cumulative$tp_corrid <-
-              cumulative$tp_corrid[cumulative$tp_corrid != o_id] # remove it from the TP
-            cumulative$undet_corrid <-
-              c(cumulative$undet_corrid, o_id) # but we add it to the undetected set
-          }
-        for (o_id in cumulative$fp_corrid)
-          #[which(!cumulative$fp_corrid %in% p2)])
-          if (!recheck_outlier(dsc, o_id))
-            cumulative$fp_corrid <-
-              cumulative$fp_corrid[cumulative$fp_corrid != o_id]
-      }
-      #message(paste("OJI TP=",length(cumulative$tp_corrid),"FP=",length(cumulative$fp_corrid),"UNDET=",length(cumulative$undet_corrid)))
-      cumulative$oji <-
-        length(cumulative$tp_corrid) / (
-          length(cumulative$tp_corrid) + length(cumulative$fp_corrid) + length(cumulative$undet_corrid)
-        )
-    }
-    callback_obj$env$copi <- cumulative
-    cumulative$oji
+    actual) {
+
+    tp <- sum(actual == 0L & predict == 0L)
+    fp <- sum(predict == 0L & actual != 0L)
+    undet <- sum(predict != 0L & actual == 0L)  # this is fn
+
+    tp / (tp + fp + undet)
   }
 
 .addMissingDefaultCallback <-

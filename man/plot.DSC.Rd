@@ -16,7 +16,7 @@
   pch = NULL,
   method = c("pairs", "scatter", "pca"),
   dim = NULL,
-  type = c("auto", "micro", "macro", "both"),
+  type = c("auto", "micro", "macro", "both", "none"),
   assignment = FALSE,
   ...
 )

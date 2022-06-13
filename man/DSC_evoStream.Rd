@@ -113,7 +113,6 @@ Stream Clustering Utilizing Idle Times", Big Data Research.
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Sample}()},

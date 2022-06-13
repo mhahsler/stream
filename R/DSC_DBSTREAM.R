@@ -36,13 +36,17 @@
 #' The columns are `.class` with the index of the strong micro-cluster and `.mc_id`
 #' with the permanent id of the strong micro-cluster.
 #'
-#' [plot()] for DSC_DBSTREAM has two extra logical parameters called
+#' `plot()` for DSC_DBSTREAM has two extra logical parameters called
 #' `assignment` and `shared_density` which show the assignment area
 #' and the shared density graph, respectively.
 #'
+#' `DSOutlier_DBSTREAM` classifies points that cannot be assigned to a micro-cluster
+#' representing a dense region as a outlier/noise.
+#'
 #' @aliases DSC_DBSTREAM DBSTREAM dbstream
-#' @family DSC_Micro
+#' @family DSC_Micro``
 #' @family DSC_TwoStage
+#' @family DSOutlier
 #'
 #' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
 #'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
@@ -107,8 +111,8 @@
 #' microToMacro(dbstream)
 #'
 #' # do some evaluation
-#' evaluate_static(dbstream, stream, measure="purity")
-#' evaluate_static(dbstream, stream, measure="cRand", type="macro")
+#' evaluate_static(dbstream, stream, measure = "purity")
+#' evaluate_static(dbstream, stream, measure = "cRand", type = "macro")
 #'
 #' # use DBSTREAM also returns the cluster assignment
 #' # later retrieve the cluster assignments for each point)
@@ -162,6 +166,21 @@ DSC_DBSTREAM <- function(formula = NULL,
     ),
     class = c("DSC_DBSTREAM", "DSC_Micro", "DSC_R", "DSC")
   )
+
+#' @rdname DSC_DBSTREAM
+#' @export
+DSOutlier_DBSTREAM <- function(formula = NULL,
+  r,
+  lambda = 1e-3,
+  gaptime = 1000L,
+  Cm = 3,
+  metric = "Euclidean") {
+
+  cl <- DSC_DBSTREAM(formula, r, lambda, gaptime, Cm, metric)
+  class(cl) <- c("DSOutlier", class(cl))
+  cl
+  }
+
 
 dbstream <- setRefClass(
   "dbstream",

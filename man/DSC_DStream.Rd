@@ -5,6 +5,7 @@
 \alias{dstream}
 \alias{d-stream}
 \alias{D-Stream}
+\alias{DSOutlier_DStream}
 \alias{get_attraction}
 \alias{plot.DSC_DStream}
 \title{D-Stream Data Stream Clustering Algorithm}
@@ -21,6 +22,15 @@ DSC_DStream(
   Cm2 = Cm,
   k = NULL,
   N = 0
+)
+
+DSOutlier_DStream(
+  formula = NULL,
+  gridsize,
+  lambda = 0.001,
+  gaptime = 1000L,
+  Cm = 3,
+  Cl = 0.8
 )
 
 get_attraction(x, relative = FALSE, grid_type = "dense", dist = FALSE)
@@ -192,7 +202,6 @@ Article 12 (July 2009), 27 pages.
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Sample}()},
 \code{\link{DSC_Window}()},
@@ -202,9 +211,14 @@ Other DSC_TwoStage:
 \code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC_evoStream}()}
+
+Other DSOutlier: 
+\code{\link{DSC_DBSTREAM}()},
+\code{\link{DSOutlier}()}
 }
 \author{
 Michael Hahsler
 }
 \concept{DSC_Micro}
 \concept{DSC_TwoStage}
+\concept{DSOutlier}

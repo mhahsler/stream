@@ -232,10 +232,10 @@ evaluate_static(dstream, stream,
   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
   n = 100)
 
-# DStream also provides macro clusters. Evaluate macro clusters with type="macro"
+# DStream also provides macro clusters. Evaluate macro clusters with type = "macro"
 plot(dstream, stream, type = "macro")
 evaluate_static(dstream, stream, type = "macro",
-  measure = c("numMicro","numMacro","purity","crand", "SSQ"),
+  measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
   n = 100)
 
 # Points are by default assigned to the closest micro clusters for evaluation.
@@ -244,6 +244,15 @@ evaluate_static(dstream, stream, type = "macro",
 evaluate_static(dstream, stream, type = "macro", assign = "macro",
   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
   n = 100)
+
+# Evaluate Outliers
+stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
+dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
+update(dstream, stream, 500)
+
+plot(dstream, stream, 500)
+evaluate_static(dstream, stream, n = 100,
+  measure = c("noisePredicted", "noiseActual", "noisePrecision", "outlierJaccard"))
 
 # Evaluate an evolving data stream
 stream <- DSD_Benchmark(1)

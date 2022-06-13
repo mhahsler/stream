@@ -54,7 +54,6 @@ Conference of Very Large Data Bases (VLDB'02).}
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Sample}()},

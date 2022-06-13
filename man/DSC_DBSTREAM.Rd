@@ -4,6 +4,7 @@
 \alias{DSC_DBSTREAM}
 \alias{DBSTREAM}
 \alias{dbstream}
+\alias{DSOutlier_DBSTREAM}
 \alias{get_shared_density}
 \alias{change_alpha}
 \alias{plot.DSC_DBSTREAM}
@@ -20,6 +21,15 @@ DSC_DBSTREAM(
   alpha = 0.1,
   k = 0,
   minweight = 0
+)
+
+DSOutlier_DBSTREAM(
+  formula = NULL,
+  r,
+  lambda = 0.001,
+  gaptime = 1000L,
+  Cm = 3,
+  metric = "Euclidean"
 )
 
 get_shared_density(x, use_alpha = TRUE)
@@ -113,9 +123,12 @@ weights are available.
 The columns are \code{.class} with the index of the strong micro-cluster and \code{.mc_id}
 with the permanent id of the strong micro-cluster.
 
-\code{\link[=plot]{plot()}} for DSC_DBSTREAM has two extra logical parameters called
+\code{plot()} for DSC_DBSTREAM has two extra logical parameters called
 \code{assignment} and \code{shared_density} which show the assignment area
 and the shared density graph, respectively.
+
+\code{DSOutlier_DBSTREAM} classifies points that cannot be assigned to a micro-cluster
+representing a dense region as a outlier/noise.
 }
 \examples{
 set.seed(1000)
@@ -151,8 +164,8 @@ plot(dbstream, stream, type = "none", shared_density = TRUE, assignment = TRUE)
 microToMacro(dbstream)
 
 # do some evaluation
-evaluate_static(dbstream, stream, measure="purity")
-evaluate_static(dbstream, stream, measure="cRand", type="macro")
+evaluate_static(dbstream, stream, measure = "purity")
+evaluate_static(dbstream, stream, measure = "cRand", type = "macro")
 
 # use DBSTREAM also returns the cluster assignment
 # later retrieve the cluster assignments for each point)
@@ -182,22 +195,18 @@ based on shared density between micro-clusters. \emph{IEEE Transactions on
 Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
-
 Other DSC_TwoStage: 
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC_evoStream}()}
+
+Other DSOutlier: 
+\code{\link{DSC_DStream}()},
+\code{\link{DSOutlier}()}
 }
 \author{
 Michael Hahsler and Matthew Bolanos
 }
-\concept{DSC_Micro}
+\concept{DSC_Micro``}
 \concept{DSC_TwoStage}
+\concept{DSOutlier}

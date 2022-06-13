@@ -61,7 +61,7 @@ plot.DSC <- function(x,
   pch = NULL,
   method = c("pairs", "scatter", "pca"),
   dim = NULL,
-  type = c("auto", "micro", "macro", "both"),
+  type = c("auto", "micro", "macro", "both", "none"),
   assignment = FALSE,
   ### assignment is not implemented
   ...) {
@@ -128,14 +128,25 @@ plot.DSC <- function(x,
 
   ### prepend data if given so it is in the background
   if (!is.null(dsd)) {
-    d <- get_points(dsd, n, info = FALSE)
+    if(inherits(dsd, "DSD"))
+      d <- get_points(dsd, n, info = FALSE)
+    else {
+      d <- as.data.frame(dsd)
+      n <- nrow(d)
+    }
+
     if(!is.null(centers)) {
       colnames(centers) <- colnames(d)
       centers <- rbind(d, centers)
     } else
       centers <- d
 
-    col <- c(rep(col_points[1], n), col)
+    if (length(col_points) == 1L)
+      col_points <- rep(col_points[1], n)
+    if (length(col_points) != n)
+      stop("'col_points' needs to be a single color or a vector with a color for each data point.")
+
+    col <- c(col_points, col)
     cex_clusters <- c(rep(cex[1], n), cex_clusters)
 
     ## TODO: we could use cluster labels for pch

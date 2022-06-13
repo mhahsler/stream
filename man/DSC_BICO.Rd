@@ -58,7 +58,6 @@ Clustering. \emph{ESA 2013:} 481-492.
 \seealso{
 Other DSC_Micro: 
 \code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Sample}()},

@@ -52,6 +52,7 @@
 #' @aliases DSC_DStream dstream d-stream D-Stream
 #' @family DSC_Micro
 #' @family DSC_TwoStage
+#' @family DSOutlier
 #'
 #' @param formula `NULL` to use all features in the stream or a model [formula] of the form `~ X1 + X2`
 #'   to specify the features used for clustering. Only `.`, `+` and `-` are currently
@@ -163,6 +164,18 @@ DSC_DStream <- function(formula = NULL,
     class = c("DSC_DStream", "DSC_Micro", "DSC_R", "DSC")
   )
 
+#' @rdname DSC_DStream
+#' @export
+DSOutlier_DStream <- function(formula = NULL,
+  gridsize,
+  lambda = 1e-3,
+  gaptime = 1000L,
+  Cm = 3,
+  Cl = .8) {
+  cl <- DSC_DStream(formula, gridsize, lambda, gaptime, Cm, Cl)
+  class(cl) <- c("DSOutlier", class(cl))
+  cl
+  }
 
 dstream <- setRefClass(
   "dstream",

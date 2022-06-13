@@ -53,9 +53,7 @@ LWP_Callback <- function() {
 # 2. define the evaluation method for the class and calculate the
 #    custom measure if it is requested in measure.
 evaluate_callback.LWP_Callback <- function(cb_obj, dsc, measure, points,
-                                             actual, predict, outliers,
-                                             predict_outliers,
-                                             predict_outliers_corrid,
+                                             actual, predict,
                                              centers, noise) {
     r <- list()
     if("LowestWeightPercentage" \%in\% measure)

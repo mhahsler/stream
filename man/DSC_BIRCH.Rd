@@ -70,7 +70,6 @@ Vol. 1(2), pp. 141-182.
 \seealso{
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
-\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Sample}()},
