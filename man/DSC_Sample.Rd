@@ -81,6 +81,7 @@ Evolution. \emph{International Conference on Very Large Databases
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Window}()},

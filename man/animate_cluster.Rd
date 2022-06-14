@@ -13,7 +13,7 @@ animate_cluster(
   type = c("auto", "micro", "macro"),
   assign = "micro",
   assignmentMethod = c("auto", "model", "nn"),
-  noise = c("class", "exclude"),
+  excludeNoise = FALSE,
   wait = 0.1,
   plot.args = NULL,
   ...
@@ -31,7 +31,7 @@ animation (see \code{\link[=evaluate_stream]{evaluate_stream()}}.)}
 
 \item{n}{the number of points to be plotted}
 
-\item{type, assign, assignmentMethod, noise}{are passed on to \code{\link[=evaluate_stream]{evaluate_stream()}} to calculate the
+\item{type, assign, assignmentMethod, excludeNoise}{are passed on to \code{\link[=evaluate_stream]{evaluate_stream()}} to calculate the
 evaluation measure.}
 
 \item{wait}{the time interval between each frame}
@@ -62,7 +62,7 @@ dbstream <- DSC_DBSTREAM(r = .04, lambda = .1, gaptime = 100, Cm = 3,
   shared_density = TRUE, alpha = .2)
 
 animate_cluster(dbstream, stream, horizon = 100, n = 5000,
-  measure = "crand", type = "macro", assign = "micro", noise = "exclude",
+  measure = "crand", type = "macro", assign = "micro",
   plot.args = list(xlim = c(0, 1), ylim = c(0, 1), shared = TRUE))
 }
 }

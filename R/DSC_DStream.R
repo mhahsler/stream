@@ -32,7 +32,7 @@
 #' macro-clusters. This behavior is implemented as `attraction = FALSE`.
 #'
 #' The 2009 version of the algorithm adds the concept of attraction between
-#' grids cells. If `attraction=TRUE` is used then the algorithm produces
+#' grids cells. If `attraction = TRUE` is used then the algorithm produces
 #' macro-clusters based on attraction between dense adjacent grids (uses
 #' `Cm2` which in the original algorithm is equal to `Cm`).
 #'
@@ -41,10 +41,12 @@
 #' `"transitional"`, `"sparse"`, `"all"` and `"used"`. This
 #' only returns the selected type of grid cells. `"used"` includes dense
 #' and adjacent transitional cells which are used in D-Stream for reclustering.
-#'
-#' For plot D-Stream also provides extra parameters `"grid"` and
+#' For `plot()` D-Stream also provides extra parameters `"grid"` and
 #' `"grid_type"` to show micro-clusters as grid cells (density represented
 #' by gray values).
+#'
+#' `DSOutlier_DStream` classifies points that do not fall into a dense grid cell as
+#' outlier/noise.
 #'
 #' Note that `DSC_DStream` can at this point not be saved to disk using
 #' save() or saveRDS(). This functionality will be added later!

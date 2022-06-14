@@ -195,6 +195,15 @@ based on shared density between micro-clusters. \emph{IEEE Transactions on
 Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
 }
 \seealso{
+Other DSC_Micro: 
+\code{\link{DSC_BICO}()},
+\code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DStream}()},
+\code{\link{DSC_Micro}()},
+\code{\link{DSC_Sample}()},
+\code{\link{DSC_Window}()},
+\code{\link{DSC_evoStream}()}
+
 Other DSC_TwoStage: 
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_TwoStage}()},
@@ -207,6 +216,6 @@ Other DSOutlier:
 \author{
 Michael Hahsler and Matthew Bolanos
 }
-\concept{DSC_Micro``}
+\concept{DSC_Micro}
 \concept{DSC_TwoStage}
 \concept{DSOutlier}

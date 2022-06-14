@@ -14,7 +14,7 @@
   type = c("auto", "micro", "macro"),
   assign = "micro",
   assignmentMethod = c("auto", "model", "nn"),
-  noise = c("class", "exclude"),
+  excludeNoise = FALSE,
   callbacks = list(),
   ...
 )
@@ -28,7 +28,7 @@
   type = c("auto", "micro", "macro"),
   assign = "micro",
   assignmentMethod = c("auto", "model", "nn"),
-  noise = c("class", "exclude"),
+  excludeNoise = TRUE,
   callbacks = NULL,
   ...,
   verbose = FALSE
@@ -53,18 +53,17 @@ of \link{DSC} to decide.}
 \item{assignmentMethod}{How are points assigned to clusters for evaluation
 (see \code{\link[=predict]{predict()}})?}
 
-\item{noise}{How to handle noise points in the data. Options are to treat as
-a separate class (default) or to exclude them from evaluation.}
+\item{excludeNoise}{logical; Should noise points in the data stream be excluded from
+the calculation?}
 
-\item{callbacks}{A list of \link{EvalCallback} objects, invoked when
-measurement is calculated.}
+\item{callbacks}{A named list of functions to calculate custom evaluation measures.}
 
 \item{...}{Unused arguments are ignored.}
 
 \item{horizon}{Evaluation is done using horizon many previous points (see
 detail section).}
 
-\item{verbose}{Report progress?}
+\item{verbose}{logical; Report progress?}
 }
 \value{
 \code{evaluate} returns an object of class \code{stream_eval} which
@@ -99,27 +98,32 @@ code from other packages including \code{\link[cluster:silhouette]{cluster::silh
 
 The following information items are available:
 \itemize{
+\item \code{"numPoints"} number of points used for evaluation.
 \item \code{"numMicroClusters"} number of micro-clusters
 \item \code{"numMacroClusters"} number of macro-clusters
 \item \code{"numClasses"} number of classes
 }
 
-The following noise-related items are available:
+The following noise-related/outlier items are available:
 \itemize{
 \item \code{"noisePredicted"} Number data points predicted as noise
 \item \code{"noiseActual"} Number of data points which are actually noise
 \item \code{"noisePrecision"} Precision of the predicting noise (i.e., number of
 correctly predicted noise points over the total number of points predicted
 as noise)
+\item \code{"outlierJaccard"} - A variant of the Jaccard index used to assess
+outlier detection accuracy (see Krleza et al (2020)).  Outlier Jaccard index
+is calculated as \code{TP / (TP + FP + UNDETECTED)}.
 }
 
 The following internal evaluation measures are available:
 \itemize{
-\item \code{"SSQ"} within cluster sum of squares. Assigns each non-noise point to
-its nearest center from the clustering and calculates the sum of squares
-\item \code{"silhouette"} average silhouette width (actual noise points
-which stay unassigned by the clustering algorithm are removed; regular
-points that are unassigned by the clustering algorithm will form their own
+\item \code{"SSQ"} within cluster sum of squares. Assigns each point to
+its nearest center from the clustering and calculates the sum of squares.
+Noise points in the data stream are always ignored.
+\item \code{"silhouette"} average silhouette width. Actual noise points
+which stay unassigned by the clustering algorithm are ignored; regular
+points that are unassigned by the clustering algorithm form their own
 noise cluster) (\pkg{cluster})
 \item \code{"average.between"} average distance between clusters (\pkg{fpc})
 \item \code{"average.within"} average distance within clusters (\pkg{fpc})
@@ -148,9 +152,9 @@ assigns two points from the same true cluster to two different clusters.  A
 false negative (FN) decision assigns two points from the same true cluster
 to different clusters.
 
-precision = TP/(TP+FP)
+\code{precision = TP / (TP + FP)}
 
-recall = TP/(TP+FN)
+\code{recall = TP / (TP + FN)}
 
 The F1 measure is the harmonic mean of precision and recall.
 \item \code{"purity"} Average purity of clusters. The purity of each cluster
@@ -189,18 +193,6 @@ to the macro-clusters directly (i.e., their center) does not make sense.
 Using \code{type} and \code{assign}, the user can select how to assign data
 points and ad what level (micro or macro) to evaluate.
 
-The following outlier measures are available:
-\itemize{
-\item \code{"OutlierJaccard"} - A variant of the Jaccard index used to assess
-outlier detection accuracy (see Krleza et al (2020)).  Outlier Jaccard index
-is calculated as TP/(TP+FP+UNDETECTED).
-}
-
-Outlier measures are taken as
-external measures, and can be applied only for DSD that can mark outliers
-(see \link{DSD_Gaussians}) and outlier detection clusterers that
-inherits \link{DSOutlier} class.
-
 \code{evaluate_cluster()} is used to evaluate an evolving data stream using
 the method described by Wan et al. (2009). Of the \code{n} data points
 \code{horizon} many points are clustered and then the evaluation measure is
@@ -209,14 +201,12 @@ clustering algorithm was able to adapt to the changing stream.
 
 \strong{Custom Evaluation Measures}
 
-The parameter \code{callbacks} can
-be used to add user-defined measure
-calculations. The user can define a measure by creating a sub-class of \code{EvalCallback}
-and adding it to a list of callbacks (see \link{EvalCallback} for details).
-At the end of each evaluation, the set of \code{callbacks} are performed and the results
-are reported.
+The parameter \code{callbacks} can be supplied with a named list with
+functions with the signature \verb{function(actual, predict, points, centers, dsc)}
+as elements. See the Examples sections for details.
 }
 \examples{
+# Example 1: Static Evaluation
 set.seed(0)
 stream <- DSD_Gaussians(k = 3, d = 2)
 
@@ -233,43 +223,79 @@ evaluate_static(dstream, stream,
   n = 100)
 
 # DStream also provides macro clusters. Evaluate macro clusters with type = "macro"
+# Note that SSQ and cRand increase.
 plot(dstream, stream, type = "macro")
 evaluate_static(dstream, stream, type = "macro",
   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
   n = 100)
 
-# Points are by default assigned to the closest micro clusters for evaluation.
+# Points are by default assigned to micro clusters using the method
+# specified for the clustering algorithm.
 # However, points can also be assigned to the closest macro-cluster using
 # assign = "macro".
 evaluate_static(dstream, stream, type = "macro", assign = "macro",
   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
   n = 100)
 
-# Evaluate Outliers
+# Example 2: Evaluate with Noise/Outliers
 stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
 dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
 update(dstream, stream, 500)
 
+# For cRand, noise is its own group, for SSQ, actual noise is always
+# excluded.
 plot(dstream, stream, 500)
 evaluate_static(dstream, stream, n = 100,
-  measure = c("noisePredicted", "noiseActual", "noisePrecision", "outlierJaccard"))
+  measure = c("numPoints", "noisePredicted", "noiseActual",
+    "noisePrecision", "outlierJaccard", "cRand", "SSQ"))
 
-# Evaluate an evolving data stream
+# Note that if noise is excluded, the number of used points is reduced.
+evaluate_static(dstream, stream, n = 100,
+  measure = c("numPoints", "noisePredicted", "noiseActual",
+    "noisePrecision", "outlierJaccard", "cRand", "SSQ"), excludeNoise = TRUE)
+
+
+# Example 3: Evaluate an evolving data stream
+if (interactive()){
 stream <- DSD_Benchmark(1)
 dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 
 evaluate_stream(dstream, stream, type = "macro", assign = "micro",
-  measure = c("numMicro", "numMacro", "purity", "crand"),
+  measure = c("numMicro", "numMacro", "purity", "cRand"),
   n = 600, horizon = 100)
 
 # animate the clustering process
-if (interactive()){
 reset_stream(stream)
 dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 animate_cluster(dstream, stream, horizon = 100, n = 5000,
-  measure = c("crand"), type = "macro", assign = "micro",
+  measure = "cRand", type = "macro", assign = "micro",
   plot.args = list(type = "both", xlim = c(0,1), ylim = c(0,1)))
 }
+
+# Example 4: Add a custom measure as a callback
+callbacks <- list(
+   noisePercentage = function(actual, predict, points, centers, dsc) {
+     sum(actual == 0L) / length(actual)
+   },
+   noiseFN = function(actual, predict, points, centers, dsc) {
+     sum(actual == 0L & predict != 0L)
+   },
+   noiseFP = function(actual, predict, points, centers, dsc) {
+     sum(actual != 0L & predict == 0L)
+   }
+ )
+
+stream <- DSD_Gaussians(k = 3, d = 2, noise = .2)
+dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
+update(dstream, stream, 500)
+
+evaluate_static(dstream, stream,
+  measure = c("numPoints", "noiseActual", "noisePredicted",
+    "noisePercentage", "noiseFN", "noiseFP"),
+  callbacks = callbacks, n = 100)
+
+evaluate_static(dstream, stream, callbacks = callbacks)
+
 }
 \references{
 Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On

@@ -39,7 +39,7 @@
 #' @param n the number of points to be plotted
 #' @param wait the time interval between each frame
 #' @param plot.args a list with plotting parameters for the clusters.
-#' @param type,assign,assignmentMethod,noise are passed on to [evaluate_stream()] to calculate the
+#' @param type,assign,assignmentMethod,excludeNoise are passed on to [evaluate_stream()] to calculate the
 #'   evaluation measure.
 #' @param ... extra arguments are added to `plot.args`.
 #' @author Michael Hahsler
@@ -56,7 +56,7 @@
 #'   shared_density = TRUE, alpha = .2)
 #'
 #' animate_cluster(dbstream, stream, horizon = 100, n = 5000,
-#'   measure = "crand", type = "macro", assign = "micro", noise = "exclude",
+#'   measure = "crand", type = "macro", assign = "micro",
 #'   plot.args = list(xlim = c(0, 1), ylim = c(0, 1), shared = TRUE))
 #' }
 #' @export
@@ -69,21 +69,12 @@ animate_cluster <-
     type = c("auto", "micro", "macro"),
     assign = "micro",
     assignmentMethod = c("auto", "model", "nn"),
-    noise = c("class", "exclude"),
+    excludeNoise = FALSE,
     wait = .1,
     plot.args = NULL,
     ...) {
-    ### NOTE: ignore is deprecated!!!
-    assignmentMethod <- match.arg(assignmentMethod)
-    noise <- match.arg(noise[1L], c("class", "exclude", "ignore"))
-
-    if (noise == "ignore") {
-      noise <-
-        "exclude"
-      warning("noise = 'ignore' is deprecated used noise = 'exclude'")
-    }
-
     type <- get_type(dsc, type)
+    assignmentMethod <- match.arg(assignmentMethod)
 
     cluster.ani(
       dsc,
@@ -94,7 +85,7 @@ animate_cluster <-
       type,
       assign,
       assignmentMethod,
-      noise,
+      excludeNoise,
       wait,
       plot.args,
       ...
@@ -111,7 +102,7 @@ cluster.ani <- function(dsc,
   type,
   assign,
   assignmentMethod,
-  noise,
+  excludeNoise,
   wait,
   plot.args,
   ...) {
@@ -139,14 +130,14 @@ cluster.ani <- function(dsc,
     layout(matrix(c(1, 2), 2, 1, byrow = TRUE), heights = c(3, 1.5))
     evaluation <-
       data.frame(points = seq(
-        from = 1,
+        from = 0,
         by = horizon,
         length.out = rounds
       ))
     evaluation[[measure]] <- NA_real_
   }
 
-  for (i in 1:rounds) {
+  for (i in seq(rounds)) {
     d <- DSD_Memory(dsd, n = horizon, loop = FALSE)
 
     if (!is.null(dsc)) {
@@ -155,14 +146,15 @@ cluster.ani <- function(dsc,
       ## evaluate first
       if (!is.null(measure)) {
         reset_stream(d)
-        evaluation[i, 2] <- evaluate_static(dsc,
+        if (i > 1L)
+          evaluation[i, 2] <- evaluate_static(dsc,
           d,
           measure,
           horizon, ### this is n
           type,
           assign,
           assignmentMethod,
-          noise,
+          excludeNoise,
           ...)
       }
 

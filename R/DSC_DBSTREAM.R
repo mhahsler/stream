@@ -44,7 +44,7 @@
 #' representing a dense region as a outlier/noise.
 #'
 #' @aliases DSC_DBSTREAM DBSTREAM dbstream
-#' @family DSC_Micro``
+#' @family DSC_Micro
 #' @family DSC_TwoStage
 #' @family DSOutlier
 #'

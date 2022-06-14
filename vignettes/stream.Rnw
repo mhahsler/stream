@@ -2036,47 +2036,6 @@ individually, which includes both the model update and returning the assignment.
 point of view, such evaluation is the same as for all other clustering algorithms in the
 \pkg{stream} package.
 
-\subsection{Evaluation of clustering using callbacks}
-
-While most of the well-known clustering indices are already supported by the \pkg{stream}
-package (or by the \pkg{clue} package), some clusterers have available other performance and memory
-indicators that users can use for assessment and tuning. This implies creation of a custom
-code that can be executed within the evaluation procedures, right after the assessment
-(\code{get_assessment}) of data points retrieved from the input data stream. For this
-purpose there is an abstract class \code{EvalCallback} that can be used to write classes
-that implement ad-hoc evaluation measures. Each evaluation callback object is instantiated
-using classes that inherit \code{EvalCallback}, which must implement the following fields:
-\begin{itemize}
-    \item \code{all_measures} - The vector of measures this callback class contributes to the
-    evaluation procedure.
-    \item \code{internal_measures} - The subset of all measures that are considered for internal
-    measures.
-    \item \code{external_measures} - The subset of all measures that are considered for external
-    measures.
-    \item \code{outlier_measures} - The subset of all measures that are considered for outlier
-    measures.
-\end{itemize}
-and the following method:
-\begin{itemize}
-    \item \code{evaluate_callback(cb_obj, dsc, measure, points, actual, predict,}\\
-    \code{outliers, predict_outliers, predict_outliers_corrid, centers, noise)}\\
-    This is the method that comprises the custom code required to calculate all measures this
-    callback contributes to the evaluation procedure.
-\end{itemize}
-
-Evaluating using additional callback objects can be done through:
-\begin{itemize}
-    \item \code{evaluate_with_callbacks(dsc, dsd, measure, callbacks=NULL,}\\
-    \code{n = 100, type=c("auto", "micro", "macro"), assign="micro",}\\
-    \code{assignmentMethod=c("auto","model", "nn"), noise = c("class", "exclude"),}\\
-    \code{...)}
-    \item \code{evaluate_cluster_with_callbacks(dsc, dsd, measure,}\\
-    \code{callbacks=NULL, n=1000, type=c("auto", "micro", "macro"),}\\
-    \code{assign="micro", assignmentMethod =  c("auto", "model", "nn"),}\\
-    \code{horizon=100, verbose=FALSE,noise = c("class", "exclude"), ...)}
-\end{itemize}
-where \code{callbacks} parameter is a named list of callback objects.
-
 %%% FIXME: CMM
 %%% short overview in Silva:2013
 
@@ -2388,58 +2347,6 @@ thus is expected to have a large negative silhouette.
 Cluster $j=2$ comprises the two overlapping real clusters and thus
 has lower silhouette values than cluster $j=1$. Other visual evaluation methods
 can be used in a similar way.
-
-\subsection{Example: Evaluating with callbacks}\label{examples:evaluate_with_callbacks}
-
-For custom evaluation using callbacks, we create a class that inherits \code{EvalCallback}.
-<<>>=
-library("stream")
-CustomCallback <- function() {
-  env <- environment()
-  all_measures <- c("LowestWeightPercentage")
-  internal_measures <- c()
-  external_measures <- all_measures
-  outlier_measures <- c()
-  this <- list(description = "Custom evaluation callback",
-               env = environment())
-  class(this) <- c("CustomCallback", "EvalCallback")
-  this
-}
-@
-
-In the new class, we define all evaluation measures that are contributed. In our case this is
-\code{LowestWeightPercentage}. Next, we define the callback code, i.e., the code that
-performs calculation of our custom evaluation measure.
-
-<<>>=
-evaluate_callback.CustomCallback <- function(cb_obj, dsc, measure, points,
-                                             actual, predict, outliers,
-                                             predict_outliers,
-                                             predict_outliers_corrid,
-                                             centers, noise) {
-    r <- list()
-    if("LowestWeightPercentage" %in% measure)
-        r$LowestWeightPercentage=min(get_weights(dsc))/sum(get_weights(dsc))
-    r
-}
-@
-
-Since the \code{DSC_Kmeans} clusterer returns the number of data points assignment to each
-macro-cluster, we use this to calculate population percentage for the least populated
-cluster.
-
-We use a \code{DSD_Gaussians} data stream generator i and generate 3 clusters, each with his
-own probability. Distinct probabilities direct how many data points is going to be generated
-for each cluster. We expect the smallest cluster to have around 20\% of generated data points.
-
-<<>>=
-stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
-km <- DSC_Kmeans(k = 3)
-update(km, stream, n = 500)
-evaluate_static(km, stream, type = "macro", n = 500,
-                        measure = c("crand","LowestWeightPercentage"),
-                        callbacks = list(cc = CustomCallback()))
-@
 
 %\section{Extending the stream framework} \label{sec:extension}
 %
@@ -2863,7 +2770,7 @@ evaluations for each algorithm.
 <<>>=
 evaluation <- lapply(algorithms, FUN = function(a) {
   reset_stream(stream)
-  evaluate_stream(a, stream, horizon = 100, n = 5000, measure = "crand",
+  evaluate_stream(a, stream, horizon = 100, n = 5000, measure = "cRand",
     type = "macro", assign = "micro")
 })
 @
@@ -2945,12 +2852,12 @@ to center and scale the observations in the data stream in flight.
 <<eval=FALSE>>=
 library("stream")
 con <- gzcon(
-  url(paste("http://archive.ics.uci.edu/ml/machine-learning-databases/",
-    "kddcup99-mld/kddcup.data.gz", sep="")))
+  url(paste0("http://archive.ics.uci.edu/ml/machine-learning-databases/",
+    "kddcup99-mld/kddcup.data.gz")))
 
 stream <- DSD_ReadCSV(con, take=c(1, 5, 6, 8:11, 13:20, 23:42),
-    class=42, k=7)
-stream2 <- DSD_ScaleStream(stream, n=1000)
+    class = 42, k = 7)
+stream2 <- DSD_ScaleStream(stream, n = 1000)
 @
 
 Next, we set up D-Stream with slightly modified values for gaptime (increased number of points after which

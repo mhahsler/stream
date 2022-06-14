@@ -45,24 +45,29 @@
 #'
 #' The following information items are available:
 #'
+#'  - `"numPoints"` number of points used for evaluation.
 #'  - `"numMicroClusters"` number of micro-clusters
 #'  - `"numMacroClusters"` number of macro-clusters
 #'  - `"numClasses"` number of classes
 #'
-#' The following noise-related items are available:
+#' The following noise-related/outlier items are available:
 #'
 #'  - `"noisePredicted"` Number data points predicted as noise
 #'  - `"noiseActual"` Number of data points which are actually noise
 #'  - `"noisePrecision"` Precision of the predicting noise (i.e., number of
 #'     correctly predicted noise points over the total number of points predicted
 #'     as noise)
+#'  - `"outlierJaccard"` - A variant of the Jaccard index used to assess
+#'     outlier detection accuracy (see Krleza et al (2020)).  Outlier Jaccard index
+#'     is calculated as `TP / (TP + FP + UNDETECTED)`.
 #'
 #' The following internal evaluation measures are available:
-#'  - `"SSQ"` within cluster sum of squares. Assigns each non-noise point to
-#'     its nearest center from the clustering and calculates the sum of squares
-#'  - `"silhouette"` average silhouette width (actual noise points
-#'     which stay unassigned by the clustering algorithm are removed; regular
-#'     points that are unassigned by the clustering algorithm will form their own
+#'  - `"SSQ"` within cluster sum of squares. Assigns each point to
+#'     its nearest center from the clustering and calculates the sum of squares.
+#'     Noise points in the data stream are always ignored.
+#'  - `"silhouette"` average silhouette width. Actual noise points
+#'     which stay unassigned by the clustering algorithm are ignored; regular
+#'     points that are unassigned by the clustering algorithm form their own
 #'     noise cluster) (\pkg{cluster})
 #'  - `"average.between"` average distance between clusters (\pkg{fpc})
 #'  - `"average.within"` average distance within clusters (\pkg{fpc})
@@ -90,9 +95,9 @@
 #'    false negative (FN) decision assigns two points from the same true cluster
 #'    to different clusters.
 #'
-#'    precision = TP/(TP+FP)
+#'    `precision = TP / (TP + FP)`
 #'
-#'    recall = TP/(TP+FN)
+#'    `recall = TP / (TP + FN)`
 #'
 #'    The F1 measure is the harmonic mean of precision and recall.
 #' - `"purity"` Average purity of clusters. The purity of each cluster
@@ -130,16 +135,6 @@
 #' Using `type` and `assign`, the user can select how to assign data
 #' points and ad what level (micro or macro) to evaluate.
 #'
-#' The following outlier measures are available:
-#'  - `"OutlierJaccard"` - A variant of the Jaccard index used to assess
-#'     outlier detection accuracy (see Krleza et al (2020)).  Outlier Jaccard index
-#'     is calculated as TP/(TP+FP+UNDETECTED).
-#'
-#' Outlier measures are taken as
-#' external measures, and can be applied only for DSD that can mark outliers
-#' (see [DSD_Gaussians]) and outlier detection clusterers that
-#' inherits [DSOutlier] class.
-#'
 #' `evaluate_cluster()` is used to evaluate an evolving data stream using
 #' the method described by Wan et al. (2009). Of the `n` data points
 #' `horizon` many points are clustered and then the evaluation measure is
@@ -148,12 +143,9 @@
 #'
 #' **Custom Evaluation Measures**
 #'
-#' The parameter `callbacks` can
-#' be used to add user-defined measure
-#' calculations. The user can define a measure by creating a sub-class of `EvalCallback`
-#' and adding it to a list of callbacks (see [EvalCallback] for details).
-#' At the end of each evaluation, the set of `callbacks` are performed and the results
-#' are reported.
+#' The parameter `callbacks` can be supplied with a named list with
+#' functions with the signature `function(actual, predict, points, centers, dsc)`
+#' as elements. See the Examples sections for details.
 #'
 #' @family DSC
 #' @family evaluation
@@ -173,11 +165,10 @@
 #' (see [stream::predict()])?
 #' @param horizon Evaluation is done using horizon many previous points (see
 #' detail section).
-#' @param verbose Report progress?
-#' @param noise How to handle noise points in the data. Options are to treat as
-#' a separate class (default) or to exclude them from evaluation.
-#' @param callbacks A list of [EvalCallback] objects, invoked when
-#' measurement is calculated.
+#' @param verbose logical; Report progress?
+#' @param excludeNoise logical; Should noise points in the data stream be excluded from
+#'   the calculation?
+#' @param callbacks A named list of functions to calculate custom evaluation measures.
 #' @param ... Unused arguments are ignored.
 #' @return `evaluate` returns an object of class `stream_eval` which
 #' is a numeric vector of the values of the requested measures and two
@@ -229,6 +220,7 @@
 #' Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 #' _Springer Machine Learning_.
 #' @examples
+#' # Example 1: Static Evaluation
 #' set.seed(0)
 #' stream <- DSD_Gaussians(k = 3, d = 2)
 #'
@@ -245,43 +237,79 @@
 #'   n = 100)
 #'
 #' # DStream also provides macro clusters. Evaluate macro clusters with type = "macro"
+#' # Note that SSQ and cRand increase.
 #' plot(dstream, stream, type = "macro")
 #' evaluate_static(dstream, stream, type = "macro",
 #'   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
 #'   n = 100)
 #'
-#' # Points are by default assigned to the closest micro clusters for evaluation.
+#' # Points are by default assigned to micro clusters using the method
+#' # specified for the clustering algorithm.
 #' # However, points can also be assigned to the closest macro-cluster using
 #' # assign = "macro".
 #' evaluate_static(dstream, stream, type = "macro", assign = "macro",
 #'   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
 #'   n = 100)
 #'
-#' # Evaluate Outliers
+#' # Example 2: Evaluate with Noise/Outliers
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
 #' dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
 #' update(dstream, stream, 500)
 #'
+#' # For cRand, noise is its own group, for SSQ, actual noise is always
+#' # excluded.
 #' plot(dstream, stream, 500)
 #' evaluate_static(dstream, stream, n = 100,
-#'   measure = c("noisePredicted", "noiseActual", "noisePrecision", "outlierJaccard"))
+#'   measure = c("numPoints", "noisePredicted", "noiseActual",
+#'     "noisePrecision", "outlierJaccard", "cRand", "SSQ"))
 #'
-#' # Evaluate an evolving data stream
+#' # Note that if noise is excluded, the number of used points is reduced.
+#' evaluate_static(dstream, stream, n = 100,
+#'   measure = c("numPoints", "noisePredicted", "noiseActual",
+#'     "noisePrecision", "outlierJaccard", "cRand", "SSQ"), excludeNoise = TRUE)
+#'
+#'
+#' # Example 3: Evaluate an evolving data stream
+#' if (interactive()){
 #' stream <- DSD_Benchmark(1)
 #' dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 #'
 #' evaluate_stream(dstream, stream, type = "macro", assign = "micro",
-#'   measure = c("numMicro", "numMacro", "purity", "crand"),
+#'   measure = c("numMicro", "numMacro", "purity", "cRand"),
 #'   n = 600, horizon = 100)
 #'
 #' # animate the clustering process
-#' if (interactive()){
 #' reset_stream(stream)
 #' dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 #' animate_cluster(dstream, stream, horizon = 100, n = 5000,
-#'   measure = c("crand"), type = "macro", assign = "micro",
+#'   measure = "cRand", type = "macro", assign = "micro",
 #'   plot.args = list(type = "both", xlim = c(0,1), ylim = c(0,1)))
 #' }
+#'
+#' # Example 4: Add a custom measure as a callback
+#' callbacks <- list(
+#'    noisePercentage = function(actual, predict, points, centers, dsc) {
+#'      sum(actual == 0L) / length(actual)
+#'    },
+#'    noiseFN = function(actual, predict, points, centers, dsc) {
+#'      sum(actual == 0L & predict != 0L)
+#'    },
+#'    noiseFP = function(actual, predict, points, centers, dsc) {
+#'      sum(actual != 0L & predict == 0L)
+#'    }
+#'  )
+#'
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = .2)
+#' dstream <- DSC_DStream(gridsize = 0.05, Cm = 1.5)
+#' update(dstream, stream, 500)
+#'
+#' evaluate_static(dstream, stream,
+#'   measure = c("numPoints", "noiseActual", "noisePredicted",
+#'     "noisePercentage", "noiseFN", "noiseFP"),
+#'   callbacks = callbacks, n = 100)
+#'
+#' evaluate_static(dstream, stream, callbacks = callbacks)
+#'
 #' @export
 evaluate_static.DSC <-
   function (object,
@@ -291,45 +319,26 @@ evaluate_static.DSC <-
     type = c("auto", "micro", "macro"),
     assign = "micro",
     assignmentMethod = c("auto", "model", "nn"),
-    noise = c("class", "exclude"),
+    excludeNoise = FALSE,
     callbacks = list(),
     ...) {
-    assignmentMethod <- match.arg(assignmentMethod)
-    noise <- match.arg(noise)
     type <- get_type(object, type)
-
-    if (!is.list(callbacks))
-      callbacks <- list(callbacks)
-
-    callbacks$default <- DefaultEvalCallback()
-
-    if (!all(sapply(callbacks, is, "EvalCallback")))
-      stop("Callbacks must comprise a list of 'EvalCallback' objects!")
+    assignmentMethod <- match.arg(assignmentMethod)
 
     ## get points
     points <- get_points(dsd, n, info = TRUE)
     actual <- points[[".class"]]
-
-    if (is.null(actual))
-      stop("The stream (dsd) does not provide true class/cluster labels in '.class'.")
-
     points <- remove_info(points)
 
-    # find all applicable default measures
-    m <-
-      c(sapply(callbacks, function(cb_obj)
-        cb_obj$env$internal_measures))
+    # find all applicable measures.
+    m <- c(measures_builtin_int, measures_fpc_int)
 
-    m <- append(m, c(
-      sapply(callbacks, function(cb_obj)
-        cb_obj$env$external_measures)
-    ))
+    # for external measures we need actual info from the stream.
+    if (!is.null(actual))
+      m <- c(m, measures_builtin_ext, measures_fpc_ext)
 
-    if (any(is.na(actual)))
-      m <- append(m, c(sapply(callbacks, function(cb_obj)
-        cb_obj$env$outlier_measures)))
-
-    m <- unlist(m)
+    # add callbacks
+    m <- c(m, names(callbacks))
 
     if (missing(measure) || is.null(measure))
       measure <- m
@@ -337,13 +346,13 @@ evaluate_static.DSC <-
       matchm <- pmatch(tolower(measure), tolower(m))
 
       if (any(is.na(matchm)))
-        stop("Invalid or not applicable measure: ", paste(measure[is.na(matchm)], collapse = ', '))
+        stop("Invalid or not applicable measure: ",
+          paste(measure[is.na(matchm)], collapse = ', '))
 
-      m <- m[matchm]
+      measure <- m[matchm]
     }
 
     ## assign points
-    ## Note: actual == NA and pred == NA means outlier/noise
     pred <-
       predict(object, points, type = assign, method = assignmentMethod, ...)
     pred <- pred[[".class"]]
@@ -358,26 +367,45 @@ evaluate_static.DSC <-
 
     centers <- get_centers(object, type = type)
 
-    e <- c()
-    for (x in callbacks) {
-      m_tmp <-
-        x$env$all_measures[pmatch(tolower(m), tolower(x$env$all_measures))]
-      m_tmp <- m_tmp[!is.na(m_tmp)]
-      ec <-
-        evaluate_callback(
-          x,
-          object,
-          m_tmp,
-          points,
-          actual,
-          pred,
-          centers,
-          noise
-        )
-      e <- c(e, ec)
+    # treat noise
+    pred[is.na(pred)] <- 0L
+    actual[is.na(actual)] <- 0L
+
+    if(excludeNoise) {
+      points <- points[actual != 0L, , drop = FALSE]
+      pred <- pred[actual != 0L]
+      actual <- actual[actual != 0L]
     }
 
-    structure(e,
+
+    res_buildin <- evaluate_buildin(
+      measure[measure %in% c(measures_builtin_int, measures_builtin_ext)],
+      actual,
+      pred,
+      points,
+      centers,
+      object)
+
+    res_fpc <- evaluate_fpc(
+      measure[measure %in% c(measures_fpc_int, measures_fpc_ext)],
+      actual,
+      pred,
+      points,
+      centers,
+      object)
+
+    res_callbacks <- evaluate_callbacks(
+      measure[measure %in% c(names(callbacks))],
+      actual,
+      pred,
+      points,
+      centers,
+      object,
+      callbacks)
+
+    res_all <- c(res_buildin, res_fpc, res_callbacks)[measure]
+
+    structure(res_all,
       type = type,
       assign = assign,
       class = "stream_eval")
@@ -396,28 +424,12 @@ evaluate_stream.DSC <-
     type = c("auto", "micro", "macro"),
     assign = "micro",
     assignmentMethod =  c("auto", "model", "nn"),
-    noise = c("class", "exclude"),
+    excludeNoise = TRUE,
     callbacks = NULL,
     ...,
-    verbose = FALSE
-    ) {
-    if (is.null(callbacks))
-      list(default = DefaultEvalCallback())
-
-    callbacks <- .addMissingDefaultCallback(callbacks)
-
-    if (is.null(callbacks) ||
-        !is.list(callbacks) || length(callbacks) < 1)
-      stop("Callbacks must comprise a list of objects")
-    for (x in callbacks)
-      if (!is.object(x) || !is(x, "EvalCallback"))
-        stop("All callbacks must be derived from EvalCallback")
-
+    verbose = FALSE) {
+    type <- get_type(object, type)
     rounds <- n %/% horizon
-    measure <-
-      c(sapply(callbacks, function(cb_obj)
-        cb_obj$env$all_measures[pmatch(tolower(measure), tolower(cb_obj$env$all_measures))]))
-    measure <- measure[!is.na(measure)]
 
     evaluation <-
       data.frame(points = seq(
@@ -438,65 +450,140 @@ evaluate_stream.DSC <-
         evaluate_static(object,
           d,
           measure,
-          horizon, ### this is n
+          horizon,
+          ### this is n
           type,
           assign,
           assignmentMethod,
-          noise = noise,
+          excludeNoise = excludeNoise,
           callbacks,
           ...)
-      evaluation[i,] <- c(i * horizon, r)
+      evaluation[i, ] <- c(i * horizon, r)
 
       ## then update the model
       reset_stream(d)
       update(object, d, n = horizon)
 
       if (verbose)
-        print(evaluation[i,])
+        print(evaluation[i, ])
     }
 
     evaluation
   }
 
 
-## internal measures from package fpc
-.eval_measures_fpc_int  <- c(
-  "average.between",
-  "average.within",
-  "max.diameter",
-  "min.separation",
-  "ave.within.cluster.ss",
-  "g2",
-  "pearsongamma",
-  "dunn",
-  "dunn2",
-  "entropy",
-  "wb.ratio"
-)
 
-## external measures from package fpc
-.eval_measures_fpc_ext  <- c(# "corrected.rand",
-  "vi")
 
-## this also contains info and noise
-.eval_measures_int  <- c(
-  ## info
+#' @export
+print.stream_eval <-  function(x, ...) {
+  cat("Evaluation results for ",
+    attr(x, "type"),
+    "-clusters.\n",
+    sep = "")
+  cat("Points were assigned to ",
+    attr(x, "assign"),
+    "-clusters.\n\n",
+    sep = "")
+  print(unclass(x))
+}
+
+
+# buildin measures
+evaluate_buildin <-
+  function(measure,
+    actual,
+    predict,
+    points,
+    centers,
+    dsc) {
+
+    # drop unknown measures
+    measure <- measure[measure %in% c(measures_builtin_int, measures_builtin_ext)]
+    if (is.null(actual) && any(measure %in% measures_builtin_ext))
+      stop("External evaluation measure(s) ",
+        paste(measure[measure %in% measures_builtin_ext], collapse = ", "),
+        " not available for streams without cluster labels!")
+
+    if(length(measure) < 1L)
+      return(NULL)
+
+    sapply(measure,
+      evaluate_buildin_impl,
+      actual,
+      predict,
+      points,
+      centers,
+      dsc)
+  }
+
+
+evaluate_buildin_impl <-
+  function(measure,
+    actual,
+    predict,
+    points,
+    centers,
+    dsc)
+    switch(
+      measure,
+
+      ### internal
+      numPoints = length(predict),
+      numMicroClusters	= numClusters(dsc, "micro"),
+      numMacroClusters	= numClusters(dsc, "macro"),
+
+      noisePredicted	= sum(predict == 0L),
+
+      SSQ  	     = ssq(points, actual, predict, centers),
+      silhouette = silhouette(points, actual, predict),
+
+      ### external
+      numClasses = length(unique(actual)),
+
+      noiseActual	    = sum(actual == 0L),
+      noisePrecision	= sum(predict == 0L &
+          actual == 0L) / sum(predict == 0L),
+      outlierJaccard = outlierJaccard(predict,
+        actual),
+
+      precision	 = precision(actual, predict),
+      recall	   = recall(actual, predict),
+      F1		     = f1(actual, predict),
+
+      Euclidean	 = agreement(predict, actual, "euclidean"),
+      Manhattan	 = agreement(predict, actual, "manhattan"),
+      Rand	     = agreement(predict, actual, "rand"),
+      cRand	     = agreement(predict, actual, "crand"),
+      NMI		     = agreement(predict, actual, "NMI"),
+      KP		     = agreement(predict, actual, "KP"),
+      angle	     = agreement(predict, actual, "angle"),
+      diag	     = agreement(predict, actual, "diag"),
+      FM		     = agreement(predict, actual, "FM"),
+      Jaccard	   = agreement(predict, actual, "jaccard"),
+      #purity	    = agreement(predict, actual, "purity"),
+      PS		     = agreement(predict, actual, "PS"),
+      purity     = purity(predict, actual)
+      #classPurity	    = classPurity(actual, predict),
+    )
+
+measures_builtin_int <- c(
+  "numPoints",
   "numMicroClusters",
   "numMacroClusters",
-  "numClasses",
 
-  ## noise
   "noisePredicted",
-  "noiseActual",
-  "noisePrecision",
 
-  ## internal
   "SSQ",
   "silhouette"
 )
 
-.eval_measures_ext  <- c(
-  # external
+measures_builtin_ext  <-  c(
+  "numClasses",
+
+  "noiseActual",
+  "noisePrecision",
+  "outlierJaccard",
+
   "precision",
   "recall",
   "F1",
@@ -516,299 +603,104 @@ evaluate_stream.DSC <-
   "PS"
 )
 
-.eval_measures_outlier <-
-  c(#inherits all Jaccard properties, it is an external measure
-    "OutlierJaccard")
-
-.all_measures <- c(
-  .eval_measures_int,
-  .eval_measures_ext,
-  .eval_measures_fpc_int,
-  .eval_measures_fpc_ext,
-  .eval_measures_outlier
-)
-
-
-#' Abstract Class for Evaluation Callbacks
-#'
-#' The abstract class for all evaluation callbacks. Cannot be instantiated.
-#' Must be inherited. Evaluation is the process of the clustering quality
-#' assessment. This assessment can include clustering results, as well as the
-#' clustering process, e.g., duration, spatial query performance, and similar.
-#' The \pkg{stream} package has some measurements (see [evaluate()] for
-#' details) already implemented. All other measurements can be externally
-#' implemented without need to extend the \pkg{stream} package, by using
-#' callbacks.
-#'
-#' @param ... further arguments.
-#' @name EvalCallback-class
-#' @aliases EvalCallback evaluate_callback
-#' @docType class
-#' @section Fields:
-#' \describe{
-#'   \item{all_measures}{ A list of all measures this
-#' object contributes to the evaluation. Union of all callback measures defines
-#' measures the end-user can use. }
-#'   \item{internal_measures}{ A list of
-#' internal measures. A subset of `all_measures`. }
-#'   \item{external_measures}{ A list of external measures. A subset of
-#' `all_measures`. }
-#'   \item{outlier_measures}{ A list of outlier measures.
-#' A subset of `all_measures`. }
-#' }
-#' @author Dalibor Krleža
-#' @examples
-#' # 1. define a class constructor to hold the evaluation information
-#' LWP_Callback <- function() {
-#'   env <- environment()
-#'   all_measures <- c("LowestWeightPercentage")
-#'   internal_measures <- c()
-#'   external_measures <- all_measures
-#'   outlier_measures <- c()
-#'   structure(list(description = "Custom evaluation callback",
-#'            env = environment()),
-#'            class = c("LWP_Callback", "EvalCallback"))
-#' }
-#'
-#' # 2. define the evaluation method for the class and calculate the
-#' #    custom measure if it is requested in measure.
-#' evaluate_callback.LWP_Callback <- function(cb_obj, dsc, measure, points,
-#'                                              actual, predict,
-#'                                              centers, noise) {
-#'     r <- list()
-#'     if("LowestWeightPercentage" %in% measure)
-#'         r$LowestWeightPercentage = min(get_weights(dsc)) / sum(get_weights(dsc))
-#'     r
-#' }
-#'
-#' # 3. evaluate with callbacks
-#' stream <- DSD_Gaussians(k = 3, d = 2, p = c(0.2, 0.4, 0.4))
-#' km <- DSC_Kmeans(k = 3)
-#' update(km, stream, n = 500)
-#' evaluate_static(km, stream, type="macro", n = 500,
-#'                         measure = c("crand","LowestWeightPercentage"),
-#'                         callbacks = list(cc = LWP_Callback()))
-EvalCallback <-
-  function(...)
-    stop("EvalCallback is an abstract class and cannot be instantiated!")
-
-evaluate_callback <-
-  function(cb_obj,
-    dsc,
+# measures provided by fpc need special preprocessing and are done in a single call
+evaluate_fpc <-
+  function(
     measure,
-    points,
     actual,
     predict,
-    centers,
-    noise,
-    ...)
-UseMethod("evaluate_callback")
-
-DefaultEvalCallback <- function() {
-  env <- environment()
-  all_measures <- .all_measures
-  internal_measures <- c(.eval_measures_int, .eval_measures_fpc_int)
-  external_measures <-
-    c(.eval_measures_ext,
-      .eval_measures_fpc_ext)
-  outlier_measures <- c(.eval_measures_outlier)
-  this <-
-    list(description = "Default evaluation callback", env = environment())
-  class(this) <- c("DefaultEvalCallback", "EvalCallback")
-  this
-}
-
-evaluate_callback.DefaultEvalCallback <-
-  function(cb_obj,
-    dsc,
-    measure,
     points,
-    actual,
-    predict,
     centers,
-    noise) {
-    ## no centers available
-    if (nrow(centers) < 1L) {
-      #warning("No centers available!")
-      e <- rep.int(NA_real_, length(measure))
-      e[measure %in% c("numMicroClusters", "numMacroClusters")] <- 0
-      names(e) <- measure
-      return(e)
+    dsc) {
+
+    if (length(measure) > 1L) {
+      # drop unknown measures
+      measure <- measure[measure %in% c(measures_fpc_int, measures_fpc_ext)]
+      if (is.null(actual) && any(measure %in% measures_fpc_ext))
+        stop("External evaluation measure(s) ",
+          paste(measure[measure %in% measures_fpc_ext], collapse = ", "),
+          " not available for streams without cluster labels!")
     }
 
-    fpc <-
-      measure %in% c(.eval_measures_fpc_int, .eval_measures_fpc_ext)
-    if (any(fpc)) {
-      actual_fpc <- actual
-      predict_fpc <- predict
-      points_fpc <- points
+    if(length(measure) < 1L)
+      return(NULL)
 
-      ## deal with noise
-      withnoise <- FALSE
-      if (noise == "class") {
-        ## noise in fpc has the highest index
-        if (!is.null(actual_fpc))
-          actual_fpc[is.na(actual_fpc)] <-
-            max(actual_fpc, na.rm = TRUE)
-        predict_fpc[is.na(predict_fpc)] <-
-          max(predict_fpc, na.rm = TRUE)
+    ## we renumber so we have no missing cluster ID (noise is now cluster id 1)
+    actual <- match(actual, unique(sort(actual)))
+    predict <- match(predict, unique(sort(predict)))
 
-      } else if (noise == "exclude") {
-        ## remove all actual noise points
-        if (!is.null(actual_fpc)) {
-          nsp <- is.na(actual_fpc)
-          actual_fpc <- actual_fpc[!nsp]
-          predict_fpc <- predict_fpc[!nsp]
-          predict_fpc[is.na(predict_fpc)] <-
-            max(predict_fpc, na.rm = TRUE)
-          points_fpc <- points_fpc[!nsp, , drop = FALSE]
-        }
-      } else
-        stop("Unknown noise treatment!")
-
-      ## we also renumber so we have no missing cluster ID
-      actual_fpc <- match(actual_fpc, unique(sort(actual_fpc)))
-      predict_fpc <- match(predict_fpc, unique(sort(predict_fpc)))
-
-      e <- fpc::cluster.stats(
-        d = dist(points_fpc),
-        clustering = predict_fpc,
-        alt.clustering = actual_fpc,
-        noisecluster = TRUE,
-        silhouette = FALSE,
-        G2 = TRUE,
-        G3 = FALSE,
-        wgap = FALSE,
-        sepindex = FALSE,
-        sepprob = 0.1,
-        sepwithnoise = withnoise,
-        compareonly = FALSE,
-        aggregateonly = TRUE
-      )
-      e <- unlist(e)
-    } else
-      e <- numeric()
-
-    if (any(!fpc)) {
-      ## deal with noise
-      if (noise == "class") {
-        ## noise it its own group with index 0: this works for external measures
-        if (!is.null(actual))
-          actual[is.na(actual)] <- 0L
-        predict[is.na(predict)] <- 0L
-      } else if (noise == "exclude") {
-        ## remove all actual noise points
-        if (!is.null(actual)) {
-          nsp <- is.na(actual)
-          actual <- actual[!nsp]
-          predict <- predict[!nsp]
-          points <- points[!nsp, , drop = FALSE]
-        }
-      } else
-        stop("Unknown noise treatment!")
-
-      v <- sapply(measure[!fpc],
-        function(m)
-          .evaluate(
-            m,
-            predict,
-            actual,
-            points,
-            centers,
-            dsc,
-            cb_obj
-          ))
-      e <- c(e, v)
-    }
-
-    e <- e[measure]
-    return(e)
-  }
-
-
-
-
-#' @export
-print.stream_eval <-  function(x, ...) {
-  cat("Evaluation results for ",
-    attr(x, "type"),
-    "-clusters.\n",
-    sep = "")
-  cat("Points were assigned to ",
-    attr(x, "assign"),
-    "-clusters.\n\n",
-    sep = "")
-  names <- names(x)
-  x <- as.numeric(x)
-  names(x) <- names
-  print(x)
-}
-
-
-# work horse
-.evaluate <-
-  function(measure,
-    predict,
-    actual,
-    points,
-    centers,
-    dsc,
-    callback_obj) {
-    if (is.null(actual) && !measure %in% .eval_measures_int)
-      stop("Evaluation measure not available for streams without cluster labels!")
-
-    res <- switch(
-      measure,
-      numMicroClusters	= if (is(try(n <-
-          nclusters(dsc, type = "micro"),
-        silent = TRUE)
-        , "try-error"))
-        NA_integer_
-      else
-        n,
-      numMacroClusters	= if (is(try(n <-
-          nclusters(dsc, type = "macro"),
-        silent = TRUE)
-        , "try-error"))
-        NA_integer_
-      else
-        n,
-      numClasses	      = numClasses(actual),
-
-      noisePredicted	= sum(predict == 0L),
-      noiseActual	    = sum(actual == 0L),
-      noisePrecision	= sum(predict == 0L &
-          actual == 0L) / sum(predict == 0L),
-
-      SSQ  	     = ssq(points, actual, predict, centers),
-      silhouette = silhouette(points, actual, predict),
-
-      precision	 = precision(actual, predict),
-      recall	   = recall(actual, predict),
-      F1		     = f1(actual, predict),
-
-      Euclidean	 = agreement(predict, actual, "euclidean"),
-      Manhattan	 = agreement(predict, actual, "manhattan"),
-      Rand	     = agreement(predict, actual, "rand"),
-      cRand	     = agreement(predict, actual, "crand"),
-      NMI		     = agreement(predict, actual, "NMI"),
-      KP		     = agreement(predict, actual, "KP"),
-      angle	     = agreement(predict, actual, "angle"),
-      diag	     = agreement(predict, actual, "diag"),
-      FM		     = agreement(predict, actual, "FM"),
-      Jaccard	   = agreement(predict, actual, "jaccard"),
-      #purity	    = agreement(predict, actual, "purity"),
-      PS		     = agreement(predict, actual, "PS"),
-
-      purity     = purity(predict, actual),
-      #classPurity	    = classPurity(actual, predict),
-      OutlierJaccard = outlierJaccard(
-        predict,
-        actual),
+    e <- fpc::cluster.stats(
+      d = dist(points),
+      clustering = predict,
+      alt.clustering = actual,
+      noisecluster = FALSE,
+      silhouette = FALSE,
+      G2 = TRUE,
+      G3 = FALSE,
+      wgap = FALSE,
+      sepindex = FALSE,
+      sepprob = 0.1,
+      sepwithnoise = FALSE,
+      compareonly = FALSE,
+      aggregateonly = TRUE
     )
 
-    res
+    unlist(e)[measure]
   }
+
+measures_fpc_int  <- c(
+  "average.between",
+  "average.within",
+  "max.diameter",
+  "min.separation",
+  "ave.within.cluster.ss",
+  "g2",
+  "pearsongamma",
+  "dunn",
+  "dunn2",
+  "entropy",
+  "wb.ratio"
+)
+
+measures_fpc_ext  <- c(# "corrected.rand",
+  "vi")
+
+
+# callbacks
+evaluate_callbacks <-
+  function(measure,
+    actual,
+    predict,
+    points,
+    centers,
+    dsc,
+    callbacks) {
+
+    measure <- measure[measure %in% names(callbacks)]
+
+    if(length(measure) < 1L)
+      return(NULL)
+
+    sapply(callbacks, FUN = function(cb) cb(actual,
+      predict,
+      points,
+      centers,
+      dsc))
+
+  }
+
+# implementation of individual measures
+
+numClusters <- function(dsc, type) {
+  if (is(try(n <-
+      nclusters(dsc, type = type),
+    silent = TRUE)
+    , "try-error"))
+    NA_integer_
+  else
+    n
+}
+
 
 ## compare pairs of points
 ## http://stats.stackexchange.com/questions/15158/precision-and-recall-for-clustering
@@ -836,7 +728,7 @@ recall <- function(actual, predict) {
   FN <- sum(sapply(
     1:(nrow(conf) - 1L),
     FUN = function(i)
-      conf[i,] * colSums(conf[-(1:i), , drop = FALSE])
+      conf[i, ] * colSums(conf[-(1:i), , drop = FALSE])
   ))
 
   #TN <- N - FN
@@ -903,7 +795,6 @@ rowMax <- function(x, which = FALSE) {
   }
 }
 
-## FIXME: check!
 # as defined in Density-Based Clustering of Data Streams at
 # Multiple Resolutions by Wan et al
 classPurity <- function(actual, predict) {
@@ -911,38 +802,11 @@ classPurity <- function(actual, predict) {
   mean(rowMax(confusion) / rowSums(confusion))
 }
 
-numClusters <- function(centers) {
-  nrow(centers)
-}
-
-numClasses <- function(actual) {
-  length(unique(actual))
-}
-
 ssq <- function(points, actual, predict, centers) {
-  #   ## ssq does not use actual and predicted noise points
-  #   ## predicted noise points that are not actual noise points form their own
-  #   ## cluster
-  #   if(!is.null(actual)) noise <- actual==0 & predict==0
-  #   else noise <- predict==0
-  #
-  #   points <- points[!noise,]
-  #   predict <- predict[!noise]
-  #   if(any(predict==0)) {
-  #     warning("SSQ: ", sum(predict==0), " non-noise points were predicted noise incorrectly and form their own cluster.")
-  #     centers <- rbind(centers, colMeans(points[predict==0,]))
-  #     predict[predict==0] <- nrow(centers)
-  #   }
-  #
-  #   ## points that are predicted as noise but are not are its own group!
-  #
-  #   #sum(apply(dist(points, centers), 1L , min)^2)
-  #   d <- dist(points, centers)
-  #   sum(sapply(1:length(predict), FUN=function(i) d[i,predict[i]])^2)
+  # SSQ to closest center and does not use actual noise points
 
-  ## do nn assignment of non noise points
   if (!is.null(actual))
-    points <- points[actual != 0L,]
+    points <- points[actual != 0L, , drop = FALSE]
 
   assign_dist <- apply(dist(points, centers), 1, min)
   sum(assign_dist ^ 2)
@@ -951,17 +815,12 @@ ssq <- function(points, actual, predict, centers) {
 silhouette <- function(points, actual, predict) {
   ## silhouette does not use noise points
   if (!is.null(actual))
-    noise <- actual == 0 & predict == 0
+    noise <- actual == 0L & predict == 0L
   else
-    noise <- predict == 0
+    noise <- predict == 0L
 
-  points <- points[!noise,]
+  points <- points[!noise, , drop = FALSE]
   predict <- predict[!noise]
-
-  #  if(any(predict==0)) warning("silhouette: ", sum(predict==0), " non-noise points were predicted noise incorrectly and form their own cluster.")
-
-  ## points that are predicted as noise but are not are its own group!
-
 
   mean(cluster::silhouette(predict, dist(points))[, "sil_width"])
 }
@@ -986,23 +845,9 @@ silhouette <- function(points, actual, predict) {
 outlierJaccard <-
   function(predict,
     actual) {
-
     tp <- sum(actual == 0L & predict == 0L)
     fp <- sum(predict == 0L & actual != 0L)
     undet <- sum(predict != 0L & actual == 0L)  # this is fn
 
     tp / (tp + fp + undet)
-  }
-
-.addMissingDefaultCallback <-
-  function(callbacks) {
-    # we check and add default callback if missing
-    default <- FALSE
-    for (x in callbacks) {
-      if (is(x, "DefaultEvalCallback"))
-        default <- TRUE
-    }
-    if (!default)
-      callbacks$default <- DefaultEvalCallback()
-    callbacks
   }

@@ -132,7 +132,7 @@ macro-clusters and then assigns adjacent transitional grids to
 macro-clusters. This behavior is implemented as \code{attraction = FALSE}.
 
 The 2009 version of the algorithm adds the concept of attraction between
-grids cells. If \code{attraction=TRUE} is used then the algorithm produces
+grids cells. If \code{attraction = TRUE} is used then the algorithm produces
 macro-clusters based on attraction between dense adjacent grids (uses
 \code{Cm2} which in the original algorithm is equal to \code{Cm}).
 
@@ -141,10 +141,12 @@ adds a parameter \code{grid_type} with possible values of \code{"dense"},
 \code{"transitional"}, \code{"sparse"}, \code{"all"} and \code{"used"}. This
 only returns the selected type of grid cells. \code{"used"} includes dense
 and adjacent transitional cells which are used in D-Stream for reclustering.
-
-For plot D-Stream also provides extra parameters \code{"grid"} and
+For \code{plot()} D-Stream also provides extra parameters \code{"grid"} and
 \code{"grid_type"} to show micro-clusters as grid cells (density represented
 by gray values).
+
+\code{DSOutlier_DStream} classifies points that do not fall into a dense grid cell as
+outlier/noise.
 
 Note that \code{DSC_DStream} can at this point not be saved to disk using
 save() or saveRDS(). This functionality will be added later!
@@ -202,6 +204,7 @@ Article 12 (July 2009), 27 pages.
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_Sample}()},
 \code{\link{DSC_Window}()},

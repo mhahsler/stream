@@ -42,6 +42,7 @@ plot(dstream, stream, main = "micro-clusters")
 Other DSC_Micro: 
 \code{\link{DSC_BICO}()},
 \code{\link{DSC_BIRCH}()},
+\code{\link{DSC_DBSTREAM}()},
 \code{\link{DSC_DStream}()},
 \code{\link{DSC_Sample}()},
 \code{\link{DSC_Window}()},

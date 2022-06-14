@@ -39,6 +39,8 @@ predict(outlier_detector, points)
 # Plot new points from the stream. Predicted outliers are marked with a red x.
 plot(outlier_detector, stream)
 
+evaluate_static(outlier_detector, stream)
+
 # use a different detector
 outlier_detector2 <- DSOutlier_DStream(gridsize = .05, Cl = 0.5)
 update(outlier_detector2, stream, 500)
