@@ -17,6 +17,7 @@
 #' then for methods `pairs` and `"pca"` all dimensions are used and
 #' for `"scatter"` the first two dimensions are plotted.
 #' @param alpha alpha shading used to plot the points.
+#' @param transform a function that maps data stream points onto a 2-D plane for plotting.
 #' @param \dots further arguments are passed on to [graphics::plot.default()] or [graphics::pairs()].
 #' @author Michael Hahsler
 #' @examples
@@ -58,7 +59,8 @@ plot.DSD <- function(x,
   ...,
   method = c("pairs", "scatter", "pca", "ts"),
   dim = NULL,
-  alpha = .6) {
+  alpha = .6,
+  transform = NULL) {
   method <- match.arg(method)
 
 
@@ -106,8 +108,12 @@ plot.DSD <- function(x,
   if (ncol(d) <= 2L && (method == "pairs" || method == "pca"))
     method <- "scatter"
 
+  if (!is.null(transform))
+    method <- "transform"
+
   switch(
     method,
+    transform = plot(transform(d), col = col, pch = pch, ...),
     pairs = pairs(d, col = col, pch = pch, ...),
     pca = {
       ## we assume Euclidean here

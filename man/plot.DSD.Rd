@@ -13,7 +13,8 @@
   ...,
   method = c("pairs", "scatter", "pca", "ts"),
   dim = NULL,
-  alpha = 0.6
+  alpha = 0.6,
+  transform = NULL
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ then for methods \code{pairs} and \code{"pca"} all dimensions are used and
 for \code{"scatter"} the first two dimensions are plotted.}
 
 \item{alpha}{alpha shading used to plot the points.}
+
+\item{transform}{a function that maps data stream points onto a 2-D plane for plotting.}
 }
 \description{
 Method to plot data stream data. To plot \link{DSC} see \code{\link[=plot.DSC]{plot.DSC()}}.

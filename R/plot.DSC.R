@@ -22,20 +22,20 @@
 #' @param type Plot micro clusters (`type = "micro"`), macro clusters
 #' (`type = "macro"`), both micro and macro clusters (`type = "both"`).
 #' @param assignment logical; show assignment area of micro-clusters.
+#' @param transform a function that maps data stream points onto a 2-D plane for plotting.
 #' @param \dots further arguments are passed on to [graphics::plot.default()] or [graphics::pairs()].
 #' \pkg{graphics}.
 #' @author Michael Hahsler
 #' @examples
 #' stream <- DSD_Gaussians(k = 3, d = 3, noise = 0.05)
 #'
-#' ## create and plot micro-clusters
+#' ## Example 1: Plot data
+#' plot(stream)
+#'
+#' ## Example 2: Plot a clustering
 #' dstream <- DSC_DStream(gridsize = 0.1)
 #' update(dstream, stream, 500)
 #' dstream
-#'
-#' plot(dstream)
-#'
-#' ## plot with data
 #' plot(dstream, stream)
 #'
 #' ## plot micro or macro-clusters only
@@ -49,6 +49,16 @@
 #'
 #' ## D-Stream has a special implementation to show assignment areas
 #' plot(dstream, stream, assignment = TRUE)
+#'
+#' ## Example 4: Use a custom transformation for plotting.
+#' ##     We fit PCA using 100 points and create a transformation
+#' ##     function to project the stream to the first two PCs.
+#' pr <- princomp(get_points(stream, n = 100, info = FALSE))
+#' trans <- function(x) predict(pr, x)[, 1:2 , drop = FALSE]
+#'
+#' trans(get_points(stream, n = 3))
+#'
+#' plot(dstream, stream, transform = trans)
 #' @export
 plot.DSC <- function(x,
   dsd = NULL,
@@ -63,6 +73,7 @@ plot.DSC <- function(x,
   dim = NULL,
   type = c("auto", "micro", "macro", "both", "none"),
   assignment = FALSE,
+  transform = NULL,
   ### assignment is not implemented
   ...) {
   method <- match.arg(method)
@@ -170,7 +181,17 @@ plot.DSC <- function(x,
     centers <- centers[, dim, drop = FALSE]
 
   ### plot
-  if (method == "pairs" &&  ncol(centers) > 2L) {
+  if (!is.null(transform)) {
+    plot(
+      transform(centers),
+      col = col,
+      cex = cex_clusters,
+      pch = mpch,
+      lwd = lwd,
+      ...
+    )
+  }
+  else if (method == "pairs" &&  ncol(centers) > 2L) {
     pairs(
       centers,
       col = col,

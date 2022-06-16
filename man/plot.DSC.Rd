@@ -18,6 +18,7 @@
   dim = NULL,
   type = c("auto", "micro", "macro", "both", "none"),
   assignment = FALSE,
+  transform = NULL,
   ...
 )
 }
@@ -51,6 +52,8 @@ for \code{"scatter"} the first two dimensions are plotted.}
 
 \item{assignment}{logical; show assignment area of micro-clusters.}
 
+\item{transform}{a function that maps data stream points onto a 2-D plane for plotting.}
+
 \item{\dots}{further arguments are passed on to \code{\link[graphics:plot.default]{graphics::plot.default()}} or \code{\link[graphics:pairs]{graphics::pairs()}}.
 \pkg{graphics}.}
 }
@@ -60,14 +63,13 @@ Method to plot the result of data stream data clustering. To plot \link{DSD} see
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 3, noise = 0.05)
 
-## create and plot micro-clusters
+## Example 1: Plot data
+plot(stream)
+
+## Example 2: Plot a clustering
 dstream <- DSC_DStream(gridsize = 0.1)
 update(dstream, stream, 500)
 dstream
-
-plot(dstream)
-
-## plot with data
 plot(dstream, stream)
 
 ## plot micro or macro-clusters only
@@ -81,6 +83,16 @@ plot(dstream, stream, dim = c(2, 3))
 
 ## D-Stream has a special implementation to show assignment areas
 plot(dstream, stream, assignment = TRUE)
+
+## Example 4: Use a custom transformation for plotting.
+##     We fit PCA using 100 points and create a transformation
+##     function to project the stream to the first two PCs.
+pr <- princomp(get_points(stream, n = 100, info = FALSE))
+trans <- function(x) predict(pr, x)[, 1:2 , drop = FALSE]
+
+trans(get_points(stream, n = 3))
+
+plot(dstream, stream, transform = trans)
 }
 \seealso{
 Other DSC: 
