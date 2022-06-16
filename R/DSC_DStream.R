@@ -708,8 +708,12 @@ plot.DSC_DStream <- function(x,
   ### add macro-clusters?
   if ((type == "both" ||
       type == "macro") && nclusters(x, type = "macro") > 0) {
+    centers <-  get_centers(x, type = "macro")
+    if(!is.null(dim))
+      centers <- centers[, dim, drop = FALSE]
+
     points(
-      get_centers(x, type = "macro"),
+      centers,
       col = "blue",
       lwd = 2,
       pch = 3,
