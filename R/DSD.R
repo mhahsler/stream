@@ -138,6 +138,8 @@ remove_info <- function(points) {
   points
 }
 
+info_cols <- function(points) grep('^\\.', colnames(points))
+
 split_info <- function(points) {
   info_cols <- grep('^\\.', colnames(points))
   list(points = points[, -info_cols, drop = FALSE],
