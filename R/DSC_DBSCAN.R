@@ -60,23 +60,16 @@
 #' # 3 clusters with 5% noise
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 #'
-#' # Use DBSCAN to recluster micro clusters (a sample)
-#' sample <- DSC_Sample(k = 101)
-#' update(sample, stream, 500)
+#' # Use a moving window for "micro-clusters and recluster with DBSCAN (macro-clusters)
+#' cl <- DSC_TwoStage(
+#'   micro = DSC_Window(horizon = 100),
+#'   macro = DSC_DBSCAN(eps = .05)
+#' )
 #'
-#' dbscan <- DSC_DBSCAN(eps = .05)
-#' recluster(dbscan, sample)
-#' plot(dbscan, stream)
-#' plot(dbscan, stream, type = "macro")
+#' update(cl, stream, 500)
+#' cl
 #'
-#' # For comparison, we can cluster some data with DBSCAN directly (the data points are
-#' # considered micro-clusters). Note: DBSCAN is not suitable for data streams since
-#' # it passes over the data several times.
-#' dbscan <- DSC_DBSCAN(eps = .05)
-#' assignment <- update(dbscan, stream, 500)
-#' head(assignment)
-#'
-#' plot(dbscan, stream)
+#' plot(cl, stream)
 #' @export
 DSC_DBSCAN <-
   function(formula = NULL,
