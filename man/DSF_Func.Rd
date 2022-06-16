@@ -4,12 +4,14 @@
 \alias{DSF_Func}
 \title{Apply a Function to Transformation to a Data Stream}
 \usage{
-DSF_Func(dsd, func = NULL)
+DSF_Func(dsd, func = NULL, info = FALSE)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
 
 \item{func}{a function that takes a data.frame as the first argument and returns the transformed data.frame.}
+
+\item{info}{logical; does the function also receive and modify the info columns?}
 }
 \value{
 An object of class \code{DSF_Func} (subclass of \link{DSF} and \link{DSD}).
@@ -32,8 +34,8 @@ rename <- function(x, names) {
   x
 }
 
-# Be careful not to forget the info columns
-stream2 <- stream \%>\% DSF_Func(rename(c("A", "B", "C", ".class")))
+# By default, the info columns starting with . are not affected.
+stream2 <- stream \%>\% DSF_Func(rename(c("A", "B", "C")))
 stream2
 
 get_points(stream2, n = 5)
@@ -47,6 +49,16 @@ sum_column <- function(x) {
 stream3 <- stream2 \%>\% DSF_Func(sum_column())
 stream3
 get_points(stream3, n = 5)
+
+## Example 3: Project the stream on its first 2 PCs (using a sample)
+pr <- princomp(get_points(stream, n = 100, info = FALSE))
+pca_trans <- function(x) predict(pr, x[, c("X1", "X2", "X3")])[, 1:2 , drop = FALSE]
+
+trans(get_points(stream, n = 3, info = FALSE))
+
+stream4 <- stream \%>\% DSF_Func(pca_trans())
+get_points(stream4, n = 3)
+plot(stream4)
 }
 \seealso{
 Other DSF: 

@@ -4,12 +4,14 @@
 \alias{DSF_dplyr}
 \title{Apply a dplyr Transformation to a Data Stream}
 \usage{
-DSF_dplyr(dsd, func = NULL)
+DSF_dplyr(dsd, func = NULL, info = FALSE)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
 
 \item{func}{a dplyr expression.}
+
+\item{info}{logical; does the function also receive and modify the info columns?}
 }
 \value{
 An object of class \code{DSF_dplyr} (subclass of \link{DSF} and \link{DSD}).

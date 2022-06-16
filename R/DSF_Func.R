@@ -28,6 +28,7 @@
 #'
 #' @param dsd A object of class [DSD].
 #' @param func a function that takes a data.frame as the first argument and returns the transformed data.frame.
+#' @param info logical; does the function also receive and modify the info columns?
 #' @return An object of class `DSF_Func` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examples
@@ -40,8 +41,8 @@
 #'   x
 #' }
 #'
-#' # Be careful not to forget the info columns
-#' stream2 <- stream %>% DSF_Func(rename(c("A", "B", "C", ".class")))
+#' # By default, the info columns starting with . are not affected.
+#' stream2 <- stream %>% DSF_Func(rename(c("A", "B", "C")))
 #' stream2
 #'
 #' get_points(stream2, n = 5)
@@ -55,17 +56,29 @@
 #' stream3 <- stream2 %>% DSF_Func(sum_column())
 #' stream3
 #' get_points(stream3, n = 5)
+#'
+#' ## Example 3: Project the stream on its first 2 PCs (using a sample)
+#' pr <- princomp(get_points(stream, n = 100, info = FALSE))
+#' pca_trans <- function(x) predict(pr, x[, c("X1", "X2", "X3")])[, 1:2 , drop = FALSE]
+#'
+#' trans(get_points(stream, n = 3, info = FALSE))
+#'
+#' stream4 <- stream %>% DSF_Func(pca_trans())
+#' get_points(stream4, n = 3)
+#' plot(stream4)
 #' @export
 DSF_Func <-
   function(dsd,
-    func = NULL) {
+    func = NULL,
+    info = FALSE) {
     func <- deparse(substitute(func))
 
     # creating the DSD object
     l <- list(
       description = paste0(dsd$description, "\n  + function: ", func),
       dsd = dsd,
-      func = parse(text = paste('ps <- ps %>%', func))
+      func = parse(text = paste('ps <- ps %>%', func)),
+      info = info
     )
     class(l) <-
       c("DSF_Func", "DSF", "DSD_R", "DSD")
@@ -81,7 +94,22 @@ get_points.DSF_Func <- function(x,
   ...) {
   .nodots(...)
 
-  ps <- get_points(x$dsd, n = n, outofpoints = outofpoints, info = info, ...)
-  eval(x$func)
-  ps
+  points <-
+    get_points(x$dsd,
+      n = n,
+      outofpoints = outofpoints,
+      info = TRUE,
+      ...)
+
+  if (x$info) {
+    ps <- points
+    eval(x$func)
+    return(ps)
+  } else {
+    points <- split_info(points)
+    ps <- points$points
+    eval(x$func)
+    ps <- cbind(ps, points$info)
+    return(ps)
+  }
 }

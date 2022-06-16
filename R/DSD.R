@@ -138,6 +138,12 @@ remove_info <- function(points) {
   points
 }
 
+split_info <- function(points) {
+  info_cols <- grep('^\\.', colnames(points))
+  list(points = points[, -info_cols, drop = FALSE],
+    info = points[, info_cols, drop = FALSE])
+}
+
 
 #' Reset a Data Stream to its Beginning
 #'
