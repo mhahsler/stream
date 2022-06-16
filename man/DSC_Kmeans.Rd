@@ -58,25 +58,19 @@ the algorithm.
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
-set.seed(1000)
-stream <- DSD_Gaussians(k = 3, d = 2, noise = 0)
+# 3 clusters with 5\% noise
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
-# create micro-clusters via sampling
-sample <- DSC_Sample(k = 20)
-update(sample, stream, 500)
-sample
+# Use a moving window for "micro-clusters and recluster with k-means (macro-clusters)
+cl <- DSC_TwoStage(
+  micro = DSC_Window(horizon = 100),
+  macro = DSC_Kmeans(k = 3)
+)
 
-# recluster micro-clusters
-kmeans <- DSC_Kmeans(k=3)
-recluster(kmeans, sample)
-plot(kmeans, stream, type = "both")
+update(cl, stream, 500)
+cl
 
-
-# For comparison we use k-means directly to cluster data
-# Note: k-means is not a data stream clustering algorithm
-kmeans <- DSC_Kmeans(k = 3)
-update(kmeans, stream, 500)
-plot(kmeans, stream, type = "macro")
+plot(cl, stream)
 }
 \seealso{
 Other DSC_Macro: 

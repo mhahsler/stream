@@ -52,25 +52,19 @@ to clusters.
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
-stream <- DSD_mlbenchGenerator("cassini")
+#' # 3 clusters with 5\% noise
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
-# Recluster micro-clusters from DSC_Sample with reachability
-sample <- DSC_Sample(k = 200)
-update(sample, stream, 1000)
+# Use a moving window for "micro-clusters and recluster with DBSCAN (macro-clusters)
+cl <- DSC_TwoStage(
+  micro = DSC_Window(horizon = 100),
+  macro = DSC_Reachability(eps = .05)
+)
 
-reach <- DSC_Reachability(epsilon=0.3)
-recluster(reach, sample)
-reach
+update(cl, stream, 500)
+cl
 
-plot(reach, stream, type="both")
-
-# For comparison we using reachability clustering directly on data points
-# Note: reachability is not a data stream clustering algorithm taking O(n^2)
-# time and space.
-reach <- DSC_Reachability(epsilon = 0.2)
-update(reach, stream, 500)
-reach
-plot(reach, stream)
+plot(cl, stream)
 }
 \references{
 Martin Ester, Hans-Peter Kriegel, Joerg Sander, Xiaowei Xu

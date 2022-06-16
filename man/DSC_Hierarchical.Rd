@@ -54,31 +54,18 @@ to clusters.
 used for (re)clustering, the old clustering is deleted.
 }
 \examples{
-# Cassini dataset
-stream <- DSD_mlbenchGenerator("cassini")
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
-# Use hierarchical clustering to recluster micro-clusters
-dbstream <- DSC_DBSTREAM(r = .2)
-update(dbstream, stream, 500)
-dbstream
+# Use a moving window for "micro-clusters and recluster with HC (macro-clusters)
+cl <- DSC_TwoStage(
+  micro = DSC_Window(horizon = 100),
+  macro = DSC_Hierarchical(h = .1, method = "single")
+)
 
-# reclustering using single-link and specifying k
-hc <- DSC_Hierarchical(k = 3, method = "single")
-recluster(hc, dbstream)
-hc
-plot(hc, stream)
+update(cl, stream, 500)
+cl
 
-# reclustering by specifying height
-hc <- DSC_Hierarchical(h = .3, method = "single")
-recluster(hc, dbstream)
-hc
-plot(hc, stream, type = "both")
-
-# For comparison we use hierarchical clustering directly on the data
-# Note: hierarchical clustering is not a data stream clustering algorithm!
-hc <- DSC_Hierarchical(k = 3, method = "single")
-update(hc, stream, 500)
-plot(hc, stream)
+plot(cl, stream)
 }
 \seealso{
 Other DSC_Macro: 
