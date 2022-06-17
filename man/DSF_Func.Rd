@@ -46,7 +46,7 @@ sum_column <- function(x) {
  x
 }
 
-stream3 <- stream2 \%>\% DSF_Func(sum_column())
+stream3 <- stream2 \%>\% DSF_Func(sum_column)
 stream3
 get_points(stream3, n = 5)
 
@@ -54,11 +54,18 @@ get_points(stream3, n = 5)
 pr <- princomp(get_points(stream, n = 100, info = FALSE))
 pca_trans <- function(x) predict(pr, x[, c("X1", "X2", "X3")])[, 1:2 , drop = FALSE]
 
-trans(get_points(stream, n = 3, info = FALSE))
+pca_trans(get_points(stream, n = 3, info = FALSE))
 
 stream4 <- stream \%>\% DSF_Func(pca_trans())
 get_points(stream4, n = 3)
 plot(stream4)
+
+## Example 4: Change a class labels using info = TRUE
+stream5 <- stream \%>\% DSF_Func(function(x) { x[[.class]][x[[.class]] == 3] <- NA; x }, info = TRUE)
+
+get_points(stream5, n = 3)
+plot(stream5)
+
 }
 \seealso{
 Other DSF: 

@@ -33,7 +33,7 @@
 #'
 #' Summary functions can be used, but will only be applied to the requested part of the stream of length `n`.
 #'
-#' `DSF_dplyr()` is just an alias for [DSF_Func()].
+#' `DSF_dplyr()` calls the function using `points %>% func()`.
 #'
 #' @family DSF
 #'
@@ -60,4 +60,49 @@
 #'
 #' }
 #' @export
-DSF_dplyr <- DSF_Func
+DSF_dplyr <-
+  function(dsd,
+    func = NULL,
+    info = FALSE) {
+    func <- deparse(substitute(func))
+
+    # creating the DSD object
+    l <- list(
+      description = paste0(dsd$description, "\n  + function: ", func),
+      dsd = dsd,
+      func = parse(text = paste('ps <- ps %>%', func)),
+      info = info
+    )
+    class(l) <-
+      c("DSF_dplyr", "DSF", "DSD_R", "DSD")
+
+    l
+  }
+
+#' @export
+get_points.DSF_dplyr <- function(x,
+  n = 1,
+  outofpoints = c("stop", "warn", "ignore"),
+  info = TRUE,
+  ...) {
+  .nodots(...)
+
+  points <-
+    get_points(x$dsd,
+      n = n,
+      outofpoints = outofpoints,
+      info = TRUE,
+      ...)
+
+  if (x$info) {
+    ps <- points
+    eval(x$func)
+    return(ps)
+  } else {
+    points <- split_info(points)
+    ps <- points$points
+    eval(x$func)
+    ps <- cbind(ps, points$info)
+    return(ps)
+  }
+}
