@@ -34,7 +34,6 @@ rp1 <- r_bg(function() {
   
   while (TRUE)
     write_stream(stream, con, n = blocksize, close = FALSE)
-
   close(con)
 })
 

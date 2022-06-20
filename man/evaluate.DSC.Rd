@@ -28,7 +28,7 @@
   type = c("auto", "micro", "macro"),
   assign = "micro",
   assignmentMethod = c("auto", "model", "nn"),
-  excludeNoise = TRUE,
+  excludeNoise = FALSE,
   callbacks = NULL,
   ...,
   verbose = FALSE
@@ -85,9 +85,9 @@ We provide two evaluation methods:
 \itemize{
 \item \code{evaluate_static()} evaluates the current static clustering using new data without updating the model.
 \item \code{evaluate_stream()} evaluates the clustering process using
-\emph{prequential error estimation} (see Gama, Sebastiao and Rodrigues; 2013).  The data points
-in the horizon are first used to calculate the evaluation measure and then
-they are used for updating the cluster model.
+\emph{prequential error estimation} (see Gama, Sebastiao and Rodrigues; 2013).  The current model is
+first applied to the data points in the horizon to calculate the evaluation measures. Then, the
+cluster model is updated with the points.
 }
 
 \strong{Evaluation Measures}
@@ -256,7 +256,6 @@ evaluate_static(dstream, stream, n = 100,
 
 
 # Example 3: Evaluate an evolving data stream
-if (interactive()){
 stream <- DSD_Benchmark(1)
 dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 
@@ -264,6 +263,7 @@ evaluate_stream(dstream, stream, type = "macro", assign = "micro",
   measure = c("numMicro", "numMacro", "purity", "cRand"),
   n = 600, horizon = 100)
 
+if (interactive()){
 # animate the clustering process
 reset_stream(stream)
 dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
@@ -295,7 +295,6 @@ evaluate_static(dstream, stream,
   callbacks = callbacks, n = 100)
 
 evaluate_static(dstream, stream, callbacks = callbacks)
-
 }
 \references{
 Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On

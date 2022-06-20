@@ -34,7 +34,7 @@ rows are allowed on streams. Examples are:
 
 Summary functions can be used, but will only be applied to the requested part of the stream of length \code{n}.
 
-\code{DSF_dplyr()} is just an alias for \code{\link[=DSF_Func]{DSF_Func()}}.
+\code{DSF_dplyr()} calls the function using \code{points \%>\% func()}.
 }
 \examples{
 if (require(dplyr)) {
@@ -42,15 +42,21 @@ if (require(dplyr)) {
 library(dplyr)
 
 stream <- DSD_Gaussians(k = 3, d = 3)
+plot(stream, xlim = c(0, 1), ylim = c(0, 1))
+
+# 1. Select only columns X1 and X2
+# 2. filter points by X1 > .5 (Note that the info columns also need to be filtered!)
+# 3. Add a sum columns
 
 stream2 <- stream \%>\%
   DSF_dplyr(select(X1, X2)) \%>\%
-  DSF_dplyr(filter(X1 > .5)) \%>\%
+  DSF_dplyr(filter(X1 > .5), info = TRUE) \%>\%
   DSF_dplyr(mutate(Xsum = X1 + X2))
 stream2
 
+# Note: you get fewer points because of the filter operation.
 get_points(stream2, n = 10)
-## Note: you get fewer points because of the filter operation.
+plot(stream2, xlim = c(0, 1), ylim = c(0, 1))
 
 }
 }

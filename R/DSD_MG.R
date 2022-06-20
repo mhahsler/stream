@@ -97,10 +97,10 @@
 #' stream <- DSD_MG(dim = 2, c1, c2)
 #' stream
 #'
-#' dbstream <- DSC_DBSTREAM(r = 10, lambda = 0.1)
+#' dbstream <- DSC_DBSTREAM(r = 20, lambda = 0.1)
 #' if (interactive()) {
 #' purity <- animate_cluster(dbstream, stream, n = 2500, type = "micro",
-#'   xlim = c(-10, 120), ylim = c(-10, 120), evaluationMeasure = "purity", horizon = 100)
+#'   xlim = c(-10, 120), ylim = c(-10, 120), measure = "purity", horizon = 100)
 #' }
 #' @export
 DSD_MG <-

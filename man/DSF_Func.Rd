@@ -4,12 +4,14 @@
 \alias{DSF_Func}
 \title{Apply a Function to Transformation to a Data Stream}
 \usage{
-DSF_Func(dsd, func = NULL, info = FALSE)
+DSF_Func(dsd, func = NULL, ..., info = FALSE)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
 
 \item{func}{a function that takes a data.frame as the first argument and returns the transformed data.frame.}
+
+\item{...}{further arguments are passed on to the function specified in \code{func}.}
 
 \item{info}{logical; does the function also receive and modify the info columns?}
 }
@@ -26,7 +28,7 @@ data.frame with some points obtained using \code{\link[=get_points]{get_points()
 }
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 3)
-get_points(stream)
+get_points(stream, n = 5)
 
 ## Example 1: rename the columns
 rename <- function(x, names) {
@@ -35,37 +37,37 @@ rename <- function(x, names) {
 }
 
 # By default, the info columns starting with . are not affected.
-stream2 <- stream \%>\% DSF_Func(rename(c("A", "B", "C")))
+stream2 <- stream \%>\% DSF_Func(rename, names = c("A", "B", "C"))
 stream2
-
 get_points(stream2, n = 5)
 
 ## Example 2: add a sum columns
-sum_column <- function(x) {
+stream3 <- stream2 \%>\% DSF_Func(function(x) {
   x$sum = rowSums(x)
- x
-}
-
-stream3 <- stream2 \%>\% DSF_Func(sum_column)
+  x
+})
 stream3
 get_points(stream3, n = 5)
 
 ## Example 3: Project the stream on its first 2 PCs (using a sample)
 pr <- princomp(get_points(stream, n = 100, info = FALSE))
 pca_trans <- function(x) predict(pr, x[, c("X1", "X2", "X3")])[, 1:2 , drop = FALSE]
-
 pca_trans(get_points(stream, n = 3, info = FALSE))
 
-stream4 <- stream \%>\% DSF_Func(pca_trans())
+stream4 <- stream \%>\% DSF_Func(pca_trans)
+stream4
+
 get_points(stream4, n = 3)
 plot(stream4)
 
-## Example 4: Change a class labels using info = TRUE
-stream5 <- stream \%>\% DSF_Func(function(x) { x[[.class]][x[[.class]] == 3] <- NA; x }, info = TRUE)
+## Example 4: Change a class labels using info = TRUE. We redefine class 3 as noise (NA)
+stream5 <- stream \%>\% DSF_Func(
+  function(x) { x[['.class']][x[['.class']] == 3] <- NA; x },
+  info = TRUE)
+stream5
 
-get_points(stream5, n = 3)
+get_points(stream5, n = 5)
 plot(stream5)
-
 }
 \seealso{
 Other DSF: 

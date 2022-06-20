@@ -33,9 +33,9 @@
 #'
 #' - `evaluate_static()` evaluates the current static clustering using new data without updating the model.
 #' - `evaluate_stream()` evaluates the clustering process using
-#'   _prequential error estimation_ (see Gama, Sebastiao and Rodrigues; 2013).  The data points
-#'   in the horizon are first used to calculate the evaluation measure and then
-#'   they are used for updating the cluster model.
+#'   _prequential error estimation_ (see Gama, Sebastiao and Rodrigues; 2013).  The current model is
+#'   first applied to the data points in the horizon to calculate the evaluation measures. Then, the
+#'   cluster model is updated with the points.
 #'
 #' **Evaluation Measures**
 #'
@@ -270,7 +270,6 @@
 #'
 #'
 #' # Example 3: Evaluate an evolving data stream
-#' if (interactive()){
 #' stream <- DSD_Benchmark(1)
 #' dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 #'
@@ -278,6 +277,7 @@
 #'   measure = c("numMicro", "numMacro", "purity", "cRand"),
 #'   n = 600, horizon = 100)
 #'
+#' if (interactive()){
 #' # animate the clustering process
 #' reset_stream(stream)
 #' dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
@@ -309,7 +309,6 @@
 #'   callbacks = callbacks, n = 100)
 #'
 #' evaluate_static(dstream, stream, callbacks = callbacks)
-#'
 #' @export
 evaluate_static.DSC <-
   function (object,
@@ -330,7 +329,7 @@ evaluate_static.DSC <-
     actual <- points[[".class"]]
     points <- remove_info(points)
 
-    # find all applicable measures.
+    ## find all applicable measures.
     m <- c(measures_builtin_int, measures_fpc_int)
 
     # for external measures we need actual info from the stream.
@@ -352,6 +351,21 @@ evaluate_static.DSC <-
       measure <- m[matchm]
     }
 
+    ## exclude noise?
+    if(excludeNoise) {
+      points <- points[!is.na(actual), , drop = FALSE]
+      actual <- actual[!is.na(actual)]
+    }
+
+    # nothing left
+    if (nrow(points) < 1L)
+      return(data.frame(matrix(
+        NA_real_,
+        nrow = 1L,
+        ncol = length(measure),
+        dimnames = list(row = NULL, col = measure)
+      )))
+
     ## assign points
     pred <-
       predict(object, points, type = assign, method = assignmentMethod, ...)
@@ -370,12 +384,6 @@ evaluate_static.DSC <-
     # treat noise
     pred[is.na(pred)] <- 0L
     actual[is.na(actual)] <- 0L
-
-    if(excludeNoise) {
-      points <- points[actual != 0L, , drop = FALSE]
-      pred <- pred[actual != 0L]
-      actual <- actual[actual != 0L]
-    }
 
 
     res_buildin <- evaluate_buildin(
@@ -424,30 +432,32 @@ evaluate_stream.DSC <-
     type = c("auto", "micro", "macro"),
     assign = "micro",
     assignmentMethod =  c("auto", "model", "nn"),
-    excludeNoise = TRUE,
+    excludeNoise = FALSE,
     callbacks = NULL,
     ...,
     verbose = FALSE) {
     type <- get_type(object, type)
+
     rounds <- n %/% horizon
 
     evaluation <-
       data.frame(points = seq(
-        from = 1,
+        from = 0,
         by = horizon,
         length.out = rounds
       ))
     for (m in measure)
       evaluation[[m]] <- NA_real_
 
-    for (i in 1:rounds) {
+    for (i in seq(rounds)) {
       d <- DSD_Memory(dsd, n = horizon, loop = FALSE)
 
       ## evaluate first
       reset_stream(d)
 
-      r <-
-        evaluate_static(object,
+      evaluation[i, -1L] <-
+        evaluate_static(
+          object,
           d,
           measure,
           horizon,
@@ -457,8 +467,8 @@ evaluate_stream.DSC <-
           assignmentMethod,
           excludeNoise = excludeNoise,
           callbacks,
-          ...)
-      evaluation[i, ] <- c(i * horizon, r)
+          ...
+        )
 
       ## then update the model
       reset_stream(d)

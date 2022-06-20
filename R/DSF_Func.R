@@ -67,7 +67,9 @@
 #' plot(stream4)
 #'
 #' ## Example 4: Change a class labels using info = TRUE. We redefine class 3 as noise (NA)
-#' stream5 <- stream %>% DSF_Func(function(x) { x[['.class']][x[['.class']] == 3] <- NA; x }, info = TRUE)
+#' stream5 <- stream %>% DSF_Func(
+#'   function(x) { x[['.class']][x[['.class']] == 3] <- NA; x },
+#'   info = TRUE)
 #' stream5
 #'
 #' get_points(stream5, n = 5)

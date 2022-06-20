@@ -50,12 +50,16 @@
 #' # Plot new points from the stream. Predicted outliers are marked with a red x.
 #' plot(outlier_detector, stream)
 #'
-#' evaluate_static(outlier_detector, stream)
+#' evaluate_static(outlier_detector, stream, measure =
+#'   c("noiseActual", "noisePredicted", "noisePrecision", "outlierJaccard"))
 #'
 #' # use a different detector
 #' outlier_detector2 <- DSOutlier_DStream(gridsize = .05, Cl = 0.5)
 #' update(outlier_detector2, stream, 500)
 #' plot(outlier_detector2, stream)
+#'
+#' evaluate_static(outlier_detector2, stream, measure =
+#'   c("noiseActual", "noisePredicted", "noisePrecision", "outlierJaccard"))
 #' @author Michael Hahsler
 #' @export
 DSOutlier <- abstract_class_generator("DSOutlier")
