@@ -27,6 +27,13 @@
 #' @return An object of class `DSF_Downsample` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examples
+#' # Simple downsampling example
+#' stream <- DSD_Memory(data.frame(rownum = seq(100))) %>% DSF_Downsample(factor = 10)
+#' get_points(stream, 2)
+#' get_points(stream, 1)
+#' get_points(stream, 5)
+#'
+#' # Downsample a time series
 #' data(presidents)
 #'
 #' stream <- data.frame(
@@ -36,7 +43,7 @@
 #'
 #' plot(stream, dim = 1, n = 120, method = "ts")
 #'
-#' ## downsample by taking only every 3rd data point (quarters)
+#' # downsample by taking only every 3rd data point (quarters)
 #' downsampledStream <- stream %>% DSF_Downsample(factor = 3)
 #'
 #' reset_stream(downsampledStream)
@@ -70,12 +77,6 @@ get_points.DSF_Downsample <- function(x,
 
   d <-
     get_points(x$dsd, n = n_take, outofpoints = outofpoints, info = info, ...)
-  d <- d[take,]
 
-  if (!is.null(attr(d, "cluster")))
-    attr(d, "cluster") <- attr(d, "cluster")[take]
-  if (!is.null(attr(d, "outlier")))
-    attr(d, "outlier") <- attr(d, "outlier")[take]
-
-  d
+  d[take,, drop = FALSE]
 }
