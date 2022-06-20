@@ -64,6 +64,7 @@ plot(stream2, xlim = c(0, 1), ylim = c(0, 1))
 Other DSF: 
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
+\code{\link{DSF_ExponentialMA}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF}()}
 }

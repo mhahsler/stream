@@ -125,7 +125,7 @@ get_points.DSD <-
     outofpoints = c("stop", "warn", "ignore"),
     info = TRUE,
     ...)
-    UseMethod("get_points")
+    stop("No implementation for 'get_points()' found for class ", paste(class(x), collapse = ", "))
 
 #' @rdname get_points
 #' @param points a data.frame with points.

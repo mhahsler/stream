@@ -18,6 +18,13 @@ An object of class \code{DSF_Downsample} (subclass of \link{DSF} and \link{DSD})
 Creates a new stream that reduces the frequency of a given stream by a given factor.
 }
 \examples{
+# Simple downsampling example
+stream <- DSD_Memory(data.frame(rownum = seq(100))) \%>\% DSF_Downsample(factor = 10)
+get_points(stream, 2)
+get_points(stream, 1)
+get_points(stream, 5)
+
+# Downsample a time series
 data(presidents)
 
 stream <- data.frame(
@@ -27,7 +34,7 @@ stream <- data.frame(
 
 plot(stream, dim = 1, n = 120, method = "ts")
 
-## downsample by taking only every 3rd data point (quarters)
+# downsample by taking only every 3rd data point (quarters)
 downsampledStream <- stream \%>\% DSF_Downsample(factor = 3)
 
 reset_stream(downsampledStream)
@@ -36,6 +43,7 @@ plot(downsampledStream, dim = 1, n = 40, method = "ts")
 \seealso{
 Other DSF: 
 \code{\link{DSF_Convolve}()},
+\code{\link{DSF_ExponentialMA}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
