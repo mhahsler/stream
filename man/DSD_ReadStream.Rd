@@ -3,7 +3,7 @@
 \name{DSD_ReadStream}
 \alias{DSD_ReadStream}
 \alias{DSD_ReadCSV}
-\alias{close_stream}
+\alias{close_stream.DSD_ReadStream}
 \title{Read a Data Stream from a File or a Connection}
 \usage{
 DSD_ReadStream(
@@ -30,7 +30,7 @@ DSD_ReadCSV(
   ...
 )
 
-close_stream(dsd)
+\method{close_stream}{DSD_ReadStream}(dsd)
 }
 \arguments{
 \item{file}{A file/URL or an open connection.}
@@ -87,13 +87,16 @@ See \code{\link[=get_points]{get_points()}} for details.
 
 Other information columns are are used by various functions.
 
+\strong{Reading the whole stream}
+By using \code{n = -1} in \code{get_points()}, the whole stream is returned.
+
 \strong{Resetting and closing a stream}
 
 The position in the file can be reset to the beginning or another position using
 \code{\link[=reset_stream]{reset_stream()}}. This fails of the underlying connection is not seekable (see \link{connection}).
 
 \code{DSD_ReadStream} maintains an open connection to the stream and needs to be closed
-using \code{close_stream()}.
+using \code{\link[=close_stream]{close_stream()}}.
 
 \code{DSD_ReadCSV} reads a stream from a comma-separated values file.
 }
@@ -149,6 +152,7 @@ Other DSD:
 \code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
+\code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},

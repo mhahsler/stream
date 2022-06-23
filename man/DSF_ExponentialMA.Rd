@@ -11,7 +11,7 @@ DSF_ExponentialMA(dsd, dim = NULL, alpha = 0.5)
 
 \item{dim}{columns to which the filter should be applied. Default is all columns.}
 
-\item{alpha}{smoothing coefficient in \eqn{[0, 1]}. Larger means discouting older observations faster.}
+\item{alpha}{smoothing coefficient in \eqn{[0, 1]}. Larger means discounting older observations faster.}
 }
 \value{
 An object of class \code{DSF_ExponentialMA} (subclass of \link{DSF} and \link{DSD}).

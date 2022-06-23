@@ -61,9 +61,9 @@
 #'
 #' plot(stream, dim = 1, n = 120, method = "ts")
 #'
-#' ## apply a moving average filter to dimension 1
+#' ## apply a moving average filter to dimension 1 (using the column name) and diff to dimension 3
 #' filteredStream <- stream %>%
-#'   DSF_Convolve(kernel = filter_MA(5), dim = 2, na.rm = TRUE) %>%
+#'   DSF_Convolve(kernel = filter_MA(5), dim = "approval_orig", na.rm = TRUE) %>%
 #'   DSF_Convolve(kernel = filter_diff(1), dim = 3)
 #' filteredStream
 #'
@@ -104,8 +104,8 @@
 #' ## Filters: look at different filters
 #' filter_MA(5)
 #' filter_diff(1)
-#' plot(filter_Hamming(20), type = "s")
-#' plot(filter_Sinc(10, 100, width = 20), type = "s")
+#' plot(filter_Hamming(20), type = "h")
+#' plot(filter_Sinc(10, 100, width = 20), type = "h")
 #' @export
 DSF_Convolve <-
   function(dsd,
@@ -157,16 +157,13 @@ get_points.DSF_Convolve <- function(x,
   #if (any(cluster || class || outlier))
   #  stop("Clusters, class or outliers not supported for DSF_Convolve!")
 
-  dims <- x$dim
-
   for (i in seq(n)) {
     update(x$window, x$dsd, n = 1)
     win <- get_points(x$window)
 
     # dims and preallocate the space for the output data frame with n rows
     if (i == 1L) {
-      if (is.null(dims))
-        dims <- seq(ncol(win))
+      dims <- get_dims(x$dim, win)
 
       if (x$replace) {
         extra_cols <- 0L

@@ -20,9 +20,14 @@ Creates a new stream that reduces the frequency of a given stream by a given fac
 \examples{
 # Simple downsampling example
 stream <- DSD_Memory(data.frame(rownum = seq(100))) \%>\% DSF_Downsample(factor = 10)
-get_points(stream, 2)
-get_points(stream, 1)
-get_points(stream, 5)
+stream
+
+get_points(stream, n = 2)
+get_points(stream, n = 1)
+get_points(stream, n = 5)
+
+# DSD_Memory supports getting the remaining points using n = -1
+get_points(stream, n = -1)
 
 # Downsample a time series
 data(presidents)

@@ -33,7 +33,8 @@
 #'
 #' Summary functions can be used, but will only be applied to the requested part of the stream of length `n`.
 #'
-#' `DSF_dplyr()` calls the function using `points %>% func()`.
+#' `DSF_dplyr()` calls the function using `points %>% <func>` and multiple `dplyr` functions can be applied by
+#' using `%>%` between them.
 #'
 #' @family DSF
 #'
@@ -76,7 +77,7 @@ DSF_dplyr <-
     l <- list(
       description = paste0(dsd$description, "\n  + function: ", func),
       dsd = dsd,
-      func = parse(text = paste('ps <- ps %>%', func)),
+      func = parse(text = paste('ps <- ps %>%', paste0(func, collapse = ' '))),
       info = info
     )
     class(l) <-

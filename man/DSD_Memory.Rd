@@ -32,6 +32,9 @@ In addition to regular data.frames other matrix-like objects that provide
 subsetting with the bracket operator can be used. This includes \code{ffdf}
 (large data.frames stored on disk) from package \pkg{ff} and
 \code{big.matrix} from \pkg{bigmemory}.
+
+\strong{Reading the whole stream}
+By using \code{n = -1} in \code{get_points()}, the whole stream is returned.
 }
 \examples{
 # Example 1: store 1000 points from a stream
@@ -73,8 +76,13 @@ stream
 reset_stream(stream)
 get_points(stream, n = 5)
 
+# get the remaining points
+rest <- get_points(stream, n = -1)
+nrow(rest)
+
+# plot all available points with n = -1
 reset_stream(stream)
-plot(stream, n = 100)
+plot(stream, n = -1)
 }
 \seealso{
 Other DSD: 
@@ -94,6 +102,7 @@ Other DSD:
 \code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
+\code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},

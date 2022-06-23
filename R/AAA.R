@@ -32,48 +32,66 @@
 
 ### helper for doing things in blocks
 .make_block <- function(n, block) {
-    if(n<block) return(n)
+  if (n < block)
+    return(n)
 
-    b <- rep(block, times=as.integer(n/block))
-    if(n%%block) b<- c(b, n%%block)
-    b
+  b <- rep(block, times = as.integer(n / block))
+  if (n %% block)
+    b <- c(b, n %% block)
+  b
 }
 
 ### line break helper
-.line_break <- function(x, width=options("width")) {
-  form <- paste('(.{1,', width,'})(\\s|$)', sep='')
-  gsub(form, '\\1\n', x)
-}
+.line_break <-
+  function(x,
+    width = 0.9 * getOption("width")) {
+    paste0(unlist(
+      sapply(
+        strsplit(x, "\n")[[1]],
+        strwrap,
+        width = width
+      )
+    ), collapse = "\n")
+  }
 
 ### nodots
 .nodots <- function(...) {
   l <- list(...)
-  if(length(l) > 0L) warning("Unknown arguments: ",
-    paste(names(l), "=",l, collapse=", "))
+  if (length(l) > 0L)
+    warning("Unknown arguments: ",
+      paste(names(l), "=", l, collapse = ", "))
 }
 
 ### installed
-.installed <- function(pkg) !is(try(utils::installed.packages()[pkg,],
-  silent=TRUE), "try-error")
+.installed <-
+  function(pkg)
+    ! is(try(utils::installed.packages()[pkg,],
+      silent = TRUE)
+      , "try-error")
 
 abstract_class_generator <- function(prefix) {
   function(...) {
+    message(prefix, " is an abstract class and cannot be instantiated!")
 
-  message(prefix, " is an abstract class and cannot be instantiated!")
+    stream_pks <-
+      sort(grep('^package:stream', search(), value = TRUE))
+    for (p in stream_pks) {
+      implementations <- grep(paste0('^', prefix, '_'), ls(p),
+        value = TRUE)
+      if (length(implementations) == 0)
+        implementations <- "*None*"
+      message(
+        "\nAvailable subclasses in ",
+        sQuote(p),
+        " are:\n\t",
+        paste(implementations, collapse = ",\n\t")
+      )
+    }
 
-  stream_pks <- sort(grep('^package:stream', search(), value = TRUE))
-  for(p in stream_pks) {
-    implementations <- grep(paste0('^', prefix, '_'), ls(p),
-      value = TRUE)
-    if(length(implementations) == 0) implementations <- "*None*"
-    message("\nAvailable subclasses in ", sQuote(p), " are:\n\t",
-    paste(implementations, collapse=",\n\t"))
-  }
+    message("\nTo get more information in R Studio, type ",
+      sQuote(paste0(prefix, '_')),
+      " and hit the Tab key.")
 
-  message("\nTo get more information in R Studio, type ", sQuote(paste0(prefix, '_')),
-    " and hit the Tab key.")
-
-  invisible(NULL)
+    invisible(NULL)
   }
 }
-

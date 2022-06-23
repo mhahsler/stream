@@ -39,26 +39,22 @@
 #' @examples
 #' DSF()
 #'
-#' ## Example: Using pipes
-#' if (require(dplyr)) {
-#'
-#' library(dplyr)
 #' stream <- DSD_Gaussians(k = 3, d = 2) %>%
-#'   DSF_dplyr(filter(X1 > .5)) %>%
-#'   DSF_dplyr(mutate(Xsum = X1 + X2))
+#'   DSF_Func(function(x) cbind(x, Xsum = x$X1 + x$X2))
 #' stream
 #'
 #' get_points(stream, n = 5)
-#'
-#' }
 #' @export DSF
 DSF <- abstract_class_generator("DSF")
 
-#' @describeIn DSF reset the attached stream.
+#' @describeIn DSF reset the attached stream if reset is supported.
 #' @param dsd a stream object of class [DSD].
 #' @param pos position in the stream.
 #' @export
-reset_stream.DSF <- function(dsd, pos = 1) {
+reset_stream.DSF <- function(dsd, pos = 1)
   reset_stream(dsd$dsd, pos = pos)
-}
 
+#' @describeIn DSF close the attached stream if close is supported.
+#' @export
+close_stream.DSF <- function(dsd)
+   close_stream(dsd$dsd)

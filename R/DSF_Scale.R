@@ -80,17 +80,7 @@ DSF_Scale <-
     points <- get_points(dsd, n = n, info = TRUE)
 
     # translate dim to index and subset
-    if (is.null(dim)) {
-      l$dim <- grep('^\\.', colnames(points), invert = TRUE)
-    } else {
-      if (is.numeric(dim))
-        l$dim <- as.integer(dim)
-      else {
-        l$dim <- pmatch(dim, colnames(points))
-        if (any(na_idx <- is.na(dim)))
-          stop("Unknown dimname(s): ", paste0(dim[na_idx], collapse = ", "))
-      }
-    }
+    l$dim <- get_dims(dim, points)
 
     points <- points[, l$dim, drop = FALSE]
     points <- remove_info(points)

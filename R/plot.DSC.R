@@ -140,7 +140,7 @@ plot.DSC <- function(x,
   ### prepend data if given so it is in the background
   if (!is.null(dsd)) {
     if(inherits(dsd, "DSD"))
-      d <- get_points(dsd, n, info = FALSE)
+      d <- get_points(dsd, n, info = FALSE, outofpoints = "warn")
     else {
       d <- as.data.frame(dsd)
       n <- nrow(d)

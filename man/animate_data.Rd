@@ -67,6 +67,7 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{DSF}()},
+\code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},

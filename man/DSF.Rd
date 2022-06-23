@@ -3,11 +3,14 @@
 \name{DSF}
 \alias{DSF}
 \alias{reset_stream.DSF}
+\alias{close_stream.DSF}
 \title{Data Stream Filter Base Classes}
 \usage{
 DSF(...)
 
 \method{reset_stream}{DSF}(dsd, pos = 1)
+
+\method{close_stream}{DSF}(dsd)
 }
 \arguments{
 \item{...}{Further arguments.}
@@ -32,24 +35,19 @@ It is convenient to use the pipe (\link[magrittr:pipe]{magrittr::\%>\%}) to appl
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{reset_stream}: reset the attached stream.
+\item \code{reset_stream}: reset the attached stream if reset is supported.
+
+\item \code{close_stream}: close the attached stream if close is supported.
 }}
 
 \examples{
 DSF()
 
-## Example: Using pipes
-if (require(dplyr)) {
-
-library(dplyr)
 stream <- DSD_Gaussians(k = 3, d = 2) \%>\%
-  DSF_dplyr(filter(X1 > .5)) \%>\%
-  DSF_dplyr(mutate(Xsum = X1 + X2))
+  DSF_Func(function(x) cbind(x, Xsum = x$X1 + x$X2))
 stream
 
 get_points(stream, n = 5)
-
-}
 }
 \seealso{
 Other DSF: 
@@ -76,6 +74,7 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSD}()},
 \code{\link{animate_data}()},
+\code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},

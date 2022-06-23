@@ -77,9 +77,7 @@ get_points.DSF_ExponentialMA <- function(x,
   d <-
     get_points(x$dsd, n, outofpoints = outofpoints, info = info, ...)
 
-  dims <- x$dim
-  if (is.null(dims))
-    dims <- seq(ncol(d))
+  dims <- get_dims(x$dim, d)
 
   if (is.null(x$S.env$S))
     x$S.env$S <- d[1, dims, drop = FALSE]
@@ -87,7 +85,7 @@ get_points.DSF_ExponentialMA <- function(x,
   for (i in seq(nrow(d))) {
 
     # handle NA
-    Y <- d[i, dims]
+    Y <- d[i, dims, drop = FALSE]
     if (any(missing <- is.na(Y)))
       Y[missing] <- x$S.env$S[missing]
     if (any(missing <- is.na(x$S.env$S)))

@@ -56,8 +56,8 @@ DST <- function(...) {
 
 #' @export
 print.DST <- function(x, ...) {
+  cat(.line_break(paste(x$description)), "\n")
   cat("Class:", paste(class(x), collapse = ", "), "\n")
-  cat(.line_break(paste(x$description)))
 }
 
 #' @rdname DST

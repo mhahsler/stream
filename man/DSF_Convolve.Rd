@@ -91,9 +91,9 @@ stream <- data.frame(
 
 plot(stream, dim = 1, n = 120, method = "ts")
 
-## apply a moving average filter to dimension 1
+## apply a moving average filter to dimension 1 (using the column name) and diff to dimension 3
 filteredStream <- stream \%>\%
-  DSF_Convolve(kernel = filter_MA(5), dim = 2, na.rm = TRUE) \%>\%
+  DSF_Convolve(kernel = filter_MA(5), dim = "approval_orig", na.rm = TRUE) \%>\%
   DSF_Convolve(kernel = filter_diff(1), dim = 3)
 filteredStream
 
@@ -134,8 +134,8 @@ legend("topright", colnames(ps), col = 1:4, lty = 1:4)
 ## Filters: look at different filters
 filter_MA(5)
 filter_diff(1)
-plot(filter_Hamming(20), type = "s")
-plot(filter_Sinc(10, 100, width = 20), type = "s")
+plot(filter_Hamming(20), type = "h")
+plot(filter_Sinc(10, 100, width = 20), type = "h")
 }
 \references{
 Steven W. Smith, The Scientist and Engineer's Guide to

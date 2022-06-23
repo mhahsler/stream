@@ -43,13 +43,16 @@
 #'
 #' Other information columns are are used by various functions.
 #'
+#' **Reading the whole stream**
+#' By using `n = -1` in `get_points()`, the whole stream is returned.
+#'
 #' **Resetting and closing a stream**
 #'
 #' The position in the file can be reset to the beginning or another position using
 #' [reset_stream()]. This fails of the underlying connection is not seekable (see [connection]).
 #'
 #' `DSD_ReadStream` maintains an open connection to the stream and needs to be closed
-#' using `close_stream()`.
+#' using [close_stream()].
 #'
 #' `DSD_ReadCSV` reads a stream from a comma-separated values file.
 #' @family DSD
@@ -175,7 +178,7 @@ DSD_ReadStream <- function(file,
     description = paste0(
       'File Data Stream: ',
       basename(summary(file)$description),
-      '(d = ',
+      ' (d = ',
       d,
       ', k = ',
       k,
@@ -208,8 +211,15 @@ get_points.DSD_ReadStream <- function(x,
   .DEBUG <- TRUE
   #.DEBUG <- FALSE
 
-  n <- as.integer(n)
   outofpoints <- match.arg(outofpoints)
+
+  # get all points
+  if(is.infinite(n) || n < 1) {
+    outofpoints <- "ignore"
+    n <- -1L
+  }
+
+  n <- as.integer(n)
 
   lines <- character(0)
   try(lines <- readLines(con = x$file, n = n), silent = !.DEBUG)
@@ -292,8 +302,6 @@ DSD_ReadCSV <- DSD_ReadStream
 
 #' @rdname DSD_ReadStream
 #' @export
-close_stream <- function(dsd) {
-  if (!is(dsd, "DSD_ReadStream"))
-    stop("'dsd' is not of class 'DSD_ReadStream'")
+close_stream.DSD_ReadStream <- function(dsd)
   close(dsd$file)
-}
+

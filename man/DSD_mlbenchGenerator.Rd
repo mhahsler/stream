@@ -55,6 +55,7 @@ Other DSD:
 \code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
+\code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},

@@ -34,7 +34,8 @@ rows are allowed on streams. Examples are:
 
 Summary functions can be used, but will only be applied to the requested part of the stream of length \code{n}.
 
-\code{DSF_dplyr()} calls the function using \code{points \%>\% func()}.
+\code{DSF_dplyr()} calls the function using \verb{points \%>\% <func>} and multiple \code{dplyr} functions can be applied by
+using \verb{\%>\%} between them.
 }
 \examples{
 if (require(dplyr)) {

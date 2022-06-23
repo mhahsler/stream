@@ -26,6 +26,7 @@ See Also section below.
 \item \code{print()}
 \item \code{\link[=plot]{plot()}}
 \item \code{\link[=reset_stream]{reset_stream()}} (if available)
+\item \code{\link[=close_stream]{close_stream()}} (if needed)
 }
 
 \code{DSD_R} inherits form \code{DSD} and is the abstract parent class for
@@ -72,6 +73,7 @@ Other DSD:
 \code{\link{DSD_mlbenchGenerator}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
+\code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
 \code{\link{reset_stream}()},

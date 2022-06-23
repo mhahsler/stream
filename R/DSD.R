@@ -31,6 +31,7 @@
 #' * `print()`
 #' * [plot()]
 #' * [reset_stream()] (if available)
+#' * [close_stream()] (if needed)
 #'
 #' `DSD_R` inherits form `DSD` and is the abstract parent class for
 #' DSD implemented in R. To create a new R-based implementation there are only
@@ -139,6 +140,7 @@ remove_info <- function(points) {
 }
 
 info_cols <- function(points) grep('^\\.', colnames(points))
+not_info_cols <- function(points) grep('^\\.', colnames(points), invert = TRUE)
 
 split_info <- function(points) {
   info_cols <- grep('^\\.', colnames(points))
@@ -146,6 +148,18 @@ split_info <- function(points) {
     info = points[, info_cols, drop = FALSE])
 }
 
+get_dims <- function(dim, points) {
+  if (is.null(dim))
+    dim_idx <- grep('^\\.', colnames(points), invert = TRUE)
+  else if (is.character(dim)) {
+    dim_idx <- pmatch(dim, colnames(points))
+    if (any(na_idx <- is.na(dim_idx)))
+      stop("Unknown dimname(s): ", paste0(dim[na_idx], collapse = ", "))
+  } else
+    dim_idx <- as.integer(dim)
+
+  dim_idx
+}
 
 #' Reset a Data Stream to its Beginning
 #'
@@ -196,6 +210,30 @@ reset_stream.DSD <- function(dsd, pos = 1) {
   ))
 }
 
+#' Close a Data Stream
+#'
+#' Close a data stream that needs closing (e.g., a file or a connection).
+#'
+#' `close_stream()` is implemented for:
+#'
+#' `r func <- 'close_stream'; classes <- gsub('.*\\.', '', as.character(methods(func))); paste(paste0('* [', classes, ']'), collapse = "\n")`
+#'
+#' @family DSD
+#'
+#' @param dsd An object of class a subclass of [DSD] which implements a
+#' reset function.
+#' @author Michael Hahsler
+#' @export
+close_stream <- function(dsd)
+  UseMethod("close_stream")
+
+#' @export
+close_stream.DSD <- function(dsd) {
+  warning(gettextf(
+    "close_stream not needed/implemented for class '%s'.",
+    paste(class(dsd), collapse = ", ")
+  ))
+}
 
 ### end of interface
 #############################################################
@@ -212,7 +250,7 @@ print.DSD <- function(x, ...) {
   if (is.null(d))
     d <- NA
 
-  cat(.line_break(x$description))
+  cat(.line_break(x$description), "\n")
   cat("Class:", paste(class(x), collapse = ", "), "\n")
 }
 

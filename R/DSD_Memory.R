@@ -27,6 +27,9 @@
 #' (large data.frames stored on disk) from package \pkg{ff} and
 #' \code{big.matrix} from \pkg{bigmemory}.
 #'
+#' **Reading the whole stream**
+#' By using `n = -1` in `get_points()`, the whole stream is returned.
+#'
 #' @family DSD
 #'
 #' @param x A matrix-like object containing the data.  If `x` is a DSD
@@ -78,8 +81,13 @@
 #' reset_stream(stream)
 #' get_points(stream, n = 5)
 #'
+#' # get the remaining points
+#' rest <- get_points(stream, n = -1)
+#' nrow(rest)
+#'
+#' # plot all available points with n = -1
 #' reset_stream(stream)
-#' plot(stream, n = 100)
+#' plot(stream, n = -1)
 #' @export
 DSD_Memory <- function(x,
   n,
@@ -130,8 +138,23 @@ get_points.DSD_Memory <- function(x,
   ...) {
   .nodots(...)
 
-  n <- as.integer(n)
   outofpoints <- match.arg(outofpoints)
+
+  # get all points
+  if (is.infinite(n) || n < 1) {
+    if (x$loop) {
+      warning("Cannot return all points with loop on. Disabling loop for this call.")
+    }
+
+    if (x$state$counter > nrow(x$strm))
+      return(x$strm[0, , drop = FALSE])
+
+    pos <- x$state$counter
+    x$state$counter <- 1L
+    return(x$strm[seq(pos, nrow(x$str)), , drop = FALSE])
+  }
+
+  n <- as.integer(n)
 
   if (x$state$counter > nrow(x$strm)) {
     if (x$loop)
