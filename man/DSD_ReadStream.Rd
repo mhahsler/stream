@@ -4,6 +4,7 @@
 \alias{DSD_ReadStream}
 \alias{DSD_ReadCSV}
 \alias{close_stream.DSD_ReadStream}
+\alias{close_stream.DSD_ReadCSV}
 \title{Read a Data Stream from a File or a Connection}
 \usage{
 DSD_ReadStream(
@@ -31,6 +32,8 @@ DSD_ReadCSV(
 )
 
 \method{close_stream}{DSD_ReadStream}(dsd)
+
+\method{close_stream}{DSD_ReadCSV}(dsd)
 }
 \arguments{
 \item{file}{A file/URL or an open connection.}

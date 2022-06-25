@@ -305,3 +305,7 @@ DSD_ReadCSV <- DSD_ReadStream
 close_stream.DSD_ReadStream <- function(dsd)
   close(dsd$file)
 
+#' @rdname DSD_ReadStream
+#' @export
+close_stream.DSD_ReadCSV <- function(dsd)
+  close(dsd$file)

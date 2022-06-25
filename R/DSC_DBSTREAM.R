@@ -641,6 +641,7 @@ plot.DSC_DBSTREAM <- function(x,
       dsd = dsd,
       n = n,
       col_points = col_points,
+      dim = dim,
       method = method,
       type = type,
       ...

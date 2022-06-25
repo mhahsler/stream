@@ -25,9 +25,17 @@
 #' with via [DBI::DBI]. You need to connect to the data base and submit a SQL
 #' query using [DBI::dbGetQuery()] to obtain a result set. Make sure that your
 #' query only includes the columns that should be included in the stream
-#' (including class and outlier marking columns). Do not forget to close the
-#' result set and the data base connection. [reset_stream()] is not available
-#' for this type of stream.
+#' (including class and outlier marking columns).
+#'
+#' **Closing and resetting the stream**
+#'
+#' Do not forget to clear the
+#' result set and disconnect from the data base connection. Since this procedure is data base dependent,
+#' `close_stream()` just produced a warning (see Example section).
+#'
+#'  [reset_stream()] is not available for this type of stream.
+#'
+#' **Additional information**
 #'
 #' If additional information is available (e.g., class information), then the SQL
 #' statement needs to make sure that the columns have the appropriate name starting with `.`.
@@ -65,7 +73,7 @@
 #'
 #' plot(stream, n = 100)
 #'
-#' ### clean up
+#' ### clean up (close_stream() does not do this!)
 #' dbClearResult(res)
 #' dbDisconnect(con)
 #' @export
@@ -91,6 +99,11 @@ DSD_ReadDB <- function(result,
 
   l
 }
+
+#' @rdname DSD_ReadDB
+#' @export
+close_stream.DSD_ReadDB <- function(dsd)
+  warning("close_stream not implemented for DSD_ReadDB. You need to clear the result and disconnect the database manually (see example in '? DSD_ReadDB')")
 
 #' @export
 get_points.DSD_ReadDB <- function(x,

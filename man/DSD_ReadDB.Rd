@@ -2,9 +2,12 @@
 % Please edit documentation in R/DSD_ReadDB.R
 \name{DSD_ReadDB}
 \alias{DSD_ReadDB}
+\alias{close_stream.DSD_ReadDB}
 \title{Read a Data Stream from an open DB Query}
 \usage{
 DSD_ReadDB(result, k = NA, description = NULL)
+
+\method{close_stream}{DSD_ReadDB}(dsd)
 }
 \arguments{
 \item{result}{An open DBI result set.}
@@ -25,9 +28,17 @@ This class provides a streaming interface for result sets from a data base
 with via \link[DBI:DBI-package]{DBI::DBI}. You need to connect to the data base and submit a SQL
 query using \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}} to obtain a result set. Make sure that your
 query only includes the columns that should be included in the stream
-(including class and outlier marking columns). Do not forget to close the
-result set and the data base connection. \code{\link[=reset_stream]{reset_stream()}} is not available
-for this type of stream.
+(including class and outlier marking columns).
+
+\strong{Closing and resetting the stream}
+
+Do not forget to clear the
+result set and disconnect from the data base connection. Since this procedure is data base dependent,
+\code{close_stream()} just produced a warning (see Example section).
+
+\code{\link[=reset_stream]{reset_stream()}} is not available for this type of stream.
+
+\strong{Additional information}
 
 If additional information is available (e.g., class information), then the SQL
 statement needs to make sure that the columns have the appropriate name starting with \code{.}.
@@ -57,7 +68,7 @@ get_points(stream, n = 5)
 
 plot(stream, n = 100)
 
-### clean up
+### clean up (close_stream() does not do this!)
 dbClearResult(res)
 dbDisconnect(con)
 }

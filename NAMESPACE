@@ -3,6 +3,8 @@
 S3method(add_cluster,DSD_MG)
 S3method(add_keyframe,MGC_Linear)
 S3method(close_stream,DSD)
+S3method(close_stream,DSD_ReadCSV)
+S3method(close_stream,DSD_ReadDB)
 S3method(close_stream,DSD_ReadStream)
 S3method(close_stream,DSF)
 S3method(description,DSC)

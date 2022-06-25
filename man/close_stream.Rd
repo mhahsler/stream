@@ -17,6 +17,8 @@ Close a data stream that needs closing (e.g., a file or a connection).
 \code{close_stream()} is implemented for:
 \itemize{
 \item \link{DSD}
+\item \link{DSD_ReadCSV}
+\item \link{DSD_ReadDB}
 \item \link{DSD_ReadStream}
 \item \link{DSF}
 }
