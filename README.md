@@ -20,8 +20,13 @@ Additional packages in the stream family are:
 
 -   [streamMOA](https://github.com/mhahsler/streamMOA): Interface to
     clustering algorithms implemented in the
-    [MOA](https://moa.cms.waikato.ac.nz/) framework. Includes
-    implementations of **DenStream**, **ClusTree** and **CluStream**.
+    [MOA](https://moa.cms.waikato.ac.nz/) framework. The package
+    includes implementations of **DenStream**, **ClusTree** and
+    **CluStream**.
+-   [rEMM](https://github.com/mhahsler/rEMM): Provides implementations
+    of **threshold nearest neighbor clustering** (tNN) and **Extensible
+    Markov Model** (EMM) for modelling temporal relationships between
+    clusters.
 
 The development of the stream package was supported in part by NSF
 IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
