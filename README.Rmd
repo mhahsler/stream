@@ -2,22 +2,11 @@
 output: github_document
 ---
 
-# <img src='man/figures/logo.svg' align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
-
-
-```{r echo=FALSE}
-options(digits = 2)
-knitr::opts_chunk$set(tidy = TRUE, message = FALSE, fig.path = 'inst/README_files/')
-```
-
 ```{r echo=FALSE, results = 'asis'}
 pkg <- 'stream'
 
-library(stringr)
-
-  cat(str_interp("[![CRAN version](http://www.r-pkg.org/badges/version/${pkg})](https://CRAN.R-project.org/package=${pkg})\n"))
-  cat(str_interp("[![stream r-universe status](https://mhahsler.r-universe.dev/badges/${pkg})](https://mhahsler.r-universe.dev/ui#package:${pkg})\n"))
-  cat(str_interp("[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/${pkg})](https://CRAN.R-project.org/package=${pkg})\n"))
+source("https://raw.githubusercontent.com/mhahsler/pkg_helpers/main/pkg_helpers.R")
+pkg_title(pkg)
 ```
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
@@ -35,17 +24,8 @@ Additional packages in the stream family are:
 
 The development of the stream package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
-## Installation
-
-__Stable CRAN version:__ Install from within R with
-
-```{r eval=FALSE}
-install.packages("stream")
-```
-__Current development version:__ Install from [r-universe.](https://mhahsler.r-universe.dev/ui#package:stream)
-
-```{r eval=FALSE}
-install.packages("stream", repos = "https://mhahsler.r-universe.dev")
+```{r echo=FALSE, results = 'asis'}
+pkg_install(pkg)
 ```
 
 ## Usage

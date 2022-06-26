@@ -1,5 +1,5 @@
 
-# <img src='man/figures/logo.svg' align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
+# <img src="man/figures/logo.svg" align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
 
 [![CRAN
 version](http://www.r-pkg.org/badges/version/stream)](https://CRAN.R-project.org/package=stream)
