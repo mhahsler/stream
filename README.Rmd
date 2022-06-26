@@ -37,13 +37,16 @@ The development of the stream package was supported in part by NSF IIS-0948893, 
 
 ## Installation
 
-__Stable CRAN version:__ install from within R with
+__Stable CRAN version:__ Install from within R with
 
 ```{r eval=FALSE}
 install.packages("stream")
 ```
 __Current development version:__ Install from [r-universe.](https://mhahsler.r-universe.dev/ui#package:stream)
 
+```{r eval=FALSE}
+install.packages("stream", repos = "https://mhahsler.r-universe.dev")
+```
 
 ## Usage
 

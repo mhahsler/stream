@@ -33,7 +33,7 @@ IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 ## Installation
 
-**Stable CRAN version:** install from within R with
+**Stable CRAN version:** Install from within R with
 
 ``` r
 install.packages("stream")
@@ -41,6 +41,10 @@ install.packages("stream")
 
 **Current development version:** Install from
 [r-universe.](https://mhahsler.r-universe.dev/ui#package:stream)
+
+``` r
+install.packages("stream", repos = "https://mhahsler.r-universe.dev")
+```
 
 ## Usage
 
