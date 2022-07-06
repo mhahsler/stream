@@ -24,7 +24,7 @@
 #'   - [DSC] for data stream clustering.
 #'   - [DSAggregate] to aggregate data streams (e.g., with a sliding window).
 #'   - [DSFP] frequent pattern mining for data stream clustering.
-#'   - [DSClassify] classification for data streams.
+#'   - [DSClassifier] classification for data streams.
 #'   - [DSOutlier] outlier detection for data streams.
 #'
 #' The common interface for all [DST] classes consists of

@@ -16,13 +16,14 @@ existing infrastructure provided by R. The package provides:
 
 -   **Stream Sources:** streaming from files, databases, in-memory data,
     URLs, pipes, socket connections and several data stream generators
-    including dynamically changing clusters.
+    including dynamically streams with concept drift.
 -   **Stream Processing** with filters (convolution), sampling,
-    windowing, scaling, …
+    windowing, scaling, exponential moving average, …
 -   **Stream Clustering:** **BICO**, **BIRCH**, **D-Stream**,
-    **DBSTREAM**, and **evoStream**
--   **Stream Outlier Detection** based on **D-Stream**, **DBSTREAM** and
-    **MCOD**
+    **DBSTREAM**, and **evoStream**.
+-   **Stream Outlier Detection** based on **D-Stream**, **DBSTREAM**.
+-   **Stream Classification** with **DecisionStumps**,
+    **HoeffdingTree**, **NaiveBayes** and **Ensembles** (MOA via RMOA).
 -   **Stream Mining Evaluation** with prequential error estimation.
 
 Additional packages in the stream family are:
@@ -31,7 +32,9 @@ Additional packages in the stream family are:
     clustering algorithms implemented in the
     [MOA](https://moa.cms.waikato.ac.nz/) framework. The package
     includes implementations of **DenStream**, **ClusTree**,
-    **CluStream** and **MCOD**.
+    **CluStream** and **MCOD**. The package also provides an interface
+    to [RMOA](https://github.com/jwijffels/RMOA) for MOA’s stream
+    classifiers.
 -   [rEMM](https://github.com/mhahsler/rEMM): Provides implementations
     of **threshold nearest neighbor clustering** (tNN) and **Extensible
     Markov Model** (EMM) for modelling temporal relationships between

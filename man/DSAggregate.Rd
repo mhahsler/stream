@@ -40,7 +40,7 @@ DSAggregate()
 }
 \seealso{
 Other DST: 
-\code{\link{DSClassify}()},
+\code{\link{DSClassifier}()},
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},

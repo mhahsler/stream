@@ -63,7 +63,7 @@ apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 
 Other DST: 
 \code{\link{DSAggregate}()},
-\code{\link{DSClassify}()},
+\code{\link{DSClassifier}()},
 \code{\link{DSC}()},
 \code{\link{DSOutlier}()},
 \code{\link{DST}()},

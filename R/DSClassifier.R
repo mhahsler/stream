@@ -19,13 +19,14 @@
 #' Abstract Class for Data Stream Classifiers
 #'
 #' Abstract class for data stream classifiers. Currently, \pkg{stream} does not
-#' implement classification algorithms.
+#' implement classification algorithms. Implementations can be found in
+#' package \pkg{streamMOA}.
 #'
 #' @family DST
 #'
 #' @param ... Further arguments.
 #' @author Michael Hahsler
 #' @examples
-#' DSClassify()
+#' DSClassifier()
 #' @export
-DSClassify <- abstract_class_generator("DSClassify")
+DSClassifier <- abstract_class_generator("DSClassifier")

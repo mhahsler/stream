@@ -57,7 +57,7 @@ Volume 90, Issue 3, pp 317-346.
 \seealso{
 Other DST: 
 \code{\link{DSAggregate}()},
-\code{\link{DSClassify}()},
+\code{\link{DSClassifier}()},
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},

@@ -64,7 +64,7 @@ agreement(pr[,".class"], points[,".class"])
 \seealso{
 Other DST: 
 \code{\link{DSAggregate}()},
-\code{\link{DSClassify}()},
+\code{\link{DSClassifier}()},
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
