@@ -40,8 +40,14 @@
 #' `assignment` and `shared_density` which show the assignment area
 #' and the shared density graph, respectively.
 #'
-#' `DSOutlier_DBSTREAM` classifies points that cannot be assigned to a micro-cluster
-#' representing a dense region as a outlier/noise.
+#' [predict()] can be used to assign new points to clusters. Points are assigned to a micro-cluster if
+#' they are within its assignment area (distance is less then `r` times `noise_multiplier`).
+#'
+#' `DSOutlier_DBSTREAM` classifies points as outlier/noise if they that cannot be assigned to a micro-cluster
+#' representing a dense region as a outlier/noise. Parameter `outlier_multiplier` specifies
+#' how far a point has to be away from a micro-cluster as a multiplyer for the radius `r`.
+#'  A larger value means that outliers have to be farther away from dense
+#' regions and thus reduce the chance of misclassifying a regular point as an outlier.
 #'
 #' @aliases DSC_DBSTREAM DBSTREAM dbstream
 #' @family DSC_Micro
@@ -69,6 +75,7 @@
 #' have not to be noise (between 0 and 1).
 #' @param x A DSC_DBSTREAM object to get the shared density information from.
 #' @param use_alpha only return shared density if it exceeds alpha.
+#' @param noise_multiplier,outlier_multiplier multiplier for radius `r` to declare noise or outliers.
 #' @param ...	further arguments are passed on to plot or pairs in graphics.
 #'
 #' @return An object of class `DSC_DBSTREAM` (subclass of [DSC],
@@ -142,6 +149,7 @@ DSC_DBSTREAM <- function(formula = NULL,
   gaptime = 1000L,
   Cm = 3,
   metric = "Euclidean",
+  noise_multiplier = 1,
   shared_density = FALSE,
   alpha = 0.1,
   k = 0,
@@ -166,20 +174,6 @@ DSC_DBSTREAM <- function(formula = NULL,
     ),
     class = c("DSC_DBSTREAM", "DSC_Micro", "DSC_R", "DSC")
   )
-
-#' @rdname DSC_DBSTREAM
-#' @export
-DSOutlier_DBSTREAM <- function(formula = NULL,
-  r,
-  lambda = 1e-3,
-  gaptime = 1000L,
-  Cm = 3,
-  metric = "Euclidean") {
-
-  cl <- DSC_DBSTREAM(formula, r, lambda, gaptime, Cm, metric)
-  class(cl) <- c("DSOutlier", class(cl))
-  cl
-  }
 
 
 dbstream <- setRefClass(
@@ -319,7 +313,8 @@ dbstream$methods(
       if (is.null(colnames))
         colnames <<- colnames(newdata)
 
-      assignment <- CppObj$update(as.matrix(newdata), debug, assignments)
+      assignment <-
+        CppObj$update(as.matrix(newdata), debug, assignments)
 
       if (!assignments)
         return (NULL)
@@ -507,7 +502,8 @@ dbstream$methods(
 
 # helper to memorize macro clusterings
 .dbstream_update_macro <- function(x) {
-  if (!x$RObj$newdata) return()
+  if (!x$RObj$newdata)
+    return()
 
   cluster_list <- x$RObj$get_macro_clustering()
   x$macro$RObj$centers <- cluster_list$centers
@@ -565,7 +561,17 @@ get_assignment.DSC_DBSTREAM <- function(dsc,
     assignment <- apply(dist, 1L, which.min)
 
     # dist>threshold means no assignment
-    assignment[apply(dist, 1L, min) > dsc$RObj$r] <- NA_integer_
+    #assignment[apply(dist, 1L, min) > dsc$RObj$r] <- NA_integer_
+    # If we have an outlier_multiplier then we increase the radius
+    r_multiplier <- 1
+    if (!is.null(dsc$outlier_multiplier))
+      r_multiplier <-
+      dsc$outlier_multiplier
+    if (!is.null(dsc$noise_multiplier))
+      r_multiplier <-
+      dsc$noise_multiplier
+    assignment[apply(dist, 1L, min) > dsc$RObj$r * r_multiplier] <-
+      NA_integer_
 
   } else {
     #warning("There are no clusters!")
@@ -661,7 +667,7 @@ plot.DSC_DBSTREAM <- function(x,
       for (i in 1:nrow(p)) {
         lines(
           ellipsePoints(x$RObj$r, x$RObj$r,
-            loc = as.numeric(p[i,]), n = 60),
+            loc = as.numeric(p[i, ]), n = 60),
           col = "black",
           lty = assignment
         )
@@ -698,10 +704,30 @@ plot.DSC_DBSTREAM <- function(x,
         edges <- cbind(edges, map(edges[, 3], range = c(1, 4)))
 
         for (i in 1:nrow(edges)) {
-          lines(rbind(p[edges[i, 1],], p[edges[i, 2],]),
+          lines(rbind(p[edges[i, 1], ], p[edges[i, 2], ]),
             col = "black", lwd = edges[i, 4])
         }
       }
     }
   }
 }
+
+
+
+#' @rdname DSC_DBSTREAM
+#' @export
+DSOutlier_DBSTREAM <- function(formula = NULL,
+  r,
+  lambda = 1e-3,
+  gaptime = 1000L,
+  Cm = 3,
+  metric = "Euclidean",
+  outlier_multiplier = 2) {
+  cl <- DSC_DBSTREAM(formula, r, lambda, gaptime, Cm, metric)
+  class(cl) <- c("DSOutlier", class(cl))
+
+  cl$outlier_multiplier <- outlier_multiplier
+
+  cl
+}
+

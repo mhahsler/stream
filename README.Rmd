@@ -10,14 +10,21 @@ pkg_title(pkg)
 ```
 
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
-experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package currently focuses on data stream clustering and provides
-implementations of **BICO**, **BIRCH**, **D-Stream**, **DBSTREAM**, and **evoStream**.
+experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package provides:
+
+* **Stream Sources:** streaming from files, databases, in-memory data, URLs, pipes, 
+  socket connections and several data stream generators including
+  dynamically changing clusters.
+* **Stream Processing** with filters (convolution), sampling, windowing, scaling, ...
+* **Stream Clustering:** **BICO**, **BIRCH**, **D-Stream**, **DBSTREAM**, and **evoStream**
+* **Stream Outlier Detection** based on **D-Stream**, **DBSTREAM** and **MCOD**
+* **Stream Mining Evaluation** with prequential error estimation.
 
 Additional packages in the stream family are:
 
 * [streamMOA](https://github.com/mhahsler/streamMOA): Interface to clustering
   algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
-  The package includes implementations of **DenStream**, **ClusTree** and **CluStream**.
+  The package includes implementations of **DenStream**, **ClusTree**, **CluStream** and **MCOD**.
 * [rEMM](https://github.com/mhahsler/rEMM): Provides implementations of 
   **threshold nearest neighbor clustering** (tNN) and
   **Extensible Markov Model** (EMM)  for modelling temporal relationships between clusters.
@@ -29,22 +36,45 @@ pkg_install(pkg)
 
 ## Usage
 
-Load the package and a random data stream with 3 Gaussian clusters and 10\% noise.
+```{r echo=FALSE}
+options(digits = 3)
+```
+
+Load the package and a random data stream with 3 Gaussian clusters and 10\% noise and scale the data to z-scores.
 
 ```{r stream}
 library("stream")
 set.seed(2000)
 
-stream <- DSD_Gaussians(k = 3, noise= .1)
+stream <- DSD_Gaussians(k = 3, d = 2, noise= .1) %>% DSF_Scale()
+get_points(stream, n = 5)
+
 plot(stream)
 ```
 
-Cluster a stream of 1000 points using D-Stream.
+Cluster a stream of 1000 points using D-Stream which estimates point density in grid cells.
 
 ```{r Dstream}
-dstream <- DSC_DStream(gridsize = .1)
-update(dstream, stream, 1000)
-plot(dstream, stream, grid = TRUE)
+dsc <- DSC_DStream(gridsize = .1)
+update(dsc, stream, 1000)
+plot(dsc, stream, grid = TRUE)
+```
+
+```{r Dstream_eval}
+evaluate_static(dsc, stream, n = 100)
+```
+
+
+Outlier detection using DBSTREAM which uses micro-clusters with a given radius.
+
+```{r DSOutlier_DBSTREAM}
+dso <- DSOutlier_DBSTREAM(r = .1)
+update(dso, stream, 1000)
+plot(dso, stream)
+```
+
+```{r DSO_eval}
+evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "noisePredicted", "noisePrecision"))
 ```
 
 ## Acknowledgements

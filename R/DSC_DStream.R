@@ -46,9 +46,11 @@
 #' by gray values).
 #'
 #' `DSOutlier_DStream` classifies points that do not fall into a dense grid cell as
-#' outlier/noise.
+#' outlier/noise. Parameter `outlier_multiplier` specifies
+#' how far the point needs to be away from a dense cell to be classified as an outlier by multiplying the grid
+#' size.
 #'
-#' Note that `DSC_DStream` can at this point not be saved to disk using
+#' Note that `DSC_DStream` currently cannot be saved to disk using
 #' save() or saveRDS(). This functionality will be added later!
 #'
 #' @aliases DSC_DStream dstream d-stream D-Stream
@@ -92,6 +94,7 @@
 #' weight).
 #' @param grid_type the attraction between what grid types should be returned?
 #' @param dist make attraction symmetric and transform into a distance.
+#' @param outlier_multiplier multiplier for assignment grid width to declare outliers.
 #' @return An object of class `DSC_DStream` (subclass of [DSC],
 #' [DSC_R], [DSC_Micro]).
 #' @author Michael Hahsler
@@ -165,19 +168,6 @@ DSC_DStream <- function(formula = NULL,
     ),
     class = c("DSC_DStream", "DSC_Micro", "DSC_R", "DSC")
   )
-
-#' @rdname DSC_DStream
-#' @export
-DSOutlier_DStream <- function(formula = NULL,
-  gridsize,
-  lambda = 1e-3,
-  gaptime = 1000L,
-  Cm = 3,
-  Cl = .8) {
-  cl <- DSC_DStream(formula, gridsize, lambda, gaptime, Cm, Cl)
-  class(cl) <- c("DSOutlier", class(cl))
-  cl
-  }
 
 dstream <- setRefClass(
   "dstream",
@@ -747,7 +737,15 @@ get_assignment.DSC_DStream <-
       assignment <- apply(dist, 1L, which.min)
 
       # dist>threshold means no assignment
-      assignment[apply(dist, 1L, min) > dsc$RObj$gridsize / 2] <-
+      #assignment[apply(dist, 1L, min) > dsc$RObj$gridsize / 2] <-
+      #  NA_integer_
+
+      # If we have an outlier_multiplier then we increase the radius
+      r_multiplier <- 1
+      if (!is.null(dsc$outlier_multiplier))
+        r_multiplier <-
+        dsc$outlier_multiplier
+      assignment[apply(dist, 1L, min) > dsc$RObj$gridsize / 2 * r_multiplier] <-
         NA_integer_
 
     } else {
@@ -761,4 +759,21 @@ get_assignment.DSC_DStream <-
     attr(assignment, "method") <- "model"
 
     assignment
+  }
+
+#' @rdname DSC_DStream
+#' @export
+DSOutlier_DStream <- function(formula = NULL,
+  gridsize,
+  lambda = 1e-3,
+  gaptime = 1000L,
+  Cm = 3,
+  Cl = .8,
+  outlier_multiplier = 2) {
+  cl <- DSC_DStream(formula, gridsize, lambda, gaptime, Cm, Cl)
+  class(cl) <- c("DSOutlier", class(cl))
+
+  cl$outlier_multiplier <- outlier_multiplier
+
+  cl
   }

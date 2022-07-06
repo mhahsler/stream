@@ -5,9 +5,9 @@
 \alias{dstream}
 \alias{d-stream}
 \alias{D-Stream}
-\alias{DSOutlier_DStream}
 \alias{get_attraction}
 \alias{plot.DSC_DStream}
+\alias{DSOutlier_DStream}
 \title{D-Stream Data Stream Clustering Algorithm}
 \usage{
 DSC_DStream(
@@ -24,15 +24,6 @@ DSC_DStream(
   N = 0
 )
 
-DSOutlier_DStream(
-  formula = NULL,
-  gridsize,
-  lambda = 0.001,
-  gaptime = 1000L,
-  Cm = 3,
-  Cl = 0.8
-)
-
 get_attraction(x, relative = FALSE, grid_type = "dense", dist = FALSE)
 
 \method{plot}{DSC_DStream}(
@@ -44,6 +35,16 @@ get_attraction(x, relative = FALSE, grid_type = "dense", dist = FALSE)
   grid_type = "used",
   assignment = FALSE,
   ...
+)
+
+DSOutlier_DStream(
+  formula = NULL,
+  gridsize,
+  lambda = 0.001,
+  gaptime = 1000L,
+  Cm = 3,
+  Cl = 0.8,
+  outlier_multiplier = 2
 )
 }
 \arguments{
@@ -111,6 +112,8 @@ or everything together (\code{type = "all"}). \code{type = "auto"} leaves to the
 \item{assignment}{logical; show assignment area of micro-clusters.}
 
 \item{...}{further argument are passed on.}
+
+\item{outlier_multiplier}{multiplier for assignment grid width to declare outliers.}
 }
 \value{
 An object of class \code{DSC_DStream} (subclass of \link{DSC},
@@ -146,9 +149,11 @@ For \code{plot()} D-Stream also provides extra parameters \code{"grid"} and
 by gray values).
 
 \code{DSOutlier_DStream} classifies points that do not fall into a dense grid cell as
-outlier/noise.
+outlier/noise. Parameter \code{outlier_multiplier} specifies
+how far the point needs to be away from a dense cell to be classified as an outlier by multiplying the grid
+size.
 
-Note that \code{DSC_DStream} can at this point not be saved to disk using
+Note that \code{DSC_DStream} currently cannot be saved to disk using
 save() or saveRDS(). This functionality will be added later!
 }
 \examples{

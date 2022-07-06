@@ -5,16 +5,18 @@
 * New base class DSF for data stream filters.
 * New DSF: DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
 * New DST: DST_Multi, DSD_NULL
+* New DSOutlier: DSOutlier_DBSTREAM, DSOutlier_DStream
 * DSD_ReadCSV gained parameter col.names
 * Added DSD_ReadStream as an alias for DSD_ReadCSV.
 * Added DSD_Combination to combine streams.
-* stream now implements a standard predict function (get_assignment() is now deprecated).
 * update() now returns information like cluster assignments as a data.frame.
 * DSC implementation now have a formula argument to decide what variables should be used for 
   clustering.
+* DSD_ReadDB has now close_stream().
 
 ## Changes
-* class information and extra information is now stored as columns starting with . 
+* stream now implements a standard predict function (get_assignment() is now deprecated).
+* class information and extra information is now stored as columns starting with '.' 
   instead of as attributes. See get_points().
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
 * DSO is now called DSAggregate.

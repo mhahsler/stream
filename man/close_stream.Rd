@@ -4,11 +4,13 @@
 \alias{close_stream}
 \title{Close a Data Stream}
 \usage{
-close_stream(dsd)
+close_stream(dsd, ...)
 }
 \arguments{
 \item{dsd}{An object of class a subclass of \link{DSD} which implements a
 reset function.}
+
+\item{...}{further arguments.}
 }
 \description{
 Close a data stream that needs closing (e.g., a file or a connection).

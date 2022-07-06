@@ -35,9 +35,9 @@
 #'
 #' #' @examples
 #' set.seed(1000)
-#' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.1, noise_separation = 6)
+#' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.1, noise_separation = 5)
 #'
-#' outlier_detector <- DSOutlier_DBSTREAM(r = .05)
+#' outlier_detector <- DSOutlier_DBSTREAM(r = .05, outlier_multiplier = 2)
 #' update(outlier_detector, stream, 500)
 #' outlier_detector
 #'
@@ -54,7 +54,7 @@
 #'   c("noiseActual", "noisePredicted", "noisePrecision", "outlierJaccard"))
 #'
 #' # use a different detector
-#' outlier_detector2 <- DSOutlier_DStream(gridsize = .05, Cl = 0.5)
+#' outlier_detector2 <- DSOutlier_DStream(gridsize = .05, Cl = 0.5, outlier_multiplier = 2)
 #' update(outlier_detector2, stream, 500)
 #' plot(outlier_detector2, stream)
 #'

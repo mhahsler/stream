@@ -7,7 +7,7 @@
 \usage{
 DSD_ReadDB(result, k = NA, description = NULL)
 
-\method{close_stream}{DSD_ReadDB}(dsd)
+\method{close_stream}{DSD_ReadDB}(dsd, disconnect = TRUE, ...)
 }
 \arguments{
 \item{result}{An open DBI result set.}
@@ -15,6 +15,12 @@ DSD_ReadDB(result, k = NA, description = NULL)
 \item{k}{Number of true clusters, if known.}
 
 \item{description}{a character string describing the data.}
+
+\item{dsd}{a stream.}
+
+\item{disconnect}{logical; disconnect from the database?}
+
+\item{...}{further arguments.}
 }
 \value{
 An object of class \code{DSD_ReadDB} (subclass of  \link{DSD_R}, \link{DSD}).
@@ -33,8 +39,10 @@ query only includes the columns that should be included in the stream
 \strong{Closing and resetting the stream}
 
 Do not forget to clear the
-result set and disconnect from the data base connection. Since this procedure is data base dependent,
-\code{close_stream()} just produced a warning (see Example section).
+result set and disconnect from the data base connection.
+\code{close_stream()} clears the query result with \code{\link[DBI:dbClearResult]{DBI::dbClearResult()}}
+and the disconnects from the database with \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}. Disconnecting
+can be prevented by calling \code{close_stream()} with \code{disconnect = FALSE}.
 
 \code{\link[=reset_stream]{reset_stream()}} is not available for this type of stream.
 
@@ -46,6 +54,8 @@ See Examples section below.
 }
 \examples{
 ### create a data base with a table with 3 Gaussians
+if(require("RSQLite")) {
+
 library("RSQLite")
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
@@ -68,9 +78,8 @@ get_points(stream, n = 5)
 
 plot(stream, n = 100)
 
-### clean up (close_stream() does not do this!)
-dbClearResult(res)
-dbDisconnect(con)
+close_stream(stream)
+}
 }
 \seealso{
 \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}}

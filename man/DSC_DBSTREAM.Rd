@@ -4,10 +4,10 @@
 \alias{DSC_DBSTREAM}
 \alias{DBSTREAM}
 \alias{dbstream}
-\alias{DSOutlier_DBSTREAM}
 \alias{get_shared_density}
 \alias{change_alpha}
 \alias{plot.DSC_DBSTREAM}
+\alias{DSOutlier_DBSTREAM}
 \title{DBSTREAM Clustering Algorithm}
 \usage{
 DSC_DBSTREAM(
@@ -17,19 +17,11 @@ DSC_DBSTREAM(
   gaptime = 1000L,
   Cm = 3,
   metric = "Euclidean",
+  noise_multiplier = 1,
   shared_density = FALSE,
   alpha = 0.1,
   k = 0,
   minweight = 0
-)
-
-DSOutlier_DBSTREAM(
-  formula = NULL,
-  r,
-  lambda = 0.001,
-  gaptime = 1000L,
-  Cm = 3,
-  metric = "Euclidean"
 )
 
 get_shared_density(x, use_alpha = TRUE)
@@ -49,6 +41,16 @@ change_alpha(x, alpha)
   assignment = FALSE,
   ...
 )
+
+DSOutlier_DBSTREAM(
+  formula = NULL,
+  r,
+  lambda = 0.001,
+  gaptime = 1000L,
+  Cm = 3,
+  metric = "Euclidean",
+  outlier_multiplier = 2
+)
 }
 \arguments{
 \item{formula}{\code{NULL} to use all features in the stream or a model \link{formula} of the form \code{~ X1 + X2}
@@ -65,6 +67,8 @@ removed every \code{gaptime} points.}
 \item{Cm}{minimum weight for a micro-cluster.}
 
 \item{metric}{metric used to calculate distances.}
+
+\item{noise_multiplier, outlier_multiplier}{multiplier for radius \code{r} to declare noise or outliers.}
 
 \item{shared_density}{Record shared density information. If set to
 \code{TRUE} then shared density is used for reclustering, otherwise
@@ -127,8 +131,14 @@ with the permanent id of the strong micro-cluster.
 \code{assignment} and \code{shared_density} which show the assignment area
 and the shared density graph, respectively.
 
-\code{DSOutlier_DBSTREAM} classifies points that cannot be assigned to a micro-cluster
-representing a dense region as a outlier/noise.
+\code{\link[=predict]{predict()}} can be used to assign new points to clusters. Points are assigned to a micro-cluster if
+they are within its assignment area (distance is less then \code{r} times \code{noise_multiplier}).
+
+\code{DSOutlier_DBSTREAM} classifies points as outlier/noise if they that cannot be assigned to a micro-cluster
+representing a dense region as a outlier/noise. Parameter \code{outlier_multiplier} specifies
+how far a point has to be away from a micro-cluster as a multiplyer for the radius \code{r}.
+A larger value means that outliers have to be farther away from dense
+regions and thus reduce the chance of misclassifying a regular point as an outlier.
 }
 \examples{
 set.seed(1000)

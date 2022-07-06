@@ -31,9 +31,9 @@ DSD_ReadCSV(
   ...
 )
 
-\method{close_stream}{DSD_ReadStream}(dsd)
+\method{close_stream}{DSD_ReadStream}(dsd, ...)
 
-\method{close_stream}{DSD_ReadCSV}(dsd)
+\method{close_stream}{DSD_ReadCSV}(dsd, ...)
 }
 \arguments{
 \item{file}{A file/URL or an open connection.}

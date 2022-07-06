@@ -30,8 +30,10 @@
 #' **Closing and resetting the stream**
 #'
 #' Do not forget to clear the
-#' result set and disconnect from the data base connection. Since this procedure is data base dependent,
-#' `close_stream()` just produced a warning (see Example section).
+#' result set and disconnect from the data base connection.
+#' `close_stream()` clears the query result with [DBI::dbClearResult()]
+#' and the disconnects from the database with [DBI::dbDisconnect()]. Disconnecting
+#' can be prevented by calling `close_stream()` with `disconnect = FALSE`.
 #'
 #'  [reset_stream()] is not available for this type of stream.
 #'
@@ -46,11 +48,14 @@
 #' @param result An open DBI result set.
 #' @param k Number of true clusters, if known.
 #' @param description a character string describing the data.
+#' @param dsd a stream.
 #' @return An object of class `DSD_ReadDB` (subclass of  [DSD_R], [DSD]).
 #' @author Michael Hahsler
 #' @seealso [DBI::dbGetQuery()]
 #' @examples
 #' ### create a data base with a table with 3 Gaussians
+#' if(require("RSQLite")) {
+#'
 #' library("RSQLite")
 #' con <- dbConnect(RSQLite::SQLite(), ":memory:")
 #'
@@ -73,9 +78,8 @@
 #'
 #' plot(stream, n = 100)
 #'
-#' ### clean up (close_stream() does not do this!)
-#' dbClearResult(res)
-#' dbDisconnect(con)
+#' close_stream(stream)
+#' }
 #' @export
 DSD_ReadDB <- function(result,
   k = NA,
@@ -101,9 +105,15 @@ DSD_ReadDB <- function(result,
 }
 
 #' @rdname DSD_ReadDB
+#' @param disconnect logical; disconnect from the database?
+#' @param ... further arguments.
 #' @export
-close_stream.DSD_ReadDB <- function(dsd)
-  warning("close_stream not implemented for DSD_ReadDB. You need to clear the result and disconnect the database manually (see example in '? DSD_ReadDB')")
+close_stream.DSD_ReadDB <- function(dsd, disconnect = TRUE, ...) {
+  DBI::dbClearResult(dsd$result)
+
+  if (disconnect)
+    DBI::dbDisconnect(dsd$result@conn)
+}
 
 #' @export
 get_points.DSD_ReadDB <- function(x,

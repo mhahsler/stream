@@ -26,8 +26,8 @@ underlying connection.
 \code{reset_stream()} is implemented for:
 \itemize{
 \item \link{DSD}
-\item \link{DSD_MG}
 \item \link{DSD_Memory}
+\item \link{DSD_MG}
 \item \link{DSD_ReadStream}
 \item \link{DSF}
 \item \link{DSF_Convolve}

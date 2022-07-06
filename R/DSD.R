@@ -222,13 +222,14 @@ reset_stream.DSD <- function(dsd, pos = 1) {
 #'
 #' @param dsd An object of class a subclass of [DSD] which implements a
 #' reset function.
+#' @param ... further arguments.
 #' @author Michael Hahsler
 #' @export
-close_stream <- function(dsd)
+close_stream <- function(dsd, ...)
   UseMethod("close_stream")
 
 #' @export
-close_stream.DSD <- function(dsd) {
+close_stream.DSD <- function(dsd, ...) {
   warning(gettextf(
     "close_stream not needed/implemented for class '%s'.",
     paste(class(dsd), collapse = ", ")

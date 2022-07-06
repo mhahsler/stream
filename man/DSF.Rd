@@ -10,7 +10,7 @@ DSF(...)
 
 \method{reset_stream}{DSF}(dsd, pos = 1)
 
-\method{close_stream}{DSF}(dsd)
+\method{close_stream}{DSF}(dsd, ...)
 }
 \arguments{
 \item{...}{Further arguments.}

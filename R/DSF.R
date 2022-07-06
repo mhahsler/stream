@@ -56,5 +56,5 @@ reset_stream.DSF <- function(dsd, pos = 1)
 
 #' @describeIn DSF close the attached stream if close is supported.
 #' @export
-close_stream.DSF <- function(dsd)
-   close_stream(dsd$dsd)
+close_stream.DSF <- function(dsd, ...)
+   close_stream(dsd$dsd, ...)
