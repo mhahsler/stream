@@ -28,9 +28,6 @@ Additional packages in the stream family are:
     Markov Model** (EMM) for modelling temporal relationships between
     clusters.
 
-The development of the stream package was supported in part by NSF
-IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
-
 ## Installation
 
 **Stable CRAN version:** Install from within R with
@@ -48,7 +45,7 @@ install.packages("stream", repos = "https://mhahsler.r-universe.dev")
 
 ## Usage
 
-Load the package and a random data stream with 3 Gaussian clusters ans
+Load the package and a random data stream with 3 Gaussian clusters and
 10% noise.
 
 ``` r
@@ -70,6 +67,11 @@ plot(dstream, stream, grid = TRUE)
 ```
 
 ![](inst/README_files/Dstream-1.png)<!-- -->
+
+## Acknowledgements
+
+The development of the stream package was supported in part by NSF
+IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 ## References
 

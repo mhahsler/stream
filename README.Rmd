@@ -22,7 +22,6 @@ Additional packages in the stream family are:
   **threshold nearest neighbor clustering** (tNN) and
   **Extensible Markov Model** (EMM)  for modelling temporal relationships between clusters.
 
-The development of the stream package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 ```{r echo=FALSE, results = 'asis'}
 pkg_install(pkg)
@@ -30,7 +29,7 @@ pkg_install(pkg)
 
 ## Usage
 
-Load the package and a random data stream with 3 Gaussian clusters ans 10\% noise.
+Load the package and a random data stream with 3 Gaussian clusters and 10\% noise.
 
 ```{r stream}
 library("stream")
@@ -48,6 +47,9 @@ update(dstream, stream, 1000)
 plot(dstream, stream, grid = TRUE)
 ```
 
+## Acknowledgements
+
+The development of the stream package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 ## References
 
