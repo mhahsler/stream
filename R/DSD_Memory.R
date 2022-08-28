@@ -132,7 +132,7 @@ DSD_Memory <- function(x,
 
 #' @export
 get_points.DSD_Memory <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {

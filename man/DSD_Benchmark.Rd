@@ -43,11 +43,11 @@ animate_data(stream, n = 10000, horizon = 100, xlim = c(0, 1), ylim = c(0, 1))
 \seealso{
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
-\code{\link{DSD_Combination}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
+\code{\link{DSD_Mixture}()},
 \code{\link{DSD_NULL}()},
 \code{\link{DSD_ReadDB}()},
 \code{\link{DSD_ReadStream}()},

@@ -40,9 +40,9 @@ and the methods in the Methods Section below.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{description}: Get a description of the task as a character string.
-}}
+\item \code{description(DST)}: Get a description of the task as a character string.
 
+}}
 \examples{
 DST()
 }

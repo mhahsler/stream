@@ -8,9 +8,9 @@
 * New DSOutlier: DSOutlier_DBSTREAM, DSOutlier_DStream
 * DSD_ReadCSV gained parameter col.names
 * Added DSD_ReadStream as an alias for DSD_ReadCSV.
-* Added DSD_Combination to combine streams.
+* Added DSD_Mixture to combine streams.
 * update() now returns information like cluster assignments as a data.frame.
-* DSC implementation now have a formula argument to decide what variables should be used for 
+* DSC implementations now have a formula argument to decide what variables should be used for 
   clustering.
 * DSD_ReadDB has now close_stream().
 
@@ -22,10 +22,9 @@
 * DSO is now called DSAggregate.
 * The NAMESPACE is now managed using roxygen.
 * evaluate is now a generic.
-* noise and outliers are now the same concept. DS_Gaussian can make sure that noise points are 
+* noise and outliers are now the same concept. DS_Gaussian can make sure that noise points are
   separated from clusters.
-* evaluate() is now called evaluate_static() and evaluate_cluster is evaluate_stream(), both are
-  now generics.
+* evaluate() is now called evaluate_static() and evaluate_cluster is evaluate_stream(), both are now generics.
 * plot for DSC now automatically finds micro and macro-clusters to plot.
 
 # stream 1.5-1 (05/09/22)

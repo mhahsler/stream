@@ -64,12 +64,12 @@ DSC_R <- abstract_class_generator("DSC")
 #' @export
 update.DSC_R <- function(object,
   dsd,
-  n = 1,
+  n = 1L,
   verbose = FALSE,
   block = 10000L,
   assignment = FALSE,
   ...) {
-  ### object contains an RObj which is  a reference object with a cluster method
+  ### object contains an RObj which is a reference object with a cluster method
 
   ### for data frame/matrix we do it all at once
   if (is.data.frame(dsd) || is.matrix(dsd)) {
@@ -104,7 +104,7 @@ update.DSC_R <- function(object,
   n <- as.integer(n)
   block <- as.integer(block)
 
-  if (n < 1L) {
+  if (n == 0L) {
     if (assignment)
       return(integer(0))
     else
@@ -116,7 +116,7 @@ update.DSC_R <- function(object,
   if (verbose)
     total <- 0L
   for (bl in .make_block(n, block)) {
-    p <- get_points(dsd, bl, info = FALSE)
+    p <- get_points(dsd, bl, info = FALSE, outofpoints = "warn")
 
     if (!is.null(object$formula)) {
       if (is.null(object$RObj$colnames)) {

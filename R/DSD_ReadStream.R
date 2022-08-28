@@ -202,7 +202,7 @@ DSD_ReadStream <- function(file,
 
 #' @export
 get_points.DSD_ReadStream <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
@@ -241,18 +241,19 @@ get_points.DSD_ReadStream <- function(x,
   }
 
   d <- NULL
-  suppressWarnings(try(d <- do.call(read.table,
-    c(
-      list(
-        text = lines,
-        sep = x$sep,
-        nrows = n,
-        colClasses = x$colClasses
-      ),
-      x$read.table.args
-    )),
-    silent = !.DEBUG)
-  )
+
+  if (length(lines) > 0)
+    suppressWarnings(try(d <- do.call(read.table,
+      c(
+        list(
+          text = lines,
+          sep = x$sep,
+          nrows = n,
+          colClasses = x$colClasses
+        ),
+        x$read.table.args
+      )),
+      silent = !.DEBUG))
 
   if (is.null(d)) {
     ## no data: create conforming data.frame with 0 rows

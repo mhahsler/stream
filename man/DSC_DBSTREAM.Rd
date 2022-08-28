@@ -192,7 +192,7 @@ plot(iris[,-5], col = cl$.class, pch = cl$.class)
 # macro-clusters (2 clusters since reachability cannot separate two of the three species)
 plot(iris[,-5], col = microToMacro(dbstream, cl$.class))
 
-#' # use DBSTREAM with a formula (cluster all variables but X2)
+# use DBSTREAM with a formula (cluster all variables but X2)
 stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
 dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
 

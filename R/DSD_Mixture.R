@@ -17,9 +17,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-#' Combine Streams into a Single Stream
+#' Mixes Data Points from Several Streams into a Single Stream
 #'
-#' This generator combines multiple streams and mixes them given specified probabilities.
+#' This generator mixes multiple streams given specified probabilities.
 #' The streams have to contain the same number of dimensions.
 #'
 #' @family DSD
@@ -27,19 +27,20 @@
 #' @param ... [DSD] objects.
 #' @param prob a numeric vector with the probability for each stream that the next point will
 #'   be drawn from that stream.
-#' @return Returns a `DSD_Combination` object.(subclass of [DSD_R], [DSD]).
+#' @return Returns a `DSD_Mixture` object.(subclass of [DSD_R], [DSD]).
 #' @author Michael Hahsler
 #' @examples
 #' # create data stream with three clusters in 2D
 #' stream1 <- DSD_Gaussians(d = 2, k = 3)
 #' stream2 <- DSD_UniformNoise(d = 2,  range = rbind(c(-.5, 1.5), c(-.5, 1.5)))
 #'
-#' combinedStream <- DSD_Combination(stream1, stream2, prob = c(.9, .1))
+#' combinedStream <- DSD_Mixture(stream1, stream2, prob = c(.9, .1))
+#' combinedStream
 #'
 #' get_points(combinedStream, n = 20)
 #' plot(combinedStream, n = 200)
 #' @export
-DSD_Combination <- function(..., prob = NULL) {
+DSD_Mixture <- function(..., prob = NULL) {
   streams <- list(...)
 
   if (is.null(prob))
@@ -49,21 +50,21 @@ DSD_Combination <- function(..., prob = NULL) {
   structure(
     list(
       description = paste0(
-        "Stream Combination (d = ",
+        "Stream Mixture (d = ",
         streams[[1]]$d,
-        ")",
-        paste0("\n  = ", sapply(streams, "[[", "description"), collapse = "\n  + ")
+        ")\n",
+        paste(paste("+", sapply(streams, "[[", "description")), collapse = "\n")
       ),
       d = streams[[1]]$d,
       streams = streams,
       prob = prob
     ),
-    class = c("DSD_Combination", "DSD_R", "DSD")
+    class = c("DSD_Mixture", "DSD_R", "DSD")
   )
 }
 
 #' @export
-get_points.DSD_Combination <- function(x,
+get_points.DSD_Mixture <- function(x,
   n = 1,
   outofpoints = "stop",
   info = TRUE,

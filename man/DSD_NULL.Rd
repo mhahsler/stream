@@ -25,11 +25,11 @@ get_points(nullstream)}
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Combination}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
+\code{\link{DSD_Mixture}()},
 \code{\link{DSD_ReadDB}()},
 \code{\link{DSD_ReadStream}()},
 \code{\link{DSD_Target}()},

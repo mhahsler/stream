@@ -26,7 +26,7 @@
 #'
 #' @param object The [DST] object.
 #' @param dsd A [DSD] object with the data stream.
-#' @param n number of points to use for the update.
+#' @param n number of points from `dsd` to use for the update. Some DSD `dsd` accept `n = -1` to update with all remaining points in the stream.
 #' @param ... Additional arguments are passed on.
 #' @return `NULL` or a data.frame `n` rows containing update information for each data point.
 #' @author Michael Hahsler
@@ -35,13 +35,13 @@
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = .1)
 #'
 #' dbstream <- DSC_DBSTREAM(r = .1)
-#' info <- update(dbstream, stream, n = 100)
+#' assignment <- update(dbstream, stream, n = 100, assignment = TRUE)
 #' plot(dbstream, stream, type = "both")
 #'
 #' # DBSTREAM returns cluster assignments (see DSC_DBSTREAM).
-#' head(info)
+#' head(assignment)
 #' @export
-update.DST <- function(object, dsd, n = 1, ...) {
+update.DST <- function(object, dsd, n = 1L, ...) {
   stop("No implementation for update found for class", , paste0(class(object), collapse = ", "))
 }
 

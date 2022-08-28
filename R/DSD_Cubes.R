@@ -114,11 +114,14 @@ DSD_Cubes <-
 
 #' @export
 get_points.DSD_Cubes <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)
+
+  if(n < 1L)
+    stop("n needs to be >= 1.")
 
   clusterOrder <- sample(
     x = seq(x$k),

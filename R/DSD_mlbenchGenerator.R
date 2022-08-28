@@ -94,11 +94,14 @@ DSD_mlbenchGenerator <- function(method, ...) {
 
 #' @export
 get_points.DSD_mlbenchGenerator <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)
+
+  if(n < 1L)
+    stop("n needs to be >= 1.")
 
   d <-
     do.call(paste("mlbench.", x$method, sep = ""), c(list(n), x$variables))

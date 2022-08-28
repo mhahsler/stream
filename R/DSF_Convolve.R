@@ -148,7 +148,7 @@ DSF_Convolve <-
 
 #' @export
 get_points.DSF_Convolve <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = FALSE,
   ...) {
@@ -158,7 +158,7 @@ get_points.DSF_Convolve <- function(x,
   #  stop("Clusters, class or outliers not supported for DSF_Convolve!")
 
   for (i in seq(n)) {
-    update(x$window, x$dsd, n = 1)
+    update(x$window, x$dsd, n = 1L)
     win <- get_points(x$window)
 
     # dims and preallocate the space for the output data frame with n rows

@@ -68,7 +68,7 @@ DSF_ExponentialMA <- function(dsd, dim = NULL, alpha = .5) {
 
 #' @export
 get_points.DSF_ExponentialMA <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {

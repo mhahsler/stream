@@ -10,7 +10,7 @@ DSC_R(...)
 \method{update}{DSC_R}(
   object,
   dsd,
-  n = 1,
+  n = 1L,
   verbose = FALSE,
   block = 10000L,
   assignment = FALSE,

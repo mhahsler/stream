@@ -71,7 +71,7 @@ DSF_Downsample <- function(dsd, factor = 1) {
 
 #' @export
 get_points.DSF_Downsample <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {

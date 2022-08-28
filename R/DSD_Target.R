@@ -65,12 +65,14 @@ DSD_Target <- function(center_sd = .05,
 
 #' @export
 get_points.DSD_Target <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)
 
+  if(n < 1L)
+    stop("n needs to be >= 1.")
 
   ### choose point type
   type <- sample(

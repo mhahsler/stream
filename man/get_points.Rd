@@ -23,7 +23,8 @@ remove_info(points)
 
 \item{...}{Additional parameters to pass to the \code{get_points()} implementations.}
 
-\item{n}{integer; request up to $n$ points from the stream.}
+\item{n}{integer; request up to \code{n} points from the stream. \code{n = -1} returns
+all remaining points from limited streams.}
 
 \item{outofpoints}{Action taken if less than \code{n} data points are
 available. The default is to stop with an error.  Other actions that
@@ -63,7 +64,7 @@ Examples are
 \item \code{.time} a time stamp for the point (can be in seconds or an index for ordering)
 }
 
-**Resetting a Stream##
+\strong{Resetting a Stream}
 
 Many streams can be reset using \code{\link[=reset_stream]{reset_stream()}}.
 }
@@ -78,11 +79,11 @@ remove_info(points)
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Combination}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
 \code{\link{DSD_MG}()},
 \code{\link{DSD_Memory}()},
+\code{\link{DSD_Mixture}()},
 \code{\link{DSD_NULL}()},
 \code{\link{DSD_ReadDB}()},
 \code{\link{DSD_ReadStream}()},

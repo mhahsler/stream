@@ -326,11 +326,14 @@ is.separated <-
 
 #' @export
 get_points.DSD_Gaussians <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
   .nodots(...)
+
+  if(n < 1L)
+    stop("n needs to be >= 1.")
 
   noise_pos <- NULL
 

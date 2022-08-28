@@ -75,23 +75,23 @@ which will serialize the objects first appropriately.
 }
 \section{Functions}{
 \itemize{
-\item \code{get_centers}: Gets the cluster centers (micro- or macro-clusters) from a DSC object.
+\item \code{get_centers()}: Gets the cluster centers (micro- or macro-clusters) from a DSC object.
 
-\item \code{get_weights}: Get the weights of the clusters in the DSC (returns 1s if not implemented by the clusterer)
+\item \code{get_weights()}: Get the weights of the clusters in the DSC (returns 1s if not implemented by the clusterer)
 
-\item \code{get_copy}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
+\item \code{get_copy()}: Create a Deep Copy of a DSC Object that contain reference classes (e.g., Java data structures for MOA).
 
-\item \code{nclusters}: Returns the number of micro-clusters from the DSC object.
+\item \code{nclusters()}: Returns the number of micro-clusters from the DSC object.
 
-\item \code{get_microclusters}: Used as internal interface.
+\item \code{get_microclusters()}: Used as internal interface.
 
-\item \code{get_microweights}: Used as internal interface.
+\item \code{get_microweights()}: Used as internal interface.
 
-\item \code{get_macroclusters}: Used as internal interface.
+\item \code{get_macroclusters()}: Used as internal interface.
 
-\item \code{get_macroweights}: Used as internal interface.
+\item \code{get_macroweights()}: Used as internal interface.
+
 }}
-
 \examples{
 DSC()
 

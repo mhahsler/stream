@@ -117,7 +117,7 @@ close_stream.DSD_ReadDB <- function(dsd, disconnect = TRUE, ...) {
 
 #' @export
 get_points.DSD_ReadDB <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {

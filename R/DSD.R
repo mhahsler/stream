@@ -88,14 +88,15 @@ DSD_R <- abstract_class_generator("DSD")
 #' * `.class` for known cluster/class labels used for plotting and evaluation
 #' * `.time` a time stamp for the point (can be in seconds or an index for ordering)
 #'
-#' **Resetting a Stream##
+#' **Resetting a Stream**
 #'
 #' Many streams can be reset using [reset_stream()].
 #'
 #' @family DSD
 #'
 #' @param x A [DSD] object.
-#' @param n integer; request up to $n$ points from the stream.
+#' @param n integer; request up to `n` points from the stream. `n = -1` returns
+#' all remaining points from limited streams.
 #' @param outofpoints Action taken if less than `n` data points are
 #'   available. The default is to stop with an error.  Other actions that
 #'   might be supported by different `DSD` are:

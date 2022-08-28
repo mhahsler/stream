@@ -88,7 +88,7 @@ DSF_dplyr <-
 
 #' @export
 get_points.DSF_dplyr <- function(x,
-  n = 1,
+  n = 1L,
   outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
