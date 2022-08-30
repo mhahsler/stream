@@ -53,6 +53,8 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
+\code{\link{DST_Runner}()},
+\code{\link{DST_WriteStream}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{update}()}

@@ -70,8 +70,7 @@ Other DSD:
 \code{\link{close_stream}()},
 \code{\link{get_points}()},
 \code{\link{plot.DSD}()},
-\code{\link{reset_stream}()},
-\code{\link{write_stream}()}
+\code{\link{reset_stream}()}
 
 Other plot: 
 \code{\link{animate_cluster}()},

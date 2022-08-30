@@ -1,13 +1,15 @@
 # stream 1.5-1.1 (xx/xx/22)
 
 ## New Features
-* We now support %>%.
-* New base class DSF for data stream filters.
-* New DSF: DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
-* New DST: DST_Multi, DSD_NULL
+* We now support %>% and defining pipelines with the new class DST_Runner.
+* New base class DSF for data stream filters with implementations for 
+  DSF_Downsample, DSF_Convolve, DSF_Func, DSF_dplyr
+* New DST_Multi to run multiple tasks on a stream.
+* New DSD_NULL
 * New DSOutlier: DSOutlier_DBSTREAM, DSOutlier_DStream
 * DSD_ReadCSV gained parameter col.names
 * Added DSD_ReadStream as an alias for DSD_ReadCSV.
+* Added DST_WriteStream to write streams using update().
 * Added DSD_Mixture to combine streams.
 * update() now returns information like cluster assignments as a data.frame.
 * DSC implementations now have a formula argument to decide what variables should be used for 

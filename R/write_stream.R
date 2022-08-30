@@ -20,15 +20,13 @@
 #'
 #' Writes points from a data stream DSD object to a file or a connection.
 #'
-#' @family DSD
-#'
 #' @param dsd The DSD object that will generate the data points for output.
 #' @param file A file name or a R connection to be written to.
 #' @param n The number of data points to be written.
 #' @param block Write stream in blocks to improve file I/O speed.
 #' @param info Save the class/cluster labels and other information columns with the data.
 #' @param sep The character that will separate attributes in a data point.
-#' @param append Append the data to an existing file.
+#' @param append Append the data to an existing file. If `FALSE`, then the file will be overwritten.
 #' @param header A flag that determines if column names will be output
 #' (equivalent to `col.names` in [write.table()]).
 #' @param row.names A flag that determines if row names will be output.
@@ -72,43 +70,45 @@ write_stream.DSD <- function(dsd,
   row.names = FALSE,
   close = TRUE,
   ...) {
-  # make sure files are not overwritten
-  if (is(file, "character") && file.exists(file) && !append)
-    stop("file exists already. Please remove the file first.")
-
-  # string w/ file name (clears the file)
-  if (is(file, "character")) {
-    if (append)
-      file <- file(file, open = "a")
-    else
-      file <- file(file, open = "w")
+  # make sure files are not overwritten, and no header after first write
+  if (is(file, "character") && file.exists(file)) {
+    if (!append)
+      stop("file exists already. Please remove the file first.")
+    header <- FALSE
   }
-  # error
-  else if (!is(file, "connection"))
-    stop("Please pass a valid connection!")
+    # string w/ file name (clears the file)
+    if (is(file, "character")) {
+      if (append)
+        file <- file(file, open = "a")
+      else
+        file <- file(file, open = "w")
+    }
+    # error
+    else if (!is(file, "connection"))
+      stop("Please pass a valid connection!")
 
-  # needs opening
-  else if (!isOpen(file))
-    open(file)
+    # needs opening
+    else if (!isOpen(file))
+      open(file)
 
-  # all following calls have to have col.names=FALSE regardless
-  for (bl in .make_block(n, block)) {
+    # all following calls have to have col.names=FALSE regardless
+    for (bl in .make_block(n, block)) {
       p <- get_points(dsd, bl, info = info)
 
-    ## suppress warning for append and col.names
-    suppressWarnings(
-      write.table(
-        p,
-        file,
-        sep = sep,
-        append = TRUE,
-        col.names = header,
-        row.names = row.names,
-        ...
+      ## suppress warning for append and col.names
+      suppressWarnings(
+        write.table(
+          p,
+          file,
+          sep = sep,
+          append = TRUE,
+          col.names = header,
+          row.names = row.names,
+          ...
+        )
       )
-    )
-  }
+    }
 
-  if (close)
-    close(file)
+    if (close)
+      close(file)
 }

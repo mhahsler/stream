@@ -46,19 +46,16 @@
 #' plot(tasks$dsts[[2]])
 #' @export
 DST_Multi <- function(dsts) {
-    # creating the DSD object
-    l <- list(
-      description = paste0("  - ", sapply(dsts, description), collapse = "\n"),
-      dsts = dsts
-    )
-    class(l) <-
-      c("DST_Multi", "DST")
-
-    l
+  # creating the DSD object
+  structure(list(
+    description = paste0("  - ", sapply(dsts, description), collapse = "\n"),
+    dsts = dsts
+  ),
+    class =  c("DST_Multi", "DST"))
 }
 
 #' @export
-update.DST_Multi <- function(object, dsd, n = 1, ...) {
+update.DST_Multi <- function(object, dsd, n = 1L, ...) {
   ps <- DSD_Memory(get_points(dsd, n = n, info = TRUE, ...))
 
   for (dst in object$dsts) {

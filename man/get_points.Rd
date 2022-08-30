@@ -96,8 +96,7 @@ Other DSD:
 \code{\link{animate_data}()},
 \code{\link{close_stream}()},
 \code{\link{plot.DSD}()},
-\code{\link{reset_stream}()},
-\code{\link{write_stream}()}
+\code{\link{reset_stream}()}
 }
 \author{
 Michael Hahsler

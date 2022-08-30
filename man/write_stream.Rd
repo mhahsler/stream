@@ -29,7 +29,7 @@ write_stream(
 
 \item{info}{Save the class/cluster labels and other information columns with the data.}
 
-\item{append}{Append the data to an existing file.}
+\item{append}{Append the data to an existing file. If \code{FALSE}, then the file will be overwritten.}
 
 \item{sep}{The character that will separate attributes in a data point.}
 
@@ -60,31 +60,7 @@ file.remove("data.txt")
 }
 \seealso{
 \link{write.table}
-
-Other DSD: 
-\code{\link{DSD_BarsAndGaussians}()},
-\code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Cubes}()},
-\code{\link{DSD_Gaussians}()},
-\code{\link{DSD_MG}()},
-\code{\link{DSD_Memory}()},
-\code{\link{DSD_Mixture}()},
-\code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadDB}()},
-\code{\link{DSD_ReadStream}()},
-\code{\link{DSD_Target}()},
-\code{\link{DSD_UniformNoise}()},
-\code{\link{DSD_mlbenchData}()},
-\code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSD}()},
-\code{\link{DSF}()},
-\code{\link{animate_data}()},
-\code{\link{close_stream}()},
-\code{\link{get_points}()},
-\code{\link{plot.DSD}()},
-\code{\link{reset_stream}()}
 }
 \author{
 Michael Hahsler
 }
-\concept{DSD}

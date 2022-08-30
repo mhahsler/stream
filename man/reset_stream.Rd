@@ -71,8 +71,7 @@ Other DSD:
 \code{\link{animate_data}()},
 \code{\link{close_stream}()},
 \code{\link{get_points}()},
-\code{\link{plot.DSD}()},
-\code{\link{write_stream}()}
+\code{\link{plot.DSD}()}
 }
 \author{
 Michael Hahsler

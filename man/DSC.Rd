@@ -130,6 +130,8 @@ Other DST:
 \code{\link{DSClassifier}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
+\code{\link{DST_Runner}()},
+\code{\link{DST_WriteStream}()},
 \code{\link{DST}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},
