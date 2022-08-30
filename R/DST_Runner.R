@@ -60,7 +60,9 @@
 DST_Runner <- function(dsd, dst) {
   structure(
     list(
-      description = "DST pipline runner",
+      description = paste("DST pipline runner",
+        "\nDSD:", description(dsd),
+        "\nDST:", description(dst)),
       dsd = dsd,
       dst = dst
     ),
