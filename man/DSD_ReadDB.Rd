@@ -5,7 +5,12 @@
 \alias{close_stream.DSD_ReadDB}
 \title{Read a Data Stream from an open DB Query}
 \usage{
-DSD_ReadDB(result, k = NA, description = NULL)
+DSD_ReadDB(
+  result,
+  k = NA,
+  outofpoints = c("warn", "ignore", "stop"),
+  description = NULL
+)
 
 \method{close_stream}{DSD_ReadDB}(dsd, disconnect = TRUE, ...)
 }
@@ -13,6 +18,14 @@ DSD_ReadDB(result, k = NA, description = NULL)
 \item{result}{An open DBI result set.}
 
 \item{k}{Number of true clusters, if known.}
+
+\item{outofpoints}{Action taken if less than \code{n} data points are
+available. The default is to return the available data points with a warning. Other supported actions are:
+\itemize{
+\item \code{warn}: return the available points (maybe an empty data.frame) with a warning.
+\item \code{ignore}: silently return the available points.
+\item \code{stop}: stop with an error.
+}}
 
 \item{description}{a character string describing the data.}
 
@@ -59,7 +72,7 @@ if(require("RSQLite")) {
 library("RSQLite")
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
-points <- get_points(DSD_Gaussians(k=3, d=2), n = 110)
+points <- get_points(DSD_Gaussians(k = 3, d = 2), n = 110)
 head(points)
 
 dbWriteTable(con, "Gaussians", points)

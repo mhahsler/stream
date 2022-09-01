@@ -4,7 +4,14 @@
 \alias{DSD_Memory}
 \title{A Data Stream Interface for Data Stored in Memory}
 \usage{
-DSD_Memory(x, n, k = NA, loop = FALSE, description = NULL)
+DSD_Memory(
+  x,
+  n,
+  k = NA,
+  outofpoints = c("warn", "ignore", "stop"),
+  loop = FALSE,
+  description = NULL
+)
 }
 \arguments{
 \item{x}{A matrix-like object containing the data.  If \code{x} is a DSD
@@ -14,6 +21,14 @@ object then a data frame for \code{n} data points from this DSD is created.}
 matrix-like object then \code{n} is ignored.}
 
 \item{k}{Optional: The known number of clusters in the data}
+
+\item{outofpoints}{Action taken if less than \code{n} data points are
+available. The default is to return the available data points with a warning. Other supported actions are:
+\itemize{
+\item \code{warn}: return the available points (maybe an empty data.frame) with a warning.
+\item \code{ignore}: silently return the available points.
+\item \code{stop}: stop with an error.
+}}
 
 \item{loop}{Should the stream start over when it reaches the end?}
 

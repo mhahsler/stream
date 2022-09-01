@@ -69,6 +69,11 @@
 #'   column number. Additional information (e.g., class labels) need to have names starting with `.`.
 #' @param colClasses A vector of classes to be assumed for the columns passed
 #' on to [read.table()].
+#' @param outofpoints Action taken if less than `n` data points are
+#'   available. The default is to return the available data points with a warning. Other supported actions are:
+#'    - `warn`: return the available points (maybe an empty data.frame) with a warning.
+#'    - `ignore`: silently return the available points.
+#'    - `stop`: stop with an error.
 #' @param ... Further arguments are passed on to [read.table()].  This can
 #' for example be used for encoding, quotes, etc.
 #' @param dsd A object of class `DSD_ReadCSV`.
@@ -115,6 +120,7 @@ DSD_ReadStream <- function(file,
   skip = 0,
   col.names = NULL,
   colClasses = NA,
+  outofpoints = c("warn", "ignore", "stop"),
   ...) {
   header <- as.logical(header)
   skip <- as.integer(skip)
@@ -130,24 +136,23 @@ DSD_ReadStream <- function(file,
   if (!isOpen(file))
     open(file, "r")
 
-  # read first point to figure out structure!
   if (skip > 0L)
     readLines(file, n = skip)
+
+  # read first point to figure out structure!
+  line1 <- readLines(con = file, n = 1L + header)
   point <- read.table(
-    text = readLines(con = file, n = 1L + header),
+    text = line1,
     sep = sep,
     header = header,
     colClasses = colClasses,
     ...
   )
 
-  # reset stream if possible (otherwise first point is lost)
-  if (isSeekable(file)) {
-    seek(file, where = 0L, rw = "r")
-    if (skip + header > 0L)
-      readLines(file, n = skip + header)
-  } else
-    warning("Stream is not seekable. First data point is lost.")
+  ## Pushback point
+  if (header)
+    line1 <- line1[-1]
+  pushBack(line1, file)
 
   # select columns to take
   if (!is.null(take)) {
@@ -193,7 +198,8 @@ DSD_ReadStream <- function(file,
     colClasses = colClasses,
     col.names = colnames(point),
     read.table.args = list(...),
-    skip = skip
+    skip = skip,
+    outofpoints = match.arg(outofpoints)
   )
   class(l) <- c("DSD_ReadStream", "DSD_R", "DSD")
 
@@ -203,7 +209,7 @@ DSD_ReadStream <- function(file,
 #' @export
 get_points.DSD_ReadStream <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
+  outofpoints = NULL,
   info = TRUE,
   ...) {
   .nodots(...)
@@ -211,7 +217,8 @@ get_points.DSD_ReadStream <- function(x,
   .DEBUG <- TRUE
   #.DEBUG <- FALSE
 
-  outofpoints <- match.arg(outofpoints)
+  if (is.null(outofpoints))
+    outofpoints <- x$outofpoints
 
   # get all points
   if(is.infinite(n) || n < 1) {

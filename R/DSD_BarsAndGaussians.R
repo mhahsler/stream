@@ -59,8 +59,7 @@ DSD_BarsAndGaussians <- function(angle = NULL, noise = 0) {
 #' @export
 get_points.DSD_BarsAndGaussians <-
   function(x,
-    n = 1,
-    outofpoints = "stop",
+    n = 1L,
     info = TRUE,
     ...) {
     .nodots(...)

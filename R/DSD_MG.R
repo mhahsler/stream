@@ -251,7 +251,6 @@ dsd_MG_refClass$methods(
 #' @export
 get_points.DSD_MG <- function(x,
   n = 1,
-  outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)

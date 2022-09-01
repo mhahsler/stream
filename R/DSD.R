@@ -97,12 +97,6 @@ DSD_R <- abstract_class_generator("DSD")
 #' @param x A [DSD] object.
 #' @param n integer; request up to `n` points from the stream. `n = -1` returns
 #' all remaining points from limited streams.
-#' @param outofpoints Action taken if less than `n` data points are
-#'   available. The default is to stop with an error.  Other actions that
-#'   might be supported by different `DSD` are:
-#'    - `warn`: return the available points (maybe an empty data.frame) with a warning.
-#'    - `ignore`: silently return the available points.
-#'    - `block`: wait till enough data points are available.
 #' @param info return additional columns with information about the data point (e.g., a known cluster assignment).
 #' @param ... Additional parameters to pass to the `get_points()` implementations.
 #' @return Returns a [data.frame] with (up to) `n` rows and as many columns as `x` produces.
@@ -124,7 +118,6 @@ get_points <-
 get_points.DSD <-
   function(x,
     n = 1L,
-    outofpoints = c("stop", "warn", "ignore"),
     info = TRUE,
     ...)
     stop("No implementation for 'get_points()' found for class ", paste(class(x), collapse = ", "))

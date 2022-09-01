@@ -327,7 +327,6 @@ is.separated <-
 #' @export
 get_points.DSD_Gaussians <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
   .nodots(...)

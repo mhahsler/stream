@@ -66,7 +66,6 @@ DSD_Target <- function(center_sd = .05,
 #' @export
 get_points.DSD_Target <- function(x,
   n = 1L,
-  outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)

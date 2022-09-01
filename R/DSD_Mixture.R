@@ -66,12 +66,10 @@ DSD_Mixture <- function(..., prob = NULL) {
 #' @export
 get_points.DSD_Mixture <- function(x,
   n = 1,
-  outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)
 
-  # outofpoints is ignored
 
   stream_id <-
     sample(

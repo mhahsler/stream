@@ -47,6 +47,11 @@
 #'
 #' @param result An open DBI result set.
 #' @param k Number of true clusters, if known.
+#' @param outofpoints Action taken if less than `n` data points are
+#'   available. The default is to return the available data points with a warning. Other supported actions are:
+#'    - `warn`: return the available points (maybe an empty data.frame) with a warning.
+#'    - `ignore`: silently return the available points.
+#'    - `stop`: stop with an error.
 #' @param description a character string describing the data.
 #' @param dsd a stream.
 #' @return An object of class `DSD_ReadDB` (subclass of  [DSD_R], [DSD]).
@@ -59,7 +64,7 @@
 #' library("RSQLite")
 #' con <- dbConnect(RSQLite::SQLite(), ":memory:")
 #'
-#' points <- get_points(DSD_Gaussians(k=3, d=2), n = 110)
+#' points <- get_points(DSD_Gaussians(k = 3, d = 2), n = 110)
 #' head(points)
 #'
 #' dbWriteTable(con, "Gaussians", points)
@@ -83,6 +88,7 @@
 #' @export
 DSD_ReadDB <- function(result,
   k = NA,
+  outofpoints = c("warn", "ignore", "stop"),
   description = NULL) {
 
   # figure out d
@@ -97,6 +103,7 @@ DSD_ReadDB <- function(result,
     description = description,
     d = d,
     k = k,
+    outofpoints = match.arg(outofpoints),
     result = result
   )
   class(l) <- c("DSD_ReadDB", "DSD_R", "DSD")
@@ -118,12 +125,14 @@ close_stream.DSD_ReadDB <- function(dsd, disconnect = TRUE, ...) {
 #' @export
 get_points.DSD_ReadDB <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
+  outofpoints = NULL,
   info = TRUE,
   ...) {
   .nodots(...)
 
-  outofpoints <- match.arg(outofpoints)
+  if (is.null(outofpoints))
+    outofpoints <- x$outofpoints
+
   n <- as.integer(n)
 
   d <- DBI::dbFetch(x$result, n = n)

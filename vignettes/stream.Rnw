@@ -1312,20 +1312,17 @@ replayer
 
 Note that the stream is now at position 6.
 The stream only has 1854 points left and the following request for more
-than the available number of data points results in
-an error.
+than the available number of data points results in returning all remainin points and a warning.
 
-<<eval=FALSE>>=
-get_points(replayer, n = 2000)
-@
-<<echo=FALSE, results=verbatim>>=
-err <- try(get_points(replayer, n = 2000))
-cat(err)
+<<>>=
+points <- get_points(replayer, n = 2000)
+dim(points)
 @
 
-Note that with the parameter \code{outofpoints} this behavior can be changed to a warning or ignoring the problem.
-
-\code{DSD_Memory} and \code{DSD_ReadCSV} can be created to loop
+Note that this behavior can be changed to an error or ignoring the problem with the parameter \code{outofpoints} when constructing
+table-based data streams like \code{DSD_Memory}, \code{DSD_ReadStream},
+\code{DSD_ReadStream}, and \code{DSD_ReadDB}.
+\code{DSD_Memory} and \code{DSD_ReadCSV} can also be created to loop
 indefinitely, i.e., start over once the last data point is reached.
 This is achieved by passing \code{loop = TRUE} to the creator function.
 The current position in the stream for those

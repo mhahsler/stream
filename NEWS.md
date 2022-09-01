@@ -15,6 +15,8 @@
 * DSC implementations now have a formula argument to decide what variables should be used for 
   clustering.
 * DSD_ReadDB has now close_stream().
+* DSD_Memory, DSD_ReadDB and DSD_ReadStream have now a parameter called outofpoints to handle 
+  the situation that get_points requests more points than available.
 
 ## Changes
 * stream now implements a standard predict function (get_assignment() is now deprecated).

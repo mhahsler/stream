@@ -107,7 +107,6 @@ DSD_ScaleStream <- DSF_Scale
 #' @export
 get_points.DSF_Scale <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
   .nodots(...)

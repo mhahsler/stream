@@ -37,6 +37,11 @@
 #' @param n Number of points used if `x` is a DSD object. If `x` is a
 #' matrix-like object then `n` is ignored.
 #' @param k Optional: The known number of clusters in the data
+#' @param outofpoints Action taken if less than `n` data points are
+#'   available. The default is to return the available data points with a warning. Other supported actions are:
+#'    - `warn`: return the available points (maybe an empty data.frame) with a warning.
+#'    - `ignore`: silently return the available points.
+#'    - `stop`: stop with an error.
 #' @param loop Should the stream start over when it reaches the end?
 #' @param description character string with a description.
 #' @return Returns a `DSD_Memory` object (subclass of [DSD_R], [DSD]).
@@ -92,6 +97,7 @@
 DSD_Memory <- function(x,
   n,
   k = NA,
+  outofpoints = c("warn", "ignore", "stop"),
   loop = FALSE,
   description = NULL) {
   stream_desc <- NULL
@@ -124,6 +130,7 @@ DSD_Memory <- function(x,
       state = state,
       d = d,
       k = k,
+      outofpoints = match.arg(outofpoints),
       loop = loop
     ),
     class = c("DSD_Memory", "DSD_R", "DSD")
@@ -133,12 +140,13 @@ DSD_Memory <- function(x,
 #' @export
 get_points.DSD_Memory <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
+  outofpoints = NULL,
   ...) {
   .nodots(...)
 
-  outofpoints <- match.arg(outofpoints)
+  if (is.null(outofpoints))
+    outofpoints <- x$outofpoints
 
   # get all points
   if (is.infinite(n) || n < 1) {
@@ -164,6 +172,7 @@ get_points.DSD_Memory <- function(x,
         stop("The stream is at its end!")
       if (outofpoints == "warn")
         warning("The stream is at its end! No more points available!")
+      # ignore is implicit
       return(x$strm[0, , drop = FALSE])
     }
   }

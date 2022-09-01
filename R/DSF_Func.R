@@ -100,7 +100,6 @@ DSF_Func <-
 #' @export
 get_points.DSF_Func <- function(x,
   n = 1,
-  outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
   .nodots(...)
@@ -108,7 +107,6 @@ get_points.DSF_Func <- function(x,
   points <-
     get_points(x$dsd,
       n = n,
-      outofpoints = outofpoints,
       info = TRUE,
       ...)
 

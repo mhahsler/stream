@@ -59,15 +59,12 @@ DSD_UniformNoise <- function(d = 2, range = NULL) {
 #' @export
 get_points.DSD_UniformNoise <- function(x,
   n = 1L,
-  outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)
 
   if(n < 1L)
     stop("n needs to be >= 1.")
-
-  # outofpoints is ignored
 
   data <- t(replicate(n,
     runif(

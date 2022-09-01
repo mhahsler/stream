@@ -8,13 +8,7 @@
 \usage{
 get_points(x, ...)
 
-\method{get_points}{DSD}(
-  x,
-  n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
-  info = TRUE,
-  ...
-)
+\method{get_points}{DSD}(x, n = 1L, info = TRUE, ...)
 
 remove_info(points)
 }
@@ -25,15 +19,6 @@ remove_info(points)
 
 \item{n}{integer; request up to \code{n} points from the stream. \code{n = -1} returns
 all remaining points from limited streams.}
-
-\item{outofpoints}{Action taken if less than \code{n} data points are
-available. The default is to stop with an error.  Other actions that
-might be supported by different \code{DSD} are:
-\itemize{
-\item \code{warn}: return the available points (maybe an empty data.frame) with a warning.
-\item \code{ignore}: silently return the available points.
-\item \code{block}: wait till enough data points are available.
-}}
 
 \item{info}{return additional columns with information about the data point (e.g., a known cluster assignment).}
 

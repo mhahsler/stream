@@ -149,7 +149,6 @@ DSF_Convolve <-
 #' @export
 get_points.DSF_Convolve <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
   info = FALSE,
   ...) {
   .nodots(...)

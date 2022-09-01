@@ -115,7 +115,6 @@ DSD_Cubes <-
 #' @export
 get_points.DSD_Cubes <- function(x,
   n = 1L,
-  outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)

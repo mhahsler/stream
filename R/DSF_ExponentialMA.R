@@ -69,13 +69,12 @@ DSF_ExponentialMA <- function(dsd, dim = NULL, alpha = .5) {
 #' @export
 get_points.DSF_ExponentialMA <- function(x,
   n = 1L,
-  outofpoints = c("stop", "warn", "ignore"),
   info = TRUE,
   ...) {
   .nodots(...)
 
   d <-
-    get_points(x$dsd, n, outofpoints = outofpoints, info = info, ...)
+    get_points(x$dsd, n, info = info, ...)
 
   dims <- get_dims(x$dim, d)
 

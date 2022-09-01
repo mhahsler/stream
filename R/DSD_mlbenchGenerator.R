@@ -95,7 +95,6 @@ DSD_mlbenchGenerator <- function(method, ...) {
 #' @export
 get_points.DSD_mlbenchGenerator <- function(x,
   n = 1L,
-  outofpoints = "stop",
   info = TRUE,
   ...) {
   .nodots(...)

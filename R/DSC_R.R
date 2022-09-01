@@ -116,7 +116,7 @@ update.DSC_R <- function(object,
   if (verbose)
     total <- 0L
   for (bl in .make_block(n, block)) {
-    p <- get_points(dsd, bl, info = FALSE, outofpoints = "warn")
+    p <- get_points(dsd, bl, info = FALSE)
 
     if (!is.null(object$formula)) {
       if (is.null(object$RObj$colnames)) {

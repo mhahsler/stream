@@ -16,6 +16,7 @@ DSD_ReadStream(
   skip = 0,
   col.names = NULL,
   colClasses = NA,
+  outofpoints = c("warn", "ignore", "stop"),
   ...
 )
 
@@ -28,6 +29,7 @@ DSD_ReadCSV(
   skip = 0,
   col.names = NULL,
   colClasses = NA,
+  outofpoints = c("warn", "ignore", "stop"),
   ...
 )
 
@@ -55,6 +57,14 @@ column number. Additional information (e.g., class labels) need to have names st
 
 \item{colClasses}{A vector of classes to be assumed for the columns passed
 on to \code{\link[=read.table]{read.table()}}.}
+
+\item{outofpoints}{Action taken if less than \code{n} data points are
+available. The default is to return the available data points with a warning. Other supported actions are:
+\itemize{
+\item \code{warn}: return the available points (maybe an empty data.frame) with a warning.
+\item \code{ignore}: silently return the available points.
+\item \code{stop}: stop with an error.
+}}
 
 \item{...}{Further arguments are passed on to \code{\link[=read.table]{read.table()}}.  This can
 for example be used for encoding, quotes, etc.}

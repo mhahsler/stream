@@ -40,7 +40,6 @@ structure(list(description = "NULL stream") , class = c("DSD_NULL", "DSD"))
 #' @export
 get_points.DSD_NULL <- function(x,
   n = 1,
-  outofpoints = "stop",
   info = TRUE,
   ...)
   stop("DSD_NULL does not produce points.")

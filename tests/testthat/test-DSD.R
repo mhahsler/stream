@@ -25,18 +25,19 @@ expect_equal(ncol(points), ncol(df))
 
 ### ask for too many
 reset_stream(stream)
-expect_error(points <- get_points(stream, n = 101))
-expect_warning(points <-
-    get_points(stream, n = 101, outofpoints = "warn"))
+expect_warning(points <- get_points(stream, n = 101))
 expect_equal(nrow(points), 100)
 
 
 ### no more points available
-expect_error(points <- get_points(stream, n = 500))
 expect_warning(points <-
-    get_points(stream, n = 500, outofpoints = "warn"))
+    get_points(stream, n = 500,))
 expect_equal(nrow(points), 0)
 expect_equal(ncol(points), ncol(df))
+
+### test stop
+stream <- DSD_Memory(df, outofpoints = "stop")
+expect_error(points <- get_points(stream, n = 101))
 
 ##########################################################################
 context("DSD_ReadCSV")
@@ -64,17 +65,16 @@ expect_equal(ncol(points), ncol(df))
 
 ### check that a failed request does not take any points.
 reset_stream(stream)
-points <- NA
-expect_error(points <- get_points(stream, n = 101))
-expect_error(points <- get_points(stream, n = 1))
-
-reset_stream(stream)
-points <- NA
-expect_warning(points <-
-    get_points(stream, n = 101, outofpoints = "warn"))
+expect_warning(points <- get_points(stream, n = 101))
 expect_equivalent(nrow(points), 100L)
-expect_equal(ncol(points), ncol(df))
-expect_error(points <- get_points(stream, n = 1))
+
+expect_warning(points <- get_points(stream, n = 1))
+expect_equivalent(nrow(points), 0L)
+close_stream(stream)
+
+stream <- DSD_ReadCSV("test.stream", header = TRUE, outofpoints = "stop")
+expect_error(points <-
+    get_points(stream, n = 101))
 
 close_stream(stream)
 unlink("test.stream")
@@ -99,19 +99,17 @@ points <- get_points(stream, n = 10)
 expect_equivalent(nrow(points), 10L)
 expect_equal(ncol(points), ncol(df))
 
-points <- NA
-expect_error(points <- get_points(stream, n = 101))
+expect_warning(points <- get_points(stream, n = 101))
+expect_equivalent(nrow(points), 90L)
 
 dbClearResult(res)
 
 ###
 res <- dbSendQuery(con, "SELECT x, y, `.class` FROM gaussians")
-stream <- DSD_ReadDB(res, k = 3)
+stream <- DSD_ReadDB(res, k = 3, outofpoints = "stop")
 
-points <- NA
-expect_warning(points <-
-    get_points(stream, n = 101, outofpoints = "warn"))
-expect_equivalent(nrow(points), 100L)
+expect_error(points <-
+    get_points(stream, n = 101))
 dbClearResult(res)
 
 dbDisconnect(con)

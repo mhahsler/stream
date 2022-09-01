@@ -63,7 +63,10 @@ plot.DSD <- function(x,
   transform = NULL) {
   method <- match.arg(method)
 
-  d <- get_points(x, n, info = TRUE, outofpoints = "warn")
+  d <- get_points(x, n, info = TRUE)
+
+  if (nrow(d) < 1)
+    stop("The stream did not return any points. No plot produced.")
 
   assignment <- d[['.class']]
   ### stream has no assignments!
