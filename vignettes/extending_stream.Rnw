@@ -181,10 +181,13 @@ In addition an element called \code{"description"} should be provided. This elem
 is used by \code{print()}.
 
 The implemented \code{get_points()} needs to dispatch for the class
-and create as the output a data frame  containing the new data points as
-rows. Also, if the ground truth (true cluster assignment as an integer vector;
-noise is represented by \code{NA}) is available, then this can be attached to
-the data frame as an attribute called \code{"cluster"}.
+and create as the output a data frame containing the new data points as
+rows. If called with \code{info = TRUE}
+additional information columns starting with \code{.} should be returned.
+For example, a column called \code{.class} with
+the ground truth (true cluster assignment as an integer vector;
+noise is represented by \code{NA}) should be returned for data streams for clustering or classification. Other information columns include \code{.id} for point IDs and
+\code{.time} for time stamps.
 
 For a very simple example, we show here the implementation of
 \code{DSD_UniformNoise} available in the package's source code
@@ -205,10 +208,12 @@ DSD_UniformNoise <- function(d = 2, range = NULL) {
   }
 
 get_points.DSD_UniformNoise <- function(x, n = 1,
-  assignment = FALSE, ...) {
-    data <- as.data.frame(t(replicate(n,
-      runif(x$d, min = x$range[ , 1], max = x$range[ , 2]))))
-    if(assignment) attr(data, "assignment") <- rep(NA_integer_, n)
+  info = TRUE, ...) {
+    data <- data.frame(t(replicate(n, runif(
+      x$d, min = x$range[, 1], max = x$range[, 2]))))
+
+     if (info) data[[".class"]] <- NA
+
     data
 }
 @
@@ -218,8 +223,8 @@ of the data.
 For this data generator \code{k}, the number of true clusters, is not applicable.
 Since all data is random, there is also no need to store a state. The
 \code{get_points()} implementation creates $n$ random points and if
-assignments are needed attaches a vector with the appropriate
-number of \code{NA}s indicating that the data points are all noise.
+class assignment info is requested, then a \code{.class} column is
+added containing all \code{NA}s indicating that the data points are all noise.
 
 Now the new stream type can already be used.
 
@@ -242,19 +247,14 @@ The resulting plot is shown in Figure~\ref{figure:dsd_example}.
 DST refers to any data mining task that can be applied to data streams.  The design
 is flexible enough for future extensions including even currently unknown tasks.
 Figure~\ref{figure:dst} shows the class hierarchy for DST.
-It is important to note that the DST base class is shown merely
-for conceptual purpose and is not directly visible in the code. The reason is that
-the actual implementations of
-data stream operators (DSO),
-clustering (DSC), classification (DSClass) or frequent pattern mining (DSFPM) are typically quite different and the benefit of sharing methods
-would be minimal.
+
 
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{dst_uml}
 \caption{Overview of the data stream task (DST) class structure with subclasses
-for data stream operators (DSO), clustering (DSC),
-classification (DSClass) and frequent pattern mining (DSFPM).}
+for clustering (DSC),
+classification (DSClassify) and frequent pattern mining (DSFP) and outlier detection (DSOutlier).}
 \label{figure:dst}
 \end{figure}
 
@@ -318,20 +318,6 @@ input \code{points} data frame.
 For macro-clusters: \code{get_macroclusters(...)}, \code{get_macroweights}
 and \\ \code{microToMacro(micro, ...)} which does micro- to macro-cluster
 matching.
-\item
-For outlier detectors:
-  \begin{itemize}
-    \item \code{clean_outliers(dsc, ...)} instructing the outlier detector to clean
-    up the list of outliers
-    \item \code{get_outlier_positions(dsc, ...)} retrieving spatial positions of all
-    current outliers
-    \item \code{recheck_outlier(dsc, outlier_id, ...)} re-checking the validity of the
-    outlier by using its identifier, i.e., whether the outlier became an inlier in the meantime.
-    This function must return \code{TRUE} if the outlier is still valid, and \code{FALSE} if
-    the outlier has become an inlier in the meantime. Some outlier detectors allow outliers
-    to decay (or fade), which rises an open question about whether a decayed outlier remains an outlier.
-    \item \code{noutliers(dsc, ...)} returns the number of current outliers.
-  \end{itemize}
 \end{enumerate}
 
 Note that these are methods for reference classes and do not contain the
