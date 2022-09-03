@@ -1,4 +1,4 @@
-# stream 1.5-1.1 (xx/xx/22)
+# stream 2.0-0 (09/01/22)
 
 ## New Features
 * We now support %>% and defining pipelines with the new class DST_Runner.
