@@ -20,7 +20,7 @@
 
 ## Changes
 * stream now implements a standard predict function (get_assignment() is now deprecated).
-* class information and extra information is now stored as columns starting with '.' 
+* class information and extra information are now stored as columns starting with '.' 
   instead of as attributes. See get_points().
 * DSD_ScaleStream is now DSF_Scale and DSD_ScaleStream is deprecated.
 * DSO is now called DSAggregate.

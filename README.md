@@ -17,13 +17,17 @@ existing infrastructure provided by R. The package provides:
 -   **Stream Sources:** streaming from files, databases, in-memory data,
     URLs, pipes, socket connections and several data stream generators
     including dynamically streams with concept drift.
--   **Stream Processing** with filters (convolution), sampling,
-    windowing, scaling, exponential moving average, …
+-   **Stream Processing** with filters (convolution, scaling,
+    exponential moving average, …)
+-   **Stream Aggregation:** sampling, windowing.
 -   **Stream Clustering:** **BICO**, **BIRCH**, **D-Stream**,
     **DBSTREAM**, and **evoStream**.
 -   **Stream Outlier Detection** based on **D-Stream**, **DBSTREAM**.
 -   **Stream Classification** with **DecisionStumps**,
-    **HoeffdingTree**, **NaiveBayes** and **Ensembles** (MOA via RMOA).
+    **HoeffdingTree**, **NaiveBayes** and **Ensembles** (streamMOA via
+    RMOA).
+-   **Stream Regression** with **Perceptron**, **FIMTDD**, **ORTO**, …
+    (streamMOA via RMOA).
 -   **Stream Mining Evaluation** with prequential error estimation.
 
 Additional packages in the stream family are:
@@ -31,10 +35,10 @@ Additional packages in the stream family are:
 -   [streamMOA](https://github.com/mhahsler/streamMOA): Interface to
     clustering algorithms implemented in the
     [MOA](https://moa.cms.waikato.ac.nz/) framework. The package
-    includes implementations of **DenStream**, **ClusTree**,
-    **CluStream** and **MCOD**. The package also provides an interface
-    to [RMOA](https://github.com/jwijffels/RMOA) for MOA’s stream
-    classifiers.
+    interfaces clustering algorithms like of **DenStream**,
+    **ClusTree**, **CluStream** and **MCOD**. The package also provides
+    an interface to [RMOA](https://github.com/jwijffels/RMOA) for MOA’s
+    stream classifiers and stream regression models.
 -   [rEMM](https://github.com/mhahsler/rEMM): Provides implementations
     of **threshold nearest neighbor clustering** (tNN) and **Extensible
     Markov Model** (EMM) for modelling temporal relationships between
@@ -156,6 +160,32 @@ evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "n
     ## [1] "micro"
     ## attr(,"assign")
     ## [1] "micro"
+
+Preparing complete stream process pipelines that can be run using a
+single `update()` call.
+
+``` r
+pipeline <- DSD_Gaussians(k = 3, d = 2, noise = 0.1) %>%
+    DSF_Scale() %>%
+    DST_Runner(DSC_DStream(gridsize = 0.1))
+pipeline
+```
+
+    ## DST pipline runner
+    ## DSD: Gaussian Mixture (d = 2, k = 3)
+    ## + scaled
+    ## DST: D-Stream 
+    ## Class: DST_Runner, DST
+
+``` r
+update(pipeline, n = 500)
+pipeline$dst
+```
+
+    ## D-Stream 
+    ## Class: DSC_DStream, DSC_Micro, DSC_R, DSC 
+    ## Number of micro-clusters: 160 
+    ## Number of macro-clusters: 13
 
 ## Acknowledgements
 
