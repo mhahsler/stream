@@ -82,7 +82,7 @@ DSClassifier_Tree <- function(formula,
 #' @rdname DSClassifier_Tree
 #' @param dsd A [DSD] object with the data stream.
 #' @param n number of points from `dsd` to use for the update.
-#' @param rebuild logical; fore a rebuild after the update.
+#' @param rebuild logical; perform a rebuild after the update.
 #' @param ... further arguments are currently unused.
 #' @export
 update.DSClassifier_Tree <- function(object,
