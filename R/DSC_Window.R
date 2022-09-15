@@ -69,3 +69,18 @@ DSC_Window <- function(horizon = 100, lambda = 0)
     ),
     class = c("DSC_Window", "DSC_Micro", "DSC_R", "DSC")
   )
+
+### DSC interface to WindowDSAggregate
+WindowDSC <- setRefClass(
+  "WindowDSC",
+  fields = list(colnames = "ANY"),
+  contains = "WindowDSAggregate",
+  methods = list(
+    cluster = function(x, ...)
+      update(x, ...),
+    get_microclusters = function(...)
+      get_points(infor = FALSE, ...),
+    get_microweights = function(...)
+      get_weights(...)
+  )
+)

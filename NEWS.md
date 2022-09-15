@@ -1,3 +1,7 @@
+# stream 2.0-1 (xx/xx/22)
+
+* Added DSClassifier_Tree.
+
 # stream 2.0-0 (09/01/22)
 
 ## New Features

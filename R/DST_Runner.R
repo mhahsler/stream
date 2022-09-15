@@ -25,13 +25,18 @@
 #' A data stream pipe line
 #' consisting of a data stream, filters and a data mining task:
 #'
-#' ```DSD %>% DSF %>% DST```
+#' ```DSD %>% DSF %>% DST_Runner```
 #'
 #' Once the pipeline is defined, it can be run using [update()] where points are
-#' taken from the `DSD`, filtered through a sequence of `DSFs` and then used to update
-#' the task `DST`.
+#' taken from the [DSD] data stream source,
+#' filtered through a sequence of [DSF] filters and then used to update
+#' the [DST] task.
+#'
+#' [DST_Multi] can be used to update multiple models in the pipeline with the same stream.
 #'
 #' @family DST
+#' @name stream_pipeline
+#' @aliases stream_pipeline
 #'
 #' @param dsd A data stream (subclass of [DSD]) typically provided using a `%>%` (pipe).
 #' @param dst A data stream mining task (subclass of [DST]).

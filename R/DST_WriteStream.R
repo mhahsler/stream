@@ -24,7 +24,8 @@
 #'
 #' @param file A file name or a R connection to be written to.
 #' @param append Append the data to an existing file.
-#' @param ... further arguments are passed on to [write_stream()].
+#' @param ... further arguments are passed on to [write_stream()]. Note that `close` is
+#'   always `FALSE` and cannot be specified.
 #' @author Michael Hahsler
 #' @examples
 #' set.seed(1500)
@@ -61,7 +62,8 @@ update.DST_WriteStream <- function(object, dsd, n = 1L, ...) {
       dsd = dsd,
       file = object$file,
       n = n,
-      append = object$append
+      append = object$append,
+      close = FALSE
     ),
     object$write_stream_params
   ))

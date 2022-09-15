@@ -18,11 +18,11 @@
 
 #' Abstract Class for Data Stream Classifiers
 #'
-#' Abstract class for data stream classifiers. Currently, \pkg{stream} does not
-#' implement classification algorithms. Implementations can be found in
+#' Abstract class for data stream classifiers. More implementations can be found in
 #' package \pkg{streamMOA}.
 #'
 #' @family DST
+#' @family DSClassifier
 #'
 #' @param ... Further arguments.
 #' @author Michael Hahsler

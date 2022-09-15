@@ -25,7 +25,7 @@ DSAggregate(...)
 \item{x, object}{a concrete implementation of \code{DSAggregate}.}
 }
 \description{
-Abstract base classes for all DSAggregate (Data Stream Aggregator) classes to aggregate streams.
+Abstract base classes for all DSAggregate (Data Stream Aggregator) classes to aggregate streams. DSAggreagate is a \link{DST} task.
 }
 \details{
 The \code{DSAggreagate} class cannot be instantiated, but it serve as a base
@@ -44,11 +44,11 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
-\code{\link{DST_Runner}()},
 \code{\link{DST_WriteStream}()},
 \code{\link{DST}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},
+\code{\link{stream_pipeline}},
 \code{\link{update}()}
 
 Other DSAggregate: 

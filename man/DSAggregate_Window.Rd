@@ -27,6 +27,7 @@ model (Zhu and Shasha, 2002).  The weight for points in the window follows
 \examples{
 set.seed(1500)
 
+## Example 1: Basic use
 stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 
 window <- DSAggregate_Window(horizon = 10)
@@ -39,6 +40,21 @@ get_points(window)
 # update window
 update(window, stream, 100)
 get_points(window)
+
+## Example 2: Implement a classifier over a sliding window
+window <- DSAggregate_Window(horizon = 100)
+
+update(window, stream, 1000)
+
+# train the classifier on the window
+library(rpart)
+tree <- rpart(`.class` ~ ., data = get_points(window))
+tree
+
+# predict the class for new points from the stream
+new_points <- get_points(stream, n = 100, info = FALSE)
+pred <- predict(tree, new_points)
+plot(new_points, col = pred)
 }
 \references{
 Zhu, Y. and Shasha, D. (2002). StatStream: Statistical

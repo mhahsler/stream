@@ -39,6 +39,7 @@
 #' @examples
 #' set.seed(1500)
 #'
+#' ## Example 1: Basic use
 #' stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 #'
 #' window <- DSAggregate_Window(horizon = 10)
@@ -51,6 +52,21 @@
 #' # update window
 #' update(window, stream, 100)
 #' get_points(window)
+#'
+#' ## Example 2: Implement a classifier over a sliding window
+#' window <- DSAggregate_Window(horizon = 100)
+#'
+#' update(window, stream, 1000)
+#'
+#' # train the classifier on the window
+#' library(rpart)
+#' tree <- rpart(`.class` ~ ., data = get_points(window))
+#' tree
+#'
+#' # predict the class for new points from the stream
+#' new_points <- get_points(stream, n = 100, info = FALSE)
+#' pred <- predict(tree, new_points)
+#' plot(new_points, col = pred)
 #' @export
 DSAggregate_Window <- function(horizon = 100, lambda = 0)
   structure(
@@ -166,17 +182,3 @@ WindowDSAggregate <- setRefClass(
   )
 )
 
-### DSC interface to WindowDSAggregate
-WindowDSC <- setRefClass(
-  "WindowDSC",
-  fields = list(colnames = "ANY"),
-  contains = "WindowDSAggregate",
-  methods = list(
-    cluster = function(x, ...)
-      update(x, ...),
-    get_microclusters = function(...)
-      get_points(infor = FALSE, ...),
-    get_microweights = function(...)
-      get_weights(...)
-  )
-)

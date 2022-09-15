@@ -19,7 +19,7 @@
 
 #' Data Stream Aggregator Base Classes
 #'
-#' Abstract base classes for all DSAggregate (Data Stream Aggregator) classes to aggregate streams.
+#' Abstract base classes for all DSAggregate (Data Stream Aggregator) classes to aggregate streams. DSAggreagate is a [DST] task.
 #'
 #' The `DSAggreagate` class cannot be instantiated, but it serve as a base
 #' class from which other DSAggregate subclasses inherit.

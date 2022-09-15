@@ -11,7 +11,8 @@ DST_WriteStream(file, append = TRUE, ...)
 
 \item{append}{Append the data to an existing file.}
 
-\item{...}{further arguments are passed on to \code{\link[=write_stream]{write_stream()}}.}
+\item{...}{further arguments are passed on to \code{\link[=write_stream]{write_stream()}}. Note that \code{close} is
+always \code{FALSE} and cannot be specified.}
 }
 \description{
 Writes points from a data stream DSD object to a file or a connection.
@@ -37,10 +38,10 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
-\code{\link{DST_Runner}()},
 \code{\link{DST}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},
+\code{\link{stream_pipeline}},
 \code{\link{update}()}
 }
 \author{
