@@ -48,11 +48,13 @@ Other DSC_Macro:
 \code{\link{DSC_EA}()},
 \code{\link{DSC_Hierarchical}()},
 \code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Reachability}()}
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_SlidingWindow}()}
 
 Other DSC: 
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_R}()},
+\code{\link{DSC_SlidingWindow}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC}()},

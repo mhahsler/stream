@@ -79,7 +79,8 @@ Other DSC_Macro:
 \code{\link{DSC_EA}()},
 \code{\link{DSC_Hierarchical}()},
 \code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()}
+\code{\link{DSC_Macro}()},
+\code{\link{DSC_SlidingWindow}()}
 }
 \author{
 Michael Hahsler

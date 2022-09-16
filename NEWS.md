@@ -3,6 +3,7 @@
 * Added DST_SlidingWindow to call functions on a sliding window.
 * Added DSClassifier_SlidingWindow.
 * Added DSRegressor_SlidingWindow.
+* Added DSC_SlidingWindow.
 
 # stream 2.0-0 (09/01/22)
 

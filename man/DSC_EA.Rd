@@ -88,7 +88,8 @@ Other DSC_Macro:
 \code{\link{DSC_Hierarchical}()},
 \code{\link{DSC_Kmeans}()},
 \code{\link{DSC_Macro}()},
-\code{\link{DSC_Reachability}()}
+\code{\link{DSC_Reachability}()},
+\code{\link{DSC_SlidingWindow}()}
 }
 \author{
 Matthias Carnein \email{Matthias.Carnein@uni-muenster.de}

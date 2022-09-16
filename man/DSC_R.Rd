@@ -59,6 +59,7 @@ See \link{DSC} for details and parameters.
 Other DSC: 
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
+\code{\link{DSC_SlidingWindow}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
 \code{\link{DSC}()},

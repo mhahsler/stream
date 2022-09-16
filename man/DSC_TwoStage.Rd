@@ -67,6 +67,7 @@ Other DSC:
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_R}()},
+\code{\link{DSC_SlidingWindow}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC}()},
 \code{\link{animate_cluster}()},
