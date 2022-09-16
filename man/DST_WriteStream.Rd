@@ -38,6 +38,8 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
+\code{\link{DSRegressor}()},
+\code{\link{DST_SlidingWindow}()},
 \code{\link{DST}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},

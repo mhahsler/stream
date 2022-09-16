@@ -122,14 +122,13 @@ WindowDSAggregate <- setRefClass(
 
     update = function(x, ...) {
       ### fist time we get data
-      if (is.null(data))
-        data <<-
-          data.frame(matrix(
-            NA,
-            nrow = horizon,
-            ncol = ncol(x),
-            dimnames = list(NULL, colnames(x))
-          ))
+      if (is.null(data)) {
+        d <- x[1, , drop = FALSE]
+        rownames(d) <- NULL
+        d[1,] <- NA
+        d <- do.call("rbind", replicate(horizon, d, simplify = FALSE))
+        data <<- d
+      }
 
       if (ncol(x) != ncol(data))
         stop("Dimensionality mismatch between window and data!")
@@ -140,7 +139,7 @@ WindowDSAggregate <- setRefClass(
       while (i < n) {
         ## process the next m points: all or to fill the current horizon
         m <- min(horizon - pos + 1L, n - i)
-        data[pos:(pos + m - 1L), ] <<-
+        data[pos:(pos + m - 1L),] <<-
           x[(i + 1L):(i + m), , drop = FALSE]
 
         i <- i + m
@@ -181,4 +180,3 @@ WindowDSAggregate <- setRefClass(
     }
   )
 )
-

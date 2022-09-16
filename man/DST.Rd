@@ -23,11 +23,12 @@ Conceptual base class for all data stream mining tasks.
 \details{
 Base class for data stream mining tasks. Types of \code{DST} are
 \itemize{
-\item \link{DSC} for data stream clustering.
 \item \link{DSAggregate} to aggregate data streams (e.g., with a sliding window).
-\item \link{DSFP} frequent pattern mining for data stream clustering.
+\item \link{DSC} for data stream clustering.
 \item \link{DSClassifier} classification for data streams.
+\item \link{DSRegressor} regression for data streams.
 \item \link{DSOutlier} outlier detection for data streams.
+\item \link{DSFP} frequent pattern mining for data streams.
 }
 
 The common interface for all \link{DST} classes consists of
@@ -53,6 +54,8 @@ Other DST:
 \code{\link{DSC}()},
 \code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
+\code{\link{DSRegressor}()},
+\code{\link{DST_SlidingWindow}()},
 \code{\link{DST_WriteStream}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},

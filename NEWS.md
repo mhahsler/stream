@@ -1,6 +1,8 @@
 # stream 2.0-1 (xx/xx/22)
 
-* Added DSClassifier_Tree.
+* Added DST_SlidingWindow to call functions on a sliding window.
+* Added DSClassifier_SlidingWindow.
+* Added DSRegressor_SlidingWindow.
 
 # stream 2.0-0 (09/01/22)
 

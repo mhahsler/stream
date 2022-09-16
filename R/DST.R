@@ -21,11 +21,12 @@
 #' Conceptual base class for all data stream mining tasks.
 #'
 #' Base class for data stream mining tasks. Types of `DST` are
-#'   - [DSC] for data stream clustering.
 #'   - [DSAggregate] to aggregate data streams (e.g., with a sliding window).
-#'   - [DSFP] frequent pattern mining for data stream clustering.
+#'   - [DSC] for data stream clustering.
 #'   - [DSClassifier] classification for data streams.
+#'   - [DSRegressor] regression for data streams.
 #'   - [DSOutlier] outlier detection for data streams.
+#'   - [DSFP] frequent pattern mining for data streams.
 #'
 #' The common interface for all [DST] classes consists of
 #'
