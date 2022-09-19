@@ -19,16 +19,22 @@
 
 #' DST_SlidingWindow -- Call R Functions on a Sliding Window
 #'
-#' Keeps a sliding window of the data stream an calls an R function at regular
+#' Keeps a sliding window of the data stream an calls a function at regular
 #' intervals with the contents of the window.
 #'
-#' The function needs to have the from
+#'
+#' Keeps a sliding window of the data stream an calls a function at regular
+#' intervals with the contents of the window.
+#' The function needs to have the form
 #'
 #' `f <- function(data, ...) {...}`
 #'
 #' where `data` is the data.frame
 #' with the points in the sliding window (See `get_points()` in [DSAggregate_Window]). The
-#' function will be executed at regular intervals and the result can be retrieved.
+#' function will be executed at regular intervals after `update()` was called with fixed
+#' number of points. `update(..., rebuild = TRUE)` can be used to force recomputing the function.
+#' This can be used with `n = 0` to recompute it even without adding more points.
+#' The last valid function result can be retrieved/
 #'
 #' Many modelling functions provide a formula interface which lets them be directly used
 #' inside a `DST_SlidingWindow` (see Examples section).
@@ -91,8 +97,9 @@
 #' update(cl, stream, 50)
 #' cl$model$result
 #'
-#' # 50 more points and the function will be recomputed
-#' update(cl, stream, 50)
+#' # update with 40 more points and force the function to be recomputed even though it would take
+#' #  50 points to automatically rebuild.
+#' update(cl, stream, 40, rebuild = TRUE)
 #' cl$model$result
 #'
 #' # rpart supports predict, so we can use it directly with the DST_SlidingWindow
