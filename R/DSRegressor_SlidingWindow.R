@@ -64,7 +64,7 @@
 #' abline(0, 1, col = "red")
 #'
 #' # get the tree model
-#' cl$model$result
+#' get_result(cl)
 #' @export
 DSRegressor_SlidingWindow <- function(formula,
   model = stats::lm,
@@ -81,7 +81,7 @@ DSRegressor_SlidingWindow <- function(formula,
 
   dst$description <- paste0("Data Stream Regressor on a Sliding Window",
     "\nFunction: ", deparse1(substitute(model)))
-  class(dst) <- c("DSRegressor_SlidingWindow", class(dst))
+  class(dst) <- c("DSRegressor_SlidingWindow", "DSRegressor", class(dst))
   dst
 
   }

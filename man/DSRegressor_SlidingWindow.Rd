@@ -57,7 +57,7 @@ plot(pr, newdata$Sepal.Length)
 abline(0, 1, col = "red")
 
 # get the tree model
-cl$model$result
+get_result(cl)
 }
 \seealso{
 Other DSRegressor: 

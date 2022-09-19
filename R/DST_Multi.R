@@ -40,7 +40,7 @@
 #'
 #' ## inspect the results of the tasks
 #' tasks$dsts[[1]]
-#' get_points(tasks$dsts[[1]])
+#' get_result(tasks$dsts[[1]])
 #'
 #' tasks$dsts[[2]]
 #' plot(tasks$dsts[[2]])

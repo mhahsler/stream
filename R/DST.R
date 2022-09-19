@@ -30,8 +30,10 @@
 #'
 #' The common interface for all [DST] classes consists of
 #'
-#'   - [update()]
-#'   - [predict()]
+#'   - [update()] update the DST with data points.
+#'   - description() a string describing the DST.
+#'   - get_result() returns the DST's current result (often as a data.frame or a model).
+#'   - [predict()] use the learned DST model to make predictions.
 #'
 #' and the methods in the Methods Section below.
 #'
@@ -74,7 +76,6 @@ description <- function(x, ...)
     stop("This object does not have a description field!")
 }
 
-#' @describeIn DST Get a description of the task as a character string.
 #' @export
 description.DST <- function(x, ...)
   .desc(x)
@@ -86,3 +87,13 @@ description.DSC <- function(x, ...)
 #' @export
 description.DSD <- function(x, ...)
   .desc(x)
+
+#' @rdname DST
+#' @export
+get_result <- function(x, ...)
+  UseMethod("get_result")
+
+#' @export
+get_result.DST <- function(x, ...)
+  stop(paste("get_result() not implemented for class", paste(class(x), collapse = ", ")))
+

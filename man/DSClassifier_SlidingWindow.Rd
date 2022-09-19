@@ -56,7 +56,7 @@ pr
 table(pr, newdata$Species)
 
 # get the tree model
-cl$model$result
+get_result(cl)
 }
 \seealso{
 Other DSClassifier: 

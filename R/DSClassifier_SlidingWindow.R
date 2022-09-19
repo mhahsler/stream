@@ -63,7 +63,7 @@
 #' table(pr, newdata$Species)
 #'
 #' # get the tree model
-#' cl$model$result
+#' get_result(cl)
 #' @importFrom rpart rpart
 #' @export
 DSClassifier_SlidingWindow <- function(formula,
@@ -81,7 +81,7 @@ DSClassifier_SlidingWindow <- function(formula,
 
   dst$description <- paste0("Data Stream Classifier on a Sliding Window",
     "\nFunction: ", deparse1(substitute(model)))
-  class(dst) <- c("DSClassifier_SlidingWindow", class(dst))
+  class(dst) <- c("DSClassifier_SlidingWindow", "DSClassifier", class(dst))
   dst
 
   }

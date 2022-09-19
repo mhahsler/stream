@@ -64,3 +64,7 @@ print.DSAggregate <- function(x, ...) {
   cat(.line_break(paste(x$description)))
   cat("Class:", paste(class(x), collapse=", "), "\n")
 }
+
+#' @export
+get_result.DSAggregate <- function(x, ...)
+  cbind(weight = get_weights(x), get_points(x))

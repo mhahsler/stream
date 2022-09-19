@@ -104,11 +104,14 @@ dstream
 # get micro-cluster centers
 get_centers(dstream)
 
+# get the micro-cluster weights
+get_weights(dstream)
+
 # get the number of clusters
 nclusters(dstream)
 
-# get the micro-cluster weights
-get_weights(dstream)
+# get the whole model as a data.frame
+get_result(dstream)
 
 # D-Stream also has macro-clusters
 get_weights(dstream, type = "macro")

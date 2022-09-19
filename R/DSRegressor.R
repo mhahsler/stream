@@ -30,3 +30,5 @@
 #' DSClassifier()
 #' @export
 DSRegressor <- abstract_class_generator("DSRegressor")
+
+

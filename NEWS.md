@@ -4,6 +4,7 @@
 * Added DSClassifier_SlidingWindow.
 * Added DSRegressor_SlidingWindow.
 * Added DSC_SlidingWindow.
+* Added get_results().
 
 # stream 2.0-0 (09/01/22)
 

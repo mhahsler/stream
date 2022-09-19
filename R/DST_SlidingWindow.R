@@ -70,16 +70,16 @@
 #'
 #' # update window with 49 points. The function is not yet called
 #' update(s, stream, 49)
-#' s$model$result
-
+#' get_result(s)
+#'
 #' # updating with the 50th point will trigger a function call (see rebuild parameter)
 #' # note that the window is only 1/2 full and we have 50 NAs
 #' update(s, stream, 1)
-#' s$model$result
+#' get_result(s)
 #'
 #' # 50 more points and the function will be recomputed
 #' update(s, stream, 50)
-#' s$model$result
+#' get_result(s)
 #'
 #'
 #' ## Example 2: Use classifier on the sliding window
@@ -95,12 +95,12 @@
 #'
 #' # update window with 50 points so the model is built
 #' update(cl, stream, 50)
-#' cl$model$result
+#' get_result(cl)
 #'
 #' # update with 40 more points and force the function to be recomputed even though it would take
 #' #  50 points to automatically rebuild.
 #' update(cl, stream, 40, rebuild = TRUE)
-#' cl$model$result
+#' get_result(cl)
 #'
 #' # rpart supports predict, so we can use it directly with the DST_SlidingWindow
 #' new_points <- get_points(stream, n = 5)
@@ -116,7 +116,7 @@
 #' reg
 #'
 #' update(reg, stream, 100)
-#' reg$model$result
+#' get_result(reg)
 #'
 #' # lm supports predict, so we can use it directly with the DST_SlidingWindow
 #' new_points <- get_points(stream, n = 5)
@@ -175,3 +175,7 @@ predict.DST_SlidingWindow <-
     predict(object$model$result,
       newdata = newdata, ...)
   }
+
+#' @export
+get_result.DST_SlidingWindow <- function(x, ...)
+  x$model$result
