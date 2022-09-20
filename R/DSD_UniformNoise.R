@@ -63,8 +63,22 @@ get_points.DSD_UniformNoise <- function(x,
   ...) {
   .nodots(...)
 
-  if(n < 1L)
-    stop("n needs to be >= 1.")
+  if (n < 0L)
+    stop("n < 0 not allowed for infinite data stream objects.")
+
+  if (n == 0) {
+    data <-
+      as.data.frame(matrix(
+        nrow = 0,
+        ncol = x$d,
+        dimnames = list(row = NULL, col = paste0("X", 1:x$d))
+      ))
+
+    if (info)
+      data[[".class"]] <- integer(0)
+
+    return(data)
+  }
 
   data <- t(replicate(n,
     runif(
@@ -76,6 +90,7 @@ get_points.DSD_UniformNoise <- function(x,
     data <- t(data)
 
   data <- data.frame(data)
+  colnames(data) <- paste0("X", 1:ncol(data))
 
   if (info)
     data[[".class"]] <- NA

@@ -99,8 +99,12 @@ get_points.DSD_mlbenchGenerator <- function(x,
   ...) {
   .nodots(...)
 
-  if(n < 1L)
-    stop("n needs to be >= 1.")
+  if (n < 0L)
+    stop("n < 0 not allowed for infinite data stream objects.")
+
+  if (n == 0) {
+    return(get_points(x, n = 1L, info = info)[0,,drop = FALSE])
+  }
 
   d <-
     do.call(paste("mlbench.", x$method, sep = ""), c(list(n), x$variables))
@@ -115,7 +119,7 @@ get_points.DSD_mlbenchGenerator <- function(x,
   }
 
   dat <- as.data.frame(d$x)
-  colnames(dat) <- paste0("V", 1:ncol(dat))
+  colnames(dat) <- paste0("X", 1:ncol(dat))
 
   if (info)
     dat[['.class']] <- as.integer(d$classes)

@@ -54,6 +54,23 @@ if (interactive()) {
   str(up)
 }
 
+context("DSC update -1 and data.frame")
+
+dsc <- DSC_DBSTREAM(r = .1)
+reset_stream(stream)
+
+# n is ignored with a warning for update with a data.frame
+expect_warning(ass <- update(dsc, get_points(stream, n = 10), n = 5, assign = TRUE, verb = TRUE))
+expect_equal(nrow(ass), 10L)
+
+# update with all points
+ass <- update(dsc, get_points(stream, n = 10), assign = TRUE, verb = TRUE)
+expect_equal(nrow(ass), 10L)
+
+# test -1
+reset_stream(stream)
+ass <- update(dsc, stream, n = -1)
+
 context("DSC evaluate")
 
 ms <-

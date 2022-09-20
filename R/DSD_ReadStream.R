@@ -220,6 +220,14 @@ get_points.DSD_ReadStream <- function(x,
   if (is.null(outofpoints))
     outofpoints <- x$outofpoints
 
+  if(n == 0L) {
+    dat <- as.data.frame(lapply(x$colClasses, do.call, list(0)))
+    if (!info)
+      dat <- remove_info(dat)
+
+    return(dat)
+  }
+
   # get all points
   if(is.infinite(n) || n < 1) {
     outofpoints <- "ignore"

@@ -95,7 +95,7 @@ DSD_ReadDB <- function(result,
   d <- length(grep('^\\.', DBI::dbColumnInfo(result)[["name"]], invert = TRUE))
 
   if (is.null(description))
-    description <- paste0('DB Query Stream (d = ', d , 'k = ', k, ')')
+    description <- paste0('DB Query Stream (d = ', d , ', k = ', k, ')')
 
 
   # creating the DSD object

@@ -1,10 +1,14 @@
 # stream 2.0-1 (xx/xx/22)
 
+## New Features
 * Added DST_SlidingWindow to call functions on a sliding window.
 * Added DSClassifier_SlidingWindow.
 * Added DSRegressor_SlidingWindow.
 * Added DSC_SlidingWindow.
 * Added get_results().
+
+## Changes
+* Added tests for DSD. get_points with n = 0 and n = -1 produce not consistent results.
 
 # stream 2.0-0 (09/01/22)
 

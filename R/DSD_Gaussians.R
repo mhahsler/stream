@@ -156,11 +156,9 @@ DSD_Gaussians <-
       if (separation_type == "Euclidean") {
         sigma <- replicate(
           k,
-          clusterGeneration::genPositiveDefMat(
-            "unifcorrmat",
+          clusterGeneration::genPositiveDefMat("unifcorrmat",
             rangeVar = variance_limit,
-            dim = d
-          )$Sigma,
+            dim = d)$Sigma,
           simplify = FALSE
         )
       }
@@ -331,8 +329,22 @@ get_points.DSD_Gaussians <- function(x,
   ...) {
   .nodots(...)
 
-  if(n < 1L)
-    stop("n needs to be >= 1.")
+  if (n < 0L)
+    stop("n < 0 not allowed for infinite data stream objects.")
+
+  if (n == 0) {
+    data <-
+      as.data.frame(matrix(
+        nrow = 0,
+        ncol = x$d,
+        dimnames = list(row = NULL, col = paste0("X", 1:x$d))
+      ))
+
+    if (info)
+      data[[".class"]] <- integer(0)
+
+    return(data)
+  }
 
   noise_pos <- NULL
 
@@ -347,7 +359,7 @@ get_points.DSD_Gaussians <- function(x,
   data <- t(sapply(
     cluster_id,
     FUN = function(i)
-      MASS::mvrnorm(1, mu = x$mu[i, ], Sigma = x$sigma[[i]])
+      MASS::mvrnorm(1, mu = x$mu[i,], Sigma = x$sigma[[i]])
   ))
 
   ## fix for d==1
@@ -384,7 +396,7 @@ get_points.DSD_Gaussians <- function(x,
         pnt
       }))
 
-      data[noise_pos, ] <- nps
+      data[noise_pos,] <- nps
       cluster_id[noise_pos] <- NA
     }
   }
@@ -397,4 +409,3 @@ get_points.DSD_Gaussians <- function(x,
 
   data
 }
-

@@ -255,6 +255,26 @@ get_points.DSD_MG <- function(x,
   ...) {
   .nodots(...)
 
+  if (n < 0L)
+    stop("n < 0 not allowed for infinite data stream objects.")
+
+  if (n == 0) {
+    d <- x$RObj$dimension
+
+    data <-
+      as.data.frame(matrix(
+        nrow = 0,
+        ncol = d,
+        dimnames = list(row = NULL, col = paste0("X", 1:d))
+      ))
+
+    if (info)
+      data[[".class"]] <- integer(0)
+
+    return(data)
+  }
+
+
   x$RObj$get_points(n, info = info)
 }
 

@@ -72,12 +72,13 @@ expect_warning(points <- get_points(stream, n = 1))
 expect_equivalent(nrow(points), 0L)
 close_stream(stream)
 
-stream <- DSD_ReadCSV("test.stream", header = TRUE, outofpoints = "stop")
+stream <-
+  DSD_ReadCSV("test.stream", header = TRUE, outofpoints = "stop")
 expect_error(points <-
     get_points(stream, n = 101))
 
 close_stream(stream)
-unlink("test.stream")
+#unlink("test.stream")
 
 ########################################################################
 context("DSD_ReadDB")
@@ -112,4 +113,75 @@ expect_error(points <-
     get_points(stream, n = 101))
 dbClearResult(res)
 
+#dbDisconnect(con)
+
+## Check general interface
+dsd_inf <- list(
+  DSD_BarsAndGaussians(),
+  DSD_Benchmark(),
+  DSD_Cubes(),
+  DSD_Gaussians(),
+  DSD_mlbenchGenerator("cassini"),
+  DSD_Target(),
+  DSD_UniformNoise()
+)
+
+dsd_finite <- list(DSD_Memory(df),
+  #DSD_Mixture,
+  DSD_mlbenchData("PimaIndiansDiabetes"),
+  DSD_ReadDB(dbSendQuery(con, "SELECT x, y, `.class` FROM gaussians"), k = 3),
+  DSD_ReadStream("test.stream", header = TRUE)
+  #DSD_ReadCSV,
+)
+
+  for (dsd in c(dsd_inf, dsd_finite)) {
+    r <- get_points(dsd, n = 0)
+    expect_equal(nrow(r), 0L)
+    expect_true(inherits(r, "data.frame"))
+    expect_false(!length(grep("^\\.", colnames(r))))
+    r <- get_points(dsd, n = 0, info = FALSE)
+    expect_equal(nrow(r), 0L)
+    expect_true(inherits(r, "data.frame"))
+    expect_true(!length(grep("^\\.", colnames(r))))
+
+    expect_equal(colnames(get_points(dsd, n = 0)), colnames(get_points(dsd, n = 1)))
+
+    r <- get_points(dsd, n = 1)
+    expect_equal(nrow(r), 1L)
+    expect_true(inherits(r, "data.frame"))
+    expect_false(!length(grep("^\\.", colnames(r))))
+    r <- get_points(dsd, n = 1, info = FALSE)
+    expect_equal(nrow(r), 1L)
+    expect_true(inherits(r, "data.frame"))
+    expect_true(!length(grep("^\\.", colnames(r))))
+
+    r <- get_points(dsd, n = 10)
+    expect_equal(nrow(r), 10L)
+    expect_true(inherits(r, "data.frame"))
+    expect_false(!length(grep("^\\.", colnames(r))))
+    r <- get_points(dsd, n = 10, info = FALSE)
+    expect_equal(nrow(r), 10L)
+    expect_true(inherits(r, "data.frame"))
+    expect_true(!length(grep("^\\.", colnames(r))))
+  }
+
+  for (dsd in dsd_inf) {
+    # error
+    expect_error(get_points(dsd, n = -1), "not allowed")
+    expect_error(get_points(dsd, n = -1, info = FALSE), "not allowed")
+  }
+
+
+  for (dsd in dsd_finite) {
+    if (!inherits(dsd, "DSD_ReadDB"))
+      reset_stream(dsd)
+    print(nrow(get_points(dsd, n = -1)))
+    expect_equal(get_points(dsd, n = -1), get_points(dsd, n = 0))
+  }
+
+### cleanup
+
+unlink("test.stream")
+
+dbClearResult(res)
 dbDisconnect(con)

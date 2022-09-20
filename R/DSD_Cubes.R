@@ -119,8 +119,22 @@ get_points.DSD_Cubes <- function(x,
   ...) {
   .nodots(...)
 
-  if(n < 1L)
-    stop("n needs to be >= 1.")
+  if (n < 0L)
+    stop("n < 0 not allowed for infinite data stream objects.")
+
+  if (n == 0) {
+    data <-
+      as.data.frame(matrix(
+        nrow = 0,
+        ncol = x$d,
+        dimnames = list(row = NULL, col = paste0("X", 1:x$d))
+      ))
+
+    if (info)
+      data[[".class"]] <- integer(0)
+
+    return(data)
+  }
 
   clusterOrder <- sample(
     x = seq(x$k),
@@ -154,6 +168,7 @@ get_points.DSD_Cubes <- function(x,
   }
 
   data <- as.data.frame(data)
+  colnames(data) <- c("X1", "X2")
 
   if (info)
     data[['.class']] <- clusterOrder

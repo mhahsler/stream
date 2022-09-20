@@ -148,8 +148,15 @@ get_points.DSD_Memory <- function(x,
   if (is.null(outofpoints))
     outofpoints <- x$outofpoints
 
+  if (n == 0) {
+    dat <- x$strm[0L, , drop = FALSE]
+    if (!info)
+      dat <- remove_info(dat)
+    return(dat)
+  }
+
   # get all points
-  if (is.infinite(n) || n < 1) {
+  if (is.infinite(n) || n == -1) {
     if (x$loop) {
       warning("Cannot return all points with loop on. Disabling loop for this call.")
     }
@@ -158,8 +165,12 @@ get_points.DSD_Memory <- function(x,
       return(x$strm[0, , drop = FALSE])
 
     pos <- x$state$counter
-    x$state$counter <- 1L
-    return(x$strm[seq(pos, nrow(x$str)), , drop = FALSE])
+    x$state$counter <- nrow(x$str) + 1L
+
+    dat <- x$strm[seq(pos, nrow(x$str)), , drop = FALSE]
+    if (!info)
+      dat <- remove_info(dat)
+    return(dat)
   }
 
   n <- as.integer(n)
@@ -185,7 +196,9 @@ get_points.DSD_Memory <- function(x,
         n_left,
         " are available.")
     if (outofpoints == "warn")
-      warning("Not enough data points left in stream, returning the remaining ", n_left, " points!")
+      warning("Not enough data points left in stream, returning the remaining ",
+        n_left,
+        " points!")
     n <- n_left
   }
 

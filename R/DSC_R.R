@@ -71,9 +71,12 @@ update.DSC_R <- function(object,
   ...) {
   ### object contains an RObj which is a reference object with a cluster method
 
-  ### for data frame/matrix we do it all at once
+  ### for data frame/matrix we do it all at once. n is ignored!
   if (is.data.frame(dsd) || is.matrix(dsd)) {
     dsd <- remove_info(dsd)
+
+    if (n  != 1 || n == -1)
+      warning("n is ignored if dsd is a data.frame. Update uses all points.")
 
     if (!is.null(object$formula)) {
       if (is.null(object$RObj$colnames)) {
@@ -88,7 +91,7 @@ update.DSC_R <- function(object,
     }
 
     if (verbose)
-      cat("Clustering all data at once for matrix/data.frame.")
+      cat("Clustering all", nrow(dsd),"data points at once for matrix/data.frame.")
 
     if (is.null(object$RObj$colnames))
       object$RObj$colnames <- colnames(dsd)
@@ -133,18 +136,18 @@ update.DSC_R <- function(object,
         object$RObj$colnames <- colnames(p)
 
 
-    res <- object$RObj$cluster(p, ...)
+      res <- object$RObj$cluster(p, ...)
 
-    if (verbose) {
-      total <- total + bl
-      cat("Processed",
-        total,
-        "/",
-        n,
-        "points -",
-        nclusters(object),
-        "clusters\n")
-    }
+      if (verbose) {
+        total <- total + nrow(p)
+        cat("Processed",
+          total,
+          "/",
+          n,
+          "points -",
+          nclusters(object),
+          "clusters\n")
+      }
   }
 
   if (!assignment)

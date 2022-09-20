@@ -70,8 +70,22 @@ get_points.DSD_Target <- function(x,
   ...) {
   .nodots(...)
 
-  if(n < 1L)
-    stop("n needs to be >= 1.")
+  if (n < 0L)
+    stop("n < 0 not allowed for infinite data stream objects.")
+
+  if (n == 0) {
+    data <-
+      as.data.frame(matrix(
+        nrow = 0,
+        ncol = 2,
+        dimnames = list(row = NULL, col = c("x", "y"))
+      ))
+
+    if (info)
+      data[[".class"]] <- integer(0)
+
+    return(data)
+  }
 
   ### choose point type
   type <- sample(

@@ -64,8 +64,29 @@ get_points.DSD_BarsAndGaussians <-
     ...) {
     .nodots(...)
 
+
+    if (n < 0L)
+      stop("n < 0 not allowed for infinite data stream objects.")
+
+    if (n == 0) {
+      data <-
+        as.data.frame(matrix(
+          nrow = 0,
+          ncol = 2,
+          dimnames = list(row = NULL, col = c("x", "y"))
+        ))
+
+      if (info)
+        data[[".class"]] <- integer(0)
+
+      return(data)
+    }
+
     ### Gaussians at (3,2.5) and (3,-2.5)
     ### bars at (-3,2.8) and (-3,-2.8)
+
+
+
 
     a <- sample(
       c(NA_integer_, 1:4),
