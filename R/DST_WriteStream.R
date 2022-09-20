@@ -20,10 +20,14 @@
 #'
 #' Writes points from a data stream DSD object to a file or a connection.
 #'
+#' **Note:** `header = TRUE` is not supported for files. The header would be
+#'  added for every call for update.
+#'
 #' @family DST
 #'
 #' @param file A file name or a R connection to be written to.
 #' @param append Append the data to an existing file.
+#' @param dsd a `DSD_WriteStream` object with an open connection.
 #' @param ... further arguments are passed on to [write_stream()]. Note that `close` is
 #'   always `FALSE` and cannot be specified.
 #' @author Michael Hahsler
@@ -31,7 +35,7 @@
 #' set.seed(1500)
 #'
 #' stream <- DSD_Gaussians(k = 3, d = 2)
-#' writer <- DST_WriteStream(file = "data.txt", info = TRUE, header = TRUE)
+#' writer <- DST_WriteStream(file = "data.txt", info = TRUE)
 #'
 #' update(writer, stream, n = 2)
 #' readLines("data.txt")
@@ -40,16 +44,30 @@
 #' readLines("data.txt")
 #'
 #' # clean up
+#' close_stream(writer)
+#'
 #' file.remove("data.txt")
 #' @export
-DST_WriteStream <- function(file, append = TRUE, ...) {
-  write_stream_params <- list(...)
+DST_WriteStream <- function(file, append = FALSE, ...) {
+  if (is(file, "character")) {
+    if (file.exists(file)) {
+      if (!append)
+        stop("file exists already. Please remove the file first.")
+      file <- file(file, open = "a")
+    } else {
+      file <- file(file, open = "w")
+    }
+  }
+
   structure(
     list(
-      description = "Write stream to File/Connection",
+      description = paste(
+        "Write stream to File/Connection\n",
+        "Connection: ",
+        summary(file)$description
+      ),
       file = file,
-      append = append,
-      write_stream_params = write_stream_params
+      write_stream_params = list(...)
     ),
     class = c("DST_WriteStream", "DST")
   )
@@ -62,9 +80,14 @@ update.DST_WriteStream <- function(object, dsd, n = 1L, ...) {
       dsd = dsd,
       file = object$file,
       n = n,
-      append = object$append,
+      append = TRUE,
       close = FALSE
     ),
     object$write_stream_params
   ))
 }
+
+#' @rdname DST_WriteStream
+#' @export
+close_stream.DST_WriteStream <- function(dsd, ...)
+  close(dsd$file, ...)

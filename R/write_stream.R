@@ -69,46 +69,48 @@ write_stream.DSD <- function(dsd,
   header = FALSE,
   row.names = FALSE,
   close = TRUE,
+  flush = TRUE,
   ...) {
   # make sure files are not overwritten, and no header after first write
-  if (is(file, "character") && file.exists(file)) {
-    if (!append)
-      stop("file exists already. Please remove the file first.")
-    header <- FALSE
+  if (is(file, "character")) {
+    if (file.exists(file)) {
+      if (!append)
+        stop("file exists already. Please remove the file first.")
+      file <- file(file, open = "a")
+      header <- FALSE
+    } else {
+      file <- file(file, open = "w")
+    }
   }
-    # string w/ file name (clears the file)
-    if (is(file, "character")) {
-      if (append)
-        file <- file(file, open = "a")
-      else
-        file <- file(file, open = "w")
-    }
-    # error
-    else if (!is(file, "connection"))
-      stop("Please pass a valid connection!")
 
-    # needs opening
-    else if (!isOpen(file))
-      open(file)
+  if (!is(file, "connection"))
+    stop("Please pass a valid connection!")
 
-    # all following calls have to have col.names=FALSE regardless
-    for (bl in .make_block(n, block)) {
-      p <- get_points(dsd, bl, info = info)
+  # needs opening
+  if (!isOpen(file))
+    open(file)
 
-      ## suppress warning for append and col.names
-      suppressWarnings(
-        write.table(
-          p,
-          file,
-          sep = sep,
-          append = TRUE,
-          col.names = header,
-          row.names = row.names,
-          ...
-        )
+  # all following calls have to have col.names=FALSE regardless
+  for (bl in .make_block(n, block)) {
+    p <- get_points(dsd, bl, info = info)
+
+    ## suppress warning for append and col.names
+    suppressWarnings(
+      write.table(
+        p,
+        file,
+        sep = sep,
+        append = TRUE,
+        col.names = header,
+        row.names = row.names,
+        ...
       )
-    }
+    )
+  }
 
-    if (close)
-      close(file)
+  if (flush)
+    flush(file)
+
+  if (close)
+    close(file)
 }

@@ -9,6 +9,8 @@
 
 ## Changes
 * Added tests for DSD. get_points with n = 0 and n = -1 produce not consistent results.
+* DST_WriteStream and write_stream now flush after the write.
+* DST_WriteStream gained close_stream().
 
 # stream 2.0-0 (09/01/22)
 

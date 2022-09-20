@@ -71,6 +71,13 @@ update.DSC_R <- function(object,
   ...) {
   ### object contains an RObj which is a reference object with a cluster method
 
+  if (n == 0L) {
+    if (assignment)
+      return(data.frame( `.class` = integer(0)))
+    else
+      return()
+  }
+
   ### for data frame/matrix we do it all at once. n is ignored!
   if (is.data.frame(dsd) || is.matrix(dsd)) {
     dsd <- remove_info(dsd)
@@ -91,7 +98,9 @@ update.DSC_R <- function(object,
     }
 
     if (verbose)
-      cat("Clustering all", nrow(dsd),"data points at once for matrix/data.frame.")
+      cat("Clustering all",
+        nrow(dsd),
+        "data points at once for matrix/data.frame.")
 
     if (is.null(object$RObj$colnames))
       object$RObj$colnames <- colnames(dsd)
@@ -106,13 +115,6 @@ update.DSC_R <- function(object,
 
   n <- as.integer(n)
   block <- as.integer(block)
-
-  if (n == 0L) {
-    if (assignment)
-      return(integer(0))
-    else
-      return(invisible(NULL))
-  }
 
   ### TODO: Check data
   take <- NULL
@@ -151,7 +153,7 @@ update.DSC_R <- function(object,
   }
 
   if (!assignment)
-    return(invisible(NULL))
+    return()
 
   # figure out assignment if the algorithm does not provide it
   if (is.null(res)) {

@@ -171,7 +171,6 @@ dsd_finite <- list(DSD_Memory(df),
     expect_error(get_points(dsd, n = -1, info = FALSE), "not allowed")
   }
 
-
   for (dsd in dsd_finite) {
     if (!inherits(dsd, "DSD_ReadDB"))
       reset_stream(dsd)

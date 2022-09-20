@@ -44,6 +44,9 @@ up <- lapply(
     expect_true(is.null(u) ||
         (is.data.frame(u) &&
             nrow(u) == 1000L && !is.null(u[[".class"]])))
+    if (interactive())
+      str(u)
+
     u
   }
 )
@@ -67,9 +70,17 @@ expect_equal(nrow(ass), 10L)
 ass <- update(dsc, get_points(stream, n = 10), assign = TRUE, verb = TRUE)
 expect_equal(nrow(ass), 10L)
 
+# test 0
+reset_stream(stream)
+ass <- update(dsc, stream, n = 0, assign = TRUE, verb = TRUE)
+expect_equal(nrow(ass), 0L)
+
 # test -1
 reset_stream(stream)
-ass <- update(dsc, stream, n = -1)
+ass <- update(dsc, stream, n = -1, assign = TRUE, verb = TRUE)
+expect_equal(nrow(ass), 1500L)
+
+
 
 context("DSC evaluate")
 
