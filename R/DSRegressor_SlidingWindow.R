@@ -64,7 +64,7 @@
 #' abline(0, 1, col = "red")
 #'
 #' # get the tree model
-#' get_result(cl)
+#' get_model(cl)
 #' @export
 DSRegressor_SlidingWindow <- function(formula,
   model = stats::lm,

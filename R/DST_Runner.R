@@ -76,8 +76,8 @@ DST_Runner <- function(dsd, dst) {
 }
 
 #' @export
-update.DST_Runner <- function(object, dsd = NULL, n = 1L, ...) {
+update.DST_Runner <- function(object, dsd = NULL, n = 1L, return = "model", ...) {
   if (!is.null(dsd))
     stop("A dsd cannot be specified for update on DST_Runner!")
-  update(object$dst, object$dsd, n = n, ...)
+  update(object$dst, object$dsd, n = n, return = return, ...)
 }

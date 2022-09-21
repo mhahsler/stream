@@ -38,7 +38,7 @@ update(window, stream, 2)
 get_points(window)
 
 # get weights and window as a single data.frame
-get_result(window)
+get_model(window)
 
 # update window
 update(window, stream, 100)

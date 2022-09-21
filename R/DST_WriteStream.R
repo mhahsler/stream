@@ -74,7 +74,9 @@ DST_WriteStream <- function(file, append = FALSE, ...) {
 }
 
 #' @export
-update.DST_WriteStream <- function(object, dsd, n = 1L, ...) {
+update.DST_WriteStream <- function(object, dsd, return = "nothing", n = 1L, ...) {
+  return <- match.arg(return)
+
   do.call(write_stream , c(
     list(
       dsd = dsd,

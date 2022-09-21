@@ -63,7 +63,7 @@
 #' table(pr, newdata$Species)
 #'
 #' # get the tree model
-#' get_result(cl)
+#' get_model(cl)
 #' @importFrom rpart rpart
 #' @export
 DSClassifier_SlidingWindow <- function(formula,

@@ -49,6 +49,8 @@
 #' @param rebuild interval (number of points) for calling the R function. Set rebuild to
 #'   `Inf` to prevent automatic calling. Calling the function can be initiated manually when
 #'   calling `update()`.
+#' @param return a character string indicating what update returns. The default is `"nothing"`
+#' and `"model"` returns the aggregated data.
 #' @param ... further arguments to `DST_SlidingWindow` will be passed on when calling `f()`.
 #'
 #' @return An object of class `DST_SlidingWindow`.
@@ -70,16 +72,16 @@
 #'
 #' # update window with 49 points. The function is not yet called
 #' update(s, stream, 49)
-#' get_result(s)
+#' get_model(s)
 #'
 #' # updating with the 50th point will trigger a function call (see rebuild parameter)
 #' # note that the window is only 1/2 full and we have 50 NAs
 #' update(s, stream, 1)
-#' get_result(s)
+#' get_model(s)
 #'
 #' # 50 more points and the function will be recomputed
 #' update(s, stream, 50)
-#' get_result(s)
+#' get_model(s)
 #'
 #'
 #' ## Example 2: Use classifier on the sliding window
@@ -95,12 +97,12 @@
 #'
 #' # update window with 50 points so the model is built
 #' update(cl, stream, 50)
-#' get_result(cl)
+#' get_model(cl)
 #'
 #' # update with 40 more points and force the function to be recomputed even though it would take
 #' #  50 points to automatically rebuild.
 #' update(cl, stream, 40, rebuild = TRUE)
-#' get_result(cl)
+#' get_model(cl)
 #'
 #' # rpart supports predict, so we can use it directly with the DST_SlidingWindow
 #' new_points <- get_points(stream, n = 5)
@@ -116,7 +118,7 @@
 #' reg
 #'
 #' update(reg, stream, 100)
-#' get_result(reg)
+#' get_model(reg)
 #'
 #' # lm supports predict, so we can use it directly with the DST_SlidingWindow
 #' new_points <- get_points(stream, n = 5)
@@ -146,9 +148,12 @@ DST_SlidingWindow <- function(f,
 update.DST_SlidingWindow <- function(object,
   dsd,
   n = 1L,
+  return = c("nothing", "model"),
   rebuild = FALSE,
   ...) {
-  update(object$window, dsd, n = n)
+  return <- match.arg(return)
+
+  update(object$window, dsd, n = n, ...)
 
   object$model$count <- object$model$count + n
   if (rebuild || object$model$count >= object$rebuild ||
@@ -159,6 +164,12 @@ update.DST_SlidingWindow <- function(object,
 
     object$model$count <- 0
   }
+
+  return(switch(
+    return,
+    nothing = invisible(NULL),
+    model = get_model(object)
+  ))
 }
 
 #' @rdname DST_SlidingWindow
@@ -177,5 +188,5 @@ predict.DST_SlidingWindow <-
   }
 
 #' @export
-get_result.DST_SlidingWindow <- function(x, ...)
+get_model.DST_SlidingWindow <- function(x, ...)
   x$model$result

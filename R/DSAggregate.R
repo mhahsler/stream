@@ -34,6 +34,8 @@
 #' @param x,object a concrete implementation of `DSAggregate`.
 #' @param dsd a data stream object.
 #' @param n the number of data points used for the update.
+#' @param return a character string indicating what update returns. The default is `"nothing"`
+#' and `"model"` returns the aggregated data.
 #' @param ... Further arguments.
 #' @author Michael Hahsler
 #' @examples
@@ -43,7 +45,7 @@ DSAggregate <- abstract_class_generator("DSAggregate")
 
 #' @rdname DSAggregate
 #' @export
-update.DSAggregate <- function(object, dsd, n = 1, ...) {
+update.DSAggregate <- function(object, dsd, n = 1, return = c("nothing", "model"), ...) {
   stop("No implementation for update found!")
 }
 
@@ -66,5 +68,5 @@ print.DSAggregate <- function(x, ...) {
 }
 
 #' @export
-get_result.DSAggregate <- function(x, ...)
+get_model.DSAggregate <- function(x, ...)
   cbind(weight = get_weights(x), get_points(x))

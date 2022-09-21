@@ -47,7 +47,8 @@
 #' @param n number of data points taken from the stream.
 #' @param verbose logical; show progress?
 #' @param block process blocks of data to improve speed.
-#' @param assignment logical; return a vector with cluster assignments?
+#' @param return a character string indicating what update returns. The default is `"nothing"`. Other
+#' possible values depend on the `DST`. Examples are `"model"` and `"assignment"`.
 #' @param ... further arguments.
 #' @author Michael Hahsler
 #' @export
@@ -58,8 +59,6 @@ DSC_R <- abstract_class_generator("DSC")
 ### needs to make sure that points are processed sequentially
 ### (make especially BIRCH faster by passing block data points at once)
 
-
-
 #' @rdname DSC_R
 #' @export
 update.DSC_R <- function(object,
@@ -67,16 +66,19 @@ update.DSC_R <- function(object,
   n = 1L,
   verbose = FALSE,
   block = 10000L,
-  assignment = FALSE,
+  return = c("nothing", "assignment", "model"),
   ...) {
   ### object contains an RObj which is a reference object with a cluster method
 
-  if (n == 0L) {
-    if (assignment)
-      return(data.frame( `.class` = integer(0)))
-    else
-      return()
-  }
+  return <- match.arg(return)
+
+  if (n == 0L)
+    return(switch(
+      return,
+      nothing = invisible(NULL),
+      assignment = data.frame(`.class` = integer(0)),
+      model = get_model(object)
+    ))
 
   ### for data frame/matrix we do it all at once. n is ignored!
   if (is.data.frame(dsd) || is.matrix(dsd)) {
@@ -107,10 +109,12 @@ update.DSC_R <- function(object,
 
     res <- object$RObj$cluster(dsd, ...)
 
-    if (assignment)
-      return(res)
-    else
-      return(invisible(NULL))
+    return(switch(
+      return,
+      nothing = invisible(NULL),
+      assignment = res,
+      model = get_model(object)
+    ))
   }
 
   n <- as.integer(n)
@@ -152,15 +156,16 @@ update.DSC_R <- function(object,
       }
   }
 
-  if (!assignment)
-    return()
-
-  # figure out assignment if the algorithm does not provide it
-  if (is.null(res)) {
-    res <- predict(object, p)
-  }
-
-  res
+  return(switch(
+    return,
+    nothing = invisible(NULL),
+    assignment = {
+      if (is.null(res))
+        res <- predict(object, p)
+      res
+    },
+    model = get_model(object)
+  ))
 }
 
 ### accessors

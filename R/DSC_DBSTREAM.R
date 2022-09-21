@@ -125,7 +125,7 @@
 #' # later retrieve the cluster assignments for each point)
 #' data("iris")
 #' dbstream <- DSC_DBSTREAM(r = 1)
-#' cl <- update(dbstream, iris[,-5], assignments = TRUE)
+#' cl <- update(dbstream, iris[,-5], return = "assignment")
 #' dbstream
 #'
 #' head(cl)

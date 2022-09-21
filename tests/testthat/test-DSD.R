@@ -51,6 +51,7 @@ write_stream(
 )
 
 stream <- DSD_ReadCSV("test.stream", header = TRUE)
+stream
 
 reset_stream(stream)
 points <- get_points(stream, n = 10, info = TRUE)
@@ -70,7 +71,9 @@ expect_equivalent(nrow(points), 100L)
 
 expect_warning(points <- get_points(stream, n = 1))
 expect_equivalent(nrow(points), 0L)
+
 close_stream(stream)
+stream
 
 stream <-
   DSD_ReadCSV("test.stream", header = TRUE, outofpoints = "stop")
@@ -103,7 +106,7 @@ expect_equal(ncol(points), ncol(df))
 expect_warning(points <- get_points(stream, n = 101))
 expect_equivalent(nrow(points), 90L)
 
-dbClearResult(res)
+close_stream(stream, disconnect = FALSE)
 
 ###
 res <- dbSendQuery(con, "SELECT x, y, `.class` FROM gaussians")
@@ -111,9 +114,8 @@ stream <- DSD_ReadDB(res, k = 3, outofpoints = "stop")
 
 expect_error(points <-
     get_points(stream, n = 101))
-dbClearResult(res)
 
-#dbDisconnect(con)
+close_stream(stream, disconnect = FALSE)
 
 ## Check general interface
 dsd_inf <- list(
@@ -126,10 +128,12 @@ dsd_inf <- list(
   DSD_UniformNoise()
 )
 
+res <- dbSendQuery(con, "SELECT x, y, `.class` FROM gaussians")
+
 dsd_finite <- list(DSD_Memory(df),
   #DSD_Mixture,
   DSD_mlbenchData("PimaIndiansDiabetes"),
-  DSD_ReadDB(dbSendQuery(con, "SELECT x, y, `.class` FROM gaussians"), k = 3),
+  DSD_ReadDB(res, k = 3),
   DSD_ReadStream("test.stream", header = TRUE)
   #DSD_ReadCSV,
 )
@@ -174,13 +178,11 @@ dsd_finite <- list(DSD_Memory(df),
   for (dsd in dsd_finite) {
     if (!inherits(dsd, "DSD_ReadDB"))
       reset_stream(dsd)
-    print(nrow(get_points(dsd, n = -1)))
+    get_points(dsd, n = -1)
     expect_equal(get_points(dsd, n = -1), get_points(dsd, n = 0))
   }
 
 ### cleanup
+suppressWarnings(lapply(dsd_finite, close_stream))
 
 unlink("test.stream")
-
-dbClearResult(res)
-dbDisconnect(con)

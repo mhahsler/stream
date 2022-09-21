@@ -175,14 +175,13 @@ DSD_ReadStream <- function(file,
   d <- ncol(remove_info(point))
 
   # fix data types for reading: integer -> numeric, factor -> character
-  colClasses <- sapply(point[1L,], class)
+  colClasses <- sapply(point[1L, ], class)
   colClasses[colClasses == "integer"] <- "numeric"
   colClasses[colClasses == "factor"] <- "character"
 
   l <- list(
     description = paste0(
-      'File Data Stream: ',
-      basename(summary(file)$description),
+      'Data Stream from Connection',
       ' (d = ',
       d,
       ', k = ',
@@ -207,6 +206,30 @@ DSD_ReadStream <- function(file,
 }
 
 #' @export
+print.DSD_ReadStream <- function(x, ...) {
+  NextMethod()
+
+  des <- try(summary(x$file), silent = TRUE)
+  if (inherits(des, "try-error")) {
+    con <- "Invalid"
+    state <- "closed"
+  }
+  else
+  {
+    con <- basename(des$description)
+    state <- des$opened
+  }
+
+  cat(
+    'connection:',
+    con,
+    paste0('(',
+      state,
+      ')', '\n')
+  )
+}
+
+#' @export
 get_points.DSD_ReadStream <- function(x,
   n = 1L,
   outofpoints = NULL,
@@ -220,7 +243,7 @@ get_points.DSD_ReadStream <- function(x,
   if (is.null(outofpoints))
     outofpoints <- x$outofpoints
 
-  if(n == 0L) {
+  if (n == 0L) {
     dat <- as.data.frame(lapply(x$colClasses, do.call, list(0)))
     if (!info)
       dat <- remove_info(dat)
@@ -229,7 +252,7 @@ get_points.DSD_ReadStream <- function(x,
   }
 
   # get all points
-  if(is.infinite(n) || n < 1) {
+  if (is.infinite(n) || n < 1) {
     outofpoints <- "ignore"
     n <- -1L
   }
@@ -241,11 +264,11 @@ get_points.DSD_ReadStream <- function(x,
 
   if (length(lines) < n) {
     if (outofpoints == "stop")
-        stop(
-          "Not enough data points left in the stream! Connection not seekable, ",
-          length(lines),
-          " data points are lost."
-        )
+      stop(
+        "Not enough data points left in the stream! Connection not seekable, ",
+        length(lines),
+        " data points are lost."
+      )
 
     if (outofpoints == "warn")
       warning(
@@ -268,9 +291,11 @@ get_points.DSD_ReadStream <- function(x,
         ),
         x$read.table.args
       )),
-      silent = !.DEBUG))
+      silent = !.DEBUG)
+    )
 
-  if (is.null(d)) {
+  if (is.null(d))
+  {
     ## no data: create conforming data.frame with 0 rows
     d <- data.frame()
     for (i in seq_along(x$colClasses))
@@ -318,10 +343,14 @@ DSD_ReadCSV <- DSD_ReadStream
 
 #' @rdname DSD_ReadStream
 #' @export
-close_stream.DSD_ReadStream <- function(dsd, ...)
-  close(dsd$file, ...)
+close_stream.DSD_ReadStream <- function(dsd, ...) {
+  tryCatch(
+    close(dsd$file, ...),
+    error = function(e)
+      warning(e)
+  )
+}
 
 #' @rdname DSD_ReadStream
 #' @export
-close_stream.DSD_ReadCSV <- function(dsd, ...)
-  close(dsd$file, ...)
+close_stream.DSD_ReadCSV <- close_stream.DSD_ReadStream

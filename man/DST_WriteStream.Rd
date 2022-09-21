@@ -16,6 +16,8 @@ DST_WriteStream(file, append = FALSE, ...)
 
 \item{...}{further arguments are passed on to \code{\link[=write_stream]{write_stream()}}. Note that \code{close} is
 always \code{FALSE} and cannot be specified.}
+
+\item{dsd}{a \code{DSD_WriteStream} object with an open connection.}
 }
 \description{
 Writes points from a data stream DSD object to a file or a connection.

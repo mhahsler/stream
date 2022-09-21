@@ -32,7 +32,7 @@
 #'
 #'   - [update()] update the DST with data points.
 #'   - description() a string describing the DST.
-#'   - get_result() returns the DST's current result (often as a data.frame or a model).
+#'   - get_model() returns the DST's current model (often as a data.frame or a R model object).
 #'   - [predict()] use the learned DST model to make predictions.
 #'
 #' and the methods in the Methods Section below.
@@ -90,10 +90,10 @@ description.DSD <- function(x, ...)
 
 #' @rdname DST
 #' @export
-get_result <- function(x, ...)
-  UseMethod("get_result")
+get_model <- function(x, ...)
+  UseMethod("get_model")
 
 #' @export
-get_result.DST <- function(x, ...)
-  stop(paste("get_result() not implemented for class", paste(class(x), collapse = ", ")))
+get_model.DST <- function(x, ...)
+  stop(paste("get_model() not implemented for class", paste(class(x), collapse = ", ")))
 

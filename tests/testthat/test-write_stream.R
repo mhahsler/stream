@@ -18,6 +18,7 @@ p <- get_points(dsd, n = -1)
 
 expect_equal(dim(p), dim(read.csv(text = l)))
 
+close_stream(dsd)
 file.remove("data.txt")
 
 # n = -1

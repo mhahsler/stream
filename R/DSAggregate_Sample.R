@@ -83,9 +83,13 @@ update.DSAggregate_Sample <-
   function(object,
     dsd,
     n = 1,
+    return = c("nothing", "model"),
     verbose = FALSE,
     ...) {
     ### some matrix to be processed in one go
+
+    return <- match.arg(return)
+
     if (!is(dsd, "DSD")) {
       n <- nrow(dsd)
       dsd <- DSD_Memory(dsd)
@@ -93,6 +97,12 @@ update.DSAggregate_Sample <-
 
     ### FIXME: we do not need to get all points if n is very large!
     object$RObj$update(get_points(dsd, n = n, info = TRUE), verbose = verbose, ...)
+
+    return(switch(
+      return,
+      nothing = invisible(NULL),
+      model = get_model(object)
+    ))
   }
 
 #' @export

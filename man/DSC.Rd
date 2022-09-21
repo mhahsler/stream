@@ -111,7 +111,7 @@ get_weights(dstream)
 nclusters(dstream)
 
 # get the whole model as a data.frame
-get_result(dstream)
+get_model(dstream)
 
 # D-Stream also has macro-clusters
 get_weights(dstream, type = "macro")

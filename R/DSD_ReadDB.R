@@ -83,6 +83,7 @@
 #'
 #' plot(stream, n = 100)
 #'
+#' ### close stream clears the query and disconnects the database
 #' close_stream(stream)
 #' }
 #' @export
@@ -109,6 +110,13 @@ DSD_ReadDB <- function(result,
   class(l) <- c("DSD_ReadDB", "DSD_R", "DSD")
 
   l
+}
+
+#' @export
+print.DSD_ReadDB <- function(x, ...) {
+  NextMethod()
+
+  print(x$result)
 }
 
 #' @rdname DSD_ReadDB

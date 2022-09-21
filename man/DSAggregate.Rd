@@ -9,7 +9,7 @@
 \usage{
 DSAggregate(...)
 
-\method{update}{DSAggregate}(object, dsd, n = 1, ...)
+\method{update}{DSAggregate}(object, dsd, n = 1, return = c("nothing", "model"), ...)
 
 \method{get_points}{DSAggregate}(x, ...)
 
@@ -21,6 +21,9 @@ DSAggregate(...)
 \item{dsd}{a data stream object.}
 
 \item{n}{the number of data points used for the update.}
+
+\item{return}{a character string indicating what update returns. The default is \code{"nothing"}
+and \code{"model"} returns the aggregated data.}
 
 \item{x, object}{a concrete implementation of \code{DSAggregate}.}
 }

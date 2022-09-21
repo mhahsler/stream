@@ -40,7 +40,7 @@
 #'
 #' ## inspect the results of the tasks
 #' tasks$dsts[[1]]
-#' get_result(tasks$dsts[[1]])
+#' get_model(tasks$dsts[[1]])
 #'
 #' tasks$dsts[[2]]
 #' plot(tasks$dsts[[2]])
@@ -51,7 +51,7 @@ DST_Multi <- function(dsts) {
     description = paste0("  - ", sapply(dsts, description), collapse = "\n"),
     dsts = dsts
   ),
-    class =  c("DST_Multi", "DST"))
+    class = c("DST_Multi", "DST"))
 }
 
 #' @export

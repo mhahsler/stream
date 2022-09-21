@@ -77,7 +77,7 @@
 #' nclusters(dstream)
 #'
 #' # get the whole model as a data.frame
-#' get_result(dstream)
+#' get_model(dstream)
 #'
 #' # D-Stream also has macro-clusters
 #' get_weights(dstream, type = "macro")
@@ -164,7 +164,7 @@ summary.DSC <- function(object, ...)
   print(object)
 
 #' @export
-get_result.DSC <- function(x, ...)
+get_model.DSC <- function(x, ...)
   cbind(weight = get_weights(x),  get_centers(x))
 
 ### End of interface

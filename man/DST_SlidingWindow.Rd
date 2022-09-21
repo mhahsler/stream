@@ -8,7 +8,14 @@
 \usage{
 DST_SlidingWindow(f, window, rebuild, ...)
 
-\method{update}{DST_SlidingWindow}(object, dsd, n = 1L, rebuild = FALSE, ...)
+\method{update}{DST_SlidingWindow}(
+  object,
+  dsd,
+  n = 1L,
+  return = c("nothing", "model"),
+  rebuild = FALSE,
+  ...
+)
 
 \method{predict}{DST_SlidingWindow}(object, newdata, ...)
 }
@@ -26,6 +33,9 @@ DST_SlidingWindow(f, window, rebuild, ...)
 \item{dsd}{A \link{DSD} object with the data stream.}
 
 \item{n}{number of points from \code{dsd} to use for the update.}
+
+\item{return}{a character string indicating what update returns. The default is \code{"nothing"}
+and \code{"model"} returns the aggregated data.}
 
 \item{newdata}{dataframe with the new data.}
 }
@@ -73,16 +83,16 @@ s
 
 # update window with 49 points. The function is not yet called
 update(s, stream, 49)
-get_result(s)
+get_model(s)
 
 # updating with the 50th point will trigger a function call (see rebuild parameter)
 # note that the window is only 1/2 full and we have 50 NAs
 update(s, stream, 1)
-get_result(s)
+get_model(s)
 
 # 50 more points and the function will be recomputed
 update(s, stream, 50)
-get_result(s)
+get_model(s)
 
 
 ## Example 2: Use classifier on the sliding window
@@ -98,12 +108,12 @@ cl
 
 # update window with 50 points so the model is built
 update(cl, stream, 50)
-get_result(cl)
+get_model(cl)
 
 # update with 40 more points and force the function to be recomputed even though it would take
 #  50 points to automatically rebuild.
 update(cl, stream, 40, rebuild = TRUE)
-get_result(cl)
+get_model(cl)
 
 # rpart supports predict, so we can use it directly with the DST_SlidingWindow
 new_points <- get_points(stream, n = 5)
@@ -119,7 +129,7 @@ reg <- DST_SlidingWindow(
 reg
 
 update(reg, stream, 100)
-get_result(reg)
+get_model(reg)
 
 # lm supports predict, so we can use it directly with the DST_SlidingWindow
 new_points <- get_points(stream, n = 5)

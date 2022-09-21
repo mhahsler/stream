@@ -50,7 +50,7 @@
 #' get_points(window)
 #'
 #' # get weights and window as a single data.frame
-#' get_result(window)
+#' get_model(window)
 #'
 #' # update window
 #' update(window, stream, 100)
@@ -89,10 +89,20 @@ update.DSAggregate_Window <-
   function(object,
     dsd,
     n = 1,
+    return = c("nothing", "model"),
     verbose = FALSE,
     ...) {
     ### TODO: we do not need to get all points if n is very large!
+
+    return <- match.arg(return)
+
     object$RObj$update(get_points(dsd, n = n, info = TRUE), verbose = verbose, ...)
+
+    return(switch(
+      return,
+      nothing = invisible(NULL),
+      model = get_model(object)
+    ))
   }
 
 #' @export

@@ -3,14 +3,14 @@
 \name{DST}
 \alias{DST}
 \alias{description}
-\alias{get_result}
+\alias{get_model}
 \title{Conceptual Base Class for All Data Stream Mining Tasks}
 \usage{
 DST(...)
 
 description(x, ...)
 
-get_result(x, ...)
+get_model(x, ...)
 }
 \arguments{
 \item{...}{Further arguments.}
@@ -35,7 +35,7 @@ The common interface for all \link{DST} classes consists of
 \itemize{
 \item \code{\link[=update]{update()}} update the DST with data points.
 \item description() a string describing the DST.
-\item get_result() returns the DST's current result (often as a data.frame or a model).
+\item get_model() returns the DST's current model (often as a data.frame or a R model object).
 \item \code{\link[=predict]{predict()}} use the learned DST model to make predictions.
 }
 
