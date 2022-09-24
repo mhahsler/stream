@@ -120,7 +120,37 @@ get_points.DSD <-
     n = 1L,
     info = TRUE,
     ...)
-    stop("No implementation for 'get_points()' found for class ", paste(class(x), collapse = ", "))
+    stop("No implementation for 'get_points()' found for class ",
+      paste(class(x), collapse = ", "))
+
+#' @export
+get_points.data.frame <-
+  function(x,
+    n = 1L,
+    info = TRUE,
+    ...) {
+    n <- as.integer(n)
+
+    if (n == 0L)
+      x <- x[0, , drop = FALSE]
+
+    if (!(n == 1L || n == 0L || n == -1L || n == nrow(x)))
+      warning("For data.frames all data is used and n (other than 0) is ignored!")
+
+    if (!info)
+      x <- remove_info(x)
+
+    x
+  }
+
+#' @export
+get_points.matrix <-
+  function(x,
+    n = 1L,
+    info = TRUE,
+    ...)
+    get_points.data.frame(as.data.frame(x), n, info, ...)
+
 
 #' @rdname get_points
 #' @param points a data.frame with points.
@@ -133,8 +163,11 @@ remove_info <- function(points) {
   points
 }
 
-info_cols <- function(points) grep('^\\.', colnames(points))
-not_info_cols <- function(points) grep('^\\.', colnames(points), invert = TRUE)
+info_cols <- function(points)
+  grep('^\\.', colnames(points))
+not_info_cols <-
+  function(points)
+    grep('^\\.', colnames(points), invert = TRUE)
 
 split_info <- function(points) {
   info_cols <- grep('^\\.', colnames(points))

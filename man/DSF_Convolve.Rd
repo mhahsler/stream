@@ -10,7 +10,7 @@
 \title{Apply a Filter to a Data Stream}
 \usage{
 DSF_Convolve(
-  dsd,
+  dsd = NULL,
   dim = NULL,
   kernel = NULL,
   pre = NULL,
@@ -149,6 +149,7 @@ Other DSF:
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
 \code{\link{DSF_Func}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
 }

@@ -3,6 +3,8 @@
 \name{DSF}
 \alias{DSF}
 \alias{reset_stream.DSF}
+\alias{get_points.DSF}
+\alias{update.DSF}
 \alias{close_stream.DSF}
 \title{Data Stream Filter Base Classes}
 \usage{
@@ -10,32 +12,65 @@ DSF(...)
 
 \method{reset_stream}{DSF}(dsd, pos = 1)
 
+\method{get_points}{DSF}(x, n = 1L, info = TRUE, ...)
+
+\method{update}{DSF}(object, dsd = NULL, n = 1L, return = "data", ...)
+
 \method{close_stream}{DSF}(dsd, ...)
 }
 \arguments{
-\item{...}{Further arguments.}
+\item{...}{Further arguments passed on.}
 
 \item{dsd}{a stream object of class \link{DSD}.}
 
 \item{pos}{position in the stream.}
+
+\item{x, object}{a \code{DSF} object.}
+
+\item{n}{number of points to get/use for the update.}
+
+\item{info}{return additional columns with information about the data point (e.g., a known cluster assignment).}
+
+\item{return}{a character string indicating what update returns. The only
+value is currently  \code{"data"} to return the transformed data.
+possible values depend on the \code{DST}.}
 }
 \description{
-Abstract base classes for all data stream filter (DSF) classes. Data stream filters transform a data stream (\link{DSD}).
+Abstract base classes for all data stream filter (DSF) classes.
+Data stream filters transform a data stream (\link{DSD}).
 }
 \details{
 The \code{DSF} class cannot be instantiated, but it serve as a base
 class from which other DSF classes inherit.
 
-Data stream filters transform a \link{DSD} data stream.
-DSF implementations inherit from \link{DSD} and have the same basic interface.
-
-\code{reset_stream()} resets the source stream.
-
-It is convenient to use the pipe (\link[magrittr:pipe]{magrittr::\%>\%}) to apply filters to data streams (see Examples section).
+Data stream filters transform a \link{DSD} data stream. \code{DSF} can be used in two ways.
+\enumerate{
+\item \strong{DSD Adapter:}
+When a data stream (\code{dsd}) is specified in the constructor, then the DSF acts as an a
+adapter for a connected data stream. The DSF implementations inherit the
+interface from \link{DSD} and provide:
+\itemize{
+\item \code{\link[=get_points]{get_points()}} get the transformed points.
+\item \code{\link[=reset_stream]{reset_stream()}} reset the underlying stream
+\item \code{\link[=close_stream]{close_stream()}} close the underlying stream
+}
+\item \strong{Stream Transformer:}
+When no data stream (\code{dsd}) is specified in the constructor, then the DSF acts like a
+\link{DST} data stream task and provides:
+\itemize{
+\item \code{\link[=update]{update()}} to transform the points from a specified \code{DSD}.
+It is convenient to use the pipe (\link[magrittr:pipe]{magrittr::\%>\%}) to apply one or more filters to data
+streams (see Examples section).
+}
+}
 }
 \section{Methods (by generic)}{
 \itemize{
 \item \code{reset_stream(DSF)}: reset the attached stream if reset is supported.
+
+\item \code{get_points(DSF)}: DSD-like interface to get points if the DSF was created with an attached stream.
+
+\item \code{update(DSF)}: updates with data and returns the filtered data.
 
 \item \code{close_stream(DSF)}: close the attached stream if close is supported.
 
@@ -43,11 +78,34 @@ It is convenient to use the pipe (\link[magrittr:pipe]{magrittr::\%>\%}) to appl
 \examples{
 DSF()
 
+# Example 1: Use as a DSD adapter
 stream <- DSD_Gaussians(k = 3, d = 2) \%>\%
-  DSF_Func(function(x) cbind(x, Xsum = x$X1 + x$X2))
+  DSF_Func(func = function(x) cbind(x, Xsum = x$X1 + x$X2))
 stream
 
 get_points(stream, n = 5)
+
+# Example 2: Use as a stream transformer
+trans <- DSF_Func(func = function(x) cbind(x, Xsum = x$X1 + x$X2))
+trans
+
+update(trans, stream, n = 5)
+
+# Example 3: Use as a DST preprocessor
+clusterer <- DSF_Func(func = function(x) cbind(x, X1_squared = x$X1^2)) \%>\%
+               DST_Runner(DSC_Kmeans(k = 3))
+clusterer
+
+update(clusterer, stream, n = 100)
+
+# Example 5: Specify a complete pipeline DSD -> DSF -> DST
+pipeline <- DSD_Gaussians(k = 3, d = 2) \%>\%
+               DSF_Func(func = function(x) cbind(x, X1_squared = x$X1^2)) \%>\%
+               DST_Runner(DSC_Kmeans(k = 3))
+pipeline
+
+update(pipeline, n = 100)
+plot(pipeline$dst)
 }
 \seealso{
 Other DSF: 
@@ -55,6 +113,7 @@ Other DSF:
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
 \code{\link{DSF_Func}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()}
 
 Other DSD: 

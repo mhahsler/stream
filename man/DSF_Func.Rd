@@ -4,7 +4,7 @@
 \alias{DSF_Func}
 \title{Apply a Function to Transformation to a Data Stream}
 \usage{
-DSF_Func(dsd, func = NULL, ..., info = FALSE)
+DSF_Func(dsd = NULL, func, ..., info = FALSE)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
@@ -74,6 +74,7 @@ Other DSF:
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
 }

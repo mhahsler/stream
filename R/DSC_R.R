@@ -69,8 +69,9 @@ update.DSC_R <- function(object,
   return = c("nothing", "assignment", "model"),
   ...) {
   ### object contains an RObj which is a reference object with a cluster method
-
   return <- match.arg(return)
+  n <- as.integer(n)
+  block <- as.integer(block)
 
   if (n == 0L)
     return(switch(
@@ -82,43 +83,15 @@ update.DSC_R <- function(object,
 
   ### for data frame/matrix we do it all at once. n is ignored!
   if (is.data.frame(dsd) || is.matrix(dsd)) {
-    dsd <- remove_info(dsd)
+    if(!is.data.frame(dsd))
+      dsd <- as.data.frame(dsd)
 
-    if (n  != 1 || n == -1)
+    if (!(n  == 1L || n == -1L || n == nrow(dsd)))
       warning("n is ignored if dsd is a data.frame. Update uses all points.")
 
-    if (!is.null(object$formula)) {
-      if (is.null(object$RObj$colnames)) {
-        trms <- terms(object$formula, data = dsd)
-        if (attr(trms, "response") != 0)
-          stop("formula for clustering cannot have a response variable before '~'!")
-
-        object$RObj$colnames <- colnames(attr(trms, "factors"))
-      }
-
-      dsd <- dsd[, object$RObj$colnames, drop = FALSE]
-    }
-
-    if (verbose)
-      cat("Clustering all",
-        nrow(dsd),
-        "data points at once for matrix/data.frame.")
-
-    if (is.null(object$RObj$colnames))
-      object$RObj$colnames <- colnames(dsd)
-
-    res <- object$RObj$cluster(dsd, ...)
-
-    return(switch(
-      return,
-      nothing = invisible(NULL),
-      assignment = res,
-      model = get_model(object)
-    ))
+    n <- nrow(dsd)
+    block <- n
   }
-
-  n <- as.integer(n)
-  block <- as.integer(block)
 
   ### TODO: Check data
   take <- NULL

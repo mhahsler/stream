@@ -2,12 +2,9 @@
 % Please edit documentation in R/DSF_Scale.R
 \name{DSF_Scale}
 \alias{DSF_Scale}
-\alias{DSD_ScaleStream}
 \title{Scale a Data Stream}
 \usage{
-DSF_Scale(dsd, dim = NULL, center = TRUE, scale = TRUE, n = 100)
-
-DSD_ScaleStream(dsd, dim = NULL, center = TRUE, scale = TRUE, n = 100)
+DSF_Scale(dsd = NULL, dim = NULL, center = TRUE, scale = TRUE, n = 100L)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD} that will be scaled.}
@@ -38,44 +35,39 @@ estimates the values for centering and scaling (see
 
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 2)
+get_points(stream, 3)
 
 # scale with manually calculated scaling factors
 points <- get_points(stream, n = 100, info = FALSE)
 center <- colMeans(points)
 scale <- apply(points, MARGIN = 2, sd)
 
-scaledStream <- stream \%>\%  DSF_Scale(center = center, scale = scale)
+scaledStream <- stream \%>\%  DSF_Scale(dim = c(1L, 2L), center = center, scale = scale)
 colMeans(get_points(scaledStream, n = 100, info = FALSE))
 apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 
-# let DSF_Scale calculate the scaling factors
-scaledStream <- stream \%>\% DSF_Scale(n = 100)
+# let DSF_Scale calculate the scaling factors from the first n points of the stream
+scaledStream <- stream \%>\% DSF_Scale(dim = c(1L, 2L), n = 100)
 colMeans(get_points(scaledStream, n = 100, info = FALSE))
 apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 
 ## scale only X2
-scaledStream <- stream \%>\% DSF_Scale(n = 100, dim = "X2")
+scaledStream <- stream \%>\% DSF_Scale(dim = "X2", n = 100)
 colMeans(get_points(scaledStream, n = 100, info = FALSE))
 apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 }
 \seealso{
 \link{scale} in \pkg{base}
 
-Other DST: 
-\code{\link{DSAggregate}()},
-\code{\link{DSClassifier}()},
-\code{\link{DSC}()},
-\code{\link{DSOutlier}()},
-\code{\link{DSRegressor}()},
-\code{\link{DST_SlidingWindow}()},
-\code{\link{DST_WriteStream}()},
-\code{\link{DST}()},
-\code{\link{evaluate}},
-\code{\link{predict}()},
-\code{\link{stream_pipeline}},
-\code{\link{update}()}
+Other DSF: 
+\code{\link{DSF_Convolve}()},
+\code{\link{DSF_Downsample}()},
+\code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_Func}()},
+\code{\link{DSF_dplyr}()},
+\code{\link{DSF}()}
 }
 \author{
 Michael Hahsler
 }
-\concept{DST}
+\concept{DSF}

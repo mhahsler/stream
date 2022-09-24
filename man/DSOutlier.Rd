@@ -55,7 +55,6 @@ Other DST:
 \code{\link{DSAggregate}()},
 \code{\link{DSClassifier}()},
 \code{\link{DSC}()},
-\code{\link{DSF_Scale}()},
 \code{\link{DSRegressor}()},
 \code{\link{DST_SlidingWindow}()},
 \code{\link{DST_WriteStream}()},

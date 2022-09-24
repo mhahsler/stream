@@ -35,7 +35,7 @@ set.seed(1500)
 # Set up a pipeline with a DSD data source, DSF Filters and then a DST task
 cluster_pipeline <- DSD_Gaussians(k = 3, d = 2) \%>\%
                     DSF_Scale() \%>\%
-                    DST_Runner(DSC_DBSTREAM(r = .05))
+                    DST_Runner(DSC_DBSTREAM(r = .3))
 
 cluster_pipeline
 
@@ -43,11 +43,11 @@ cluster_pipeline
 cluster_pipeline$dsd
 cluster_pipeline$dst
 
-# update the DST using the pipeline
+# update the DST using the pipeline, by default update returns the micro clusters
 update(cluster_pipeline, n = 1000)
 
 cluster_pipeline$dst
-get_centers(cluster_pipeline$dst)
+get_centers(cluster_pipeline$dst, type = "macro")
 plot(cluster_pipeline$dst)
 }
 \seealso{
@@ -55,7 +55,6 @@ Other DST:
 \code{\link{DSAggregate}()},
 \code{\link{DSClassifier}()},
 \code{\link{DSC}()},
-\code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DSRegressor}()},
 \code{\link{DST_SlidingWindow}()},

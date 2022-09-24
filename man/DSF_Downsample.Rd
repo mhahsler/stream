@@ -4,7 +4,7 @@
 \alias{DSF_Downsample}
 \title{Downsample a Data Stream}
 \usage{
-DSF_Downsample(dsd, factor = 1)
+DSF_Downsample(dsd = NULL, factor = 1L)
 }
 \arguments{
 \item{dsd}{The input stream as an \link{DSD} object.}
@@ -50,6 +50,7 @@ Other DSF:
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_ExponentialMA}()},
 \code{\link{DSF_Func}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
 }

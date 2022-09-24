@@ -51,7 +51,9 @@
 #' reset_stream(smoothStream)
 #' plot(smoothStream, dim = 1, n = 120, method = "ts", main = "With ExponentialMA(.7)")
 #' @export
-DSF_ExponentialMA <- function(dsd, dim = NULL, alpha = .5) {
+DSF_ExponentialMA <- function(dsd = NULL,
+  dim = NULL,
+  alpha = .5) {
   # creating the DSD object
 
   l <- list(
@@ -59,7 +61,13 @@ DSF_ExponentialMA <- function(dsd, dim = NULL, alpha = .5) {
     dim = dim,
     alpha = alpha,
     S.env = as.environment(list(S = NULL)),
-    description = paste0(dsd$description, "\n  + exponential MA(", alpha, ")")
+    description = paste0(
+      ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD")
+      ,
+      "\n  + exponential MA(",
+      alpha,
+      ")"
+    )
   )
   class(l) <- c("DSF_ExponentialMA", "DSF", "DSD_R", "DSD")
 
@@ -67,30 +75,41 @@ DSF_ExponentialMA <- function(dsd, dim = NULL, alpha = .5) {
 }
 
 #' @export
-get_points.DSF_ExponentialMA <- function(x,
+update.DSF_ExponentialMA <- function(object,
+  dsd = NULL,
   n = 1L,
+  return = "data",
   info = TRUE,
   ...) {
   .nodots(...)
+  return <- match.arg(return)
+
+  if (is.null(dsd))
+    dsd <- object$dsd
+  if (is.null(dsd))
+    stop("No dsd specified in ", deparse(substitute(object)), ". Specify a dsd in update().")
+
+  if (n == 0)
+    return(get_points(dsd, n = 0L, info = info))
 
   d <-
-    get_points(x$dsd, n, info = info, ...)
+    get_points(dsd, n, info = info, ...)
 
-  dims <- get_dims(x$dim, d)
+  dims <- get_dims(object$dim, d)
 
-  if (is.null(x$S.env$S))
-    x$S.env$S <- d[1, dims, drop = FALSE]
+  if (is.null(object$S.env$S))
+    object$S.env$S <- d[1, dims, drop = FALSE]
 
   for (i in seq(nrow(d))) {
-
     # handle NA
     Y <- d[i, dims, drop = FALSE]
     if (any(missing <- is.na(Y)))
-      Y[missing] <- x$S.env$S[missing]
-    if (any(missing <- is.na(x$S.env$S)))
-      x$S.env$S[missing] <- Y[missing]
+      Y[missing] <- object$S.env$S[missing]
+    if (any(missing <- is.na(object$S.env$S)))
+      object$S.env$S[missing] <- Y[missing]
 
-    x$S.env$S <- d[i, dims] <- x$alpha * x$S.env$S + (1 - x$alpha) * Y
+    object$S.env$S <-
+      d[i, dims] <- object$alpha * object$S.env$S + (1 - object$alpha) * Y
   }
   d
 }

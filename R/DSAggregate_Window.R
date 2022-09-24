@@ -88,7 +88,7 @@ DSAggregate_Window <- function(horizon = 100, lambda = 0)
 update.DSAggregate_Window <-
   function(object,
     dsd,
-    n = 1,
+    n = 1L,
     return = c("nothing", "model"),
     verbose = FALSE,
     ...) {

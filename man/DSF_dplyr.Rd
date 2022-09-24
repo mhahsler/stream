@@ -4,7 +4,7 @@
 \alias{DSF_dplyr}
 \title{Apply a dplyr Transformation to a Data Stream}
 \usage{
-DSF_dplyr(dsd, func = NULL, info = FALSE)
+DSF_dplyr(dsd = NULL, func = NULL, info = FALSE)
 }
 \arguments{
 \item{dsd}{A object of class \link{DSD}.}
@@ -67,6 +67,7 @@ Other DSF:
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
 \code{\link{DSF_Func}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSF}()}
 }
 \author{

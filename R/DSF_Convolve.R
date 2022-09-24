@@ -108,7 +108,7 @@
 #' plot(filter_Sinc(10, 100, width = 20), type = "h")
 #' @export
 DSF_Convolve <-
-  function(dsd,
+  function(dsd = NULL,
     dim = NULL,
     kernel = NULL,
     pre = NULL,
@@ -123,7 +123,7 @@ DSF_Convolve <-
 
     l <- list(
       description = paste0(
-        dsd$description,
+        ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD"),
         "\n  + convolved (",
         deparse(substitute(dim)),
         ": ",
@@ -147,24 +147,37 @@ DSF_Convolve <-
   }
 
 #' @export
-get_points.DSF_Convolve <- function(x,
+update.DSF_Convolve <- function(object,
+  dsd = NULL,
   n = 1L,
-  info = FALSE,
+  return = "data",
+  info = TRUE,
   ...) {
   .nodots(...)
+  return <- match.arg(return)
 
-  #if (any(cluster || class || outlier))
-  #  stop("Clusters, class or outliers not supported for DSF_Convolve!")
+  if (is.null(dsd))
+    dsd <- object$dsd
+  if (is.null(dsd))
+    stop("No dsd specified in ", deparse(substitute(object)), ". Specify a dsd in update().")
+
+  # we need to process data.frame point-by-point!
+  if (!inherits(dsd, "DSD")) {
+    n <- nrow(dsd)
+    dsd <- DSD_Memory(dsd)
+  }
+
+  if (n == 0)
+    return(get_points(dsd, n = 0L, info = info))
 
   for (i in seq(n)) {
-    update(x$window, x$dsd, n = 1L)
-    win <- get_points(x$window)
+    win <- update(object$window, dsd, n = 1L, return = "model")
 
     # dims and preallocate the space for the output data frame with n rows
     if (i == 1L) {
-      dims <- get_dims(x$dim, win)
+      dims <- get_dims(object$dim, win)
 
-      if (x$replace) {
+      if (object$replace) {
         extra_cols <- 0L
         dims_out <- dims
         colnames_out <- colnames(win)
@@ -172,7 +185,7 @@ get_points.DSF_Convolve <- function(x,
         extra_cols <- length(dims)
         dims_out <- seq(ncol(win) + 1L, length.out = extra_cols)
         colnames_out <-
-          c(colnames(win), paste0(colnames(win)[dims], "_", x$name))
+          c(colnames(win), paste0(colnames(win)[dims], "_", object$name))
       }
 
       ps <-
@@ -190,21 +203,24 @@ get_points.DSF_Convolve <- function(x,
     ps[i, seq(ncol(win))] <- win[nrow(win), , drop = FALSE]
 
     ## apply pre function
-    if (!is.null(x$pre))
-      win[, dims] <- x$pre(win[, dims])
+    if (!is.null(object$pre))
+      win[, dims] <- object$pre(win[, dims])
 
     ## apply convolution
     ps[i, dims_out] <-
       sapply(
         win[, dims, drop = FALSE],
         FUN = function(p)
-          mean(p * x$kernel, na.rm = x$na.rm) * length(x$kernel)
+          mean(p * object$kernel, na.rm = object$na.rm) * length(object$kernel)
       )
   }
 
   ## apply post
-  if (!is.null(x$post))
-    ps[, dims_out] <- x$post(ps[, dims_out])
+  if (!is.null(object$post))
+    ps[, dims_out] <- object$post(ps[, dims_out])
+
+  if (!info)
+    ps <- remove_info(ps)
 
   ps
 }

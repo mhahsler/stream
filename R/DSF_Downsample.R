@@ -54,7 +54,7 @@
 #' reset_stream(downsampledStream)
 #' plot(downsampledStream, dim = 1, n = 40, method = "ts")
 #' @export
-DSF_Downsample <- function(dsd, factor = 1) {
+DSF_Downsample <- function(dsd = NULL, factor = 1L) {
   # creating the DSD object
 
   factor <- as.integer(factor)
@@ -62,7 +62,11 @@ DSF_Downsample <- function(dsd, factor = 1) {
   l <- list(
     dsd = dsd,
     factor = factor,
-    description = paste0(dsd$description, "\n  + downsampled by factor ", factor)
+    description = paste0(
+      ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD"),
+      "\n  + downsampled by factor ",
+      factor
+    )
   )
   class(l) <- c("DSF_Downsample", "DSF", "DSD_R", "DSD")
 
@@ -70,25 +74,35 @@ DSF_Downsample <- function(dsd, factor = 1) {
 }
 
 #' @export
-get_points.DSF_Downsample <- function(x,
+update.DSF_Downsample <- function(object,
+  dsd = NULL,
   n = 1L,
+  return = "data",
   info = TRUE,
   ...) {
   .nodots(...)
+  return <- match.arg(return)
+
+  if (is.null(dsd))
+    dsd <- object$dsd
+  if (is.null(dsd))
+    stop("No dsd specified in ", deparse(substitute(object)), ". Specify a dsd in update().")
+
+  if (n == 0)
+    return(get_points(dsd, n = 0L, info = info))
 
   if (n < 0)
     n_take <- -1L
   else
-    n_take <- n * x$factor
-
+    n_take <- n * object$factor
 
   d <-
-    get_points(x$dsd,
+    get_points(dsd,
       n = n_take,
       info = info,
       ...)
 
-  take <- seq(1L, nrow(d), by = x$factor)
+  take <- seq(1L, nrow(d), by = object$factor)
 
   d[take, , drop = FALSE]
 }

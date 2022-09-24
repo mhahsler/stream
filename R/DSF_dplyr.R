@@ -68,14 +68,18 @@
 #' }
 #' @export
 DSF_dplyr <-
-  function(dsd,
+  function(dsd = NULL,
     func = NULL,
     info = FALSE) {
     func <- deparse(substitute(func))
 
     # creating the DSD object
     l <- list(
-      description = paste0(dsd$description, "\n  + function: ", func),
+      description = paste0(
+        ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD"),
+        "\n  + function: ",
+        func
+      ),
       dsd = dsd,
       func = parse(text = paste('ps <- ps %>%', paste0(func, collapse = ' '))),
       info = info
@@ -87,26 +91,34 @@ DSF_dplyr <-
   }
 
 #' @export
-get_points.DSF_dplyr <- function(x,
+update.DSF_dplyr <- function(object,
+  dsd = NULL,
   n = 1L,
+  return = "data",
   info = TRUE,
   ...) {
   .nodots(...)
+  return <- match.arg(return)
+
+  if (is.null(dsd))
+    dsd <- object$dsd
+  if (is.null(dsd))
+    stop("No dsd specified in ", deparse(substitute(object)), ". Specify a dsd in update().")
 
   points <-
-    get_points(x$dsd,
+    get_points(dsd,
       n = n,
-      info = TRUE,
+      info = info,
       ...)
 
-  if (x$info) {
+  if (object$info || !info) {
     ps <- points
-    eval(x$func)
+    eval(object$func)
     return(ps)
   } else {
     points <- split_info(points)
     ps <- points$points
-    eval(x$func)
+    eval(object$func)
     ps <- cbind(ps, points$info)
     return(ps)
   }

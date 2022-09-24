@@ -91,6 +91,7 @@ get_points(stream, n = 5)
 
 plot(stream, n = 100)
 
+### close stream clears the query and disconnects the database
 close_stream(stream)
 }
 }

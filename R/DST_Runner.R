@@ -47,7 +47,7 @@
 #' # Set up a pipeline with a DSD data source, DSF Filters and then a DST task
 #' cluster_pipeline <- DSD_Gaussians(k = 3, d = 2) %>%
 #'                     DSF_Scale() %>%
-#'                     DST_Runner(DSC_DBSTREAM(r = .05))
+#'                     DST_Runner(DSC_DBSTREAM(r = .3))
 #'
 #' cluster_pipeline
 #'
@@ -55,11 +55,11 @@
 #' cluster_pipeline$dsd
 #' cluster_pipeline$dst
 #'
-#' # update the DST using the pipeline
+#' # update the DST using the pipeline, by default update returns the micro clusters
 #' update(cluster_pipeline, n = 1000)
 #'
 #' cluster_pipeline$dst
-#' get_centers(cluster_pipeline$dst)
+#' get_centers(cluster_pipeline$dst, type = "macro")
 #' plot(cluster_pipeline$dst)
 #' @export
 DST_Runner <- function(dsd, dst) {
@@ -77,7 +77,13 @@ DST_Runner <- function(dsd, dst) {
 
 #' @export
 update.DST_Runner <- function(object, dsd = NULL, n = 1L, return = "model", ...) {
-  if (!is.null(dsd))
-    stop("A dsd cannot be specified for update on DST_Runner!")
-  update(object$dst, object$dsd, n = n, return = return, ...)
+
+
+  if (is.null(dsd))
+    ps <- get_points(object$dsd, n = n)
+  else
+    ps <- update(object$dsd, dsd, n = n)
+
+  #update(object$dst, object$dsd, n = n, return = return, ...)
+  update(object$dst, ps, n = n, return = return, ...)
 }

@@ -20,7 +20,6 @@ DSClassifier()
 Other DST: 
 \code{\link{DSAggregate}()},
 \code{\link{DSC}()},
-\code{\link{DSF_Scale}()},
 \code{\link{DSOutlier}()},
 \code{\link{DSRegressor}()},
 \code{\link{DST_SlidingWindow}()},

@@ -4,7 +4,7 @@
 \alias{DSF_ExponentialMA}
 \title{Exponential Moving Average over a Data Stream}
 \usage{
-DSF_ExponentialMA(dsd, dim = NULL, alpha = 0.5)
+DSF_ExponentialMA(dsd = NULL, dim = NULL, alpha = 0.5)
 }
 \arguments{
 \item{dsd}{The input stream as an \link{DSD} object.}
@@ -48,6 +48,7 @@ Other DSF:
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_Func}()},
+\code{\link{DSF_Scale}()},
 \code{\link{DSF_dplyr}()},
 \code{\link{DSF}()}
 }

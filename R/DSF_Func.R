@@ -76,16 +76,21 @@
 #' plot(stream5)
 #' @export
 DSF_Func <-
-  function(dsd,
-    func = NULL,
+  function(dsd = NULL,
+    func,
     ...,
     info = FALSE)
-    {
+  {
     # creating the DSD object
-    func_desc <- paste0(trimws(deparse(substitute(func))), collapse = "; ")
+    func_desc <-
+      paste0(trimws(deparse(substitute(func))), collapse = "; ")
 
     l <- list(
-      description = paste0(dsd$description, "\n  + function: ", func_desc),
+      description = paste0(
+        ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD"),
+        "\n  + function: ",
+        func_desc
+      ),
       dsd = dsd,
       func = func,
       dots = list(...),
@@ -98,23 +103,29 @@ DSF_Func <-
   }
 
 #' @export
-get_points.DSF_Func <- function(x,
-  n = 1,
+update.DSF_Func <- function(object,
+  dsd = NULL,
+  n = 1L,
+  return = "data",
   info = TRUE,
   ...) {
-  .nodots(...)
+  return <- match.arg(return)
+
+  if (is.null(dsd))
+    dsd <- object$dsd
+  if (is.null(dsd))
+    stop("No dsd specified in ", deparse(substitute(object)), ". Specify a dsd in update().")
 
   points <-
-    get_points(x$dsd,
+    get_points(dsd,
       n = n,
-      info = TRUE,
-      ...)
+      info = info, ...)
 
-  if (x$info) {
-    return(do.call(x$func, c(list(points), x$dots)))
+  if (object$info || !info) {
+    return(do.call(object$func, c(list(points), object$dots)))
   } else {
     points <- split_info(points)
-    ps <- do.call(x$func, c(list(points$points), x$dots))
+    ps <- do.call(object$func, c(list(points$points), object$dots))
     return(cbind(ps, points$info))
   }
 }
