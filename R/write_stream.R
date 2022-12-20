@@ -22,7 +22,7 @@
 #'
 #' @param dsd The DSD object that will generate the data points for output.
 #' @param file A file name or a R connection to be written to.
-#' @param n The number of data points to be written.
+#' @param n The number of data points to be written. For finite streams, `n = -1` writes all available data points.
 #' @param block Write stream in blocks to improve file I/O speed.
 #' @param info Save the class/cluster labels and other information columns with the data.
 #' @param sep The character that will separate attributes in a data point.
@@ -36,18 +36,28 @@
 #' @author Michael Hahsler
 #' @seealso [write.table]
 #' @examples
-#' # creating data and writing it to disk
+#' # create data and write 10 points to disk
 #' stream <- DSD_Gaussians(k = 3, d = 5)
+#' stream
+#'
 #' write_stream(stream, file="data.txt", n = 10, header = TRUE, info = TRUE)
 #'
 #' readLines("data.txt")
 #'
 #' # clean up
 #' file.remove("data.txt")
+#'
+#' # create a finite stream and write all data to disk using n = -1
+#' stream2 <- DSD_Memory(stream, n = 5)
+#' stream2
+#'
+#' write_stream(stream2, file="data.txt", n = -1, header = TRUE, info = TRUE)
+#'
+#' readLines("data.txt")
 #' @export
 write_stream <- function(dsd,
   file,
-  n = 100,
+  n,
   block = 100000L,
   info = FALSE,
   append = FALSE,

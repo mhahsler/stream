@@ -4,12 +4,15 @@
 * Added DST_SlidingWindow to call functions on a sliding window.
 * Added DSClassifier_SlidingWindow, DSRegressor_SlidingWindow, and DSC_SlidingWindow.
 * Added get_model() for DST.
+* DSF can now be used with DST interface (update(), etc.).
+* DSD now also provides update().
 
 ## Changes
 * update() gained parameter return and lost assignment for DSC.
 * DST_WriteStream and write_stream now flush after the write.
 * DST_WriteStream gained close_stream().
 * Added tests for DSD. get_points with n = 0 and n = -1 produce not consistent results.
+* write_stream has now no default for n and accepts n = -1.
 
 # stream 2.0-0 (09/01/22)
 

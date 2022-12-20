@@ -15,7 +15,7 @@
 \item{n}{number of points from \code{dsd} to use for the update. Some DSD \code{dsd} accept \code{n = -1} to update with all remaining points in the stream.}
 
 \item{return}{a character string indicating what update returns. The default is \code{"nothing"}. Other
-possible values depend on the \code{DST}. Examples are \code{"model"} and \code{"assignment"}.}
+possible values depend on the \code{DST}. Examples are \code{"data"}, \code{"model"} and \code{"assignment"}.}
 
 \item{...}{Additional arguments are passed on.}
 }

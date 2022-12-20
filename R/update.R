@@ -28,7 +28,7 @@
 #' @param dsd A [DSD] object with the data stream.
 #' @param n number of points from `dsd` to use for the update. Some DSD `dsd` accept `n = -1` to update with all remaining points in the stream.
 #' @param return a character string indicating what update returns. The default is `"nothing"`. Other
-#' possible values depend on the `DST`. Examples are `"model"` and `"assignment"`.
+#' possible values depend on the `DST`. Examples are `"data"`, `"model"` and `"assignment"`.
 #' @param ... Additional arguments are passed on.
 #' @return `NULL` or a data.frame `n` rows containing update information for each data point.
 #' @author Michael Hahsler

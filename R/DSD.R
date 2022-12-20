@@ -268,6 +268,15 @@ close_stream.DSD <- function(dsd, ...) {
 ### helper
 
 #' @export
+update.DSD <- function(object, dsd = NULL, n = 1L, return = "data", ...) {
+  return <- match.arg(return)
+  if (!is.null(dsd))
+    stop("dsd can not be specified in update of a DSD.")
+
+  get_points(object, n = n, ...)
+}
+
+#' @export
 print.DSD <- function(x, ...) {
   .nodots(...)
 
