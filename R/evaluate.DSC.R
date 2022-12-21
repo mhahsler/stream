@@ -345,7 +345,7 @@ evaluate_static.DSC <-
       matchm <- pmatch(tolower(measure), tolower(m))
 
       if (any(is.na(matchm)))
-        stop("Invalid or not applicable measure: ",
+        stop("Invalid or not applicable measures (may need class information): ",
           paste(measure[is.na(matchm)], collapse = ', '))
 
       measure <- m[matchm]
@@ -383,7 +383,8 @@ evaluate_static.DSC <-
 
     # treat noise
     pred[is.na(pred)] <- 0L
-    actual[is.na(actual)] <- 0L
+    if (!is.null(actual))
+      actual[is.na(actual)] <- 0L
 
 
     res_buildin <- evaluate_buildin(
@@ -636,7 +637,8 @@ evaluate_fpc <-
       return(NULL)
 
     ## we renumber so we have no missing cluster ID (noise is now cluster id 1)
-    actual <- match(actual, unique(sort(actual)))
+    if(!is.null(actual))
+      actual <- match(actual, unique(sort(actual)))
     predict <- match(predict, unique(sort(predict)))
 
     e <- fpc::cluster.stats(
