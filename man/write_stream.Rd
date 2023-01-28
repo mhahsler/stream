@@ -67,6 +67,9 @@ stream2
 write_stream(stream2, file="data.txt", n = -1, header = TRUE, info = TRUE)
 
 readLines("data.txt")
+
+# clean up
+file.remove("data.txt")
 }
 \seealso{
 \link{write.table}
