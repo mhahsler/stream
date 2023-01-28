@@ -1,12 +1,15 @@
 #include <Rcpp.h>
 #include <limits>
 #include <ctime>
+#include <random>
+#include <algorithm>
 
 #define VERBOSE 0
 
 using namespace Rcpp;
 
-inline int randWrapper(const int n) { return floor(unif_rand()*n); }
+// Unused: C++11 now uses std::shuffle - MFH
+// inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 
 
 class MC {
@@ -60,17 +63,6 @@ public:
   }
 
 };
-
-
-
-
-
-
-
-
-
-
-
 
 class EvoStream {
 public:
@@ -134,10 +126,7 @@ public:
   }
 
 
-
-
-  ////////////////////////// Interfacer
-
+  // RCpp Interface
 
   Rcpp::NumericMatrix get_microclusters(){
     int d = this->ndimensions();
@@ -159,7 +148,6 @@ public:
     }
     return(x);
   }
-
 
 
   Rcpp::NumericMatrix get_macroclusters(){
@@ -185,7 +173,6 @@ public:
     }
     return(this->macro[maxIdx]);
   }
-
 
 
   Rcpp::NumericVector get_macroweights(){
@@ -222,14 +209,7 @@ public:
 
   }
 
-
-
-
-
-
-
-  ////////////////////////////// Online component
-
+  // Online component
 
 
   void cluster(Rcpp::NumericMatrix data){
@@ -288,7 +268,6 @@ public:
 
 
 
-
   void cleanup(){
 
 #if VERBOSE >= 2
@@ -325,14 +304,12 @@ public:
   }
 
 
-
   void removeMicroCluster(int i){
 #if VERBOSE >= 2
     std::cout << "Remove Cluster " << i << std::endl;
 #endif
     this->micro.erase(this->micro.begin()+i);
   }
-
 
 
   void insert(Rcpp::NumericVector distances, MC mc){
@@ -359,24 +336,7 @@ public:
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //////////////////////////////////// Offline component
-
-
+  // Offline component
 
 
   void evolution(){
@@ -388,9 +348,6 @@ public:
     std::vector<Rcpp::NumericMatrix> selected = this->selection(); // select parents
     std::vector<Rcpp::NumericMatrix> offsprings = this->recombination(selected); // recombine parents
     std::vector<Rcpp::NumericMatrix> mutants = this->mutation(offsprings); // mutate offspring
-
-
-
 
     for(unsigned int i=0; i<mutants.size(); i++){
       double fit = this->fitness(mutants[i]); // evaluate new solution
@@ -427,7 +384,6 @@ public:
   }
 
 
-
   void recluster(int generations){
     if(!this->init) return;
 
@@ -440,8 +396,6 @@ public:
       Rcpp::checkUserInterrupt();
     }
   }
-
-
 
 
   void calculateFitness(){
@@ -458,8 +412,6 @@ public:
 #endif
   }
 
-
-
   double fitness(Rcpp::NumericMatrix centres){
     double result=0.0;
 
@@ -472,7 +424,6 @@ public:
 
     return(1/result);
   }
-
 
 
   void initialize(){
@@ -497,7 +448,6 @@ public:
     this->init=1;
   }
 
-
   std::vector<Rcpp::NumericMatrix> selection(){
 
     // declare return value before rngscope http://gallery.rcpp.org/articles/random-number-generation/
@@ -513,7 +463,6 @@ public:
       sum += this->macroFitness[i];
       probability[i] = this->macroFitness[i];
     }
-
 
     // sample two parents
     Rcpp::IntegerVector selected(2);
@@ -554,7 +503,6 @@ public:
     return(individuals);
   }
 
-
   // wrapper for easier change of recombination algorithm
   std::vector<Rcpp::NumericMatrix> recombination(std::vector<Rcpp::NumericMatrix> individuals){
     return(recombinationGAclust(individuals));
@@ -565,10 +513,8 @@ public:
     return(mutationGAclust(individuals));
   }
 
-
   // GA Clustering recombination approach
   std::vector<Rcpp::NumericMatrix> recombinationGAclust(std::vector<Rcpp::NumericMatrix> individuals){
-
     RNGScope rngScope;
 
     if(R::runif(0,1) < this->crossoverRate){
@@ -595,7 +541,6 @@ public:
     return(individuals);
   }
 
-
   // PESAII reclustering approach
   std::vector<Rcpp::NumericMatrix> recombinationPESAII(std::vector<Rcpp::NumericMatrix> individuals){
 
@@ -612,7 +557,6 @@ public:
       }
     }
 
-
 #if VERBOSE >= 3
     std::cout << "Offsprpring1:" << individuals[0] << std::endl;
     std::cout << "Offsprpring2:" << individuals[1] << std::endl;
@@ -620,7 +564,6 @@ public:
 
     return(individuals);
   }
-
 
 
   // GA Clustering mutation approach
@@ -683,11 +626,7 @@ public:
   }
 
 
-
-
-
-
-  ///////////////////////// Helper
+  // Helper
 
   Rcpp::IntegerVector getAssignment(Rcpp::NumericMatrix centres){
     Rcpp::IntegerVector assignment(this->micro.size());
@@ -707,7 +646,6 @@ public:
   }
 
 
-
   double getMaxFitness(){
     // find max fitness
     if(!this->init){
@@ -724,7 +662,6 @@ public:
   }
 
 
-
   int ndimensions(){
     if(!micro.size()){
       return(0);
@@ -732,7 +669,6 @@ public:
       return(this->micro[0].getCentroid().size());
     }
   }
-
 
 
   int sampleProportionally(Rcpp::NumericVector data){
@@ -753,7 +689,6 @@ public:
   }
 
 
-
   Rcpp::NumericVector getDistanceVector(MC mc, std::vector<MC> cluster){
 
     Rcpp::NumericVector distances(cluster.size());
@@ -772,19 +707,17 @@ public:
     // declare return value before rngscope http://gallery.rcpp.org/articles/random-number-generation/
     RNGScope scope;
 
-    std::random_shuffle(b.begin(), b.end(), randWrapper);
+    // C11 random_shuffle is now shuffle - MFH
+    //std::random_shuffle(b.begin(), b.end(), randWrapper);
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(b.begin(), b.end(), rd);
 
     return(b);
   }
 
 
 };
-
-
-
-
-
-
 
 
 // Allows to return class objects to R
@@ -794,7 +727,6 @@ RCPP_EXPOSED_CLASS(EvoStream)
   // Expose class members and methods to R
   RCPP_MODULE(MOD_evoStream){
     using namespace Rcpp;
-
 
     class_<EvoStream>("EvoStream")
       .constructor()
@@ -821,6 +753,4 @@ RCPP_EXPOSED_CLASS(EvoStream)
     .method("fade", &MC::fade)
     ;
 
-
   }
-

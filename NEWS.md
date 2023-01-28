@@ -1,4 +1,4 @@
-# stream 2.0-1 (xx/xx/22)
+# stream 2.0-0-1 (xx/xx/22)
 
 ## New Features
 * Added DST_SlidingWindow to call functions on a sliding window.
@@ -8,6 +8,7 @@
 * DSD now also provides update().
 
 ## Changes
+* transitioned from C++11 to C++17.
 * update() gained parameter return and lost assignment for DSC.
 * DST_WriteStream and write_stream now flush after the write.
 * DST_WriteStream gained close_stream().
