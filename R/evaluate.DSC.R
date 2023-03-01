@@ -19,10 +19,10 @@
 ## evaluate clusterings
 ## FIXME: calculate dist only once
 
-#' Evaluate Stream Clustering
+#' Evaluate a Stream Clustering Task
 #'
-#' Calculate evaluation measures for micro or macro-clusters from a [DSC] object given
-#' the original [DSD] object.
+#' Methods for the generic functions [evaluate_static()] and [evaluate_stream()]  to calculate evaluation measures for micro or macro-clusters created by a [DSC] on the
+#' a [DSD] object.
 #'
 #' For evaluation, each data point is assigned to its nearest cluster using
 #' Euclidean distance to the cluster centers. Then for each cluster the

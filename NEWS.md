@@ -1,4 +1,4 @@
-# stream 2.0-0-1 (xx/xx/22)
+# stream 2.0-1 (02/28/23)
 
 ## New Features
 * Added DST_SlidingWindow to call functions on a sliding window.
@@ -12,7 +12,7 @@
 * update() gained parameter return and lost assignment for DSC.
 * DST_WriteStream and write_stream now flush after the write.
 * DST_WriteStream gained close_stream().
-* Added tests for DSD. get_points with n = 0 and n = -1 produce not consistent results.
+* Added tests for DSD. get_points with n = 0 and n = -1 produce now consistent results.
 * write_stream has now no default for n and accepts n = -1.
 
 # stream 2.0-0 (09/01/22)

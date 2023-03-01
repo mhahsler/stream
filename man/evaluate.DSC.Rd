@@ -4,7 +4,7 @@
 \alias{evaluate.DSC}
 \alias{evaluate_static.DSC}
 \alias{evaluate_stream.DSC}
-\title{Evaluate Stream Clustering}
+\title{Evaluate a Stream Clustering Task}
 \usage{
 \method{evaluate_static}{DSC}(
   object,
@@ -72,8 +72,8 @@ attributes, \code{"type"} and \code{"assign"}, to see at what level the
 evaluation was done.
 }
 \description{
-Calculate evaluation measures for micro or macro-clusters from a \link{DSC} object given
-the original \link{DSD} object.
+Methods for the generic functions \code{\link[=evaluate_static]{evaluate_static()}} and \code{\link[=evaluate_stream]{evaluate_stream()}}  to calculate evaluation measures for micro or macro-clusters created by a \link{DSC} on the
+a \link{DSD} object.
 }
 \details{
 For evaluation, each data point is assigned to its nearest cluster using

@@ -1,6 +1,6 @@
 #' @title `r packageDescription("stream")$Package`: `r packageDescription("stream")$Title`
 #'
-#' @description `r packageDescription("stream")$Description`
+#' @description A framework for data stream modeling and associated data mining tasks such as clustering and classification.
 #'
 #' @author Michael Hahsler
 #' @docType package

@@ -5,7 +5,7 @@
 \alias{stream-package}
 \title{stream: Infrastructure for Data Stream Mining}
 \description{
-A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912. Hahsler et al (2017) \url{doi:10.18637/jss.v076.i14}.
+A framework for data stream modeling and associated data mining tasks such as clustering and classification.
 }
 \author{
 Michael Hahsler

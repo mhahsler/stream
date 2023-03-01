@@ -21,10 +21,10 @@
 
 #' Evaluate a Data Stream Mining Task
 #'
-#' Calculate evaluation measures for a data stream mining task [DST] using
+#' Generic function to calculate evaluation measures for a data stream mining task [DST] on
 #' a data stream [DSD] object.
 #'
-#' We provide two evaluation methods:
+#' We define two generic evaluation functions:
 #'
 #' - `evaluate_static()` evaluates the current [DST] model on new data without updating the model.
 #' - `evaluate_stream()` evaluates the [DST] model using
@@ -33,7 +33,9 @@
 #'     they are used for updating the cluster model. A horizon of ` means that each point is evaluated and
 #'     then used to update the model.
 #'
-#' The evaluation measures depend on the task.
+#' The available evaluation measures depend on the task. Currently available task to evaluate:
+#'
+#' * [DSC] via [evaluate.DSC]
 #'
 #' @family DST
 #' @family evaluation
@@ -49,7 +51,7 @@
 #' @param horizon Evaluation is done using horizon many previous points (see
 #' detail section).
 #' @param verbose Report progress?
-#' @param ... Further arguments.
+#' @param ... Further arguments are passed on to the specific implementation (e.g., see [evaluate.DSC])
 #' @return `evaluate` returns an object of class `stream_eval` which
 #' is a numeric vector of the values of the requested measures.
 #' @author Michael Hahsler
