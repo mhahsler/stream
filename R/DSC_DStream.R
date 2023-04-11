@@ -578,11 +578,13 @@ get_attraction <-
 }
 
 
+#' @export
 get_macroclusters.DSC_DStream <- function(x, ...) {
   .dstream_update_macro(x)
   get_centers(x$macro)
 }
 
+#' @export
 get_macroweights.DSC_DStream <- function(x, ...) {
   .dstream_update_macro(x)
   get_weights(x$macro)

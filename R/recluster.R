@@ -57,6 +57,7 @@ recluster <-
   function(macro, micro, type = "auto", ...)
     UseMethod("recluster")
 
+#' @export
 recluster.DSC <- function(macro, micro, type = "auto", ...) {
   stop(gettextf(
     "recluster not implemented for class '%s'.",

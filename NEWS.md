@@ -1,3 +1,9 @@
+# stream 2.0-2 (xx/xx/23)
+
+## Bugfix
+* Fixed exports for get_macroclusters.DSC_DStream, get_macroweights.DSC_DStream
+  and recluster.DSC
+
 # stream 2.0-1 (02/28/23)
 
 ## New Features

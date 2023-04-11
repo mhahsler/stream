@@ -28,7 +28,7 @@ rows are allowed on streams. Examples are:
 \item \code{\link[dplyr:select]{dplyr::select()}}
 \item \code{\link[dplyr:mutate]{dplyr::mutate()}}
 \item \code{\link[dplyr:rename]{dplyr::rename()}}
-\item \code{\link[dplyr:mutate]{dplyr::transmute()}}
+\item \code{\link[dplyr:transmute]{dplyr::transmute()}}
 \item \code{\link[dplyr:filter]{dplyr::filter()}}
 }
 
