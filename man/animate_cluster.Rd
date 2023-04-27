@@ -67,7 +67,7 @@ animate_cluster(dbstream, stream, horizon = 100, n = 5000,
 }
 }
 \seealso{
-\code{\link[animation:ani.record]{animation::ani.replay()}} for replaying and saving animations.
+\code{\link[animation:ani.replay]{animation::ani.replay()}} for replaying and saving animations.
 
 Other DSC: 
 \code{\link{DSC_Macro}()},

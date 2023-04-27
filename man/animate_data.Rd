@@ -48,7 +48,7 @@ saveHTML(ani.replay())
 }
 }
 \seealso{
-\code{\link[animation:ani.record]{animation::ani.replay()}} for replaying and saving animations.
+\code{\link[animation:ani.replay]{animation::ani.replay()}} for replaying and saving animations.
 
 Other DSD: 
 \code{\link{DSD_BarsAndGaussians}()},

@@ -52,7 +52,8 @@ DSOutlier_DStream(
 to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
 supported in the formula.}
 
-\item{gridsize}{Size of grid cells.}
+\item{gridsize}{a single number defining the size of grid cells in each dimension.
+For example for 3d data, the cells would be of size \verb{gridsize x gridsize x gridsize}.}
 
 \item{lambda}{Fading constant used function to calculate the decay factor
 \eqn{2^-lambda}.  (Note: in the paper the authors use lamba to denote the
