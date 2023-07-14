@@ -9,6 +9,8 @@ source("https://raw.githubusercontent.com/mhahsler/pkg_helpers/main/pkg_helpers.
 pkg_title(pkg)
 ```
 
+## Introduction
+
 The package provides support for modeling and simulating data streams as well as an extensible framework for implementing, interfacing and
 experimenting with algorithms for various data stream mining tasks. The main advantage of stream is that it seamlessly integrates with the large existing infrastructure provided by R. The package provides:
 
@@ -38,6 +40,7 @@ Additional packages in the stream family are:
 
 
 ```{r echo=FALSE, results = 'asis'}
+pkg_citation(pkg, 2)
 pkg_install(pkg)
 ```
 

@@ -8,6 +8,8 @@ status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-unive
 [![CRAN RStudio mirror
 downloads](http://cranlogs.r-pkg.org/badges/stream)](https://CRAN.R-project.org/package=stream)
 
+## Introduction
+
 The package provides support for modeling and simulating data streams as
 well as an extensible framework for implementing, interfacing and
 experimenting with algorithms for various data stream mining tasks. The
@@ -42,6 +44,24 @@ Additional packages in the stream family are:
   **threshold nearest neighbor clustering** (tNN) and **Extensible
   Markov Model** (EMM) for modelling temporal relationships between
   clusters.
+
+Please cite the use of this package as:
+
+> Hahsler M, Bola~nos M, Forrest J (2017). “Introduction to stream: An
+> Extensible Framework for Data Stream Clustering Research with R.”
+> *Journal of Statistical Software*, *76*(14), 1-50.
+> <doi:10.18637/jss.v076.i14> <https://doi.org/10.18637/jss.v076.i14>.
+
+    @Article{,
+      title = {Introduction to {stream}: An Extensible Framework for Data Stream Clustering Research with {R}},
+      author = {Michael Hahsler and Matthew Bola{\~n}os and John Forrest},
+      journal = {Journal of Statistical Software},
+      year = {2017},
+      volume = {76},
+      number = {14},
+      pages = {1--50},
+      doi = {10.18637/jss.v076.i14},
+    }
 
 ## Installation
 
