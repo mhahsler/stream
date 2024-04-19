@@ -76,8 +76,7 @@ DST_Runner <- function(dsd, dst) {
 }
 
 #' @export
-update.DST_Runner <- function(object, dsd = NULL, n = 1L, return = "model", ...) {
-
+update.DST_Runner <- function(object, dsd = NULL, n = 1L, return = "nothing", ...) {
 
   if (is.null(dsd))
     ps <- get_points(object$dsd, n = n)
