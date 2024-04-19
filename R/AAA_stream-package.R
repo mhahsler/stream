@@ -1,10 +1,13 @@
-#' @title `r packageDescription("stream")$Package`: `r packageDescription("stream")$Title`
+#' @keywords internal
 #'
-#' @description A framework for data stream modeling and associated data mining tasks such as clustering and classification.
-#'
-#' @author Michael Hahsler
-#' @docType package
-#' @name stream-package
+#' @section Key Classes:
+#' - [DSD] Data stream data and [DSF] data stream filter to transform data streams in flight.
+#' - [DST] Data stream mining tasks:
+#'    - [DSAggregate] Data stream aggregator
+#'    - [DSC] Data stream clustering
+#'    - [DSClassifier] Data stream classifiers
+#'    - [DSOutlier] Data stream outlier detectors
+#'    - [DSRegressor] Data stream regressors
 #'
 #' @import Rcpp
 #' @import proxy
@@ -18,4 +21,4 @@
 #' @importFrom mlbench mlbench.2dnormals mlbench.cassini mlbench.circle  mlbench.cuboids mlbench.friedman1  mlbench.friedman2  mlbench.friedman3 mlbench.hypercube  mlbench.peak  mlbench.ringnorm  mlbench.shapes mlbench.simplex mlbench.smiley  mlbench.spirals mlbench.threenorm  mlbench.twonorm  mlbench.waveform mlbench.xor
 #'
 #' @useDynLib stream, .registration=TRUE
-NULL
+"_PACKAGE"
