@@ -64,25 +64,25 @@ agreement(pr[,".class"], points[,".class"])
 \seealso{
 Other DST: 
 \code{\link{DSAggregate}()},
-\code{\link{DSClassifier}()},
 \code{\link{DSC}()},
+\code{\link{DSClassifier}()},
 \code{\link{DSOutlier}()},
 \code{\link{DSRegressor}()},
+\code{\link{DST}()},
 \code{\link{DST_SlidingWindow}()},
 \code{\link{DST_WriteStream}()},
-\code{\link{DST}()},
 \code{\link{evaluate}},
 \code{\link{stream_pipeline}},
 \code{\link{update}()}
 
 Other DSC: 
+\code{\link{DSC}()},
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_R}()},
 \code{\link{DSC_SlidingWindow}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC}()},
 \code{\link{animate_cluster}()},
 \code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},

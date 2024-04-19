@@ -727,6 +727,10 @@ get_assignment.DSC_DStream <-
 
     points <- remove_info(points)
 
+    ## apply formula
+    if (!is.null(dsc$RObj$colnames))
+      points <- points[, dsc$RObj$colnames, drop = FALSE]
+
     if (method == "auto")
       method <- "model"
     if (method != "model")

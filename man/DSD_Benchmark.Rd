@@ -42,6 +42,7 @@ animate_data(stream, n = 10000, horizon = 100, xlim = c(0, 1), ylim = c(0, 1))
 }
 \seealso{
 Other DSD: 
+\code{\link{DSD}()},
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Cubes}()},
 \code{\link{DSD_Gaussians}()},
@@ -55,7 +56,6 @@ Other DSD:
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
 \code{\link{close_stream}()},

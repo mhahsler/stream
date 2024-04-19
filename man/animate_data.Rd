@@ -48,9 +48,10 @@ saveHTML(ani.replay())
 }
 }
 \seealso{
-\code{\link[animation:ani.replay]{animation::ani.replay()}} for replaying and saving animations.
+\code{\link[animation:ani.record]{animation::ani.replay()}} for replaying and saving animations.
 
 Other DSD: 
+\code{\link{DSD}()},
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
 \code{\link{DSD_Cubes}()},
@@ -65,7 +66,6 @@ Other DSD:
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{close_stream}()},
 \code{\link{get_points}()},

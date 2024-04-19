@@ -2,11 +2,46 @@
 % Please edit documentation in R/AAA_stream-package.R
 \docType{package}
 \name{stream-package}
+\alias{stream}
 \alias{stream-package}
 \title{stream: Infrastructure for Data Stream Mining}
 \description{
-A framework for data stream modeling and associated data mining tasks such as clustering and classification.
+A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912. Hahsler et al (2017) \doi{10.18637/jss.v076.i14}.
+}
+\section{Key Classes}{
+
+\itemize{
+\item \link{DSD} Data stream data and \link{DSF} data stream filter to transform data streams in flight.
+\item \link{DST} Data stream mining tasks:
+\itemize{
+\item \link{DSAggregate} Data stream aggregator
+\item \link{DSC} Data stream clustering
+\item \link{DSClassifier} Data stream classifiers
+\item \link{DSOutlier} Data stream outlier detectors
+\item \link{DSRegressor} Data stream regressors
+}
+}
+}
+
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/mhahsler/stream}
+  \item Report bugs at \url{https://github.com/mhahsler/stream/issues}
+}
+
 }
 \author{
-Michael Hahsler
+\strong{Maintainer}: Michael Hahsler \email{mhahsler@lyle.smu.edu} (\href{https://orcid.org/0000-0003-2716-1405}{ORCID}) [copyright holder]
+
+Other contributors:
+\itemize{
+  \item Matthew Bolaños [contributor]
+  \item John Forrest [contributor]
+  \item Matthias Carnein [contributor]
+  \item Dennis Assenmacher [contributor]
+  \item Dalibor Krleža [contributor]
 }
+
+}
+\keyword{internal}

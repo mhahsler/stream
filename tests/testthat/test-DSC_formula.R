@@ -57,3 +57,16 @@ if (interactive()) {
   str(up)
 }
 
+
+### test predict with formula
+stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
+dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
+
+update(dbstream, stream, 500)
+get_centers(dbstream)
+
+points <- get_points(stream, 20)
+predict(dbstream, points)
+
+
+

@@ -41,13 +41,13 @@ plot(static, stream)
 \code{\link{DSC_Static}}
 
 Other DSC: 
+\code{\link{DSC}()},
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_R}()},
 \code{\link{DSC_SlidingWindow}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC}()},
 \code{\link{animate_cluster}()},
 \code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},

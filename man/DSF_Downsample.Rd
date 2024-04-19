@@ -47,12 +47,13 @@ plot(downsampledStream, dim = 1, n = 40, method = "ts")
 }
 \seealso{
 Other DSF: 
+\code{\link{DSF}()},
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_FeatureSelection}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()},
-\code{\link{DSF}()}
+\code{\link{DSF_dplyr}()}
 }
 \author{
 Michael Hahsler

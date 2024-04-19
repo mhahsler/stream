@@ -13,12 +13,12 @@ Authors@R: c(person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
             person("Dalibor", "Krleža", role = c("ctb"))
             )
 Description: A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912. Hahsler et al (2017) <doi:10.18637/jss.v076.i14>.
-Depends: R (>= 3.5.0), methods, proxy (>= 0.4-7), magrittr
-Imports: clue, cluster, clusterGeneration, dbscan (>= 1.0-0), fpc, graphics, grDevices, MASS, mlbench, rpart, Rcpp (>= 0.11.4), stats, utils
+Depends: R (>= 3.5.0), methods, magrittr
+Imports: clue, cluster, clusterGeneration, dbscan (>= 1.0-0), fpc, graphics, grDevices, MASS, mlbench, rpart, Rcpp (>= 0.11.4), stats, utils, proxy (>= 0.4-7)
 Suggests: animation, DBI, dplyr, rJava, RSQLite, testthat, knitr
 URL: https://github.com/mhahsler/stream
 BugReports: https://github.com/mhahsler/stream/issues
 LinkingTo: Rcpp, BH
 License: GPL-3
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)

@@ -163,6 +163,10 @@ get_assignment.DSC_TwoStage <-
     ...) {
     points <- remove_info(points)
 
+    ## apply formula
+    if (!is.null(dsc$RObj$colnames))
+      points <- points[, dsc$RObj$colnames, drop = FALSE]
+
     type <- match.arg(type)
     if (type == "micro") {
       dsc$state$newdata <- TRUE

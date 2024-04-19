@@ -66,8 +66,8 @@ Very Large Data Bases (VLDB'02).
 }
 \seealso{
 Other DSAggregate: 
-\code{\link{DSAggregate_Sample}()},
-\code{\link{DSAggregate}()}
+\code{\link{DSAggregate}()},
+\code{\link{DSAggregate_Sample}()}
 }
 \author{
 Michael Hahsler

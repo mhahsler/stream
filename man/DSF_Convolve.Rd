@@ -146,12 +146,13 @@ ISBN 0966017633, URL: https://www.dspguide.com/
 \link[stats:filter]{stats::filter} provides non-streaming convolution.
 
 Other DSF: 
+\code{\link{DSF}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_FeatureSelection}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()},
-\code{\link{DSF}()}
+\code{\link{DSF_dplyr}()}
 }
 \author{
 Michael Hahsler

@@ -93,8 +93,12 @@ get_assignment.DSC <-
       warning("method model not implemented! using Euclidean nearest neighbor instead!")
       method <- "nn"
     }
-
     points <- remove_info(points)
+
+    ## apply formula
+    if (!is.null(dsc$formula) && !is.null(dsc$RObj$colnames))
+        points <- points[, dsc$RObj$colnames, drop = FALSE]
+
     c <- get_centers(dsc, type = type, ...)
 
     if (nrow(c) > 0L) {

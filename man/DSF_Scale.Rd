@@ -60,12 +60,13 @@ apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 \link{scale} in \pkg{base}
 
 Other DSF: 
+\code{\link{DSF}()},
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_FeatureSelection}()},
 \code{\link{DSF_Func}()},
-\code{\link{DSF_dplyr}()},
-\code{\link{DSF}()}
+\code{\link{DSF_dplyr}()}
 }
 \author{
 Michael Hahsler

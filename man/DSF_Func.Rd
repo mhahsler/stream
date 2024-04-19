@@ -71,12 +71,13 @@ plot(stream5)
 }
 \seealso{
 Other DSF: 
+\code{\link{DSF}()},
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_FeatureSelection}()},
 \code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()},
-\code{\link{DSF}()}
+\code{\link{DSF_dplyr}()}
 }
 \author{
 Michael Hahsler

@@ -61,8 +61,8 @@ Evolution. International Conference on Very Large Databases (VLDB'06).
 }
 \seealso{
 Other DSAggregate: 
-\code{\link{DSAggregate_Window}()},
-\code{\link{DSAggregate}()}
+\code{\link{DSAggregate}()},
+\code{\link{DSAggregate_Window}()}
 }
 \author{
 Michael Hahsler

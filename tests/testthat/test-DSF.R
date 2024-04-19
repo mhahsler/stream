@@ -96,12 +96,11 @@ expect_equal(dim(p), c(3L, 3L))
 p <- get_points(stream_2features, n = 3, info = FALSE)
 expect_equal(dim(p), c(3L, 2L))
 
-stream_2features <- DSF_FeatureSelection(stream, features = c("X1", "X4"))
-expect_error(get_points(stream_2features, n = 3, info = FALSE))
-
 p <- get_points(stream_2features, n = 0)
 expect_equal(dim(p), c(0L, 3L))
 
 p <- get_points(stream_2features, n = 0, info = FALSE)
 expect_equal(dim(p), c(0L, 2L))
 
+stream_2features <- DSF_FeatureSelection(stream, features = c("X1", "X4"))
+expect_error(get_points(stream_2features, n = 3, info = FALSE))

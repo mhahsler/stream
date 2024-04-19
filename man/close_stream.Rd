@@ -28,6 +28,7 @@ Close a data stream that needs closing (e.g., a file or a connection).
 }
 \seealso{
 Other DSD: 
+\code{\link{DSD}()},
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
 \code{\link{DSD_Cubes}()},
@@ -42,7 +43,6 @@ Other DSD:
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
 \code{\link{get_points}()},

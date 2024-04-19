@@ -142,6 +142,19 @@
 #'
 #' update(dbstream, stream, 500)
 #' get_centers(dbstream)
+#'
+#' # use DBSTREAM for outlier detection
+#' stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
+#' outlier_detector <- DSOutlier_DBSTREAM(r = .2)
+#'
+#' update(outlier_detector, stream, 500)
+#' outlier_detector
+#'
+#' plot(outlier_detector, stream)
+#'
+#' points <- get_points(stream, 20)
+#' points
+#' which(is.na(predict(outlier_detector, points)))
 #' @export
 DSC_DBSTREAM <- function(formula = NULL,
   r,
@@ -547,6 +560,10 @@ get_assignment.DSC_DBSTREAM <- function(dsc,
   method <- match.arg(method)
 
   points <- remove_info(points)
+
+  ## apply formula
+  if (!is.null(dsc$RObj$colnames))
+    points <- points[, dsc$RObj$colnames, drop = FALSE]
 
   if (method == "auto")
     method <- "model"

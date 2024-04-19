@@ -63,12 +63,13 @@ plot(stream2, xlim = c(0, 1), ylim = c(0, 1))
 }
 \seealso{
 Other DSF: 
+\code{\link{DSF}()},
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
 \code{\link{DSF_ExponentialMA}()},
+\code{\link{DSF_FeatureSelection}()},
 \code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
-\code{\link{DSF}()}
+\code{\link{DSF_Scale}()}
 }
 \author{
 Michael Hahsler

@@ -198,6 +198,19 @@ dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
 
 update(dbstream, stream, 500)
 get_centers(dbstream)
+
+# use DBSTREAM for outlier detection
+stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
+outlier_detector <- DSOutlier_DBSTREAM(r = .2)
+
+update(outlier_detector, stream, 500)
+outlier_detector
+
+plot(outlier_detector, stream)
+
+points <- get_points(stream, 20)
+points
+which(is.na(predict(outlier_detector, points)))
 }
 \references{
 Michael Hahsler and Matthew Bolanos. Clustering data streams

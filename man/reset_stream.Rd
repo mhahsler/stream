@@ -52,6 +52,7 @@ replayer
 }
 \seealso{
 Other DSD: 
+\code{\link{DSD}()},
 \code{\link{DSD_BarsAndGaussians}()},
 \code{\link{DSD_Benchmark}()},
 \code{\link{DSD_Cubes}()},
@@ -66,7 +67,6 @@ Other DSD:
 \code{\link{DSD_UniformNoise}()},
 \code{\link{DSD_mlbenchData}()},
 \code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSD}()},
 \code{\link{DSF}()},
 \code{\link{animate_data}()},
 \code{\link{close_stream}()},

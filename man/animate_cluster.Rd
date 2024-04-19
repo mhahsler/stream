@@ -67,16 +67,16 @@ animate_cluster(dbstream, stream, horizon = 100, n = 5000,
 }
 }
 \seealso{
-\code{\link[animation:ani.replay]{animation::ani.replay()}} for replaying and saving animations.
+\code{\link[animation:ani.record]{animation::ani.replay()}} for replaying and saving animations.
 
 Other DSC: 
+\code{\link{DSC}()},
 \code{\link{DSC_Macro}()},
 \code{\link{DSC_Micro}()},
 \code{\link{DSC_R}()},
 \code{\link{DSC_SlidingWindow}()},
 \code{\link{DSC_Static}()},
 \code{\link{DSC_TwoStage}()},
-\code{\link{DSC}()},
 \code{\link{evaluate.DSC}},
 \code{\link{get_assignment}()},
 \code{\link{plot.DSC}()},
@@ -91,8 +91,8 @@ Other plot:
 \code{\link{plot.DSD}()}
 
 Other evaluation: 
-\code{\link{evaluate.DSC}},
-\code{\link{evaluate}}
+\code{\link{evaluate}},
+\code{\link{evaluate.DSC}}
 }
 \author{
 Michael Hahsler

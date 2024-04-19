@@ -45,12 +45,12 @@ file.remove("data.txt")
 \seealso{
 Other DST: 
 \code{\link{DSAggregate}()},
-\code{\link{DSClassifier}()},
 \code{\link{DSC}()},
+\code{\link{DSClassifier}()},
 \code{\link{DSOutlier}()},
 \code{\link{DSRegressor}()},
-\code{\link{DST_SlidingWindow}()},
 \code{\link{DST}()},
+\code{\link{DST_SlidingWindow}()},
 \code{\link{evaluate}},
 \code{\link{predict}()},
 \code{\link{stream_pipeline}},

@@ -45,12 +45,13 @@ plot(smoothStream, dim = 1, n = 120, method = "ts", main = "With ExponentialMA(.
 }
 \seealso{
 Other DSF: 
+\code{\link{DSF}()},
 \code{\link{DSF_Convolve}()},
 \code{\link{DSF_Downsample}()},
+\code{\link{DSF_FeatureSelection}()},
 \code{\link{DSF_Func}()},
 \code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()},
-\code{\link{DSF}()}
+\code{\link{DSF_dplyr}()}
 }
 \author{
 Michael Hahsler

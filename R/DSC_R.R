@@ -100,6 +100,7 @@ update.DSC_R <- function(object,
   for (bl in .make_block(n, block)) {
     p <- get_points(dsd, bl, info = FALSE)
 
+    ## apply formula
     if (!is.null(object$formula)) {
       if (is.null(object$RObj$colnames)) {
         trms <- terms(object$formula, data = p)
