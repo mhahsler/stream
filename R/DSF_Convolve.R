@@ -23,7 +23,7 @@
 #' A filter kernel is a vector with kernel weights. A few filter are provided.
 #'
 #' * `filter_MA(width)` creates a moving average.
-#' * `filter_diff(lag)` calculates laged differences. Note that `na.rm = TRUE` will lead to artifacts and should not be used.
+#' * `filter_diff(lag)` calculates lagged differences. Note that `na.rm = TRUE` will lead to artifacts and should not be used.
 #' * `filter_Hamming(width)` creates a Hamming window.
 #' * `filter_Sinc(fc, fs, width, bw)` creates a windowed-sinc filter. One of `width` (filter length) or
 #'   `bw` (transition bandwidth can  be used to control the filter roll-off. The relationship is \eqn{width = 4/bw}.

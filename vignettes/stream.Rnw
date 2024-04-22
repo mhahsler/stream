@@ -1312,7 +1312,7 @@ replayer
 
 Note that the stream is now at position 6.
 The stream only has 1854 points left and the following request for more
-than the available number of data points results in returning all remainin points and a warning.
+than the available number of data points results in returning all remaining points and a warning.
 
 <<>>=
 points <- get_points(replayer, n = 2000)

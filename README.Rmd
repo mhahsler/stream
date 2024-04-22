@@ -99,7 +99,7 @@ pipeline$dst
 ```
 
 
-## Acknowledgements
+## Acknowledgments
 
 The development of the stream package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 

@@ -67,7 +67,7 @@ Applies a filter (i.e., a convolution with a filter kernel) to a data stream.
 A filter kernel is a vector with kernel weights. A few filter are provided.
 \itemize{
 \item \code{filter_MA(width)} creates a moving average.
-\item \code{filter_diff(lag)} calculates laged differences. Note that \code{na.rm = TRUE} will lead to artifacts and should not be used.
+\item \code{filter_diff(lag)} calculates lagged differences. Note that \code{na.rm = TRUE} will lead to artifacts and should not be used.
 \item \code{filter_Hamming(width)} creates a Hamming window.
 \item \code{filter_Sinc(fc, fs, width, bw)} creates a windowed-sinc filter. One of \code{width} (filter length) or
 \code{bw} (transition bandwidth can  be used to control the filter roll-off. The relationship is \eqn{width = 4/bw}.

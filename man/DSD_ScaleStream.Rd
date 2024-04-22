@@ -10,7 +10,8 @@ DSD_ScaleStream(...)
 \item{...}{arguments are passed on to \code{\link[=DSF_Scale]{DSF_Scale()}}.}
 }
 \value{
-Produces a depreation warning and returns an object of class
+Produces a warning that \code{DSD_ScaleStream} is deprecated
+and returns an object of class
 \link{DSF_Scale} (subclass of \link{DSF} and \link{DSD}).
 }
 \description{

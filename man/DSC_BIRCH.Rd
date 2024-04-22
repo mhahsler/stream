@@ -40,7 +40,7 @@ BIRCH builds a balanced tree of Clustering Features (CFs) to summarize the
 stream.
 }
 \details{
-A CF in the calanced tree is a tuple (n, LS, SS) which represents a cluster
+A CF in the balanced tree is a tuple (n, LS, SS) which represents a cluster
 by storing the number of elements (n), their linear sum (LS) and their
 squared sum (SS). Each new observation descends the tree by following its
 closest CF until a leaf node is reached. It is either merged into its

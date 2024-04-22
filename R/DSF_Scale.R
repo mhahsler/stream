@@ -150,7 +150,8 @@ update.DSF_Scale <- function(object,
 #' Deprecated! Use [DSF_Scale] instead.
 #'
 #' @param ... arguments are passed on to [DSF_Scale()].
-#' @return Produces a depreation warning and returns an object of class
+#' @return Produces a warning that `DSD_ScaleStream` is deprecated
+#'  and returns an object of class
 #' [DSF_Scale] (subclass of [DSF] and [DSD]).
 #' @export
 DSD_ScaleStream <- function(...)
