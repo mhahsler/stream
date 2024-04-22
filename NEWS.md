@@ -1,4 +1,9 @@
-# stream 2.0-2 (xx/xx/23)
+# stream 2.0-2.1 (xx/xx/24)
+
+## Bugfix
+* We check now the parameters for DSC_BICO (m-muecke).
+
+# stream 2.0-2 (04/19/24)
 
 ## New Features
 * Added DSF_FeatureSelection.

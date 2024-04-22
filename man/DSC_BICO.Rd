@@ -13,15 +13,15 @@ DSC_BICO(formula = NULL, k = 5, space = 10, p = 10, iterations = 10)
 to specify the features used for clustering. Only \code{.}, \code{+} and \code{-} are currently
 supported in the formula.}
 
-\item{k}{number of centers}
+\item{k}{number of centers.}
 
-\item{space}{coreset size}
+\item{space}{coreset size.}
 
 \item{p}{number of random projections used for nearest neighbor search in
-first level}
+first level.}
 
 \item{iterations}{number of repetitions for the kmeans++ procedure in the
-offline component}
+offline component.}
 }
 \description{
 Micro Clusterer.
