@@ -28,6 +28,8 @@ experimenting with algorithms for various data stream mining tasks. The main adv
 
 Additional packages in the stream family are:
 
+* [streamConnect](https://github.com/mhahsler/streamConnect): Connect stream mining 
+    components using sockets and web services.
 * [streamMOA](https://github.com/mhahsler/streamMOA): Interface to clustering
   algorithms implemented in the [MOA](https://moa.cms.waikato.ac.nz/) framework.
   The package interfaces clustering algorithms like of **DenStream**, **ClusTree**, 

@@ -1,10 +1,10 @@
 
 # <img src="man/figures/logo.svg" align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
 
-[![CRAN
-version](http://www.r-pkg.org/badges/version/stream)](https://CRAN.R-project.org/package=stream)
-[![stream r-universe
+[![r-universe
 status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev/stream)
+[![Package on
+CRAN](http://www.r-pkg.org/badges/version/stream)](https://CRAN.R-project.org/package=stream)
 [![CRAN RStudio mirror
 downloads](http://cranlogs.r-pkg.org/badges/stream)](https://CRAN.R-project.org/package=stream)
 
@@ -33,6 +33,8 @@ existing infrastructure provided by R. The package provides:
 
 Additional packages in the stream family are:
 
+- [streamConnect](https://github.com/mhahsler/streamConnect): Connect
+  stream mining components using sockets and web services.
 - [streamMOA](https://github.com/mhahsler/streamMOA): Interface to
   clustering algorithms implemented in the
   [MOA](https://moa.cms.waikato.ac.nz/) framework. The package
@@ -88,8 +90,7 @@ Load the package and a random data stream with 3 Gaussian clusters and
 library("stream")
 set.seed(2000)
 
-stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.1) %>%
-    DSF_Scale()
+stream <- DSD_Gaussians(k = 3, d = 2, noise= .1) %>% DSF_Scale()
 get_points(stream, n = 5)
 ```
 
@@ -110,7 +111,7 @@ Cluster a stream of 1000 points using D-Stream which estimates point
 density in grid cells.
 
 ``` r
-dsc <- DSC_DStream(gridsize = 0.1)
+dsc <- DSC_DStream(gridsize = .1)
 update(dsc, stream, 1000)
 plot(dsc, stream, grid = TRUE)
 ```
@@ -159,7 +160,7 @@ Outlier detection using DBSTREAM which uses micro-clusters with a given
 radius.
 
 ``` r
-dso <- DSOutlier_DBSTREAM(r = 0.1)
+dso <- DSOutlier_DBSTREAM(r = .1)
 update(dso, stream, 1000)
 plot(dso, stream)
 ```
@@ -167,8 +168,7 @@ plot(dso, stream)
 ![](inst/README_files/DSOutlier_DBSTREAM-1.png)<!-- -->
 
 ``` r
-evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "noisePredicted",
-    "noisePrecision"))
+evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "noisePredicted", "noisePrecision"))
 ```
 
     ## Evaluation results for micro-clusters.
@@ -185,9 +185,9 @@ Preparing complete stream process pipelines that can be run using a
 single `update()` call.
 
 ``` r
-pipeline <- DSD_Gaussians(k = 3, d = 2, noise = 0.1) %>%
-    DSF_Scale() %>%
-    DST_Runner(DSC_DStream(gridsize = 0.1))
+pipeline <- DSD_Gaussians(k = 3, d = 2, noise= .1) %>% 
+  DSF_Scale() %>% 
+  DST_Runner(DSC_DStream(gridsize = .1))
 pipeline
 ```
 
@@ -207,7 +207,7 @@ pipeline$dst
     ## Number of micro-clusters: 160 
     ## Number of macro-clusters: 13
 
-## Acknowledgements
+## Acknowledgments
 
 The development of the stream package was supported in part by NSF
 IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
