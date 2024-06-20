@@ -119,7 +119,7 @@ DSD_MG <-
 
     l <- list(...)
     if (length(l) > 0) {
-      for (i in 1:length(l)) {
+      for (i in seq_along(l)) {
         add_cluster(x, l[[i]], labels[i])
       }
     }
@@ -217,7 +217,7 @@ dsd_MG_refClass$methods(
 
       if (k >= 1) {
         clusterOrder <- sample(
-          x = 1:length(clusters),
+          x = seq_along(clusters),
           size = k,
           replace = TRUE,
           prob = density / sum(density)

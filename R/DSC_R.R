@@ -77,7 +77,7 @@ update.DSC_R <- function(object,
     return(switch(
       return,
       nothing = invisible(NULL),
-      assignment = data.frame(`.class` = integer(0)),
+      assignment = data.frame(.class = integer(0)),
       model = get_model(object)
     ))
 

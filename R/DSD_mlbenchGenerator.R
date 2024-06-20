@@ -119,7 +119,7 @@ get_points.DSD_mlbenchGenerator <- function(x,
   }
 
   dat <- as.data.frame(d$x)
-  colnames(dat) <- paste0("X", 1:ncol(dat))
+  colnames(dat) <- paste0("X", seq_len(ncol(dat)))
 
   if (info)
     dat[['.class']] <- as.integer(d$classes)

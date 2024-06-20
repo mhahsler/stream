@@ -90,7 +90,7 @@ get_points.DSD_UniformNoise <- function(x,
     data <- t(data)
 
   data <- data.frame(data)
-  colnames(data) <- paste0("X", 1:ncol(data))
+  colnames(data) <- paste0("X", seq_len(ncol(data)))
 
   if (info)
     data[[".class"]] <- NA

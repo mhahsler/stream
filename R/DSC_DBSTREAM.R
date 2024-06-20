@@ -681,7 +681,7 @@ plot.DSC_DBSTREAM <- function(x,
       assignment <- 3L
     if (nrow(p) > 0) {
       points(p, col = "black", pch = 3L)
-      for (i in 1:nrow(p)) {
+      for (i in seq_len(nrow(p))) {
         lines(
           ellipsePoints(x$RObj$r, x$RObj$r,
             loc = as.numeric(p[i, ]), n = 60),
@@ -720,7 +720,7 @@ plot.DSC_DBSTREAM <- function(x,
 
         edges <- cbind(edges, map(edges[, 3], range = c(1, 4)))
 
-        for (i in 1:nrow(edges)) {
+        for (i in seq_len(nrow(edges))) {
           lines(rbind(p[edges[i, 1], ], p[edges[i, 2], ]),
             col = "black", lwd = edges[i, 4])
         }

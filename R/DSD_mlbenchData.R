@@ -179,7 +179,7 @@ DSD_mlbenchData <-
     d <- d[complete,]
 
     if (random) {
-      rand <- sample(1:length(a), length(a), replace = F)
+      rand <- sample(seq_along(a), length(a), replace = FALSE)
       a <- a[rand]
       d <- d[rand,]
     }

@@ -189,7 +189,7 @@ kmeans_refClass$methods(
       clusterCenters <<- data.frame(km$centers)
       details <<- km
     } else {
-      assignment <<- 1:nrow(data)
+      assignment <<- seq_len(nrow(data))
       clusterCenters <<- x
       details <<- NULL
     }
@@ -220,7 +220,7 @@ kmeans_refClass$methods(
 
   microToMacro = function(micro = NULL, ...) {
     if (is.null(micro))
-      micro <- 1:nrow(data)
+      micro <- seq_len(nrow(data))
     structure(assignment[micro], names = micro)
   }
 )

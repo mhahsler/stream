@@ -2,7 +2,7 @@ library("testthat")
 library("stream")
 
 short_desc <- function(x)
-  strsplit(description(x), " ")[[1L]][1L]
+  strsplit(description(x), " ", fixed = TRUE)[[1L]][1L]
 
 set.seed(0)
 stream <-
