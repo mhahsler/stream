@@ -98,7 +98,7 @@ BICO_R$methods(
     if (k < 1)
       stop("k needs to be > 0.")
     if (iterations < 1)
-      stop("k needs to be > 0.")
+      stop("iterations needs to be > 0.")
     if (p < 1)
       stop("p needs to be > 0.")
 
