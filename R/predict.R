@@ -52,7 +52,7 @@
 #' agreement(pr[,".class"], points[,".class"])
 #' @export
 predict.DST <- function(object, newdata, ...)
-  stop("predict() not implemented for ", paste0(class(object), collapse = ", "))
+  stop("predict() not implemented for ", toString(class(object)))
 
 #' @rdname predict
 #' @param type Use micro- or macro-clusters in [DSC] for assignment.

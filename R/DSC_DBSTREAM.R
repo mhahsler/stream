@@ -252,7 +252,7 @@ dbstream <- setRefClass(
       m <- pmatch(tolower(metric), metrics) - 1L
       if (is.na(m))
         stop("Unknow metric! Available metrics: ",
-          paste(metrics, collapse = ", "))
+          toString(metrics))
       metric <<- m
       metric_name <<- metrics[m + 1L]
 

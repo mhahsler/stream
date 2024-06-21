@@ -61,7 +61,7 @@ recluster <-
 recluster.DSC <- function(macro, micro, type = "auto", ...) {
   stop(gettextf(
     "recluster not implemented for class '%s'.",
-    paste(class(macro), collapse = ", ")
+    toString(class(macro))
   ))
 }
 

@@ -148,7 +148,7 @@ nclusters.DSC <-
 #' @export
 print.DSC <- function(x, ...) {
   cat(.line_break(paste(x$description)), "\n")
-  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat("Class:", toString(class(x)), "\n")
   if (!is(nc <-
       try(nclusters(x, type = "micro"), silent = TRUE)
     , "try-error"))

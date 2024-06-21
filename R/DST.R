@@ -60,7 +60,7 @@ DST <- function(...) {
 #' @export
 print.DST <- function(x, ...) {
   cat(.line_break(paste(x$description)), "\n")
-  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat("Class:", toString(class(x)), "\n")
 }
 
 #' @rdname DST
@@ -95,5 +95,5 @@ get_model <- function(x, ...)
 
 #' @export
 get_model.DST <- function(x, ...)
-  stop(paste("get_model() not implemented for class", paste(class(x), collapse = ", ")))
+  stop("get_model() not implemented for class ", toString(class(x)))
 

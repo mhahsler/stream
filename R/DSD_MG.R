@@ -297,7 +297,7 @@ reset_stream.DSD_MG <- function(dsd, pos = 1) {
 print.DSD_MG <- function(x, ...) {
   #NextMethod()
   cat(.line_break(paste(x$description)))
-  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat("Class:", toString(class(x)), "\n")
   cat(
     paste(
       'With',

@@ -117,7 +117,7 @@ update.DSF <- function(object,
   n = 1L,
   return = "data",
   ...)
-  stop("Not implemented for class", paste(class(object), collapse = ", "))
+  stop("Not implemented for class ", toString(class(object)))
 
 #' @describeIn DSF close the attached stream if close is supported.
 #' @export

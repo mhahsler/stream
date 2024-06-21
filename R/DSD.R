@@ -121,7 +121,7 @@ get_points.DSD <-
     info = TRUE,
     ...)
     stop("No implementation for 'get_points()' found for class ",
-      paste(class(x), collapse = ", "))
+      toString(class(x)))
 
 #' @export
 get_points.data.frame <-
@@ -181,7 +181,7 @@ get_dims <- function(dim, points) {
   else if (is.character(dim)) {
     dim_idx <- pmatch(dim, colnames(points))
     if (any(na_idx <- is.na(dim_idx)))
-      stop("Unknown dimname(s): ", paste0(dim[na_idx], collapse = ", "))
+      stop("Unknown dimname(s): ", toString(dim[na_idx]))
   } else
     dim_idx <- as.integer(dim)
 
@@ -233,7 +233,7 @@ reset_stream <- function(dsd, pos = 1)
 reset_stream.DSD <- function(dsd, pos = 1) {
   stop(gettextf(
     "reset_stream not implemented for class '%s'.",
-    paste(class(dsd), collapse = ", ")
+    toString(class(dsd))
   ))
 }
 
@@ -259,7 +259,7 @@ close_stream <- function(dsd, ...)
 close_stream.DSD <- function(dsd, ...) {
   warning(gettextf(
     "close_stream not needed/implemented for class '%s'.",
-    paste(class(dsd), collapse = ", ")
+    toString(class(dsd))
   ))
 }
 
@@ -288,7 +288,7 @@ print.DSD <- function(x, ...) {
     d <- NA
 
   cat(.line_break(x$description), "\n")
-  cat("Class:", paste(class(x), collapse = ", "), "\n")
+  cat("Class:", toString(class(x)), "\n")
 }
 
 #' @export

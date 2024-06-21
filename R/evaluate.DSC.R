@@ -346,7 +346,7 @@ evaluate_static.DSC <-
 
       if (anyNA(matchm))
         stop("Invalid or not applicable measures (may need class information): ",
-          paste(measure[is.na(matchm)], collapse = ', '))
+          toString(measure[is.na(matchm)]))
 
       measure <- m[matchm]
     }
@@ -512,7 +512,7 @@ evaluate_buildin <-
     measure <- measure[measure %in% c(measures_builtin_int, measures_builtin_ext)]
     if (is.null(actual) && any(measure %in% measures_builtin_ext))
       stop("External evaluation measure(s) ",
-        paste(measure[measure %in% measures_builtin_ext], collapse = ", "),
+        toString(measure[measure %in% measures_builtin_ext]),
         " not available for streams without cluster labels!")
 
     if(length(measure) < 1L)
@@ -629,7 +629,7 @@ evaluate_fpc <-
       measure <- measure[measure %in% c(measures_fpc_int, measures_fpc_ext)]
       if (is.null(actual) && any(measure %in% measures_fpc_ext))
         stop("External evaluation measure(s) ",
-          paste(measure[measure %in% measures_fpc_ext], collapse = ", "),
+          toString(measure[measure %in% measures_fpc_ext]),
           " not available for streams without cluster labels!")
     }
 
