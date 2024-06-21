@@ -212,7 +212,7 @@ print.MGC_Linear <- function(x, ...) {
   cat(paste(
     x$description,
     " (",
-    paste(class(x), collapse = ", "),
+    toString(class(x)),
     ")",
     '\n',
     sep = ""

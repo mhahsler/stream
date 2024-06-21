@@ -45,7 +45,7 @@ DSF_FeatureSelection <-
     l <- list(
       description = paste0(
         ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD"),
-        "\n  + Feature Selection (", paste(features, collapse = ", "),")"
+        "\n  + Feature Selection (", toString(features), ")"
       ),
       dsd = dsd,
       features = features

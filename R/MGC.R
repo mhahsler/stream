@@ -182,7 +182,7 @@ print.MGC <- function(x, ...) {
   cat(paste(
     x$description,
     " (",
-    paste(class(x), collapse = ", "),
+    toString(class(x)),
     ")",
     '\n',
     sep = ""

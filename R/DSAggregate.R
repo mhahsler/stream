@@ -64,7 +64,7 @@ get_weights.DSAggregate <- function(x, ...) {
 #' @export
 print.DSAggregate <- function(x, ...) {
   cat(.line_break(paste(x$description)))
-  cat("Class:", paste(class(x), collapse=", "), "\n")
+  cat("Class:", toString(class(x)), "\n")
 }
 
 #' @export

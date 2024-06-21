@@ -214,7 +214,7 @@ DSD_Gaussians <-
               "... try",
               i,
               "cluster centroid [",
-              paste(centroid, collapse = ","),
+              toString(centroid),
               "]"
             ))
 
