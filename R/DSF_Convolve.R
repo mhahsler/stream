@@ -119,13 +119,13 @@ DSF_Convolve <-
     # creating the DSD object
 
     if (is.null(name))
-      name <- deparse(substitute(kernel))
+      name <- deparse1(substitute(kernel))
 
     l <- list(
       description = paste0(
         ifelse(!is.null(dsd), dsd$description, "DSF without a specified DSD"),
         "\n  + convolved (",
-        deparse(substitute(dim)),
+        deparse1(substitute(dim)),
         ": ",
         name,
         ")"
@@ -159,7 +159,7 @@ update.DSF_Convolve <- function(object,
   if (is.null(dsd))
     dsd <- object$dsd
   if (is.null(dsd))
-    stop("No dsd specified in ", deparse(substitute(object)), ". Specify a dsd in update().")
+    stop("No dsd specified in ", deparse1(substitute(object)), ". Specify a dsd in update().")
 
   # we need to process data.frame point-by-point!
   if (!inherits(dsd, "DSD")) {
