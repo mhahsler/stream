@@ -316,7 +316,7 @@ dstream$methods(
         else
           cs <- cs[, 1:2, drop = FALSE]
 
-        for (i in 1:nrow(cs))
+        for (i in seq_len(nrow(cs)))
           mat[cs[i, 1] - CppObj$mins[1] + 1,
             cs[i, 2] - CppObj$mins[2] + 1] <- ws[i]
       }
@@ -542,7 +542,7 @@ dstream$methods(
       ### translate mcs
       mcs <- mcs * gridsize + gridsize / 2
 
-      m2m <-  structure(assignment, names = 1:length(assignment))
+      m2m <- structure(assignment, names = seq_along(assignment))
 
       ### find centroids
       macro <- .centroids(mcs, ws, m2m)

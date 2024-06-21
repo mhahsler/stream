@@ -206,7 +206,7 @@ DBSCAN$methods(
 
   microToMacro = function(micro = NULL, ...) {
     if (is.null(micro))
-      micro <- 1:nrow(data)
+      micro <- seq_along(data)
     structure(assignment[micro], names = micro)
   }
 )

@@ -47,7 +47,7 @@
     width = 0.9 * getOption("width")) {
     paste0(unlist(
       sapply(
-        strsplit(x, "\n")[[1]],
+        strsplit(x, "\n", fixed = TRUE)[[1]],
         strwrap,
         width = width
       )

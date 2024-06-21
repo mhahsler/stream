@@ -100,7 +100,7 @@ update.DSF_ExponentialMA <- function(object,
   if (is.null(object$S.env$S))
     object$S.env$S <- d[1, dims, drop = FALSE]
 
-  for (i in seq(nrow(d))) {
+  for (i in seq_len(nrow(d))) {
     # handle NA
     Y <- d[i, dims, drop = FALSE]
     if (any(missing <- is.na(Y)))

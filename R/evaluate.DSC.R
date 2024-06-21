@@ -344,7 +344,7 @@ evaluate_static.DSC <-
     else {
       matchm <- pmatch(tolower(measure), tolower(m))
 
-      if (any(is.na(matchm)))
+      if (anyNA(matchm))
         stop("Invalid or not applicable measures (may need class information): ",
           paste(measure[is.na(matchm)], collapse = ', '))
 

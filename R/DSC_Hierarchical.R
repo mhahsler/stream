@@ -239,7 +239,7 @@ hierarchical$methods(
     .nodots(...)
 
     if (is.null(micro))
-      micro <- 1:nrow(data)
+      micro <- seq_len(nrow(data))
     structure(assignment[micro], names = micro)
   }
 )

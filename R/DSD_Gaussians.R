@@ -190,7 +190,7 @@ DSD_Gaussians <-
     inv_sigma <- NULL
     if (separation_type == "Mahalanobis") {
       inv_sigma <- list()
-      for (i in 1:length(sigma))
+      for (i in seq_along(sigma))
         inv_sigma[[i]] <- MASS::ginv(sigma[[i]])
     }
 
@@ -308,7 +308,7 @@ is.separated <-
         stop("Inverted covariance missing.")
 
       d <- sqrt(sapply(
-        seq(nrow(mu)),
+        seq_len(nrow(mu)),
         FUN = function(i)
           stats::mahalanobis(p, mu[i, , drop = TRUE], inv_sigma[[i]], inverted = TRUE)
       ))
@@ -402,7 +402,7 @@ get_points.DSD_Gaussians <- function(x,
   }
 
   data <- as.data.frame(data)
-  colnames(data) <- paste0("X", 1:ncol(data))
+  colnames(data) <- paste0("X", seq_len(ncol(data)))
 
   if (info)
     data[[".class"]] <- cluster_id

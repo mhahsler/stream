@@ -200,7 +200,7 @@ update.DSF_Convolve <- function(object,
 
 
     ## copy original values (last row in window)
-    ps[i, seq(ncol(win))] <- win[nrow(win), , drop = FALSE]
+    ps[i, seq_len(ncol(win))] <- win[nrow(win), , drop = FALSE]
 
     ## apply pre function
     if (!is.null(object$pre))

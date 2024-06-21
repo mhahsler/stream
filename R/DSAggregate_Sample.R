@@ -159,11 +159,11 @@ SampleDSAggregate <- setRefClass(
           if (nrow(x) <= k)
             data <<- x
           else
-            data <<- x[sample(1:nrow(x), k), ]
+            data <<- x[sample(seq_len(nrow(x)), k), ]
           stream_size <<- nrow(x)
         } else{
           ### reservoir sampling
-          for (i in 1:nrow(x)) {
+          for (i in seq_len(nrow(x))) {
             ### fill with values first
             if (nrow(data) < k) {
               data <<- rbind(data, x[i, ])
@@ -185,7 +185,7 @@ SampleDSAggregate <- setRefClass(
         if (is.null(data))
           data <<- data.frame()
 
-        for (i in 1:nrow(x)) {
+        for (i in seq_len(nrow(x))) {
           ### add all new points and replace point in reservoir with prob=size/k
           prob <- nrow(data) / k
           if (sample(c(TRUE, FALSE), 1L, prob = c(prob, 1 - prob))) {
@@ -206,11 +206,11 @@ SampleDSAggregate <- setRefClass(
           if (length(x) <= k)
             data <<- x
           else
-            data <<- x[sample(1:nrow(x), k)]
+            data <<- x[sample(seq_len(nrow(x)), k)]
           stream_size <<- length(x)
         } else{
           ### reservoir sampling
-          for (i in 1:length(x)) {
+          for (i in seq_along(x)) {
             ### fill with values first
             if (length(data) < k) {
               data <<- append(data, x[i])
@@ -232,7 +232,7 @@ SampleDSAggregate <- setRefClass(
         if (is.null(data))
           data <<- list()
 
-        for (i in 1:length(x)) {
+        for (i in seq_along(x)) {
           ### add all new points and replace point in reservoir with prob=size/k
           prob <- length(data) / k
           if (sample(c(TRUE, FALSE), 1L, prob = c(prob, 1 - prob))) {

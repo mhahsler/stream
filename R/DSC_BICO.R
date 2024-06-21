@@ -149,7 +149,7 @@ BICO_R$methods(
   microToMacro = function(micro = NULL, ...) {
     assignment = .self$C$microToMacro() + 1L ## from C to R indexing
     if (is.null(micro))
-      micro <- 1:length(assignment)
+      micro <- seq_along(assignment)
     structure(assignment[micro], names = micro)
   }
 )

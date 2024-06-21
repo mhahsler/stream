@@ -32,7 +32,7 @@ kmeansW <- function(x, centers, weight = rep(1,nrow(x)),
         k <- centers
         if (nstart == 1)
             centers <- x[sample(1:m, k), , drop = FALSE]
-        if (nstart >= 2 || any(duplicated(centers))) {
+        if (nstart >= 2 || anyDuplicated(centers) > 0L) {
             cn <- unique(x)
             mm <- nrow(cn)
             if (mm < k)
@@ -42,7 +42,7 @@ kmeansW <- function(x, centers, weight = rep(1,nrow(x)),
     }
     else {
         centers <- as.matrix(centers)
-        if (any(duplicated(centers)))
+        if (anyDuplicated(centers) > 0L)
             stop("initial centers are not distinct")
         cn <- NULL
         k <- nrow(centers)
