@@ -1,5 +1,5 @@
-library("testthat")
+library(stream)
+library(testthat)
 
-library("stream")
 test_check("stream")
 
