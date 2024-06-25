@@ -2,6 +2,10 @@
 
 ## Bugfix
 * We check now the parameters for DSC_BICO (m-muecke).
+* deparse1 requires R 4.0.0 (reported by m-muecke).
+
+## Changes
+* Refactoring by m-muecke
 
 # stream 2.0-2 (04/19/24)
 
