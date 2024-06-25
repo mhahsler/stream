@@ -1,5 +1,3 @@
-library(dplyr)
-
 stream1 <- DSD_Gaussians(k = 3, d = 2)
 stream2 <- DSD_Gaussians(k = 1, d = 2)
 
@@ -15,7 +13,9 @@ test_that("DSF_Func with a DSD", {
     stream1 %>% DSF_Func(func = rename, names = c("x", "y")),
     stream1 %>% DSF_Convolve(kernel = filter_MA(5), dim = 1),
     stream1 %>% DSF_Downsample(factor = 1),
-    stream1 %>% DSF_dplyr(func = mutate(Xsum = X1 + X2)) %>% DSF_dplyr(func = select(!X1)),
+    stream1 %>% DSF_dplyr(
+      func = dplyr::mutate(Xsum = X1 + X2)) %>% DSF_dplyr(func = dplyr::select(!X1)
+    ),
     stream1 %>% DSF_ExponentialMA(alpha = .7),
     stream1 %>% DSF_Scale()
   )
@@ -62,7 +62,9 @@ test_that("DSF_Func without a DSD", {
     DSF_Func(func = rename, names = c("x", "y")),
     DSF_Convolve(kernel = filter_MA(5), dim = 1),
     DSF_Downsample(factor = 1),
-    DSF_dplyr(func = mutate(Xsum = X1 + X2)) %>% DSF_dplyr(func = select(!X1)),
+    DSF_dplyr(
+      func = dplyr::mutate(Xsum = X1 + X2)) %>% DSF_dplyr(func = dplyr::select(!X1)
+    ),
     DSF_ExponentialMA(alpha = .7),
     DSF_Scale(center = center, scale = scale, dim = c("X1", "X2"))
   )
