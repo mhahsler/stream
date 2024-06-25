@@ -66,10 +66,10 @@ statement needs to make sure that the columns have the appropriate name starting
 See Examples section below.
 }
 \examples{
+\dontshow{if (requireNamespace("DBI", quietly = TRUE) && requireNamespace("RSQLite", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ### create a data base with a table with 3 Gaussians
-if(require("RSQLite")) {
 
-library("RSQLite")
+library("DBI")
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
 points <- get_points(DSD_Gaussians(k = 3, d = 2), n = 110)
@@ -93,7 +93,7 @@ plot(stream, n = 100)
 
 ### close stream clears the query and disconnects the database
 close_stream(stream)
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}}

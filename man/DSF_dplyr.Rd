@@ -38,7 +38,7 @@ Summary functions can be used, but will only be applied to the requested part of
 using \verb{\%>\%} between them.
 }
 \examples{
-if (require(dplyr)) {
+\dontshow{if (requireNamespace(dplyr, quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 library(dplyr)
 
@@ -58,8 +58,7 @@ stream2
 # Note: you get fewer points because of the filter operation.
 get_points(stream2, n = 10)
 plot(stream2, xlim = c(0, 1), ylim = c(0, 1))
-
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other DSF: 
