@@ -43,7 +43,7 @@
 #' @param info logical; does the function also receive and modify the info columns?
 #' @return An object of class `DSF_dplyr` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
-#' @examplesIf (requireNamespace(dplyr, quietly = TRUE))
+#' @examplesIf requireNamespace(dplyr, quietly = TRUE)
 #'
 #' library(dplyr)
 #'
