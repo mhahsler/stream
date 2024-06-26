@@ -1,9 +1,3 @@
-library("testthat")
-library("stream")
-
-short_desc <- function(x)
-  strsplit(description(x), " ", fixed = TRUE)[[1L]][1L]
-
 set.seed(0)
 stream <-
   DSD_Gaussians(d = 4, k = 3, noise = 0.05) %>% DSD_Memory(n = 1500)
@@ -36,37 +30,34 @@ algorithms <- list(
 )
 names(algorithms) <- sapply(algorithms, short_desc)
 
-context("DSC update")
-
-up <- lapply(
-  algorithms,
-  FUN = function(a) {
-    if (interactive())
-      cat(paste("update:", short_desc(a)))
-    reset_stream(stream)
-    update(a, stream, n = 500L)
-    if (interactive())
-      cat(paste(" - clusters: ", nclusters(a)), "\n")
-    expect_equal(colnames(get_centers(a)), c("X1", "X3"))
-  }
-)
+test_that("DSC update", {
+  up <- lapply(
+    algorithms,
+    FUN = function(a) {
+      if (interactive())
+        cat(paste("update:", short_desc(a)))
+      reset_stream(stream)
+      update(a, stream, n = 500L)
+      if (interactive())
+        cat(paste(" - clusters: ", nclusters(a)), "\n")
+      expect_identical(colnames(get_centers(a)), c("X1", "X3"))
+    }
+  )
 
 ### Add: check the result
-if (interactive()) {
-  print(algorithms)
-  str(up)
-}
+  if (interactive()) {
+    print(algorithms)
+    str(up)
+  }
+})
 
+test_that("test predict with formula", {
+  stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
+  dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
 
-### test predict with formula
-stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)
-dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
+  update(dbstream, stream, 500)
+  get_centers(dbstream)
 
-update(dbstream, stream, 500)
-get_centers(dbstream)
-
-points <- get_points(stream, 20)
-predict(dbstream, points)
-
-
-
+  points <- get_points(stream, 20)
+  predict(dbstream, points)
+})
