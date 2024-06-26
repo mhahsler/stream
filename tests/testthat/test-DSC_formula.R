@@ -28,14 +28,14 @@ algorithms <- list(
   # DSC_Sample(f,k = 10),
   #  DSC_Window(f, horizon = 10)
 )
-names(algorithms) <- sapply(algorithms, short_desc)
+names(algorithms) <- sapply(algorithms, description)
 
 test_that("DSC update", {
   up <- lapply(
     algorithms,
     FUN = function(a) {
       if (interactive())
-        cat(paste("update:", short_desc(a)))
+        cat(paste("update:", description(a)))
       reset_stream(stream)
       update(a, stream, n = 500L)
       if (interactive())
@@ -59,5 +59,6 @@ test_that("test predict with formula", {
   get_centers(dbstream)
 
   points <- get_points(stream, 20)
-  predict(dbstream, points)
+  p <- predict(dbstream, points)
+  expect_equal(nrow(p), 20L)
 })

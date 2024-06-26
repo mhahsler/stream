@@ -11,7 +11,10 @@ test_that("DSC_BIRCH", {
     maxLeaf = 20)
   update(BIRCH, stream, n = 10000)
 
-  BIRCH
+  #BIRCH
+  # This should be 89 clusters
+  expect_equal(nrow(get_centers(BIRCH)), 34L)
+
 
   ## saveDSC is not implemented!
   #saveDSC(BIRCH, file="BIRCH.Rds")

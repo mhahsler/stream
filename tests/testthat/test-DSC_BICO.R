@@ -14,6 +14,10 @@ test_that("DSC_BICO", {
   )
   update(BICO, stream, n = 10000)
 
+  # BICO
+  # This should be 89 clusters
+  expect_equal(nrow(get_centers(BICO)), 89L)
+
   ## saveDSC is not implemented!
   # saveDSC(BICO, file="BICO.Rds")
   # db <- readDSC("BICO.Rds")
