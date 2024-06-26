@@ -38,7 +38,7 @@ Summary functions can be used, but will only be applied to the requested part of
 using \verb{\%>\%} between them.
 }
 \examples{
-\dontshow{if (requireNamespace(dplyr, quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 library(dplyr)
 
