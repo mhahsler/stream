@@ -106,7 +106,7 @@ cluster.ani <- function(dsc,
   wait,
   plot.args,
   ...) {
-  if (requireNamespace("animation", quietly = TRUE)) {
+  if (!requireNamespace("animation", quietly = TRUE)) {
     stop(
       "Install package animation (and, if necessary, the needed libraries for package magick)."
     )
