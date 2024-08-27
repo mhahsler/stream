@@ -62,13 +62,6 @@
       paste(names(l), "=", l, collapse = ", "))
 }
 
-### installed
-.installed <-
-  function(pkg)
-    ! is(try(utils::installed.packages()[pkg,],
-      silent = TRUE)
-      , "try-error")
-
 abstract_class_generator <- function(prefix) {
   function(...) {
     message(prefix, " is an abstract class and cannot be instantiated!")

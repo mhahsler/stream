@@ -106,11 +106,11 @@ cluster.ani <- function(dsc,
   wait,
   plot.args,
   ...) {
-  if (!.installed("animation"))
-    stop (
+  if (!requireNamespace("animation", quietly = TRUE)) {
+    stop(
       "Install package animation (and, if necessary, the needed libraries for package magick)."
     )
-  requireNamespace("animation")
+  }
 
   if (is.null(plot.args))
     plot.args <- list()
@@ -189,7 +189,7 @@ cluster.ani <- function(dsc,
         }
       }
 
-    } else{
+    } else {
       ## plot just data for animate_data
       suppressWarnings(do.call(plot, c(list(d, n = horizon), plot.args)))
     }

@@ -20,8 +20,6 @@ License: GPL-3
 URL: https://github.com/mhahsler/stream
 BugReports: https://github.com/mhahsler/stream/issues
 Depends: 
-    magrittr,
-    methods,
     R (>= 3.5.0)
 Imports: 
     clue,
@@ -31,7 +29,9 @@ Imports:
     fpc,
     graphics,
     grDevices,
+    magrittr,
     MASS,
+    methods,
     mlbench,
     proxy (>= 0.4-7),
     Rcpp (>= 0.11.4),
@@ -52,4 +52,4 @@ LinkingTo:
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
