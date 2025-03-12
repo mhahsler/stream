@@ -1,4 +1,4 @@
-# stream 2.0-2.1 (xx/xx/24)
+# stream 2.0-3 (03/11/25)
 
 ## Bugfix
 * We check now the parameters for DSC_BICO (m-muecke).

@@ -17,14 +17,14 @@ DSClassifier_SlidingWindow(formula, model = rpart::rpart, window, rebuild, ...)
 \code{Inf} to prevent automatic rebuilding. Rebuilding can be initiated manually when
 calling \code{update()}.}
 
-\item{...}{additional parameters are passed on to the classifier (default is \code{rpart()}).}
+\item{...}{additional parameters are passed on to the classifier (default is \code{\link[rpart:rpart]{rpart::rpart()}}).}
 }
 \value{
 An object of class \code{DST_SlidingWindow}.
 }
 \description{
 The classifier keeps a sliding window for the stream and rebuilds a classification model at regular
-intervals. By default is builds a decision tree using \code{\link[=rpart]{rpart()}}.
+intervals. By default is builds a decision tree using \code{\link[rpart:rpart]{rpart::rpart()}}.
 }
 \details{
 This constructor creates classifier based on \code{\link{DST_SlidingWindow}}. The classifier has

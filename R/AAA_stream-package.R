@@ -15,6 +15,7 @@
 #' @importFrom methods is new
 #' @importFrom dbscan dbscan
 #' @importFrom utils head read.table write.table
+# #' @importFrom rpart rpart
 #' @importFrom stats predict runif rnorm prcomp mahalanobis terms
 #' @importFrom graphics plot par layout title pairs points lines image
 #' @importFrom grDevices gray gray.colors rgb col2rgb

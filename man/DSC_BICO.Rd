@@ -37,8 +37,7 @@ In this implementation, the nearest neighbor search on the first level of
 the tree is sped up by projecting all points to random 1-d subspaces. The
 first estimation of the optimal clustering cost is computed in a buffer
 phase at the beginning of the algorithm. This implementation interfaces the
-original C++ implementation available here:
-\url{http://ls2-www.cs.tu-dortmund.de/grav/de/bico}. For micro-clustering,
+original C++ implementation. For micro-clustering,
 the algorithm computes the coreset of the stream. Reclustering is performed
 by using the \code{kmeans++} algorithm on the coreset.
 }

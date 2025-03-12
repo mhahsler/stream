@@ -20,7 +20,7 @@
 #' DSClassifier_SlidingWindow -- Data Stream Classifier Using a Sliding Window
 #'
 #' The classifier keeps a sliding window for the stream and rebuilds a classification model at regular
-#' intervals. By default is builds a decision tree using [rpart()].
+#' intervals. By default is builds a decision tree using [rpart::rpart()].
 #'
 #' This constructor creates classifier based on [`DST_SlidingWindow`]. The classifier has
 #' a `update()` and `predict()` method.
@@ -33,7 +33,7 @@
 #' @param rebuild interval (number of points) for rebuilding the classifier. Set rebuild to
 #'   `Inf` to prevent automatic rebuilding. Rebuilding can be initiated manually when
 #'   calling `update()`.
-#' @param ... additional parameters are passed on to the classifier (default is `rpart()`).
+#' @param ... additional parameters are passed on to the classifier (default is [rpart::rpart()]).
 #'
 #' @return An object of class `DST_SlidingWindow`.
 #' @author Michael Hahsler
