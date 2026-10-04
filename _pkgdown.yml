@@ -100,4 +100,4 @@ reference:
     contents:
       - write_stream
       - read_saveDSC
-      - '\%>\%'
+      - "`%>%`"
