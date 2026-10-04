@@ -36,7 +36,7 @@ Useful links:
 
 - <https://github.com/mhahsler/stream>
 
-- <http://michael.hahsler.net/stream/>
+- <https://michael.hahsler.net/stream/>
 
 - Report bugs at <https://github.com/mhahsler/stream/issues>
 

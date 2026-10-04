@@ -7,6 +7,8 @@ downloads](https://cranlogs.r-pkg.org/badges/stream)](https://CRAN.R-project.org
 ![License](https://img.shields.io/cran/l/stream)[![r-universe
 status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev/stream)
 
+**Maintainer:** [Michael Hahsler](https://michael.hahsler.net)
+
 ## Introduction
 
 The package provides support for modeling and simulating data streams as
@@ -32,9 +34,9 @@ existing infrastructure provided by R. The package provides:
 
 Additional packages in the stream family are:
 
-- [streamConnect](https://github.com/mhahsler/streamConnect): Connect
+- [streamConnect](https://michael.hahsler.net/streamConnect): Connect
   stream mining components using sockets and web services.
-- [streamMOA](https://github.com/mhahsler/streamMOA): Interface to
+- [streamMOA](https://michael.hahsler.net/streamMOA): Interface to
   clustering algorithms implemented in the
   [MOA](https://moa.cms.waikato.ac.nz/) framework. The package
   interfaces clustering algorithms like of **DenStream**, **ClusTree**,
@@ -114,7 +116,7 @@ get_points(stream, n = 5)
 plot(stream)
 ```
 
-![](inst/README_files/stream-1.png)
+![](reference/figures/README-stream-1.png)
 
 Cluster a stream of 1000 points using D-Stream which estimates point
 density in grid cells.
@@ -122,19 +124,11 @@ density in grid cells.
 ``` r
 
 dsc <- DSC_DStream(gridsize = 0.1)
-```
-
-``` R
-## Warning in x$c: partial match of 'c' to 'centers'
-```
-
-``` r
-
 update(dsc, stream, 1000)
 plot(dsc, stream, grid = TRUE)
 ```
 
-![](inst/README_files/Dstream-1.png)
+![](reference/figures/README-Dstream-1.png)
 
 ``` r
 
@@ -183,19 +177,11 @@ radius.
 ``` r
 
 dso <- DSOutlier_DBSTREAM(r = 0.1)
-```
-
-``` R
-## Warning in x$c: partial match of 'c' to 'centers'
-```
-
-``` r
-
 update(dso, stream, 1000)
 plot(dso, stream)
 ```
 
-![](inst/README_files/DSOutlier_DBSTREAM-1.png)
+![](reference/figures/README-DSOutlier_DBSTREAM-1.png)
 
 ``` r
 
@@ -225,14 +211,6 @@ call.
 pipeline <- DSD_Gaussians(k = 3, d = 2, noise = 0.1) %>%
     DSF_Scale() %>%
     DST_Runner(DSC_DStream(gridsize = 0.1))
-```
-
-``` R
-## Warning in x$c: partial match of 'c' to 'centers'
-```
-
-``` r
-
 pipeline
 ```
 
