@@ -26,7 +26,7 @@ DSD_Gaussians(
 \item{d}{Determines the number of dimensions.}
 
 \item{p}{A vector of probabilities that determines the likelihood of
-generated a data point from a particular cluster.}
+generating a data point from a particular cluster.}
 
 \item{mu}{A matrix of means for each dimension of each cluster.}
 
@@ -58,7 +58,7 @@ can be either Euclidean distance or Mahalanobis distance.}
 \item{verbose}{Report cluster and outlier generation process.}
 }
 \value{
-Returns a  object of class \code{DSD_Gaussian} (subclass of \link{DSD_R}, \link{DSD}).
+Returns an object of class \code{DSD_Gaussians} (subclass of \link{DSD_R}, \link{DSD}).
 }
 \description{
 A data stream generator that produces a data stream with a mixture of static
@@ -80,14 +80,13 @@ suggested by Jain and Dubes (1988).
 
 Noise points which are uniformly chosen from \code{noise_limit} can be added.
 
-Outlier points can be added. The outlier spatial positions
+Outlier points can be added. Their spatial positions
 \code{predefined_outlier_space_positions} and the outlier stream positions
 \code{predefined_outlier_stream_positions} can be supplied or will be
-randomly generated. Cluster and outlier separation distance is determined by
-and \code{outlier_virtual_variance} parameters. The
-outlier virtual variance defines an empty space around outliers, which
-separates them from their surrounding. Unlike noise, outliers are data
-points of interest for end-users, and the goal of outlier detectors is to
+randomly generated. The cluster and outlier separation distance is determined by
+the \code{outlier_virtual_variance} parameter. This parameter defines an empty
+space around outliers, which separates them from their surroundings. Unlike
+noise, outliers are data points of interest to end users, and the goal of outlier detectors is to
 find them in data streams. For more details, read the "Introduction to
 \pkg{stream}" vignette.
 }
@@ -134,27 +133,27 @@ Jain and Dubes (1988) Algorithms for clustering data,
 Prentice-Hall, Inc., Upper Saddle River, NJ, USA.
 }
 \seealso{
-Other DSD: 
-\code{\link{DSD}()},
-\code{\link{DSD_BarsAndGaussians}()},
-\code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Cubes}()},
-\code{\link{DSD_MG}()},
-\code{\link{DSD_Memory}()},
-\code{\link{DSD_Mixture}()},
-\code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadDB}()},
-\code{\link{DSD_ReadStream}()},
-\code{\link{DSD_Target}()},
-\code{\link{DSD_UniformNoise}()},
-\code{\link{DSD_mlbenchData}()},
-\code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSF}()},
-\code{\link{animate_data}()},
-\code{\link{close_stream}()},
-\code{\link{get_points}()},
-\code{\link{plot.DSD}()},
-\code{\link{reset_stream}()}
+Other DSD:
+\code{\link[=DSD]{DSD()}},
+\code{\link[=DSD_BarsAndGaussians]{DSD_BarsAndGaussians()}},
+\code{\link[=DSD_Benchmark]{DSD_Benchmark()}},
+\code{\link[=DSD_Cubes]{DSD_Cubes()}},
+\code{\link[=DSD_MG]{DSD_MG()}},
+\code{\link[=DSD_Memory]{DSD_Memory()}},
+\code{\link[=DSD_Mixture]{DSD_Mixture()}},
+\code{\link[=DSD_NULL]{DSD_NULL()}},
+\code{\link[=DSD_ReadDB]{DSD_ReadDB()}},
+\code{\link[=DSD_ReadStream]{DSD_ReadStream()}},
+\code{\link[=DSD_Target]{DSD_Target()}},
+\code{\link[=DSD_UniformNoise]{DSD_UniformNoise()}},
+\code{\link[=DSD_mlbenchData]{DSD_mlbenchData()}},
+\code{\link[=DSD_mlbenchGenerator]{DSD_mlbenchGenerator()}},
+\code{\link[=DSF]{DSF()}},
+\code{\link[=animate_data]{animate_data()}},
+\code{\link[=close_stream]{close_stream()}},
+\code{\link[=get_points]{get_points()}},
+\code{\link[=plot.DSD]{plot.DSD()}},
+\code{\link[=reset_stream]{reset_stream()}}
 }
 \author{
 Michael Hahsler

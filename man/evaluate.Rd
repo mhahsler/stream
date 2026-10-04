@@ -58,21 +58,21 @@ evaluating stream learning algorithms. \emph{Machine Learning,} March 2013,
 Volume 90, Issue 3, pp 317-346.
 }
 \seealso{
-Other DST: 
-\code{\link{DSAggregate}()},
-\code{\link{DSC}()},
-\code{\link{DSClassifier}()},
-\code{\link{DSOutlier}()},
-\code{\link{DSRegressor}()},
-\code{\link{DST}()},
-\code{\link{DST_SlidingWindow}()},
-\code{\link{DST_WriteStream}()},
-\code{\link{predict}()},
+Other DST:
+\code{\link[=DSAggregate]{DSAggregate()}},
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSClassifier]{DSClassifier()}},
+\code{\link[=DSOutlier]{DSOutlier()}},
+\code{\link[=DSRegressor]{DSRegressor()}},
+\code{\link[=DST]{DST()}},
+\code{\link[=DST_SlidingWindow]{DST_SlidingWindow()}},
+\code{\link[=DST_WriteStream]{DST_WriteStream()}},
+\code{\link{predict}},
 \code{\link{stream_pipeline}},
-\code{\link{update}()}
+\code{\link{update}}
 
-Other evaluation: 
-\code{\link{animate_cluster}()},
+Other evaluation:
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate.DSC}}
 }
 \author{

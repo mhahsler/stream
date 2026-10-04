@@ -138,7 +138,7 @@ test_that("DSD_ReadDB", {
   dsd_finite <- list(
     DSD_Memory(df),
     #DSD_Mixture,
-    DSD_mlbenchData("PimaIndiansDiabetes"),
+    DSD_mlbenchData("Zoo"),
     DSD_ReadDB(res, k = 3),
     DSD_ReadStream(tf, header = TRUE)
     #DSD_ReadCSV,

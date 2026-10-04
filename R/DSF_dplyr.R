@@ -38,9 +38,10 @@
 #'
 #' @family DSF
 #'
-#' @param dsd A object of class [DSD].
-#' @param func a dplyr expression.
-#' @param info logical; does the function also receive and modify the info columns?
+#' @param dsd An object of class [DSD].
+#' @param func A dplyr expression.
+#' @param info Logical; should the function also receive and modify the
+#'   information columns?
 #' @return An object of class `DSF_dplyr` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examplesIf requireNamespace("dplyr", quietly = TRUE)

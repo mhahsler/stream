@@ -124,7 +124,7 @@ public:
       this->bico = new CluE::Bico<CluE::Point>(this->d, 0, this->k, this->p, this->space, &this->metric, &this->modifier);
     }else{
       if(d != data.ncol()) {
-        Rf_error("Dimensions of new data do not match the current BICO clustering.");
+        Rcpp::stop("Dimensions of new data do not match the current BICO clustering.");
       }
     }
 

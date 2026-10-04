@@ -28,7 +28,7 @@
 #' small variations of them by combining and randomly modifying them. The
 #' modified solutions can yield better partitions and thus can improve the
 #' clustering over time. The evolutionary algorithm is incremental, which
-#' allows to improve existing macro-clusters instead of recomputing them every
+#' allows users to improve existing macro-clusters instead of recomputing them every
 #' time.
 #'
 #' @family DSC_Macro

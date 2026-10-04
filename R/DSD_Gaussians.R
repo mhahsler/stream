@@ -43,14 +43,13 @@
 #'
 #' Noise points which are uniformly chosen from `noise_limit` can be added.
 #'
-#' Outlier points can be added. The outlier spatial positions
+#' Outlier points can be added. Their spatial positions
 #' `predefined_outlier_space_positions` and the outlier stream positions
 #' `predefined_outlier_stream_positions` can be supplied or will be
-#' randomly generated. Cluster and outlier separation distance is determined by
-#'  and `outlier_virtual_variance` parameters. The
-#' outlier virtual variance defines an empty space around outliers, which
-#' separates them from their surrounding. Unlike noise, outliers are data
-#' points of interest for end-users, and the goal of outlier detectors is to
+#' randomly generated. The cluster and outlier separation distance is determined by
+#' the `outlier_virtual_variance` parameter. This parameter defines an empty
+#' space around outliers, which separates them from their surroundings. Unlike
+#' noise, outliers are data points of interest to end users, and the goal of outlier detectors is to
 #' find them in data streams. For more details, read the "Introduction to
 #' \pkg{stream}" vignette.
 #'
@@ -61,7 +60,7 @@
 #' @param mu A matrix of means for each dimension of each cluster.
 #' @param sigma A list of length `k` of covariance matrices.
 #' @param p A vector of probabilities that determines the likelihood of
-#' generated a data point from a particular cluster.
+#' generating a data point from a particular cluster.
 #' @param noise Noise probability between 0 and 1.  Noise is uniformly
 #' distributed within noise range (see below).
 #' @param noise_limit A matrix with d rows and 2 columns. The first column
@@ -80,7 +79,7 @@
 #' creating cluster covariance matrices.
 #' @param verbose Report cluster and outlier generation process.
 #'
-#' @return Returns a  object of class `DSD_Gaussian` (subclass of [DSD_R], [DSD]).
+#' @return Returns an object of class `DSD_Gaussians` (subclass of [DSD_R], [DSD]).
 #'
 #' @author Michael Hahsler
 #' @references

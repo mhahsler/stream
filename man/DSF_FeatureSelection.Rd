@@ -7,17 +7,17 @@
 DSF_FeatureSelection(dsd = NULL, features)
 }
 \arguments{
-\item{dsd}{A object of class \link{DSD} that will be scaled.}
+\item{dsd}{An object of class \link{DSD}.}
 
-\item{features}{a character vector with feature (column) names or the numeric index of
-the selected features. All other features will be removed. Note special info columns
-starting with \code{.} are not features.}
+\item{features}{A character vector of feature (column) names or a numeric
+vector of feature indices. All other features are removed. Special
+information columns starting with \code{.} are not features.}
 }
 \value{
 An object of class \code{DSF_FeatureSelection} (subclass of \link{DSF} and \link{DSD}).
 }
 \description{
-Select features from a data stream given a list of features.
+Selects features from a data stream using a supplied list of features.
 }
 \examples{
 stream <- DSD_Gaussians(k = 3, d = 3)
@@ -29,14 +29,14 @@ stream_2features
 get_points(stream_2features, n = 3)
 }
 \seealso{
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_ExponentialMA}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Convolve]{DSF_Convolve()}},
+\code{\link[=DSF_Downsample]{DSF_Downsample()}},
+\code{\link[=DSF_ExponentialMA]{DSF_ExponentialMA()}},
+\code{\link[=DSF_Func]{DSF_Func()}},
+\code{\link[=DSF_Scale]{DSF_Scale()}},
+\code{\link[=DSF_dplyr]{DSF_dplyr()}}
 }
 \author{
 Michael Hahsler

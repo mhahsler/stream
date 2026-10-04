@@ -17,21 +17,21 @@ package \pkg{streamMOA}.
 DSClassifier()
 }
 \seealso{
-Other DST: 
-\code{\link{DSAggregate}()},
-\code{\link{DSC}()},
-\code{\link{DSOutlier}()},
-\code{\link{DSRegressor}()},
-\code{\link{DST}()},
-\code{\link{DST_SlidingWindow}()},
-\code{\link{DST_WriteStream}()},
+Other DST:
+\code{\link[=DSAggregate]{DSAggregate()}},
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSOutlier]{DSOutlier()}},
+\code{\link[=DSRegressor]{DSRegressor()}},
+\code{\link[=DST]{DST()}},
+\code{\link[=DST_SlidingWindow]{DST_SlidingWindow()}},
+\code{\link[=DST_WriteStream]{DST_WriteStream()}},
 \code{\link{evaluate}},
-\code{\link{predict}()},
+\code{\link{predict}},
 \code{\link{stream_pipeline}},
-\code{\link{update}()}
+\code{\link{update}}
 
-Other DSClassifier: 
-\code{\link{DSClassifier_SlidingWindow}()}
+Other DSClassifier:
+\code{\link[=DSClassifier_SlidingWindow]{DSClassifier_SlidingWindow()}}
 }
 \author{
 Michael Hahsler

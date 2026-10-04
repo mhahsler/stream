@@ -233,47 +233,59 @@ import(Rcpp)
 import(magrittr)
 import(proxy)
 importFrom(dbscan,dbscan)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,gray)
-importFrom(grDevices,gray.colors)
-importFrom(grDevices,rgb)
-importFrom(graphics,image)
-importFrom(graphics,layout)
-importFrom(graphics,lines)
-importFrom(graphics,pairs)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,points)
-importFrom(graphics,title)
+importFrom(grDevices,
+  col2rgb,
+  gray,
+  gray.colors,
+  rgb
+)
+importFrom(graphics,
+  image,
+  layout,
+  lines,
+  pairs,
+  par,
+  plot,
+  points,
+  title
+)
 importFrom(magrittr,"%>%")
-importFrom(methods,is)
-importFrom(methods,new)
-importFrom(mlbench,mlbench.2dnormals)
-importFrom(mlbench,mlbench.cassini)
-importFrom(mlbench,mlbench.circle)
-importFrom(mlbench,mlbench.cuboids)
-importFrom(mlbench,mlbench.friedman1)
-importFrom(mlbench,mlbench.friedman2)
-importFrom(mlbench,mlbench.friedman3)
-importFrom(mlbench,mlbench.hypercube)
-importFrom(mlbench,mlbench.peak)
-importFrom(mlbench,mlbench.ringnorm)
-importFrom(mlbench,mlbench.shapes)
-importFrom(mlbench,mlbench.simplex)
-importFrom(mlbench,mlbench.smiley)
-importFrom(mlbench,mlbench.spirals)
-importFrom(mlbench,mlbench.threenorm)
-importFrom(mlbench,mlbench.twonorm)
-importFrom(mlbench,mlbench.waveform)
-importFrom(mlbench,mlbench.xor)
+importFrom(methods,
+  is,
+  new
+)
+importFrom(mlbench,
+  mlbench.2dnormals,
+  mlbench.cassini,
+  mlbench.circle,
+  mlbench.cuboids,
+  mlbench.friedman1,
+  mlbench.friedman2,
+  mlbench.friedman3,
+  mlbench.hypercube,
+  mlbench.peak,
+  mlbench.ringnorm,
+  mlbench.shapes,
+  mlbench.simplex,
+  mlbench.smiley,
+  mlbench.spirals,
+  mlbench.threenorm,
+  mlbench.twonorm,
+  mlbench.waveform,
+  mlbench.xor
+)
 importFrom(rpart,rpart)
-importFrom(stats,mahalanobis)
-importFrom(stats,prcomp)
-importFrom(stats,predict)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
-importFrom(stats,terms)
-importFrom(utils,head)
-importFrom(utils,read.table)
-importFrom(utils,write.table)
+importFrom(stats,
+  mahalanobis,
+  prcomp,
+  predict,
+  rnorm,
+  runif,
+  terms
+)
+importFrom(utils,
+  head,
+  read.table,
+  write.table
+)
 useDynLib(stream, .registration=TRUE)

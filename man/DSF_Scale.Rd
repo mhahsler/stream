@@ -7,26 +7,26 @@
 DSF_Scale(dsd = NULL, dim = NULL, center = TRUE, scale = TRUE, n = 100L)
 }
 \arguments{
-\item{dsd}{A object of class \link{DSD} that will be scaled.}
+\item{dsd}{An object of class \link{DSD} to scale.}
 
-\item{dim}{integer vector or names of dimensions that should be scaled? Default is all.}
+\item{dim}{Integer indices or names of the dimensions to scale. The default
+is all dimensions.}
 
-\item{center, scale}{logical or a numeric vector of length equal to the
-number of columns (selected with dim) used for centering/scaling (see function \link{scale}).}
+\item{center, scale}{Logical values or numeric vectors of scaling factors,
+each with one value per selected column (see \link{scale}).}
 
-\item{n}{The number of points used by \code{scale_stream()} to creating the centering/scaling}
+\item{n}{Number of points used to estimate centering and scaling values.}
 }
 \value{
 An object of class \code{DSF_Scale} (subclass of \link{DSF} and \link{DSD}).
 }
 \description{
-Make an unscaled data stream into a scaled data stream.
+Converts an unscaled data stream into a scaled data stream.
 }
 \details{
-If \code{center} and \code{scale} are not vectors with scaling factors, then \code{scale_stream()}
-estimates the values for centering and scaling (see
-\link{scale} in \pkg{base}) using \code{n} points from the stream and the stream is reset if \code{reset = TRUE} and the
-\link{DSD} object supports resetting.
+If \code{center} or \code{scale} is logical, \code{DSF_Scale()} estimates the corresponding
+values from \code{n} points in the stream using \link{scale} in \pkg{base}. Estimating
+these values advances the stream by \code{n} points.
 }
 \section{Deprecated}{
 
@@ -42,7 +42,7 @@ points <- get_points(stream, n = 100, info = FALSE)
 center <- colMeans(points)
 scale <- apply(points, MARGIN = 2, sd)
 
-scaledStream <- stream \%>\%  DSF_Scale(dim = c(1L, 2L), center = center, scale = scale)
+scaledStream <- stream \%>\% DSF_Scale(dim = c(1L, 2L), center = center, scale = scale)
 colMeans(get_points(scaledStream, n = 100, info = FALSE))
 apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 
@@ -59,14 +59,14 @@ apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 \seealso{
 \link{scale} in \pkg{base}
 
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_ExponentialMA}()},
-\code{\link{DSF_FeatureSelection}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_dplyr}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Convolve]{DSF_Convolve()}},
+\code{\link[=DSF_Downsample]{DSF_Downsample()}},
+\code{\link[=DSF_ExponentialMA]{DSF_ExponentialMA()}},
+\code{\link[=DSF_FeatureSelection]{DSF_FeatureSelection()}},
+\code{\link[=DSF_Func]{DSF_Func()}},
+\code{\link[=DSF_dplyr]{DSF_dplyr()}}
 }
 \author{
 Michael Hahsler

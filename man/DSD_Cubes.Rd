@@ -16,7 +16,7 @@ DSD_Cubes(k = 2, d = 2, center, size, p, noise = 0, noise_range)
 \item{size}{A \code{k} times \code{d} matrix with the cube dimensions.}
 
 \item{p}{A vector of probabilities that determines the likelihood of
-generated a data point from a particular cluster.}
+generating a data point from a particular cluster.}
 
 \item{noise}{Noise probability between 0 and 1.  Noise is uniformly
 distributed within noise range (see below).}
@@ -41,27 +41,27 @@ get_points(stream, n = 5)
 plot(stream)
 }
 \seealso{
-Other DSD: 
-\code{\link{DSD}()},
-\code{\link{DSD_BarsAndGaussians}()},
-\code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Gaussians}()},
-\code{\link{DSD_MG}()},
-\code{\link{DSD_Memory}()},
-\code{\link{DSD_Mixture}()},
-\code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadDB}()},
-\code{\link{DSD_ReadStream}()},
-\code{\link{DSD_Target}()},
-\code{\link{DSD_UniformNoise}()},
-\code{\link{DSD_mlbenchData}()},
-\code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSF}()},
-\code{\link{animate_data}()},
-\code{\link{close_stream}()},
-\code{\link{get_points}()},
-\code{\link{plot.DSD}()},
-\code{\link{reset_stream}()}
+Other DSD:
+\code{\link[=DSD]{DSD()}},
+\code{\link[=DSD_BarsAndGaussians]{DSD_BarsAndGaussians()}},
+\code{\link[=DSD_Benchmark]{DSD_Benchmark()}},
+\code{\link[=DSD_Gaussians]{DSD_Gaussians()}},
+\code{\link[=DSD_MG]{DSD_MG()}},
+\code{\link[=DSD_Memory]{DSD_Memory()}},
+\code{\link[=DSD_Mixture]{DSD_Mixture()}},
+\code{\link[=DSD_NULL]{DSD_NULL()}},
+\code{\link[=DSD_ReadDB]{DSD_ReadDB()}},
+\code{\link[=DSD_ReadStream]{DSD_ReadStream()}},
+\code{\link[=DSD_Target]{DSD_Target()}},
+\code{\link[=DSD_UniformNoise]{DSD_UniformNoise()}},
+\code{\link[=DSD_mlbenchData]{DSD_mlbenchData()}},
+\code{\link[=DSD_mlbenchGenerator]{DSD_mlbenchGenerator()}},
+\code{\link[=DSF]{DSF()}},
+\code{\link[=animate_data]{animate_data()}},
+\code{\link[=close_stream]{close_stream()}},
+\code{\link[=get_points]{get_points()}},
+\code{\link[=plot.DSD]{plot.DSD()}},
+\code{\link[=reset_stream]{reset_stream()}}
 }
 \author{
 Michael Hahsler

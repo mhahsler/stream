@@ -132,10 +132,10 @@ with the permanent id of the strong micro-cluster.
 and the shared density graph, respectively.
 
 \code{\link[=predict]{predict()}} can be used to assign new points to clusters. Points are assigned to a micro-cluster if
-they are within its assignment area (distance is less then \code{r} times \code{noise_multiplier}).
+they are within its assignment area (distance is less than \code{r} times \code{noise_multiplier}).
 
-\code{DSOutlier_DBSTREAM} classifies points as outlier/noise if they that cannot be assigned to a micro-cluster
-representing a dense region as a outlier/noise. Parameter \code{outlier_multiplier} specifies
+\code{DSOutlier_DBSTREAM} classifies points as outliers/noise if they cannot be assigned to a micro-cluster
+representing a dense region. The parameter \code{outlier_multiplier} specifies
 how far a point has to be away from a micro-cluster as a multiplier for the radius \code{r}.
 A larger value means that outliers have to be farther away from dense
 regions and thus reduce the chance of misclassifying a regular point as an outlier.
@@ -218,23 +218,23 @@ based on shared density between micro-clusters. \emph{IEEE Transactions on
 Knowledge and Data Engineering,} 28(6):1449--1461, June 2016
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_Micro:
+\code{\link[=DSC_BICO]{DSC_BICO()}},
+\code{\link[=DSC_BIRCH]{DSC_BIRCH()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_Sample]{DSC_Sample()}},
+\code{\link[=DSC_Window]{DSC_Window()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 
-Other DSC_TwoStage: 
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_TwoStage:
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 
-Other DSOutlier: 
-\code{\link{DSC_DStream}()},
-\code{\link{DSOutlier}()}
+Other DSOutlier:
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSOutlier]{DSOutlier()}}
 }
 \author{
 Michael Hahsler and Matthew Bolanos

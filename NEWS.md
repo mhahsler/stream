@@ -1,3 +1,26 @@
+# stream 2.0.7 (unpublished)
+
+## Changes
+* Improved consistency and formatting in data stream filter documentation.
+* Added tests for downsampling, feature selection, convolution, exponential
+  moving averages, and scaling.
+
+# stream 2.0.6 (07/27/26)
+
+## Changes
+* removed PimaIndians data set since it was removed from mlbench for copyright reasons.
+
+# stream 2.0.5 (02/28/26)
+
+## Bugfix
+* src: replaced Rf_error with Rcpp::stop for proper unwinding, calling 
+  destructors in the process to avoid memory leaks (reported by Inaki Ucar)  
+
+# stream 2.0.4 (08/08/25)
+
+## Changes
+* Fixed some partial argument matching issues.
+
 # stream 2.0-3 (03/11/25)
 
 ## Bugfix

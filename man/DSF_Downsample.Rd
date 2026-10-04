@@ -9,13 +9,14 @@ DSF_Downsample(dsd = NULL, factor = 1L)
 \arguments{
 \item{dsd}{The input stream as an \link{DSD} object.}
 
-\item{factor}{the downsampling factor.}
+\item{factor}{The downsampling factor.}
 }
 \value{
 An object of class \code{DSF_Downsample} (subclass of \link{DSF} and \link{DSD}).
 }
 \description{
-Creates a new stream that reduces the frequency of a given stream by a given factor.
+Creates a new stream that reduces the frequency of an input stream by a
+specified factor.
 }
 \examples{
 # Simple downsampling example
@@ -46,14 +47,14 @@ reset_stream(downsampledStream)
 plot(downsampledStream, dim = 1, n = 40, method = "ts")
 }
 \seealso{
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_ExponentialMA}()},
-\code{\link{DSF_FeatureSelection}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Convolve]{DSF_Convolve()}},
+\code{\link[=DSF_ExponentialMA]{DSF_ExponentialMA()}},
+\code{\link[=DSF_FeatureSelection]{DSF_FeatureSelection()}},
+\code{\link[=DSF_Func]{DSF_Func()}},
+\code{\link[=DSF_Scale]{DSF_Scale()}},
+\code{\link[=DSF_dplyr]{DSF_dplyr()}}
 }
 \author{
 Michael Hahsler

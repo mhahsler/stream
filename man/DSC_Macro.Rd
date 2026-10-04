@@ -27,11 +27,11 @@ Abstract class for all DSC Macro Clusterers which recluster micro-clusters \stro
 clusters called macro-clusters.
 }
 \details{
-Data stream clustering algorithms typically consists of an \strong{online component}
+Data stream clustering algorithms typically consist of an \strong{online component}
 that creates micro-clusters (implemented as \link{DSC_Micro}) and
-and \strong{offline components} which is used to recluster micro-clusters into
+\strong{offline components} which are used to recluster micro-clusters into
 final clusters called macro-clusters.
-The function \code{\link[=recluster]{recluster()}} is used extract micro-clusters from a \link{DSC_Micro} and
+The function \code{\link[=recluster]{recluster()}} is used to extract micro-clusters from a \link{DSC_Micro} and
 create macro-clusters with a \code{DSC_Macro}.
 
 Available clustering methods can be found in the See Also section below.
@@ -43,29 +43,29 @@ For convenience, a \link{DSC_Micro} and \code{DSC_Macro} can be combined using \
 \code{DSC_Macro} cannot be instantiated.
 }
 \seealso{
-Other DSC_Macro: 
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_SlidingWindow}()}
+Other DSC_Macro:
+\code{\link[=DSC_DBSCAN]{DSC_DBSCAN()}},
+\code{\link[=DSC_EA]{DSC_EA()}},
+\code{\link[=DSC_Hierarchical]{DSC_Hierarchical()}},
+\code{\link[=DSC_Kmeans]{DSC_Kmeans()}},
+\code{\link[=DSC_Reachability]{DSC_Reachability()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}}
 
-Other DSC: 
-\code{\link{DSC}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_SlidingWindow}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{animate_cluster}()},
+Other DSC:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_R]{DSC_R()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}},
+\code{\link[=DSC_Static]{DSC_Static()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate.DSC}},
-\code{\link{get_assignment}()},
-\code{\link{plot.DSC}()},
-\code{\link{predict}()},
-\code{\link{prune_clusters}()},
+\code{\link[=get_assignment]{get_assignment()}},
+\code{\link[=plot.DSC]{plot.DSC()}},
+\code{\link{predict}},
+\code{\link[=prune_clusters]{prune_clusters()}},
 \code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link[=recluster]{recluster()}}
 }
 \author{
 Michael Hahsler

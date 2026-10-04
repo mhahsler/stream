@@ -73,13 +73,13 @@ cl
 plot(cl, stream)
 }
 \seealso{
-Other DSC_Macro: 
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_SlidingWindow}()}
+Other DSC_Macro:
+\code{\link[=DSC_DBSCAN]{DSC_DBSCAN()}},
+\code{\link[=DSC_EA]{DSC_EA()}},
+\code{\link[=DSC_Hierarchical]{DSC_Hierarchical()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Reachability]{DSC_Reachability()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}}
 }
 \author{
 Michael Hahsler

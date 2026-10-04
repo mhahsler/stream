@@ -38,7 +38,7 @@ reachability) to recluster a set of micro-clusters.
 }
 \details{
 Two micro-clusters are directly reachable if they are within each other's
-epsilon-neighborhood (i.e., the distance between the centers is less then
+epsilon-neighborhood (i.e., the distance between the centers is less than
 epsilon). Two micro-clusters are reachable if they are connected by a chain
 of pairwise directly reachable micro-clusters.  All mutually reachable
 micro-clusters are put in the same cluster.
@@ -58,7 +58,7 @@ stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
 # Use a moving window for "micro-clusters and recluster with DBSCAN (macro-clusters)
 cl <- DSC_TwoStage(
   micro = DSC_Window(horizon = 100),
-  macro = DSC_Reachability(eps = .05)
+  macro = DSC_Reachability(epsilon = .05)
 )
 
 update(cl, stream, 500)
@@ -74,13 +74,13 @@ databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
 Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 }
 \seealso{
-Other DSC_Macro: 
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_SlidingWindow}()}
+Other DSC_Macro:
+\code{\link[=DSC_DBSCAN]{DSC_DBSCAN()}},
+\code{\link[=DSC_EA]{DSC_EA()}},
+\code{\link[=DSC_Hierarchical]{DSC_Hierarchical()}},
+\code{\link[=DSC_Kmeans]{DSC_Kmeans()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}}
 }
 \author{
 Michael Hahsler

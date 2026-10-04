@@ -40,7 +40,7 @@ The evolutionary algorithm uses existing clustering solutions and creates
 small variations of them by combining and randomly modifying them. The
 modified solutions can yield better partitions and thus can improve the
 clustering over time. The evolutionary algorithm is incremental, which
-allows to improve existing macro-clusters instead of recomputing them every
+allows users to improve existing macro-clusters instead of recomputing them every
 time.
 }
 \examples{
@@ -83,13 +83,13 @@ Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary
 Stream Clustering Utilizing Idle Times", Big Data Research.
 }
 \seealso{
-Other DSC_Macro: 
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_SlidingWindow}()}
+Other DSC_Macro:
+\code{\link[=DSC_DBSCAN]{DSC_DBSCAN()}},
+\code{\link[=DSC_Hierarchical]{DSC_Hierarchical()}},
+\code{\link[=DSC_Kmeans]{DSC_Kmeans()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Reachability]{DSC_Reachability()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}}
 }
 \author{
 Matthias Carnein \email{Matthias.Carnein@uni-muenster.de}

@@ -56,29 +56,29 @@ cl$model$result
 plot(cl$model$result)
 }
 \seealso{
-Other DSC: 
-\code{\link{DSC}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{animate_cluster}()},
+Other DSC:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_R]{DSC_R()}},
+\code{\link[=DSC_Static]{DSC_Static()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate.DSC}},
-\code{\link{get_assignment}()},
-\code{\link{plot.DSC}()},
-\code{\link{predict}()},
-\code{\link{prune_clusters}()},
+\code{\link[=get_assignment]{get_assignment()}},
+\code{\link[=plot.DSC]{plot.DSC()}},
+\code{\link{predict}},
+\code{\link[=prune_clusters]{prune_clusters()}},
 \code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link[=recluster]{recluster()}}
 
-Other DSC_Macro: 
-\code{\link{DSC_DBSCAN}()},
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Reachability}()}
+Other DSC_Macro:
+\code{\link[=DSC_DBSCAN]{DSC_DBSCAN()}},
+\code{\link[=DSC_EA]{DSC_EA()}},
+\code{\link[=DSC_Hierarchical]{DSC_Hierarchical()}},
+\code{\link[=DSC_Kmeans]{DSC_Kmeans()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Reachability]{DSC_Reachability()}}
 }
 \author{
 Michael Hahsler

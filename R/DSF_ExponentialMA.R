@@ -30,8 +30,9 @@
 #' @family DSF
 #'
 #' @param dsd	The input stream as an [DSD] object.
-#' @param dim columns to which the filter should be applied. Default is all columns.
-#' @param alpha smoothing coefficient in \eqn{[0, 1]}. Larger means discounting older observations faster.
+#' @param dim Columns to which the filter is applied. The default is all columns.
+#' @param alpha Smoothing coefficient in \eqn{[0, 1]}. Larger values discount
+#'   older observations faster.
 #' @return An object of class `DSF_ExponentialMA` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examples

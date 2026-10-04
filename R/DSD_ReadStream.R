@@ -30,7 +30,7 @@
 #'
 #' The implementation tries to gracefully deal with slightly corrupted data by
 #' dropping points with inconsistent reading and producing a warning. However,
-#' this might not always be possible resulting in an error instead.
+#' this might not always be possible, resulting in an error.
 #'
 #' **Column names**
 #'
@@ -323,9 +323,9 @@ reset_stream.DSD_ReadStream <- function(dsd, pos = 1) {
   pos <- as.integer(pos)
 
   if (!isSeekable(dsd$file))
-    stop("Underlying conneciton does not support seek!")
+    stop("The underlying connection does not support seeking.")
 
-  # go to the the first line of the data
+  # go to the first line of the data
   seek(dsd$file, where = 0L, rw = "r")
   if (dsd$skip + dsd$header > 0L)
     readLines(dsd$file, n = dsd$skip + dsd$header)

@@ -39,9 +39,9 @@ Implements the DBSCAN algorithm for reclustering micro-clusterings.
 }
 \details{
 DBSCAN is a weighted extended version of the implementation in \pkg{fpc}
-where each micro-cluster center considered a pseudo point. For weighting we
-use in the MinPts comparison the sum of weights of the micro-cluster instead
-of the number.
+where each micro-cluster center is considered a pseudo-point. For the MinPts
+comparison, the sum of the micro-cluster weights is used instead of the
+number of micro-clusters.
 
 DBSCAN first finds core points based on the number of other points in its
 eps-neighborhood. Then core points are joined into clusters using
@@ -75,13 +75,13 @@ databases with noise. In Evangelos Simoudis, Jiawei Han, Usama M. Fayyad.
 Discovery and Data Mining (KDD-96).} AAAI Press. pp. 226-231.
 }
 \seealso{
-Other DSC_Macro: 
-\code{\link{DSC_EA}()},
-\code{\link{DSC_Hierarchical}()},
-\code{\link{DSC_Kmeans}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Reachability}()},
-\code{\link{DSC_SlidingWindow}()}
+Other DSC_Macro:
+\code{\link[=DSC_EA]{DSC_EA()}},
+\code{\link[=DSC_Hierarchical]{DSC_Hierarchical()}},
+\code{\link[=DSC_Kmeans]{DSC_Kmeans()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Reachability]{DSC_Reachability()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}}
 }
 \author{
 Michael Hahsler

@@ -59,8 +59,8 @@ table(pr, newdata$Species)
 get_model(cl)
 }
 \seealso{
-Other DSClassifier: 
-\code{\link{DSClassifier}()}
+Other DSClassifier:
+\code{\link[=DSClassifier]{DSClassifier()}}
 }
 \author{
 Michael Hahsler

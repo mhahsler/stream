@@ -63,7 +63,7 @@ idle time of the stream. Whenever there is idle time, we can call the
 \code{\link[=recluster]{recluster()}} function of the reference class to improve the
 macro-clusters (see example). The evolutionary algorithm can also be applied
 as a traditional reclustering step, or a combination of both. In addition,
-this implementation also allows to evaluate a fixed number of generations
+this implementation also allows users to evaluate a fixed number of generations
 after each observation.
 }
 \examples{
@@ -110,19 +110,19 @@ Carnein M. and Trautmann H. (2018), "evoStream - Evolutionary
 Stream Clustering Utilizing Idle Times", Big Data Research.
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()}
+Other DSC_Micro:
+\code{\link[=DSC_BICO]{DSC_BICO()}},
+\code{\link[=DSC_BIRCH]{DSC_BIRCH()}},
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_Sample]{DSC_Sample()}},
+\code{\link[=DSC_Window]{DSC_Window()}}
 
-Other DSC_TwoStage: 
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_TwoStage}()}
+Other DSC_TwoStage:
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}}
 }
 \author{
 Matthias Carnein \email{Matthias.Carnein@uni-muenster.de}

@@ -68,14 +68,14 @@ algorithm and its applications", \emph{Data Mining and Knowledge Discovery.}
 Vol. 1(2), pp. 141-182.
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_Micro:
+\code{\link[=DSC_BICO]{DSC_BICO()}},
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_Sample]{DSC_Sample()}},
+\code{\link[=DSC_Window]{DSC_Window()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 }
 \author{
 Dennis Assenmacher (\email{Dennis.Assenmacher@uni-muenster.de}),

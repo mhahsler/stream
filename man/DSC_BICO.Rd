@@ -55,14 +55,14 @@ Schwiegelshohn, Christian Sohler: BICO: BIRCH Meets Coresets for k-Means
 Clustering. \emph{ESA 2013:} 481-492.
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_Micro:
+\code{\link[=DSC_BIRCH]{DSC_BIRCH()}},
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_Sample]{DSC_Sample()}},
+\code{\link[=DSC_Window]{DSC_Window()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 }
 \author{
 R-Interface: Matthias Carnein

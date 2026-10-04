@@ -165,9 +165,9 @@ get_points.DSD_Memory <- function(x,
       return(x$strm[0, , drop = FALSE])
 
     pos <- x$state$counter
-    x$state$counter <- nrow(x$str) + 1L
+    x$state$counter <- nrow(x$strm) + 1L
 
-    dat <- x$strm[seq(pos, nrow(x$str)), , drop = FALSE]
+    dat <- x$strm[seq(pos, nrow(x$strm)), , drop = FALSE]
     if (!info)
       dat <- remove_info(dat)
     return(dat)

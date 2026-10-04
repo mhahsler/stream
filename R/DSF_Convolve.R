@@ -20,26 +20,31 @@
 #'
 #' Applies a filter (i.e., a convolution with a filter kernel) to a data stream.
 #'
-#' A filter kernel is a vector with kernel weights. A few filter are provided.
+#' A filter kernel is a vector of weights. Several filters are provided.
 #'
 #' * `filter_MA(width)` creates a moving average.
-#' * `filter_diff(lag)` calculates lagged differences. Note that `na.rm = TRUE` will lead to artifacts and should not be used.
+#' * `filter_diff(lag)` calculates lagged differences. Using `na.rm = TRUE`
+#'   can introduce artifacts and is not recommended.
 #' * `filter_Hamming(width)` creates a Hamming window.
-#' * `filter_Sinc(fc, fs, width, bw)` creates a windowed-sinc filter. One of `width` (filter length) or
-#'   `bw` (transition bandwidth can  be used to control the filter roll-off. The relationship is \eqn{width = 4/bw}.
+#' * `filter_Sinc(fc, fs, width, bw)` creates a windowed-sinc filter. Use either
+#'   `width` (filter length) or `bw` (transition bandwidth) to control the filter
+#'   roll-off. The relationship is \eqn{width = 4/bw}.
 #'   See Chapter 16 in Smith (1997).
 #'
-#' `pre` and `post` are functions that are called before and after the convolution. For example, to calculate
-#' RMS, you can use `pre = pow2` and `post = sqrt`. `pow2()` is a convenience function.
+#' `pre` and `post` are functions called before and after the convolution. For
+#' example, use `pre = pow2` and `post = sqrt` to calculate the RMS. `pow2()` is
+#' a convenience function.
 #' @family DSF
 #'
-#' @param dsd A object of class [DSD].
-#' @param dim columns to which the filter should be applied. Default is all columns.
-#' @param kernel filter kernel as a numeric vector of weights.
-#' @param pre,post functions to be applied before and after the convolution.
-#' @param na.rm logical; should NAs be ignored?
-#' @param replace logical; should the column be replaced or a column with the convolved column added?
-#' @param name character; the new column will be name with the old column name + `_` + `name`.
+#' @param dsd An object of class [DSD].
+#' @param dim Columns to which the filter is applied. The default is all columns.
+#' @param kernel A numeric vector of filter weights.
+#' @param pre,post Functions applied before and after the convolution.
+#' @param na.rm Logical; should missing values be ignored?
+#' @param replace Logical; should the original column be replaced? If `FALSE`,
+#'   the convolved column is added.
+#' @param name Character string used to name a new column. The new name combines
+#'   the original column name, `_`, and `name`.
 #' @return An object of class `DSF_Convolve` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @seealso [stats::filter] provides non-streaming convolution.

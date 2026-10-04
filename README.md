@@ -1,12 +1,12 @@
 
 # <img src="man/figures/logo.svg" align="right" height="139" /> R package stream - Infrastructure for Data Stream Mining
 
-[![r-universe
-status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev/stream)
 [![Package on
 CRAN](https://www.r-pkg.org/badges/version/stream)](https://CRAN.R-project.org/package=stream)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/stream)](https://CRAN.R-project.org/package=stream)
+![License](https://img.shields.io/cran/l/stream) [![r-universe
+status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-universe.dev/stream)
 
 ## Introduction
 
@@ -114,6 +114,11 @@ density in grid cells.
 
 ``` r
 dsc <- DSC_DStream(gridsize = 0.1)
+```
+
+    ## Warning in x$c: partial match of 'c' to 'centers'
+
+``` r
 update(dsc, stream, 1000)
 plot(dsc, stream, grid = TRUE)
 ```
@@ -163,6 +168,11 @@ radius.
 
 ``` r
 dso <- DSOutlier_DBSTREAM(r = 0.1)
+```
+
+    ## Warning in x$c: partial match of 'c' to 'centers'
+
+``` r
 update(dso, stream, 1000)
 plot(dso, stream)
 ```
@@ -191,6 +201,11 @@ single `update()` call.
 pipeline <- DSD_Gaussians(k = 3, d = 2, noise = 0.1) %>%
     DSF_Scale() %>%
     DST_Runner(DSC_DStream(gridsize = 0.1))
+```
+
+    ## Warning in x$c: partial match of 'c' to 'centers'
+
+``` r
 pipeline
 ```
 

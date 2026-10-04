@@ -18,14 +18,14 @@
 
 #' Select Features for a Data Stream
 #'
-#' Select features from a data stream given a list of features.
+#' Selects features from a data stream using a supplied list of features.
 #'
 #' @family DSF
 #'
-#' @param dsd A object of class [DSD] that will be scaled.
-#' @param features a character vector with feature (column) names or the numeric index of
-#'  the selected features. All other features will be removed. Note special info columns
-#'  starting with `.` are not features.
+#' @param dsd An object of class [DSD].
+#' @param features A character vector of feature (column) names or a numeric
+#'   vector of feature indices. All other features are removed. Special
+#'   information columns starting with `.` are not features.
 #' @return An object of class `DSF_FeatureSelection` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examples

@@ -27,7 +27,7 @@
 #'
 #'
 #' Two micro-clusters are directly reachable if they are within each other's
-#' epsilon-neighborhood (i.e., the distance between the centers is less then
+#' epsilon-neighborhood (i.e., the distance between the centers is less than
 #' epsilon). Two micro-clusters are reachable if they are connected by a chain
 #' of pairwise directly reachable micro-clusters.  All mutually reachable
 #' micro-clusters are put in the same cluster.
@@ -69,7 +69,7 @@
 #' # Use a moving window for "micro-clusters and recluster with DBSCAN (macro-clusters)
 #' cl <- DSC_TwoStage(
 #'   micro = DSC_Window(horizon = 100),
-#'   macro = DSC_Reachability(eps = .05)
+#'   macro = DSC_Reachability(epsilon = .05)
 #' )
 #'
 #' update(cl, stream, 500)

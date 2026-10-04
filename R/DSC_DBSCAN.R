@@ -22,9 +22,9 @@
 #' Implements the DBSCAN algorithm for reclustering micro-clusterings.
 #'
 #' DBSCAN is a weighted extended version of the implementation in \pkg{fpc}
-#' where each micro-cluster center considered a pseudo point. For weighting we
-#' use in the MinPts comparison the sum of weights of the micro-cluster instead
-#' of the number.
+#' where each micro-cluster center is considered a pseudo-point. For the MinPts
+#' comparison, the sum of the micro-cluster weights is used instead of the
+#' number of micro-clusters.
 #'
 #' DBSCAN first finds core points based on the number of other points in its
 #' eps-neighborhood. Then core points are joined into clusters using

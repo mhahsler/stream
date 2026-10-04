@@ -41,7 +41,7 @@
 #'
 #' Many evaluation measures are available using
 #' code from other packages including [cluster::silhouette()],
-#' [clue:: cl_agreement()], and [fpc::cluster.stats()].
+#' [clue::cl_agreement()], and [fpc::cluster.stats()].
 #'
 #' The following information items are available:
 #'
@@ -175,7 +175,7 @@
 #' attributes, `"type"` and `"assign"`, to see at what level the
 #' evaluation was done.
 #' @author Michael Hahsler, Matthew Bolanos, John Forrest, and Dalibor Krleža
-#' @seealso [cluster::silhouette()], [clue:: cl_agreement()], and [fpc::cluster.stats()].
+#' @seealso [cluster::silhouette()], [clue::cl_agreement()], and [fpc::cluster.stats()].
 #' @references
 #' Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On
 #' evaluating stream learning algorithms. _Machine Learning,_ March 2013,

@@ -33,7 +33,7 @@
 #' [recluster()] function of the reference class to improve the
 #' macro-clusters (see example). The evolutionary algorithm can also be applied
 #' as a traditional reclustering step, or a combination of both. In addition,
-#' this implementation also allows to evaluate a fixed number of generations
+#' this implementation also allows users to evaluate a fixed number of generations
 #' after each observation.
 #'
 #' @family DSC_Micro

@@ -1,0 +1,103 @@
+---
+title: "Getting started with stream"
+author: "Michael Hahsler"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Getting started with stream}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(stream)
+set.seed(1234)
+```
+
+The `stream` package provides tools to generate or read data streams, update
+stream mining models, and inspect their results. This guide walks through a
+small clustering workflow: create a stream, inspect incoming points, build a
+clustering model, and evaluate it on new points.
+
+## Installation
+
+Install the released package from CRAN, then load it in your R session:
+
+```{r install, eval=FALSE}
+install.packages("stream")
+```
+
+```{r load-package}
+library(stream)
+```
+
+## Create and inspect a data stream
+
+`DSD_Gaussians()` generates a stream with three clusters and a small amount of
+noise. A stream can be unbounded, so request a finite number of points with
+`get_points()`:
+
+```{r create-stream}
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
+points <- get_points(stream, n = 5)
+points
+```
+
+The returned data frame contains feature columns and information columns such
+as `.class`, which records the generating cluster. Use `info = FALSE` when you
+only need feature values. Plot a sample of the stream to see its structure:
+
+```{r plot-stream, fig.width=6, fig.height=5}
+plot(stream, n = 500)
+```
+
+## Update a clustering model
+
+`DSC_TwoStage()` combines an online micro-clusterer with an offline
+macro-clusterer. Here, a sliding window stores recent points and k-means groups
+the window's micro-clusters into three macro-clusters. `update()` feeds 500
+points from the stream into the model:
+
+```{r cluster-stream}
+clustering <- DSC_TwoStage(
+  micro = DSC_Window(horizon = 100),
+  macro = DSC_Kmeans(k = 3)
+)
+
+update(clustering, stream, n = 500)
+clustering
+```
+
+Inspect the number of clusters and their centers, then plot the result:
+
+```{r inspect-clustering, fig.width=6, fig.height=5}
+nclusters(clustering, type = "micro")
+nclusters(clustering, type = "macro")
+get_centers(clustering, type = "macro")
+plot(clustering, stream, type = "both")
+```
+
+## Evaluate on new points
+
+`evaluate_static()` tests the current model on new points without updating it.
+The generated stream includes true cluster labels, so external measures such as
+purity and the adjusted Rand index can be calculated:
+
+```{r evaluate-clustering}
+evaluate_static(
+  clustering,
+  stream,
+  measure = c("purity", "crand"),
+  n = 200,
+  type = "macro",
+  assign = "macro"
+)
+```
+
+## Further reading
+
+See the [function reference](../reference/index.html) and the package vignettes
+for details on data generators, stream filters, clustering methods, evaluation,
+and extending `stream` with new components.

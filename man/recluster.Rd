@@ -51,20 +51,20 @@ recluster(kmeans, sample)
 plot(kmeans, stream, type = "both", main = "Macro-clusters (Sampling + k-means)")
 }
 \seealso{
-Other DSC: 
-\code{\link{DSC}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_SlidingWindow}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{animate_cluster}()},
+Other DSC:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_R]{DSC_R()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}},
+\code{\link[=DSC_Static]{DSC_Static()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate.DSC}},
-\code{\link{get_assignment}()},
-\code{\link{plot.DSC}()},
-\code{\link{predict}()},
-\code{\link{prune_clusters}()},
+\code{\link[=get_assignment]{get_assignment()}},
+\code{\link[=plot.DSC]{plot.DSC()}},
+\code{\link{predict}},
+\code{\link[=prune_clusters]{prune_clusters()}},
 \code{\link{read_saveDSC}}
 }
 \author{

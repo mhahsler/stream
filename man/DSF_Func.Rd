@@ -2,24 +2,26 @@
 % Please edit documentation in R/DSF_Func.R
 \name{DSF_Func}
 \alias{DSF_Func}
-\title{Apply a Function to Transformation to a Data Stream}
+\title{Apply a Function to Transform a Data Stream}
 \usage{
 DSF_Func(dsd = NULL, func, ..., info = FALSE)
 }
 \arguments{
-\item{dsd}{A object of class \link{DSD}.}
+\item{dsd}{An object of class \link{DSD}.}
 
-\item{func}{a function that takes a data.frame as the first argument and returns the transformed data.frame.}
+\item{func}{A function that takes a data frame as its first argument and
+returns the transformed data frame.}
 
-\item{...}{further arguments are passed on to the function specified in \code{func}.}
+\item{...}{Further arguments passed to \code{func}.}
 
-\item{info}{logical; does the function also receive and modify the info columns?}
+\item{info}{Logical; should the function also receive and modify the
+information columns?}
 }
 \value{
 An object of class \code{DSF_Func} (subclass of \link{DSF} and \link{DSD}).
 }
 \description{
-Applies an R function to transform to a data stream.
+Applies an R function to transform a data stream.
 }
 \details{
 The function's first argument needs to be a data.frame representing points of the
@@ -70,14 +72,14 @@ get_points(stream5, n = 5)
 plot(stream5)
 }
 \seealso{
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_ExponentialMA}()},
-\code{\link{DSF_FeatureSelection}()},
-\code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Convolve]{DSF_Convolve()}},
+\code{\link[=DSF_Downsample]{DSF_Downsample()}},
+\code{\link[=DSF_ExponentialMA]{DSF_ExponentialMA()}},
+\code{\link[=DSF_FeatureSelection]{DSF_FeatureSelection()}},
+\code{\link[=DSF_Scale]{DSF_Scale()}},
+\code{\link[=DSF_dplyr]{DSF_dplyr()}}
 }
 \author{
 Michael Hahsler

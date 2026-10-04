@@ -65,9 +65,9 @@ Monitoring of Thousands of Data Streams in Real Time, Intl. Conference of
 Very Large Data Bases (VLDB'02).
 }
 \seealso{
-Other DSAggregate: 
-\code{\link{DSAggregate}()},
-\code{\link{DSAggregate_Sample}()}
+Other DSAggregate:
+\code{\link[=DSAggregate]{DSAggregate()}},
+\code{\link[=DSAggregate_Sample]{DSAggregate_Sample()}}
 }
 \author{
 Michael Hahsler

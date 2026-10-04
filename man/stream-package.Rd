@@ -6,6 +6,8 @@
 \alias{stream-package}
 \title{stream: Infrastructure for Data Stream Mining}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 A framework for data stream modeling and associated data mining tasks such as clustering and classification. The development of this package was supported in part by NSF IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912. Hahsler et al (2017) \doi{10.18637/jss.v076.i14}.
 }
 \section{Key Classes}{
@@ -27,12 +29,18 @@ A framework for data stream modeling and associated data mining tasks such as cl
 Useful links:
 \itemize{
   \item \url{https://github.com/mhahsler/stream}
+  \item \url{http://michael.hahsler.net/stream/}
   \item Report bugs at \url{https://github.com/mhahsler/stream/issues}
 }
 
 }
 \author{
 \strong{Maintainer}: Michael Hahsler \email{mhahsler@lyle.smu.edu} (\href{https://orcid.org/0000-0003-2716-1405}{ORCID}) [copyright holder]
+
+Authors:
+\itemize{
+  \item Michael Hahsler \email{mhahsler@lyle.smu.edu} (\href{https://orcid.org/0000-0003-2716-1405}{ORCID}) [copyright holder]
+}
 
 Other contributors:
 \itemize{

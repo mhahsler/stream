@@ -60,8 +60,8 @@ abline(0, 1, col = "red")
 get_model(cl)
 }
 \seealso{
-Other DSRegressor: 
-\code{\link{DSRegressor}()}
+Other DSRegressor:
+\code{\link[=DSRegressor]{DSRegressor()}}
 }
 \author{
 Michael Hahsler

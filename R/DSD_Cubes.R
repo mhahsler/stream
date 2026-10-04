@@ -28,7 +28,7 @@
 #' @param center A matrix of means for each dimension of each cluster.
 #' @param size A `k` times `d` matrix with the cube dimensions.
 #' @param p A vector of probabilities that determines the likelihood of
-#' generated a data point from a particular cluster.
+#' generating a data point from a particular cluster.
 #' @param noise Noise probability between 0 and 1.  Noise is uniformly
 #' distributed within noise range (see below).
 #' @param noise_range A matrix with d rows and 2 columns. The first column

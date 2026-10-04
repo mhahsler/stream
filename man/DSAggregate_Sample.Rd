@@ -60,9 +60,9 @@ Evolution. International Conference on Very Large Databases (VLDB'06).
 607-618.
 }
 \seealso{
-Other DSAggregate: 
-\code{\link{DSAggregate}()},
-\code{\link{DSAggregate_Window}()}
+Other DSAggregate:
+\code{\link[=DSAggregate]{DSAggregate()}},
+\code{\link[=DSAggregate_Window]{DSAggregate_Window()}}
 }
 \author{
 Michael Hahsler

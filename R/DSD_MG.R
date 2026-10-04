@@ -18,10 +18,10 @@
 
 #' DSD Moving Generator
 #'
-#' Creates an evolving DSD that consists of several [MGC], each representing a moving cluster.
+#' Creates an evolving DSD consisting of several [MGC]s, each representing a moving cluster.
 #'
 #' This DSD is able to generate complex datasets that are able to evolve over a
-#' period of time. Its behavior is determined by as set of [MGC]s, each representing
+#' period of time. Its behavior is determined by a set of [MGC]s, each representing
 #' a moving cluster.
 #'
 #' @family DSD
@@ -41,7 +41,7 @@
 #' @author Matthew Bolanos
 #' @examples
 #' ### create an empty DSD_MG
-#' stream <- DSD_MG(dim = 2)
+#' stream <- DSD_MG(dimension = 2)
 #' stream
 #'
 #' ### add two clusters
@@ -70,10 +70,13 @@
 #'
 #' ### create a more complicated cluster structure (using 2 clusters with the same
 #' ### label to form an L shape)
-#' stream <- DSD_MG(dim = 2,
-#'   MGC_Static(density = 10, center = c(.5, .2),   par = c(.4, .2),   shape = Shape_Block),
-#'   MGC_Static(density = 10, center = c(.6, .5),   par = c(.2, .4),   shape = Shape_Block),
-#'   MGC_Static(density = 5,  center = c(.39, .53), par = c(.16, .35), shape = Shape_Block),
+#' stream <- DSD_MG(dimension = 2,
+#'   MGC_Static(density = 10, center = c(.5, .2),   parameter = c(.4, .2),
+#'              shape = Shape_Block),
+#'   MGC_Static(density = 10, center = c(.6, .5),   parameter = c(.2, .4),
+#'              shape = Shape_Block),
+#'   MGC_Static(density = 5,  center = c(.39, .53), parameter = c(.16, .35),
+#'              shape = Shape_Block),
 #'   MGC_Noise( density = 1,  range = rbind(c(0,1), c(0,1))),
 #'   labels = c(1, 1, 2, NA)
 #'   )
@@ -82,25 +85,26 @@
 #' plot(stream, xlim = c(0, 1), ylim = c(0, 1))
 #'
 #' ### simulate the clustering of a splitting cluster
-#' c1 <- MGC_Linear(dim = 2, keyframelist = list(
-#'   keyframe(time = 1,  dens = 20, center = c(0,0),   param = 10),
-#'   keyframe(time = 50, dens = 10, center = c(50,50), param = 10),
-#'   keyframe(time = 100,dens = 10, center = c(50,100),param = 10)
+#' c1 <- MGC_Linear(dimension = 2, keyframelist = list(
+#'   keyframe(time = 1,  density = 20, center = c(0,0),   parameter = 10),
+#'   keyframe(time = 50, density = 10, center = c(50,50), parameter = 10),
+#'   keyframe(time = 100,density = 10, center = c(50,100),parameter = 10)
 #' ))
 #'
-#' ### Note: Second cluster appearch at time=50
-#' c2 <- MGC_Linear(dim = 2, keyframelist = list(
-#'   keyframe(time = 50, dens = 10, center = c(50,50), param = 10),
-#'   keyframe(time = 100,dens = 10, center = c(100,50),param = 10)
+#' ### Note: The second cluster appears at time = 50
+#' c2 <- MGC_Linear(dimension = 2, keyframelist = list(
+#'   keyframe(time = 50, density = 10, center = c(50,50), parameter = 10),
+#'   keyframe(time = 100,density = 10, center = c(100,50),parameter = 10)
 #' ))
 #'
-#' stream <- DSD_MG(dim = 2, c1, c2)
+#' stream <- DSD_MG(dimension = 2, c1, c2)
 #' stream
 #'
 #' dbstream <- DSC_DBSTREAM(r = 20, lambda = 0.1)
 #' if (interactive()) {
 #' purity <- animate_cluster(dbstream, stream, n = 2500, type = "micro",
-#'   xlim = c(-10, 120), ylim = c(-10, 120), measure = "purity", horizon = 100)
+#'                           xlim = c(-10, 120), ylim = c(-10, 120),
+#'                           measure = "purity", horizon = 100)
 #' }
 #' @export
 DSD_MG <-

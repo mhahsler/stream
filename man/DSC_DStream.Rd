@@ -207,23 +207,23 @@ attraction. \emph{ACM Transactions on Knowledge Discovery from Data,} 3(3),
 Article 12 (July 2009), 27 pages.
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_Micro:
+\code{\link[=DSC_BICO]{DSC_BICO()}},
+\code{\link[=DSC_BIRCH]{DSC_BIRCH()}},
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_Sample]{DSC_Sample()}},
+\code{\link[=DSC_Window]{DSC_Window()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 
-Other DSC_TwoStage: 
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_TwoStage:
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 
-Other DSOutlier: 
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSOutlier}()}
+Other DSOutlier:
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSOutlier]{DSOutlier()}}
 }
 \author{
 Michael Hahsler

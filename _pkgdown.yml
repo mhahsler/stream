@@ -1,0 +1,103 @@
+url: http://michael.hahsler.net/stream/
+template:
+  bootstrap: 5
+  math-rendering: mathjax
+
+reference:
+  - title: Package overview
+    contents:
+      - stream-package
+      - stream_pipeline
+
+  - title: Data stream sources
+    contents:
+      - DSD
+      - DSD_Memory
+      - DSD_Gaussians
+      - DSD_BarsAndGaussians
+      - DSD_Cubes
+      - DSD_MG
+      - DSD_Mixture
+      - DSD_NULL
+      - DSD_Target
+      - DSD_UniformNoise
+      - DSD_Benchmark
+      - DSD_mlbenchData
+      - DSD_mlbenchGenerator
+      - DSD_ReadDB
+      - DSD_ReadStream
+      - DSD_ScaleStream
+      - MGC
+      - get_points
+      - reset_stream
+      - close_stream
+
+  - title: Stream filters
+    contents:
+      - DSF
+      - DSF_Downsample
+      - DSF_Convolve
+      - DSF_ExponentialMA
+      - DSF_FeatureSelection
+      - DSF_Func
+      - DSF_Scale
+      - DSF_dplyr
+
+  - title: Stream tasks and operators
+    contents:
+      - DST
+      - DST_Multi
+      - DST_SlidingWindow
+      - DST_WriteStream
+      - DSFP
+      - DSAggregate
+      - DSAggregate_Sample
+      - DSAggregate_Window
+      - DSClassifier
+      - DSClassifier_SlidingWindow
+      - DSRegressor
+      - DSRegressor_SlidingWindow
+      - DSOutlier
+
+  - title: Clustering
+    contents:
+      - DSC
+      - DSC_Micro
+      - DSC_Macro
+      - DSC_TwoStage
+      - DSC_Static
+      - DSC_Window
+      - DSC_SlidingWindow
+      - DSC_BICO
+      - DSC_BIRCH
+      - DSC_DBSTREAM
+      - DSC_DStream
+      - DSC_evoStream
+      - DSC_Sample
+      - DSC_DBSCAN
+      - DSC_EA
+      - DSC_Hierarchical
+      - DSC_Kmeans
+      - DSC_Reachability
+      - DSC_R
+      - get_assignment
+      - prune_clusters
+      - recluster
+      - predict
+      - update
+
+  - title: Evaluation and visualization
+    contents:
+      - evaluate
+      - evaluate.DSC
+      - agreement
+      - plot.DSD
+      - plot.DSC
+      - animate_data
+      - animate_cluster
+
+  - title: Stream I/O and utilities
+    contents:
+      - write_stream
+      - read_saveDSC
+      - '\%>\%'

@@ -78,14 +78,14 @@ Evolution. \emph{International Conference on Very Large Databases
 (VLDB'06).} 607-618.
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_Micro:
+\code{\link[=DSC_BICO]{DSC_BICO()}},
+\code{\link[=DSC_BIRCH]{DSC_BIRCH()}},
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_Window]{DSC_Window()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 }
 \author{
 Michael Hahsler

@@ -31,19 +31,21 @@ filter_Sinc(fc, fs, width = NULL, bw = NULL)
 pow2(x)
 }
 \arguments{
-\item{dsd}{A object of class \link{DSD}.}
+\item{dsd}{An object of class \link{DSD}.}
 
-\item{dim}{columns to which the filter should be applied. Default is all columns.}
+\item{dim}{Columns to which the filter is applied. The default is all columns.}
 
-\item{kernel}{filter kernel as a numeric vector of weights.}
+\item{kernel}{A numeric vector of filter weights.}
 
-\item{pre, post}{functions to be applied before and after the convolution.}
+\item{pre, post}{Functions applied before and after the convolution.}
 
-\item{na.rm}{logical; should NAs be ignored?}
+\item{na.rm}{Logical; should missing values be ignored?}
 
-\item{replace}{logical; should the column be replaced or a column with the convolved column added?}
+\item{replace}{Logical; should the original column be replaced? If \code{FALSE},
+the convolved column is added.}
 
-\item{name}{character; the new column will be name with the old column name + \verb{_} + \code{name}.}
+\item{name}{Character string used to name a new column. The new name combines
+the original column name, \verb{_}, and \code{name}.}
 
 \item{width}{filter width.}
 
@@ -64,18 +66,21 @@ An object of class \code{DSF_Convolve} (subclass of \link{DSF} and \link{DSD}).
 Applies a filter (i.e., a convolution with a filter kernel) to a data stream.
 }
 \details{
-A filter kernel is a vector with kernel weights. A few filter are provided.
+A filter kernel is a vector of weights. Several filters are provided.
 \itemize{
 \item \code{filter_MA(width)} creates a moving average.
-\item \code{filter_diff(lag)} calculates lagged differences. Note that \code{na.rm = TRUE} will lead to artifacts and should not be used.
+\item \code{filter_diff(lag)} calculates lagged differences. Using \code{na.rm = TRUE}
+can introduce artifacts and is not recommended.
 \item \code{filter_Hamming(width)} creates a Hamming window.
-\item \code{filter_Sinc(fc, fs, width, bw)} creates a windowed-sinc filter. One of \code{width} (filter length) or
-\code{bw} (transition bandwidth can  be used to control the filter roll-off. The relationship is \eqn{width = 4/bw}.
+\item \code{filter_Sinc(fc, fs, width, bw)} creates a windowed-sinc filter. Use either
+\code{width} (filter length) or \code{bw} (transition bandwidth) to control the filter
+roll-off. The relationship is \eqn{width = 4/bw}.
 See Chapter 16 in Smith (1997).
 }
 
-\code{pre} and \code{post} are functions that are called before and after the convolution. For example, to calculate
-RMS, you can use \code{pre = pow2} and \code{post = sqrt}. \code{pow2()} is a convenience function.
+\code{pre} and \code{post} are functions called before and after the convolution. For
+example, use \code{pre = pow2} and \code{post = sqrt} to calculate the RMS. \code{pow2()} is
+a convenience function.
 }
 \examples{
 data(presidents)
@@ -145,14 +150,14 @@ ISBN 0966017633, URL: https://www.dspguide.com/
 \seealso{
 \link[stats:filter]{stats::filter} provides non-streaming convolution.
 
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_ExponentialMA}()},
-\code{\link{DSF_FeatureSelection}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Downsample]{DSF_Downsample()}},
+\code{\link[=DSF_ExponentialMA]{DSF_ExponentialMA()}},
+\code{\link[=DSF_FeatureSelection]{DSF_FeatureSelection()}},
+\code{\link[=DSF_Func]{DSF_Func()}},
+\code{\link[=DSF_Scale]{DSF_Scale()}},
+\code{\link[=DSF_dplyr]{DSF_dplyr()}}
 }
 \author{
 Michael Hahsler

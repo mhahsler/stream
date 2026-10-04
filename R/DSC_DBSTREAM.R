@@ -41,10 +41,10 @@
 #' and the shared density graph, respectively.
 #'
 #' [predict()] can be used to assign new points to clusters. Points are assigned to a micro-cluster if
-#' they are within its assignment area (distance is less then `r` times `noise_multiplier`).
+#' they are within its assignment area (distance is less than `r` times `noise_multiplier`).
 #'
-#' `DSOutlier_DBSTREAM` classifies points as outlier/noise if they that cannot be assigned to a micro-cluster
-#' representing a dense region as a outlier/noise. Parameter `outlier_multiplier` specifies
+#' `DSOutlier_DBSTREAM` classifies points as outliers/noise if they cannot be assigned to a micro-cluster
+#' representing a dense region. The parameter `outlier_multiplier` specifies
 #' how far a point has to be away from a micro-cluster as a multiplier for the radius `r`.
 #'  A larger value means that outliers have to be farther away from dense
 #' regions and thus reduce the chance of misclassifying a regular point as an outlier.
@@ -747,4 +747,3 @@ DSOutlier_DBSTREAM <- function(formula = NULL,
 
   cl
 }
-

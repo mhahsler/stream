@@ -39,30 +39,30 @@ nclusters(dstream)
 plot(dstream, stream, main = "micro-clusters")
 }
 \seealso{
-Other DSC_Micro: 
-\code{\link{DSC_BICO}()},
-\code{\link{DSC_BIRCH}()},
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_Sample}()},
-\code{\link{DSC_Window}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_Micro:
+\code{\link[=DSC_BICO]{DSC_BICO()}},
+\code{\link[=DSC_BIRCH]{DSC_BIRCH()}},
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_Sample]{DSC_Sample()}},
+\code{\link[=DSC_Window]{DSC_Window()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 
-Other DSC: 
-\code{\link{DSC}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_SlidingWindow}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{animate_cluster}()},
+Other DSC:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_R]{DSC_R()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}},
+\code{\link[=DSC_Static]{DSC_Static()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate.DSC}},
-\code{\link{get_assignment}()},
-\code{\link{plot.DSC}()},
-\code{\link{predict}()},
-\code{\link{prune_clusters}()},
+\code{\link[=get_assignment]{get_assignment()}},
+\code{\link[=plot.DSC]{plot.DSC()}},
+\code{\link{predict}},
+\code{\link[=prune_clusters]{prune_clusters()}},
 \code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link[=recluster]{recluster()}}
 }
 \author{
 Michael Hahsler

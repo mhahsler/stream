@@ -18,20 +18,20 @@
 
 #' Scale a Data Stream
 #'
-#' Make an unscaled data stream into a scaled data stream.
+#' Converts an unscaled data stream into a scaled data stream.
 #'
-#' If `center` and `scale` are not vectors with scaling factors, then `scale_stream()`
-#' estimates the values for centering and scaling (see
-#' [scale] in \pkg{base}) using `n` points from the stream and the stream is reset if `reset = TRUE` and the
-#' [DSD] object supports resetting.
+#' If `center` or `scale` is logical, `DSF_Scale()` estimates the corresponding
+#' values from `n` points in the stream using [scale] in \pkg{base}. Estimating
+#' these values advances the stream by `n` points.
 #'
 #' @family DSF
 #'
-#' @param dsd A object of class [DSD] that will be scaled.
-#' @param dim integer vector or names of dimensions that should be scaled? Default is all.
-#' @param center,scale logical or a numeric vector of length equal to the
-#'   number of columns (selected with dim) used for centering/scaling (see function [scale]).
-#' @param n The number of points used by `scale_stream()` to creating the centering/scaling
+#' @param dsd An object of class [DSD] to scale.
+#' @param dim Integer indices or names of the dimensions to scale. The default
+#'   is all dimensions.
+#' @param center,scale Logical values or numeric vectors of scaling factors,
+#'   each with one value per selected column (see [scale]).
+#' @param n Number of points used to estimate centering and scaling values.
 #' @return An object of class `DSF_Scale` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @seealso [scale] in \pkg{base}
@@ -44,7 +44,7 @@
 #' center <- colMeans(points)
 #' scale <- apply(points, MARGIN = 2, sd)
 #'
-#' scaledStream <- stream %>%  DSF_Scale(dim = c(1L, 2L), center = center, scale = scale)
+#' scaledStream <- stream %>% DSF_Scale(dim = c(1L, 2L), center = center, scale = scale)
 #' colMeans(get_points(scaledStream, n = 100, info = FALSE))
 #' apply(get_points(scaledStream, n = 100, info = FALSE), MARGIN = 2, sd)
 #'

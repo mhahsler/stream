@@ -18,12 +18,13 @@
 
 #' Downsample a Data Stream
 #'
-#' Creates a new stream that reduces the frequency of a given stream by a given factor.
+#' Creates a new stream that reduces the frequency of an input stream by a
+#' specified factor.
 #'
 #' @family DSF
 #'
 #' @param dsd	The input stream as an [DSD] object.
-#' @param factor the downsampling factor.
+#' @param factor The downsampling factor.
 #' @return An object of class `DSF_Downsample` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examples

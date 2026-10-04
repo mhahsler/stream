@@ -80,12 +80,12 @@ DSC_Static <- function(x,
       stop("Manually created clusters need type 'micro' or 'macro'!")
     macro <- type == "macro"
 
-    centers <- as.data.frame(x$c)
+    centers <- as.data.frame(x$centers)
     if (is.null(centers))
       stop("No centers specified!")
     centers <- as.data.frame(centers)
 
-    weights <- x$w
+    weights <- x$weights
     if (is.null(weights))
       weights <- rep(1, nrow(centers))
     if (length(weights) != nrow(centers))

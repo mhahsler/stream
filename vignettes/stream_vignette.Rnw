@@ -105,7 +105,7 @@ Southern Methodist University\\
 P.O. Box 750122 \\
 Dallas, TX 75275-0122\\
 E-mail: \email{mhahsler@lyle.smu.edu}\\
-URL: \url{http://lyle.smu.edu/~mhahsler}
+URL: \url{https://michael.hahsler.net}
 
 Matthew Bola\~nos\\
 Microsoft Corporation\\
@@ -199,7 +199,7 @@ new algorithms to deal with the special challenges posed by data streams are nee
 Even though \proglang{R} represents an ideal platform to develop and test prototypes
 for data stream mining algorithms, \proglang{R} currently does
 only have very limited infrastructure for data streams. The following are
-some packages available from the Comprehensive R Archive Network\footnote{\url{http://CRAN.R-project.org/}} related to streams:
+some packages available from the Comprehensive R Archive Network\footnote{\url{https://CRAN.R-project.org/}} related to streams:
 
 \begin{description}
 \item[Data sources:]  Random numbers are typically
@@ -230,7 +230,7 @@ Very recently \pkg{RMOA}~\citep{stream:Wijffels:2014} was introduced. The packag
 do not fit into main memory.
 
 \item[Distributed computing frameworks:]
-With the development of Hadoop\footnote{\url{http://hadoop.apache.org/}},
+With the development of Hadoop\footnote{\url{https://hadoop.apache.org/}},
 distributed computing frameworks
 to solve large scale computational problems have become very popular.
 \pkg{HadoopStreaming}~\citep{stream:Rosenberg:2012} is available to use
@@ -241,7 +241,7 @@ not refer to data streams. As Hadoop itself, \pkg{HadoopStreaming} is used for
 batch processing and streaming in the name refers only to the internal usage of pipelines
 for ``streaming'' the input and output between the Hadoop framework and the used \proglang{R} scripts.
 A distributed framework for realtime computation is
-Storm\footnote{\url{http://storm.incubator.apache.org/}}.
+Storm.
 Storm builds on the
 idea of constructing a computing topology by connecting spouts (data stream
 sources) with a set of bolts (computational units).
@@ -565,7 +565,7 @@ by \cite{stream:Jin:2007}, \cite{stream:Cheng:2008} and \cite{stream:Vijayarani:
 
 %\pagebreak[4]
 \subsection{Existing tools} \label{sec:background:moa}
-MOA\footnote{\url{http://moa.cms.waikato.ac.nz/}}
+MOA\footnote{\url{https://moa.cms.waikato.ac.nz/}}
 (short for Massive Online Analysis)
 is a framework
 implemented in \proglang{Java}
@@ -596,7 +596,7 @@ evolution of the
 clustering (in two dimensions) and various performance
 metrics over time~\citep{stream:Kranen:2010}.
 
-SAMOA\footnote{\url{http://yahoo.github.io/samoa/}}
+SAMOA\footnote{\url{https://incubator.apache.org/projects/samoa.html}}
 (Scalable Advanced Massive Online Analysis) is a recently introduced
 tool for distributed stream mining with Storm or the Apache S4 distributed computing
 platform. Similar to MOA it is implemented in \proglang{Java}, and
@@ -673,7 +673,7 @@ simulated data sets to get reproducible results.
 
 \begin{figure}[tb]
 \centering
-\includegraphics[width=.5\linewidth]{stream-simple_kmeans_reclustering}
+\includegraphics[width=.5\linewidth]{stream_vignette-simple_kmeans_reclustering}
 \caption{Data stream clustering result of D-Stream on a simple simulated data set with three random Gaussians. Micro-clusters are shown as circles and macro-clusters are shown as crosses (size represents weight).}
 \label{figure:simple_kmeans_reclustering}
 \end{figure}
@@ -976,14 +976,14 @@ plot(stream, n = 500, method = "pc")
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=.8\linewidth]{stream-static}
+\includegraphics[width=.8\linewidth]{stream_vignette-static}
 \caption{Plotting 500 data points from the data stream.}
 \label{figure:static}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=.4\linewidth]{stream-static_pc}
+\includegraphics[width=.4\linewidth]{stream_vignette-static_pc}
 \caption{Plotting 500 data points from the data stream projected onto its first two
 principal components.}
 \label{figure:static_pc}
@@ -1042,16 +1042,16 @@ arrows(.15,.15,.85,.85, col=rgb(.8,.8,.8,.6), lwd=10)
 \begin{figure}
 \centering
 \begin{minipage}{.45\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-moa1} \\(a) Position 1
+\includegraphics[width=\linewidth]{stream_vignette-moa1} \\(a) Position 1
 \end{minipage}
 \begin{minipage}{.45\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-moa2} \\(b) Position 1650
+\includegraphics[width=\linewidth]{stream_vignette-moa2} \\(b) Position 1650
 \end{minipage} \\
 \begin{minipage}{.45\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-moa3} \\(c) Position 3300
+\includegraphics[width=\linewidth]{stream_vignette-moa3} \\(c) Position 3300
 \end{minipage}
 \begin{minipage}{.45\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-moa4} \\(d) Position 4950
+\includegraphics[width=\linewidth]{stream_vignette-moa4} \\(d) Position 4950
 \end{minipage}
 \caption{Data points from \code{DSD\_Benchmark(1)} at different positions
 in the stream. The two arrows are added to highlight the direction of movement.}
@@ -1121,10 +1121,10 @@ plot(stream2, 1000)
 @
 \begin{figure}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-lim1} \\(a) Variance between 0 and 0.01
+\includegraphics[width=\linewidth]{stream_vignette-dsd-lim1} \\(a) Variance between 0 and 0.01
 \end{minipage}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-lim2} \\(b) Variance between .05 and 0.1
+\includegraphics[width=\linewidth]{stream_vignette-dsd-lim2} \\(b) Variance between .05 and 0.1
 \end{minipage}
 \caption{Data points from \code{DSD\_Gaussians} having maximal variance limit and space limits.}
 \label{figure:dsd_gauss_limits}
@@ -1163,10 +1163,10 @@ plot(stream2, 1000)
 @
 \begin{figure}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-ms1} \\(a) Mahalanobis separation = 3
+\includegraphics[width=\linewidth]{stream_vignette-dsd-ms1} \\(a) Mahalanobis separation = 3
 \end{minipage}
 \begin{minipage}{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-dsd-ms2} \\(b) Mahalanobis separation = 10
+\includegraphics[width=\linewidth]{stream_vignette-dsd-ms2} \\(b) Mahalanobis separation = 10
 \end{minipage}
 \caption{Data points from \code{DSD\_Gaussians} having distinct Mahalanobis separation values.}
 \label{figure:dsd_gauss_mahasep}
@@ -1742,11 +1742,11 @@ plot(dstream, stream, grid = TRUE)
 
 \begin{figure} \centering
 \begin{minipage}[b]{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-cluster}
+\includegraphics[width=\linewidth]{stream_vignette-cluster}
 \\(a)
 \end{minipage}
 \begin{minipage}[b]{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-cluster-grid}
+\includegraphics[width=\linewidth]{stream_vignette-cluster-grid}
 \\(b)
 \end{minipage}
 \caption{Plotting the micro-clusters produced by D-Stream together with the
@@ -2159,7 +2159,7 @@ plot(ev[ , "points"], ev[ , "purity"], type = "l",
 
 \begin{figure}
 \centering
-\includegraphics[width=.7\linewidth]{stream-evaluation}
+\includegraphics[width=.7\linewidth]{stream_vignette-evaluation}
 \caption{Micro-cluster purity of D-Stream over an evolving stream.}
 \label{figure:evaluation}
 \end{figure}
@@ -2257,10 +2257,10 @@ plot(km, stream, type = "both")
 
 \begin{figure}
 \begin{minipage}[b]{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-recluster} \\(a)
+\includegraphics[width=\linewidth]{stream_vignette-recluster} \\(a)
 \end{minipage}
 \begin{minipage}[b]{.48\linewidth} \centering
-\includegraphics[width=\linewidth]{stream-recluster2} \\(b)
+\includegraphics[width=\linewidth]{stream_vignette-recluster2} \\(b)
 \end{minipage}
 \caption{A data stream clustered with D-Stream using the (a) built-in
 reclustering strategy, and (b) reclustered with
@@ -2317,7 +2317,7 @@ assignment
 @
 \begin{figure}
 \centering
-\includegraphics[width=.5\linewidth]{stream-silhouette}
+\includegraphics[width=.5\linewidth]{stream_vignette-silhouette}
 \caption{Silhouette plot for D-Stream clustering with two macro-clusters and
 a cluster ($j = 0$) representing the unassigned points.}
 \label{figure:silhouette}
@@ -2522,7 +2522,7 @@ plot(stream)
 
 \begin{figure}
 \centering
-\includegraphics[width=.5\linewidth]{stream-data_bng}
+\includegraphics[width=.5\linewidth]{stream_vignette-data_bng}
 \caption{Bars and Gaussians data set.}
 \label{figure:data_bng}
 \end{figure}
@@ -2582,7 +2582,7 @@ par(op)
 
 \begin{figure}[t]
 \centering
-\includegraphics{stream-microclusters}
+\includegraphics{stream_vignette-microclusters}
 \caption{Micro-cluster placement for different data stream clustering
 algorithms.}
 \label{figure:microclusters}
@@ -2627,7 +2627,7 @@ par(op)
 
 \begin{figure}[tb]
 \centering
-\includegraphics{stream-microclusters_assignment}
+\includegraphics{stream_vignette-microclusters_assignment}
 \caption{Micro-cluster assignment areas for different data stream clustering
 algorithms.}
 \label{figure:microclusters_assignment}
@@ -2693,7 +2693,7 @@ par(op)
 
 \begin{figure}[tb]
 \centering
-\includegraphics{stream-macroclusters}
+\includegraphics{stream_vignette-macroclusters}
 \caption{Macro-cluster placement for different data stream clustering algorithms.}
 \label{figure:macroclusters}
 \end{figure}
@@ -2808,10 +2808,10 @@ boxplot(cRand, las = 2, cex.axis = .8)
 \begin{figure}
 \centering
 \begin{minipage}{.7\linewidth} \centering
-\includegraphics[width=1\linewidth]{stream-dynamic}
+\includegraphics[width=1\linewidth]{stream_vignette-dynamic}
 \end{minipage}
 \begin{minipage}{.27\linewidth} \centering
-\includegraphics[width=1\linewidth]{stream-dynamic_box}
+\includegraphics[width=1\linewidth]{stream_vignette-dynamic_box}
 \end{minipage}
 \caption{Evaluation of data stream clustering of an evolving stream.}
 \label{figure:data_bng2}

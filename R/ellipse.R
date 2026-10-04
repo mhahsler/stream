@@ -1,4 +1,4 @@
-### this is taken form: sfsmisc - Utilities from Seminar 
+### this is taken form: sfsmisc - Utilities from Seminar
 ###					    fuer Statistik ETH Zurich
 ### by Martin Maechler et al.
 ### Version: 1.0-23
@@ -22,7 +22,7 @@ ellipsePoints <- function(a,b, alpha = 0, loc = c(0,0), n = 201,
     A <- max(a,b)
     ## B <= A
     d2 <- (A-B)*(A+B) ## = A^2 - B^2
-    phi <- 2*pi*seq(0,1, len = n)
+    phi <- 2*pi*seq(0,1, length.out = n)
     sp <- sin(phi)
     cp <- cos(phi)
     r <- a*b / sqrt(B^2 + d2 * sp^2)

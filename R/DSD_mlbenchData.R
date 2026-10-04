@@ -91,87 +91,86 @@ DSD_mlbenchData <-
     data(list = datasets[m],
       package = "mlbench",
       envir = environment())
+    n <- datasets[m]
     x <- get(datasets[m], envir = environment())
 
-    if (m == 1) {
+    if (n == "BostonHousing") {
       d <- x
       a <- NULL
     }
-    else if (m == 2) {
+    else if (n == "BostonHousing2") {
       d <- x
       a <- NULL
     }
-    else if (m == 3) {
+    else if (n == "BreastCancer") {
       d <- x[, 2:10]
       a <- as.numeric(x[, 11])
     }
-    else if (m == 4) {
+    else if (n == "DNA") {
       d <- x[, 1:180]
       a <- x[, 181]
       levels(a) <- 1:3
       a <- as.numeric(a)
     }
-    else if (m == 5) {
+    else if (n == "Glass") {
       d <- x[, 1:9]
       a <- x[, 10]
     }
-    else if (m == 6) {
+    else if (n == "Ionosphere") {
       d <- x[, 1:34]
       a <- as.numeric(x[, 35])
     }
-    else if (m == 7) {
+    else if (n ==  "LetterRecognition") {
       d <- x[, 2:17]
       a <- as.numeric(x[, 1])
     }
-    else if (m == 8) {
+    else if (n == "Ozone") {
       d <- x
       a <- NULL
     }
-    else if (m == 9) {
-      d <- x[, 1:8]
-      a <- as.numeric(x[, 9])
-    }
-    else if (m == 10) {
+    else if (n ==   "Satellite") {
       d <- x[, 1:36]
       a <- as.numeric(x[, 37])
     }
-    else if (m == 11) {
+    else if (n == "Servo") {
       d <- x[, 1:4]
       d[, 1] <- as.numeric(d[, 1])
       d[, 2] <- as.numeric(d[, 2])
       a <- x[, 5]
     }
-    else if (m == 12) {
+    else if (n == "Shuttle") {
       d <- x[, 1:9]
       a <- as.numeric(x[, 10])
     }
-    else if (m == 13) {
+    else if (n == "Sonar") {
       d <- x[, 1:60]
       a <- as.numeric(x[, 61])
     }
-    else if (m == 14) {
+    else if (n == "Soybean") {
       d <- x[, 2:36]
       a <- as.numeric(x[, 1])
     }
-    else if (m == 15) {
+    else if (n == "Vehicle") {
       d <- x[, 1:18]
       a <- as.numeric(x[, 19])
     }
-    else if (m == 16) {
+    else if (n == "Vowel") {
       d <- x[, 1:10]
       a <- as.numeric(x[, 11])
     }
-    else if (m == 17) {
+    else if (n == "Zoo") {
       d <- x[, 1:16]
       a <- as.numeric(x[, 17])
     }
-    else if (m == 18) {
+    else if (n == "HouseVotes84") {
       d <- matrix(0, nrow(x), ncol(x))
       d[which(is.na(x[, 2:17]))] <- -1
       d[which(x[, 2:17] == 'n')] <- 0
       d[which(x[, 2:17] == 'y')] <- 1
       a <- rep(0, nrow(x))
       a[which(x[, 1] == 'democrat')] <- 1
+    } else {
+      stop("Unknown dataset!")
     }
 
     complete <- stats::complete.cases(d)

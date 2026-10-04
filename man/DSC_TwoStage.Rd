@@ -58,26 +58,26 @@ plot(win_km, stream)
 evaluate_static(win_km, stream, assign = "macro")
 }
 \seealso{
-Other DSC_TwoStage: 
-\code{\link{DSC_DBSTREAM}()},
-\code{\link{DSC_DStream}()},
-\code{\link{DSC_evoStream}()}
+Other DSC_TwoStage:
+\code{\link[=DSC_DBSTREAM]{DSC_DBSTREAM()}},
+\code{\link[=DSC_DStream]{DSC_DStream()}},
+\code{\link[=DSC_evoStream]{DSC_evoStream()}}
 
-Other DSC: 
-\code{\link{DSC}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_SlidingWindow}()},
-\code{\link{DSC_Static}()},
-\code{\link{animate_cluster}()},
+Other DSC:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_R]{DSC_R()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}},
+\code{\link[=DSC_Static]{DSC_Static()}},
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate.DSC}},
-\code{\link{get_assignment}()},
-\code{\link{plot.DSC}()},
-\code{\link{predict}()},
-\code{\link{prune_clusters}()},
+\code{\link[=get_assignment]{get_assignment()}},
+\code{\link[=plot.DSC]{plot.DSC()}},
+\code{\link{predict}},
+\code{\link[=prune_clusters]{prune_clusters()}},
 \code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link[=recluster]{recluster()}}
 }
 \author{
 Michael Hahsler

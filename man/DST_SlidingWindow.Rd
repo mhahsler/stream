@@ -136,18 +136,18 @@ new_points <- get_points(stream, n = 5)
 predict(reg, new_points)
 }
 \seealso{
-Other DST: 
-\code{\link{DSAggregate}()},
-\code{\link{DSC}()},
-\code{\link{DSClassifier}()},
-\code{\link{DSOutlier}()},
-\code{\link{DSRegressor}()},
-\code{\link{DST}()},
-\code{\link{DST_WriteStream}()},
+Other DST:
+\code{\link[=DSAggregate]{DSAggregate()}},
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSClassifier]{DSClassifier()}},
+\code{\link[=DSOutlier]{DSOutlier()}},
+\code{\link[=DSRegressor]{DSRegressor()}},
+\code{\link[=DST]{DST()}},
+\code{\link[=DST_WriteStream]{DST_WriteStream()}},
 \code{\link{evaluate}},
-\code{\link{predict}()},
+\code{\link{predict}},
 \code{\link{stream_pipeline}},
-\code{\link{update}()}
+\code{\link{update}}
 }
 \author{
 Michael Hahsler

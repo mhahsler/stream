@@ -31,27 +31,27 @@ get_points(combinedStream, n = 20)
 plot(combinedStream, n = 200)
 }
 \seealso{
-Other DSD: 
-\code{\link{DSD}()},
-\code{\link{DSD_BarsAndGaussians}()},
-\code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Cubes}()},
-\code{\link{DSD_Gaussians}()},
-\code{\link{DSD_MG}()},
-\code{\link{DSD_Memory}()},
-\code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadDB}()},
-\code{\link{DSD_ReadStream}()},
-\code{\link{DSD_Target}()},
-\code{\link{DSD_UniformNoise}()},
-\code{\link{DSD_mlbenchData}()},
-\code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSF}()},
-\code{\link{animate_data}()},
-\code{\link{close_stream}()},
-\code{\link{get_points}()},
-\code{\link{plot.DSD}()},
-\code{\link{reset_stream}()}
+Other DSD:
+\code{\link[=DSD]{DSD()}},
+\code{\link[=DSD_BarsAndGaussians]{DSD_BarsAndGaussians()}},
+\code{\link[=DSD_Benchmark]{DSD_Benchmark()}},
+\code{\link[=DSD_Cubes]{DSD_Cubes()}},
+\code{\link[=DSD_Gaussians]{DSD_Gaussians()}},
+\code{\link[=DSD_MG]{DSD_MG()}},
+\code{\link[=DSD_Memory]{DSD_Memory()}},
+\code{\link[=DSD_NULL]{DSD_NULL()}},
+\code{\link[=DSD_ReadDB]{DSD_ReadDB()}},
+\code{\link[=DSD_ReadStream]{DSD_ReadStream()}},
+\code{\link[=DSD_Target]{DSD_Target()}},
+\code{\link[=DSD_UniformNoise]{DSD_UniformNoise()}},
+\code{\link[=DSD_mlbenchData]{DSD_mlbenchData()}},
+\code{\link[=DSD_mlbenchGenerator]{DSD_mlbenchGenerator()}},
+\code{\link[=DSF]{DSF()}},
+\code{\link[=animate_data]{animate_data()}},
+\code{\link[=close_stream]{close_stream()}},
+\code{\link[=get_points]{get_points()}},
+\code{\link[=plot.DSD]{plot.DSD()}},
+\code{\link[=reset_stream]{reset_stream()}}
 }
 \author{
 Michael Hahsler

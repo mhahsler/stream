@@ -44,7 +44,7 @@ relational database with using R's data base interface (DBI).
 }
 \details{
 This class provides a streaming interface for result sets from a data base
-with via \link[DBI:DBI-package]{DBI::DBI}. You need to connect to the data base and submit a SQL
+with via \link[DBI:DBI]{DBI::DBI}. You need to connect to the data base and submit a SQL
 query using \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}} to obtain a result set. Make sure that your
 query only includes the columns that should be included in the stream
 (including class and outlier marking columns).
@@ -66,7 +66,7 @@ statement needs to make sure that the columns have the appropriate name starting
 See Examples section below.
 }
 \examples{
-\dontshow{if (requireNamespace("DBI", quietly = TRUE) && requireNamespace("RSQLite", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("DBI", quietly = TRUE) && requireNamespace("RSQLite", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 ### create a data base with a table with 3 Gaussians
 
 library("DBI")
@@ -98,27 +98,27 @@ close_stream(stream)
 \seealso{
 \code{\link[DBI:dbGetQuery]{DBI::dbGetQuery()}}
 
-Other DSD: 
-\code{\link{DSD}()},
-\code{\link{DSD_BarsAndGaussians}()},
-\code{\link{DSD_Benchmark}()},
-\code{\link{DSD_Cubes}()},
-\code{\link{DSD_Gaussians}()},
-\code{\link{DSD_MG}()},
-\code{\link{DSD_Memory}()},
-\code{\link{DSD_Mixture}()},
-\code{\link{DSD_NULL}()},
-\code{\link{DSD_ReadStream}()},
-\code{\link{DSD_Target}()},
-\code{\link{DSD_UniformNoise}()},
-\code{\link{DSD_mlbenchData}()},
-\code{\link{DSD_mlbenchGenerator}()},
-\code{\link{DSF}()},
-\code{\link{animate_data}()},
-\code{\link{close_stream}()},
-\code{\link{get_points}()},
-\code{\link{plot.DSD}()},
-\code{\link{reset_stream}()}
+Other DSD:
+\code{\link[=DSD]{DSD()}},
+\code{\link[=DSD_BarsAndGaussians]{DSD_BarsAndGaussians()}},
+\code{\link[=DSD_Benchmark]{DSD_Benchmark()}},
+\code{\link[=DSD_Cubes]{DSD_Cubes()}},
+\code{\link[=DSD_Gaussians]{DSD_Gaussians()}},
+\code{\link[=DSD_MG]{DSD_MG()}},
+\code{\link[=DSD_Memory]{DSD_Memory()}},
+\code{\link[=DSD_Mixture]{DSD_Mixture()}},
+\code{\link[=DSD_NULL]{DSD_NULL()}},
+\code{\link[=DSD_ReadStream]{DSD_ReadStream()}},
+\code{\link[=DSD_Target]{DSD_Target()}},
+\code{\link[=DSD_UniformNoise]{DSD_UniformNoise()}},
+\code{\link[=DSD_mlbenchData]{DSD_mlbenchData()}},
+\code{\link[=DSD_mlbenchGenerator]{DSD_mlbenchGenerator()}},
+\code{\link[=DSF]{DSF()}},
+\code{\link[=animate_data]{animate_data()}},
+\code{\link[=close_stream]{close_stream()}},
+\code{\link[=get_points]{get_points()}},
+\code{\link[=plot.DSD]{plot.DSD()}},
+\code{\link[=reset_stream]{reset_stream()}}
 }
 \author{
 Michael Hahsler

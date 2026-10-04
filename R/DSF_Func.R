@@ -16,9 +16,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#' Apply a Function to Transformation to a Data Stream
+#' Apply a Function to Transform a Data Stream
 #'
-#' Applies an R function to transform to a data stream.
+#' Applies an R function to transform a data stream.
 #'
 #' The function's first argument needs to be a data.frame representing points of the
 #' data stream. The function will be called as `ps %>% your_function()`, where `ps` is the
@@ -26,10 +26,12 @@
 #'
 #' @family DSF
 #'
-#' @param dsd A object of class [DSD].
-#' @param func a function that takes a data.frame as the first argument and returns the transformed data.frame.
-#' @param ... further arguments are passed on to the function specified in `func`.
-#' @param info logical; does the function also receive and modify the info columns?
+#' @param dsd An object of class [DSD].
+#' @param func A function that takes a data frame as its first argument and
+#'   returns the transformed data frame.
+#' @param ... Further arguments passed to `func`.
+#' @param info Logical; should the function also receive and modify the
+#'   information columns?
 #' @return An object of class `DSF_Func` (subclass of [DSF] and [DSD]).
 #' @author Michael Hahsler
 #' @examples

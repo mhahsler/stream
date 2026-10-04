@@ -9,9 +9,10 @@ DSF_ExponentialMA(dsd = NULL, dim = NULL, alpha = 0.5)
 \arguments{
 \item{dsd}{The input stream as an \link{DSD} object.}
 
-\item{dim}{columns to which the filter should be applied. Default is all columns.}
+\item{dim}{Columns to which the filter is applied. The default is all columns.}
 
-\item{alpha}{smoothing coefficient in \eqn{[0, 1]}. Larger means discounting older observations faster.}
+\item{alpha}{Smoothing coefficient in \eqn{[0, 1]}. Larger values discount
+older observations faster.}
 }
 \value{
 An object of class \code{DSF_ExponentialMA} (subclass of \link{DSF} and \link{DSD}).
@@ -44,14 +45,14 @@ reset_stream(smoothStream)
 plot(smoothStream, dim = 1, n = 120, method = "ts", main = "With ExponentialMA(.7)")
 }
 \seealso{
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_FeatureSelection}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()},
-\code{\link{DSF_dplyr}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Convolve]{DSF_Convolve()}},
+\code{\link[=DSF_Downsample]{DSF_Downsample()}},
+\code{\link[=DSF_FeatureSelection]{DSF_FeatureSelection()}},
+\code{\link[=DSF_Func]{DSF_Func()}},
+\code{\link[=DSF_Scale]{DSF_Scale()}},
+\code{\link[=DSF_dplyr]{DSF_dplyr()}}
 }
 \author{
 Michael Hahsler

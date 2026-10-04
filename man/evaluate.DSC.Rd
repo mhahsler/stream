@@ -94,7 +94,7 @@ cluster model is updated with the points.
 
 Many evaluation measures are available using
 code from other packages including \code{\link[cluster:silhouette]{cluster::silhouette()}},
-\code{\link[clue:cl_agreement]{clue:: cl_agreement()}}, and \code{\link[fpc:cluster.stats]{fpc::cluster.stats()}}.
+\code{\link[clue:cl_agreement]{clue::cl_agreement()}}, and \code{\link[fpc:cluster.stats]{fpc::cluster.stats()}}.
 
 The following information items are available:
 \itemize{
@@ -341,26 +341,26 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 \emph{Springer Machine Learning}.
 }
 \seealso{
-\code{\link[cluster:silhouette]{cluster::silhouette()}}, \code{\link[clue:cl_agreement]{clue:: cl_agreement()}}, and \code{\link[fpc:cluster.stats]{fpc::cluster.stats()}}.
+\code{\link[cluster:silhouette]{cluster::silhouette()}}, \code{\link[clue:cl_agreement]{clue::cl_agreement()}}, and \code{\link[fpc:cluster.stats]{fpc::cluster.stats()}}.
 
-Other DSC: 
-\code{\link{DSC}()},
-\code{\link{DSC_Macro}()},
-\code{\link{DSC_Micro}()},
-\code{\link{DSC_R}()},
-\code{\link{DSC_SlidingWindow}()},
-\code{\link{DSC_Static}()},
-\code{\link{DSC_TwoStage}()},
-\code{\link{animate_cluster}()},
-\code{\link{get_assignment}()},
-\code{\link{plot.DSC}()},
-\code{\link{predict}()},
-\code{\link{prune_clusters}()},
+Other DSC:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSC_Macro]{DSC_Macro()}},
+\code{\link[=DSC_Micro]{DSC_Micro()}},
+\code{\link[=DSC_R]{DSC_R()}},
+\code{\link[=DSC_SlidingWindow]{DSC_SlidingWindow()}},
+\code{\link[=DSC_Static]{DSC_Static()}},
+\code{\link[=DSC_TwoStage]{DSC_TwoStage()}},
+\code{\link[=animate_cluster]{animate_cluster()}},
+\code{\link[=get_assignment]{get_assignment()}},
+\code{\link[=plot.DSC]{plot.DSC()}},
+\code{\link{predict}},
+\code{\link[=prune_clusters]{prune_clusters()}},
 \code{\link{read_saveDSC}},
-\code{\link{recluster}()}
+\code{\link[=recluster]{recluster()}}
 
-Other evaluation: 
-\code{\link{animate_cluster}()},
+Other evaluation:
+\code{\link[=animate_cluster]{animate_cluster()}},
 \code{\link{evaluate}}
 }
 \author{

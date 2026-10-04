@@ -7,11 +7,12 @@
 DSF_dplyr(dsd = NULL, func = NULL, info = FALSE)
 }
 \arguments{
-\item{dsd}{A object of class \link{DSD}.}
+\item{dsd}{An object of class \link{DSD}.}
 
-\item{func}{a dplyr expression.}
+\item{func}{A dplyr expression.}
 
-\item{info}{logical; does the function also receive and modify the info columns?}
+\item{info}{Logical; should the function also receive and modify the
+information columns?}
 }
 \value{
 An object of class \code{DSF_dplyr} (subclass of \link{DSF} and \link{DSD}).
@@ -22,7 +23,7 @@ Applies dplyr transformations to a data stream.
 \details{
 \pkg{dplyr} needs to be installed and loaded with \code{library(dplyr)} before \code{DSF_dplyr} can be used.
 
-Since streams are processed one point or block at a time, only \link[dplyr:dplyr-package]{dplyr::dplyr} operations that work on individual
+Since streams are processed one point or block at a time, only \link[dplyr:dplyr]{dplyr::dplyr} operations that work on individual
 rows are allowed on streams. Examples are:
 \itemize{
 \item \code{\link[dplyr:select]{dplyr::select()}}
@@ -38,7 +39,7 @@ Summary functions can be used, but will only be applied to the requested part of
 using \verb{\%>\%} between them.
 }
 \examples{
-\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("dplyr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 library(dplyr)
 
@@ -61,14 +62,14 @@ plot(stream2, xlim = c(0, 1), ylim = c(0, 1))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other DSF: 
-\code{\link{DSF}()},
-\code{\link{DSF_Convolve}()},
-\code{\link{DSF_Downsample}()},
-\code{\link{DSF_ExponentialMA}()},
-\code{\link{DSF_FeatureSelection}()},
-\code{\link{DSF_Func}()},
-\code{\link{DSF_Scale}()}
+Other DSF:
+\code{\link[=DSF]{DSF()}},
+\code{\link[=DSF_Convolve]{DSF_Convolve()}},
+\code{\link[=DSF_Downsample]{DSF_Downsample()}},
+\code{\link[=DSF_ExponentialMA]{DSF_ExponentialMA()}},
+\code{\link[=DSF_FeatureSelection]{DSF_FeatureSelection()}},
+\code{\link[=DSF_Func]{DSF_Func()}},
+\code{\link[=DSF_Scale]{DSF_Scale()}}
 }
 \author{
 Michael Hahsler

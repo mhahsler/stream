@@ -14,9 +14,10 @@ vignettes/*.html
 
 *.o
 *.so
-*.Rproj
+
 *.RData
 
 Work
 doc
 Meta
+docs

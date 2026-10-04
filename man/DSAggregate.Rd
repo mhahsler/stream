@@ -42,22 +42,22 @@ and \code{\link[=get_weights]{get_weights()}} (if available).
 DSAggregate()
 }
 \seealso{
-Other DST: 
-\code{\link{DSC}()},
-\code{\link{DSClassifier}()},
-\code{\link{DSOutlier}()},
-\code{\link{DSRegressor}()},
-\code{\link{DST}()},
-\code{\link{DST_SlidingWindow}()},
-\code{\link{DST_WriteStream}()},
+Other DST:
+\code{\link[=DSC]{DSC()}},
+\code{\link[=DSClassifier]{DSClassifier()}},
+\code{\link[=DSOutlier]{DSOutlier()}},
+\code{\link[=DSRegressor]{DSRegressor()}},
+\code{\link[=DST]{DST()}},
+\code{\link[=DST_SlidingWindow]{DST_SlidingWindow()}},
+\code{\link[=DST_WriteStream]{DST_WriteStream()}},
 \code{\link{evaluate}},
-\code{\link{predict}()},
+\code{\link{predict}},
 \code{\link{stream_pipeline}},
-\code{\link{update}()}
+\code{\link{update}}
 
-Other DSAggregate: 
-\code{\link{DSAggregate_Sample}()},
-\code{\link{DSAggregate_Window}()}
+Other DSAggregate:
+\code{\link[=DSAggregate_Sample]{DSAggregate_Sample()}},
+\code{\link[=DSAggregate_Window]{DSAggregate_Window()}}
 }
 \author{
 Michael Hahsler

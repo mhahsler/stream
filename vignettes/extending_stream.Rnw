@@ -74,7 +74,7 @@ Southern Methodist University\\
 P.O. Box 750122 \\
 Dallas, TX 75275-0122\\
 E-mail: \email{mhahsler@lyle.smu.edu}\\
-URL: \url{http://lyle.smu.edu/~mhahsler}
+URL: \url{https://michael.hahsler.net}
 
 Matthew Bola\~nos\\
 Research Now\\

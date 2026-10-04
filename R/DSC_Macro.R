@@ -30,11 +30,11 @@
 #' Abstract class for all DSC Macro Clusterers which recluster micro-clusters **offline** into final
 #' clusters called macro-clusters.
 #'
-#' Data stream clustering algorithms typically consists of an **online component**
+#' Data stream clustering algorithms typically consist of an **online component**
 #' that creates micro-clusters (implemented as [DSC_Micro]) and
-#' and **offline components** which is used to recluster micro-clusters into
+#' **offline components** which are used to recluster micro-clusters into
 #' final clusters called macro-clusters.
-#' The function [recluster()] is used extract micro-clusters from a [DSC_Micro] and
+#' The function [recluster()] is used to extract micro-clusters from a [DSC_Micro] and
 #' create macro-clusters with a `DSC_Macro`.
 #'
 #' Available clustering methods can be found in the See Also section below.
