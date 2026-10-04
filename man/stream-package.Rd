@@ -29,7 +29,7 @@ A framework for data stream modeling and associated data mining tasks such as cl
 Useful links:
 \itemize{
   \item \url{https://github.com/mhahsler/stream}
-  \item \url{http://michael.hahsler.net/stream/}
+  \item \url{https://michael.hahsler.net/stream/}
   \item Report bugs at \url{https://github.com/mhahsler/stream/issues}
 }
 
