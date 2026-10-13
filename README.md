@@ -14,9 +14,10 @@ status](https://mhahsler.r-universe.dev/badges/stream)](https://mhahsler.r-unive
 
 The package provides support for modeling and simulating data streams as
 well as an extensible framework for implementing, interfacing and
-experimenting with algorithms for various data stream mining tasks. The
-main advantage of stream is that it seamlessly integrates with the large
-existing infrastructure provided by R. The package provides:
+experimenting with algorithms with a focus on data stream clustering
+tasks. The main advantage of stream is that it seamlessly integrates
+with the large existing infrastructure provided by R. The package
+provides:
 
 - **Stream Sources:** streaming from files, databases, in-memory data,
   URLs, pipes, socket connections and several data stream generators
@@ -27,24 +28,18 @@ existing infrastructure provided by R. The package provides:
 - **Stream Clustering:** **BICO**, **BIRCH**, **D-Stream**,
   **DBSTREAM**, and **evoStream**.
 - **Stream Outlier Detection** based on **D-Stream**, **DBSTREAM**.
-- **Stream Classification** with **DecisionStumps**, **HoeffdingTree**,
-  **NaiveBayes** and **Ensembles** (streamMOA via RMOA).
-- **Stream Regression** with **Perceptron**, **FIMTDD**, **ORTO**, …
-  (streamMOA via RMOA).
 - **Stream Mining Evaluation** with prequential error estimation.
 
 Additional packages in the stream family are:
 
-- [streamConnect](https://michael.hahsler.net/streamConnect): Connect
+- [streamConnect](https://michael.hahsler.net/streamConnect/): Connect
   stream mining components using sockets and web services.
-- [streamMOA](https://michael.hahsler.net/streamMOA): Interface to
+- [streamMOA](https://michael.hahsler.net/streamMOA/): Interface to
   clustering algorithms implemented in the
   [MOA](https://moa.cms.waikato.ac.nz/) framework. The package
   interfaces clustering algorithms like of **DenStream**, **ClusTree**,
-  **CluStream** and **MCOD**. The package also provides an interface to
-  [RMOA](https://github.com/jwijffels/RMOA) for MOA’s stream classifiers
-  and stream regression models.
-- [rEMM](https://github.com/mhahsler/rEMM): Provides implementations of
+  **CluStream** and **MCOD**.
+- [rEMM](https://michael.hahsler.net/rEMM/): Provides implementations of
   **threshold nearest neighbor clustering** (tNN) and **Extensible
   Markov Model** (EMM) for modelling temporal relationships between
   clusters.
@@ -223,8 +218,3 @@ IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
   extensible framework for data stream clustering research with
   R.](https://dx.doi.org/10.18637/jss.v076.i14) *Journal of Statistical
   Software,* 76(14), February 2017.
-- [stream package
-  vignette](https://cran.r-project.org/package=stream/vignettes/stream.pdf)
-  with complete examples.
-- [stream reference
-  manual](https://cran.r-project.org/package=stream/stream.pdf)
