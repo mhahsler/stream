@@ -364,12 +364,12 @@ Knowledge and Data Engineering,</em> 28(6):1449–1461, June 2016</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="update.html">update</a></span><span class="op">(</span><span class="va">dbstream</span>, <span class="va">stream</span>, <span class="fl">500</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="DSC.html">get_centers</a></span><span class="op">(</span><span class="va">dbstream</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          X1        X3          X4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8276415 0.7724319  0.85124884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.4501321 0.7915375  0.05502376</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.2832027 0.0468510  0.68706775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.3939869 0.5945962  0.09946963</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.2718386 0.7751054 -0.07212181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          X1         X3          X4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8248335 0.78810273  0.82503733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.4501321 0.79153750  0.05502376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.2773273 0.05160654  0.69202639</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.3939869 0.59459621  0.09946963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.2718386 0.77510542 -0.07212181</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use DBSTREAM for outlier detection</span></span></span>
 <span class="r-in"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="DSD_Gaussians.html">DSD_Gaussians</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">3</span>, d <span class="op">=</span> <span class="fl">4</span>, noise <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
@@ -389,25 +389,25 @@ Knowledge and Data Engineering,</em> 28(6):1449–1461, June 2016</p>
 <span class="r-in"><span><span class="va">points</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           X1        X2        X3        X4 .class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.8443439 0.3446654 0.7101499 0.8067004      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.7769571 0.2386958 0.6249368 0.2076479      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.8083379 0.3715752 0.7273306 0.2667967      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.8055679 0.2878655 0.6338232 0.1855020      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4110842 0.5542807 0.2943866 0.5753339      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.3375565 0.6195807 0.2890040 0.5599415      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.4746927 0.5752577 0.2890633 0.4955354      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7894131 0.3122054 0.7037426 0.2339336      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.4814783 0.5570506 0.2658094 0.5390006      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.4205303 0.5271460 0.2720636 0.5943377      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.8569726 0.3137173 0.6360747 0.2457602      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.7016584 0.2715540 0.7124811 0.2159842      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.8240394 0.3051841 0.6363944 0.1943002      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4033729 0.5707111 0.2900404 0.5606209      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.3814487 0.5260596 0.3137420 0.6436877      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.4956912 0.5305160 0.3008983 0.5356006      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7707446 0.2947021 0.7011440 0.2250416      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.4781759 0.5640869 0.2639481 0.5326998      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.3936698 0.5843778 0.2569247 0.5430879      1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.8347043 0.3501259 0.6807593 0.7801377      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.4477917 0.5445138 0.3192389 0.5904176      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.4318702 0.6160503 0.3045587 0.5934649      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.4189592 0.6059471 0.3029887 0.5354053      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.4390041 0.6008501 0.3085795 0.6070763      1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.9187723 0.3961533 0.7943890 0.8601673      2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15 0.9330466 0.4069718 0.7941880 0.9112616      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 0.8103713 0.2600415 0.6499516 0.2218549      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 0.8121769 0.3399765 0.6958348 0.2133738      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 0.8304648 0.2788809 0.6527486 0.2314256      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 0.7578356 0.2890268 0.6882706 0.1874904      3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 18 0.8674561 0.3631648 0.7109233 0.8543304      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 0.7328604 0.2513499 0.6710821 0.1730418      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 0.4055146 0.5163103 0.2753922 0.6130712      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 0.8526746 0.3636860 0.6877599 0.2301105      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 0.3690328 0.5940422 0.2548307 0.5434640      1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="predict.html">predict</a></span><span class="op">(</span><span class="va">outlier_detector</span>, <span class="va">points</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> integer(0)</span>
 </code></pre></div>

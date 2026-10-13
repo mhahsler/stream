@@ -122,10 +122,10 @@ data.frame with some points obtained using <code><a href="get_points.html">get_p
 <span class="r-in"><span><span class="fu"><a href="get_points.html">get_points</a></span><span class="op">(</span><span class="va">stream2</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           A         B         C .class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.4454009 0.3557983 0.7326923      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3995997 0.1391046 0.1384095      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.3669829 0.1392718 0.1594778      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3824367 0.1147064 0.1412927      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.3733803 0.1483660 0.1584031      3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.1460239 0.7605481 0.4059452      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.3925431 0.1762777 0.1578523      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.3474889 0.1122304 0.1654209      3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Example 2: add a sum columns</span></span></span>
 <span class="r-in"><span><span class="va">stream3</span> <span class="op">&lt;-</span> <span class="va">stream2</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">DSF_Func</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -143,16 +143,16 @@ data.frame with some points obtained using <code><a href="get_points.html">get_p
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.39420442 0.3895611 0.6889625 1.4727280      2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.09919765 0.7195967 0.3200393 1.1388336      1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.37565418 0.3833801 0.7551145 1.5141487      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.40011645 0.0700336 0.1775037 0.6476538      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.45132830 0.1428343 0.1689007 0.7630633      3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Example 3: Project the stream on its first 2 PCs (using a sample)</span></span></span>
 <span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/princomp.html" class="external-link">princomp</a></span><span class="op">(</span><span class="fu"><a href="get_points.html">get_points</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">100</span>, info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pca_trans</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="predict.html">predict</a></span><span class="op">(</span><span class="va">pr</span>, <span class="va">x</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X1"</span>, <span class="st">"X2"</span>, <span class="st">"X3"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span> , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu">pca_trans</span><span class="op">(</span><span class="fu"><a href="get_points.html">get_points</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">3</span>, info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Comp.1     Comp.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.36166394 -0.1007352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.09999262  0.2095389</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.36230266 -0.1149193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.34725993 -0.1106581</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.09195096  0.2118342</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.40392289 -0.1143252</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">stream4</span> <span class="op">&lt;-</span> <span class="va">stream</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">DSF_Func</span><span class="op">(</span><span class="va">pca_trans</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">stream4</span></span></span>
@@ -162,9 +162,9 @@ data.frame with some points obtained using <code><a href="get_points.html">get_p
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="get_points.html">get_points</a></span><span class="op">(</span><span class="va">stream4</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Comp.1     Comp.2 .class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -0.06435726  0.3222267      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.10132438  0.3242306      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.28140166 -0.2190938      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -0.05475198  0.3240890      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.09279490  0.3273300      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.28205895 -0.2130127      1</span>
 <span class="r-in"><span><span class="fu"><a href="plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream4</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="DSF_Func-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -182,8 +182,8 @@ data.frame with some points obtained using <code><a href="get_points.html">get_p
 <span class="r-out co"><span class="r-pr">#&gt;</span>          X1        X2        X3 .class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.4515509 0.3323482 0.7465442      2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.4618741 0.3200468 0.7277833      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.3042363 0.2306293 0.2634666     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.3979164 0.1211677 0.1388055     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.2780631 0.1934227 0.2678634     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.3986266 0.1221774 0.1386862     NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.1488373 0.7141263 0.3775558      1</span>
 <span class="r-in"><span><span class="fu"><a href="plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream5</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="DSF_Func-2.png" alt="" width="700" height="433"></span>

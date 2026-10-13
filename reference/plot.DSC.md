@@ -138,7 +138,7 @@ update(dstream, stream, 500)
 dstream
 #> D-Stream 
 #> Class: DSC_DStream, DSC_Micro, DSC_R, DSC 
-#> Number of micro-clusters: 32 
+#> Number of micro-clusters: 34 
 #> Number of macro-clusters: 3 
 plot(dstream, stream)
 
@@ -168,9 +168,9 @@ trans <- function(x) predict(pr, x)[, 1:2 , drop = FALSE]
 
 trans(get_points(stream, n = 3))
 #>           Comp.1     Comp.2
-#> [1,]  0.02181325  0.3716543
-#> [2,]  0.12286374  0.2548326
-#> [3,] -0.07923565 -0.4639676
+#> [1,]  0.02703892  0.3641819
+#> [2,] -0.08120138  0.4726015
+#> [3,] -0.08475106 -0.4587557
 
 plot(dstream, stream, transform = trans)
 ```
