@@ -1,4 +1,3 @@
-#include <R.h>
 #include <Rcpp.h>
 #include "NumericVector.h"
 #include "dist.h"
