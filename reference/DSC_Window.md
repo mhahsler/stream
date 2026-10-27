@@ -22,9 +22,9 @@ DSC_Window(horizon = 100, lambda = 0)
 ## Value
 
 An object of class `DSC_Window` (subclass of
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md),
-[DSC_R](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md)).
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md),
+[DSC_R](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md)).
 
 ## Details
 
@@ -41,13 +41,13 @@ Very Large Data Bases (VLDB'02).*
 ## See also
 
 Other DSC_Micro:
-[`DSC_BICO()`](http://michael.hahsler.net/stream/reference/DSC_BICO.md),
-[`DSC_BIRCH()`](http://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_Sample()`](http://michael.hahsler.net/stream/reference/DSC_Sample.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_BICO()`](https://michael.hahsler.net/stream/reference/DSC_BICO.md),
+[`DSC_BIRCH()`](https://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_Sample()`](https://michael.hahsler.net/stream/reference/DSC_Sample.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 ## Author
 

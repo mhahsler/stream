@@ -17,7 +17,7 @@ DSFP(...)
 
 ## See also
 
-[DST](http://michael.hahsler.net/stream/reference/DST.md)
+[DST](https://michael.hahsler.net/stream/reference/DST.md)
 
 ## Author
 

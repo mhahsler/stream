@@ -1,9 +1,9 @@
 # Evaluate a Data Stream Mining Task
 
 Generic function to calculate evaluation measures for a data stream
-mining task [DST](http://michael.hahsler.net/stream/reference/DST.md) on
-a data stream [DSD](http://michael.hahsler.net/stream/reference/DSD.md)
-object.
+mining task [DST](https://michael.hahsler.net/stream/reference/DST.md)
+on a data stream
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md) object.
 
 ## Usage
 
@@ -17,12 +17,12 @@ evaluate_stream(object, dsd, measure, n, horizon, ..., verbose = FALSE)
 
 - object:
 
-  The [DST](http://michael.hahsler.net/stream/reference/DST.md) object
+  The [DST](https://michael.hahsler.net/stream/reference/DST.md) object
   that the evaluation measure is being requested from.
 
 - dsd:
 
-  The [DSD](http://michael.hahsler.net/stream/reference/DSD.md) object
+  The [DSD](https://michael.hahsler.net/stream/reference/DSD.md) object
   used to create the test data.
 
 - measure:
@@ -38,7 +38,7 @@ evaluate_stream(object, dsd, measure, n, horizon, ..., verbose = FALSE)
 
   Further arguments are passed on to the specific implementation (e.g.,
   see
-  [evaluate.DSC](http://michael.hahsler.net/stream/reference/evaluate.DSC.md))
+  [evaluate.DSC](https://michael.hahsler.net/stream/reference/evaluate.DSC.md))
 
 - horizon:
 
@@ -59,11 +59,11 @@ vector of the values of the requested measures.
 We define two generic evaluation functions:
 
 - `evaluate_static()` evaluates the current
-  [DST](http://michael.hahsler.net/stream/reference/DST.md) model on new
-  data without updating the model.
+  [DST](https://michael.hahsler.net/stream/reference/DST.md) model on
+  new data without updating the model.
 
 - `evaluate_stream()` evaluates the
-  [DST](http://michael.hahsler.net/stream/reference/DST.md) model using
+  [DST](https://michael.hahsler.net/stream/reference/DST.md) model using
   *prequential error estimation* (see Gama, Sebastiao and Rodrigues;
   2013). The data points in the horizon are first used to calculate the
   evaluation measure and then they are used for updating the cluster
@@ -73,8 +73,8 @@ We define two generic evaluation functions:
 The available evaluation measures depend on the task. Currently
 available task to evaluate:
 
-- [DSC](http://michael.hahsler.net/stream/reference/DSC.md) via
-  [evaluate.DSC](http://michael.hahsler.net/stream/reference/evaluate.DSC.md)
+- [DSC](https://michael.hahsler.net/stream/reference/DSC.md) via
+  [evaluate.DSC](https://michael.hahsler.net/stream/reference/evaluate.DSC.md)
 
 ## References
 
@@ -85,21 +85,21 @@ Volume 90, Issue 3, pp 317-346.
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 Other evaluation:
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md)
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md)
 
 ## Author
 

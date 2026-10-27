@@ -55,34 +55,34 @@ class from which other DSC classes inherit.
 Data stream clustering has typically an
 
 - **online clustering component** (see
-  [DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md)),
+  [DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md)),
   and an
 
 - **offline reclustering component** (see
-  [DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md)).
+  [DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md)).
 
 Class `DSC` provides several generic functions that can operate on all
 DSC subclasses. See Usage and Functions sections for methods.
 Additional, separately documented methods are:
 
-- [`update()`](http://michael.hahsler.net/stream/reference/update.md)
+- [`update()`](https://michael.hahsler.net/stream/reference/update.md)
   adds new data points from a stream to a clustering.
 
-- [`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+- [`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
   predicts the cluster assignment for new data points.
 
-- [`plot()`](http://michael.hahsler.net/stream/reference/plot.DSD.md)
+- [`plot()`](https://michael.hahsler.net/stream/reference/plot.DSD.md)
   plots cluster centers (see
-  [`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md)).
+  [`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md)).
 
 `get_centers()` and `get_weights()` are typically overwritten by
 subclasses of `DSC`.
 
 Since `DSC` objects often contain external pointers, regular saving and
 reading operations will fail. Use
-[`saveDSC()`](http://michael.hahsler.net/stream/reference/read_saveDSC.md)
+[`saveDSC()`](https://michael.hahsler.net/stream/reference/read_saveDSC.md)
 and
-[`readDSC()`](http://michael.hahsler.net/stream/reference/read_saveDSC.md)
+[`readDSC()`](https://michael.hahsler.net/stream/reference/read_saveDSC.md)
 which will serialize the objects first appropriately.
 
 ## Functions
@@ -110,33 +110,33 @@ which will serialize the objects first appropriately.
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 Other DSC:
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 ## Author
 

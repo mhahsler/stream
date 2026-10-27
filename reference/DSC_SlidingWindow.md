@@ -2,9 +2,9 @@
 
 The clusterer keeps a sliding window for the stream and rebuilds a DSC
 clustering model at regular intervals. By default is uses
-[DSC_Kmeans](http://michael.hahsler.net/stream/reference/DSC_Kmeans.md).
+[DSC_Kmeans](https://michael.hahsler.net/stream/reference/DSC_Kmeans.md).
 Other
-[DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md)
+[DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md)
 clusterer can be used.
 
 ## Usage
@@ -32,12 +32,12 @@ DSC_SlidingWindow(formula = NULL, model = DSC_Kmeans, window, rebuild, ...)
   interval (number of points) for rebuilding the regression. Set rebuild
   to `Inf` to prevent automatic rebuilding. Rebuilding can be initiated
   manually when calling
-  [`update()`](http://michael.hahsler.net/stream/reference/update.md).
+  [`update()`](https://michael.hahsler.net/stream/reference/update.md).
 
 - ...:
 
   additional parameters are passed on to the clusterer (default is
-  [DSC_Kmeans](http://michael.hahsler.net/stream/reference/DSC_Kmeans.md)).
+  [DSC_Kmeans](https://michael.hahsler.net/stream/reference/DSC_Kmeans.md)).
 
 ## Value
 
@@ -46,42 +46,42 @@ An object of class `DST_SlidingWindow`.
 ## Details
 
 This constructor creates a clusterer based on
-[`DST_SlidingWindow`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md).
+[`DST_SlidingWindow`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md).
 The clusterer has a
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) and
-[`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md) and
+[`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
 method.
 
 The difference to setting up a
-[DSC_TwoStage](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md)
+[DSC_TwoStage](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md)
 is that `DSC_SlidingWindow` rebuilds the model in regular intervals,
 while `DSC_TwoStage` rebuilds the model on demand.
 
 ## See also
 
 Other DSC:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 Other DSC_Macro:
-[`DSC_DBSCAN()`](http://michael.hahsler.net/stream/reference/DSC_DBSCAN.md),
-[`DSC_EA()`](http://michael.hahsler.net/stream/reference/DSC_EA.md),
-[`DSC_Hierarchical()`](http://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
-[`DSC_Kmeans()`](http://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Reachability()`](http://michael.hahsler.net/stream/reference/DSC_Reachability.md)
+[`DSC_DBSCAN()`](https://michael.hahsler.net/stream/reference/DSC_DBSCAN.md),
+[`DSC_EA()`](https://michael.hahsler.net/stream/reference/DSC_EA.md),
+[`DSC_Hierarchical()`](https://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
+[`DSC_Kmeans()`](https://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Reachability()`](https://michael.hahsler.net/stream/reference/DSC_Reachability.md)
 
 ## Author
 

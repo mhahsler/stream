@@ -13,7 +13,7 @@ DSF_ExponentialMA(dsd = NULL, dim = NULL, alpha = 0.5)
 - dsd:
 
   The input stream as an
-  [DSD](http://michael.hahsler.net/stream/reference/DSD.md) object.
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md) object.
 
 - dim:
 
@@ -27,8 +27,8 @@ DSF_ExponentialMA(dsd = NULL, dim = NULL, alpha = 0.5)
 ## Value
 
 An object of class `DSF_ExponentialMA` (subclass of
-[DSF](http://michael.hahsler.net/stream/reference/DSF.md) and
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md)).
+[DSF](https://michael.hahsler.net/stream/reference/DSF.md) and
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md)).
 
 ## Details
 
@@ -41,13 +41,13 @@ with \\S_0 = Y_0\\.
 ## See also
 
 Other DSF:
-[`DSF()`](http://michael.hahsler.net/stream/reference/DSF.md),
-[`DSF_Convolve()`](http://michael.hahsler.net/stream/reference/DSF_Convolve.md),
-[`DSF_Downsample()`](http://michael.hahsler.net/stream/reference/DSF_Downsample.md),
-[`DSF_FeatureSelection()`](http://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
-[`DSF_Func()`](http://michael.hahsler.net/stream/reference/DSF_Func.md),
-[`DSF_Scale()`](http://michael.hahsler.net/stream/reference/DSF_Scale.md),
-[`DSF_dplyr()`](http://michael.hahsler.net/stream/reference/DSF_dplyr.md)
+[`DSF()`](https://michael.hahsler.net/stream/reference/DSF.md),
+[`DSF_Convolve()`](https://michael.hahsler.net/stream/reference/DSF_Convolve.md),
+[`DSF_Downsample()`](https://michael.hahsler.net/stream/reference/DSF_Downsample.md),
+[`DSF_FeatureSelection()`](https://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
+[`DSF_Func()`](https://michael.hahsler.net/stream/reference/DSF_Func.md),
+[`DSF_Scale()`](https://michael.hahsler.net/stream/reference/DSF_Scale.md),
+[`DSF_dplyr()`](https://michael.hahsler.net/stream/reference/DSF_dplyr.md)
 
 ## Author
 

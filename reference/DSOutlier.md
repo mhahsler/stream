@@ -2,7 +2,7 @@
 
 The abstract class for all data stream outlier detectors. Cannot be
 instantiated. Some
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md)
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md)
 implementations also implement outlier/noise detection.
 
 ## Usage
@@ -19,28 +19,28 @@ DSOutlier(...)
 
 ## Details
 
-[`plot()`](http://michael.hahsler.net/stream/reference/plot.DSD.md) has
+[`plot()`](https://michael.hahsler.net/stream/reference/plot.DSD.md) has
 an extra logical argument to specify if outliers should be plotted as
 red crosses.
 
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 Other DSOutlier:
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md)
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md)
 
 ## Author
 

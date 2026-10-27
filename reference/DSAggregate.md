@@ -2,7 +2,7 @@
 
 Abstract base classes for all DSAggregate (Data Stream Aggregator)
 classes to aggregate streams. DSAggreagate is a
-[DST](http://michael.hahsler.net/stream/reference/DST.md) task.
+[DST](https://michael.hahsler.net/stream/reference/DST.md) task.
 
 ## Usage
 
@@ -48,31 +48,31 @@ The `DSAggreagate` class cannot be instantiated, but it serve as a base
 class from which other DSAggregate subclasses inherit.
 
 Data stream operators use `update.DSAggregate()` to process new data
-from the [DSD](http://michael.hahsler.net/stream/reference/DSD.md)
+from the [DSD](https://michael.hahsler.net/stream/reference/DSD.md)
 stream. The result of the operator can be obtained via
-[`get_points()`](http://michael.hahsler.net/stream/reference/get_points.md)
+[`get_points()`](https://michael.hahsler.net/stream/reference/get_points.md)
 and
-[`get_weights()`](http://michael.hahsler.net/stream/reference/DSC.md)
+[`get_weights()`](https://michael.hahsler.net/stream/reference/DSC.md)
 (if available).
 
 ## See also
 
 Other DST:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 Other DSAggregate:
-[`DSAggregate_Sample()`](http://michael.hahsler.net/stream/reference/DSAggregate_Sample.md),
-[`DSAggregate_Window()`](http://michael.hahsler.net/stream/reference/DSAggregate_Window.md)
+[`DSAggregate_Sample()`](https://michael.hahsler.net/stream/reference/DSAggregate_Sample.md),
+[`DSAggregate_Window()`](https://michael.hahsler.net/stream/reference/DSAggregate_Window.md)
 
 ## Author
 

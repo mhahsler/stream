@@ -1,7 +1,7 @@
 # Apply Multiple Task to the Same Data Stream
 
 Apply multiple task
-([DST](http://michael.hahsler.net/stream/reference/DST.md)) to the same
+([DST](https://michael.hahsler.net/stream/reference/DST.md)) to the same
 data stream. The tasks can be accessed as a list as `$dsts`.
 
 ## Usage
@@ -14,7 +14,7 @@ DST_Multi(dsts)
 
 - dsts:
 
-  a list of [DST](http://michael.hahsler.net/stream/reference/DST.md)
+  a list of [DST](https://michael.hahsler.net/stream/reference/DST.md)
   objects.
 
 ## Author

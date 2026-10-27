@@ -48,7 +48,7 @@ DSC_EA(
 
 Reclustering using an evolutionary algorithm. This approach was designed
 for `evoStream` (see
-[DSC_evoStream](http://michael.hahsler.net/stream/reference/DSC_evoStream.md))
+[DSC_evoStream](https://michael.hahsler.net/stream/reference/DSC_evoStream.md))
 but can also be used for other micro-clustering algorithms.
 
 The evolutionary algorithm uses existing clustering solutions and
@@ -66,12 +66,12 @@ Clustering Utilizing Idle Times", Big Data Research.
 ## See also
 
 Other DSC_Macro:
-[`DSC_DBSCAN()`](http://michael.hahsler.net/stream/reference/DSC_DBSCAN.md),
-[`DSC_Hierarchical()`](http://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
-[`DSC_Kmeans()`](http://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Reachability()`](http://michael.hahsler.net/stream/reference/DSC_Reachability.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md)
+[`DSC_DBSCAN()`](https://michael.hahsler.net/stream/reference/DSC_DBSCAN.md),
+[`DSC_Hierarchical()`](https://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
+[`DSC_Kmeans()`](https://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Reachability()`](https://michael.hahsler.net/stream/reference/DSC_Reachability.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md)
 
 ## Author
 

@@ -2,7 +2,7 @@
 
 Micro Clusterer. Extracts a sample form a data stream using Reservoir
 Sampling
-([DSAggregate_Sample](http://michael.hahsler.net/stream/reference/DSAggregate_Sample.md)).
+([DSAggregate_Sample](https://michael.hahsler.net/stream/reference/DSAggregate_Sample.md)).
 The sample is stored as a set of micro-clusters to be compatible with
 other data DSC stream clustering algorithms.
 
@@ -27,9 +27,9 @@ DSC_Sample(k = 100, biased = FALSE)
 ## Value
 
 An object of class `DSC_Sample` (subclass of
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md),
-[DSC_R](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md)).
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md),
+[DSC_R](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md)).
 
 ## Details
 
@@ -61,13 +61,13 @@ Stream Evolution. *International Conference on Very Large Databases
 ## See also
 
 Other DSC_Micro:
-[`DSC_BICO()`](http://michael.hahsler.net/stream/reference/DSC_BICO.md),
-[`DSC_BIRCH()`](http://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_Window()`](http://michael.hahsler.net/stream/reference/DSC_Window.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_BICO()`](https://michael.hahsler.net/stream/reference/DSC_BICO.md),
+[`DSC_BIRCH()`](https://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_Window()`](https://michael.hahsler.net/stream/reference/DSC_Window.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 ## Author
 

@@ -155,9 +155,9 @@ DSOutlier_DBSTREAM(
 ## Value
 
 An object of class `DSC_DBSTREAM` (subclass of
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md),
-[DSC_R](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md)).
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md),
+[DSC_R](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md)).
 
 ## Details
 
@@ -170,17 +170,17 @@ the new data point.
 Although DSC_DBSTREAM is a micro clustering algorithm, macro clusters
 and weights are available.
 
-[`update()`](http://michael.hahsler.net/stream/reference/update.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md)
 invisibly return the assignment of the data points to clusters. The
 columns are `.class` with the index of the strong micro-cluster and
 `.mc_id` with the permanent id of the strong micro-cluster.
 
-[`plot()`](http://michael.hahsler.net/stream/reference/plot.DSD.md) for
+[`plot()`](https://michael.hahsler.net/stream/reference/plot.DSD.md) for
 DSC_DBSTREAM has two extra logical parameters called `assignment` and
 `shared_density` which show the assignment area and the shared density
 graph, respectively.
 
-[`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+[`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
 can be used to assign new points to clusters. Points are assigned to a
 micro-cluster if they are within its assignment area (distance is less
 than `r` times `noise_multiplier`).
@@ -201,22 +201,22 @@ and Data Engineering,* 28(6):1449–1461, June 2016
 ## See also
 
 Other DSC_Micro:
-[`DSC_BICO()`](http://michael.hahsler.net/stream/reference/DSC_BICO.md),
-[`DSC_BIRCH()`](http://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_Sample()`](http://michael.hahsler.net/stream/reference/DSC_Sample.md),
-[`DSC_Window()`](http://michael.hahsler.net/stream/reference/DSC_Window.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_BICO()`](https://michael.hahsler.net/stream/reference/DSC_BICO.md),
+[`DSC_BIRCH()`](https://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_Sample()`](https://michael.hahsler.net/stream/reference/DSC_Sample.md),
+[`DSC_Window()`](https://michael.hahsler.net/stream/reference/DSC_Window.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 Other DSC_TwoStage:
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 Other DSOutlier:
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md)
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md)
 
 ## Author
 
@@ -336,12 +336,12 @@ dbstream <- DSC_DBSTREAM(formula = ~ . - X2, r = .2)
 
 update(dbstream, stream, 500)
 get_centers(dbstream)
-#>          X1         X3          X4
-#> 1 0.8248335 0.78810273  0.82503733
-#> 2 0.4501321 0.79153750  0.05502376
-#> 3 0.2773273 0.05160654  0.69202639
-#> 4 0.3939869 0.59459621  0.09946963
-#> 5 0.2718386 0.77510542 -0.07212181
+#>          X1        X3          X4
+#> 1 0.8276415 0.7724319  0.85124884
+#> 2 0.4544306 0.7989784  0.04915295
+#> 3 0.2832027 0.0468510  0.68706775
+#> 4 0.3970339 0.5744762  0.10738385
+#> 5 0.2874316 0.8019231 -0.09334053
 
 # use DBSTREAM for outlier detection
 stream <- DSD_Gaussians(k = 3, d = 4, noise = 0.05)

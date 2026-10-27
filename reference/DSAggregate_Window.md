@@ -22,7 +22,7 @@ DSAggregate_Window(horizon = 100, lambda = 0)
 ## Value
 
 An object of class `DSAggregate_Window` (subclass of
-[DSAggregate](http://michael.hahsler.net/stream/reference/DSAggregate.md)).
+[DSAggregate](https://michael.hahsler.net/stream/reference/DSAggregate.md)).
 
 ## Details
 
@@ -39,8 +39,8 @@ Data Bases (VLDB'02).
 ## See also
 
 Other DSAggregate:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSAggregate_Sample()`](http://michael.hahsler.net/stream/reference/DSAggregate_Sample.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSAggregate_Sample()`](https://michael.hahsler.net/stream/reference/DSAggregate_Sample.md)
 
 ## Author
 

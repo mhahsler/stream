@@ -26,27 +26,27 @@ get_model(x, ...)
 
 Base class for data stream mining tasks. Types of `DST` are
 
-- [DSAggregate](http://michael.hahsler.net/stream/reference/DSAggregate.md)
+- [DSAggregate](https://michael.hahsler.net/stream/reference/DSAggregate.md)
   to aggregate data streams (e.g., with a sliding window).
 
-- [DSC](http://michael.hahsler.net/stream/reference/DSC.md) for data
+- [DSC](https://michael.hahsler.net/stream/reference/DSC.md) for data
   stream clustering.
 
-- [DSClassifier](http://michael.hahsler.net/stream/reference/DSClassifier.md)
+- [DSClassifier](https://michael.hahsler.net/stream/reference/DSClassifier.md)
   classification for data streams.
 
-- [DSRegressor](http://michael.hahsler.net/stream/reference/DSRegressor.md)
+- [DSRegressor](https://michael.hahsler.net/stream/reference/DSRegressor.md)
   regression for data streams.
 
-- [DSOutlier](http://michael.hahsler.net/stream/reference/DSOutlier.md)
+- [DSOutlier](https://michael.hahsler.net/stream/reference/DSOutlier.md)
   outlier detection for data streams.
 
-- [DSFP](http://michael.hahsler.net/stream/reference/DSFP.md) frequent
+- [DSFP](https://michael.hahsler.net/stream/reference/DSFP.md) frequent
   pattern mining for data streams.
 
 The common interface for all DST classes consists of
 
-- [`update()`](http://michael.hahsler.net/stream/reference/update.md)
+- [`update()`](https://michael.hahsler.net/stream/reference/update.md)
   update the DST with data points.
 
 - description() a string describing the DST.
@@ -54,7 +54,7 @@ The common interface for all DST classes consists of
 - get_model() returns the DST's current model (often as a data.frame or
   a R model object).
 
-- [`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+- [`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
   use the learned DST model to make predictions.
 
 and the methods in the Methods Section below.
@@ -62,17 +62,17 @@ and the methods in the Methods Section below.
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 ## Author
 

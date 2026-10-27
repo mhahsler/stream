@@ -25,16 +25,16 @@ animate_cluster(
 
 - dsc:
 
-  a [DSC](http://michael.hahsler.net/stream/reference/DSC.md)
+  a [DSC](https://michael.hahsler.net/stream/reference/DSC.md)
 
 - dsd:
 
-  a [DSD](http://michael.hahsler.net/stream/reference/DSD.md)
+  a [DSD](https://michael.hahsler.net/stream/reference/DSD.md)
 
 - measure:
 
   the evaluation measure that should be graphed below the animation (see
-  [`evaluate_stream()`](http://michael.hahsler.net/stream/reference/evaluate.md).)
+  [`evaluate_stream()`](https://michael.hahsler.net/stream/reference/evaluate.md).)
 
 - horizon:
 
@@ -47,7 +47,7 @@ animate_cluster(
 - type, assign, assignmentMethod, excludeNoise:
 
   are passed on to
-  [`evaluate_stream()`](http://michael.hahsler.net/stream/reference/evaluate.md)
+  [`evaluate_stream()`](https://michael.hahsler.net/stream/reference/evaluate.md)
   to calculate the evaluation measure.
 
 - wait:
@@ -77,29 +77,29 @@ requirements.
 for replaying and saving animations.
 
 Other DSC:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 Other plot:
-[`animate_data()`](http://michael.hahsler.net/stream/reference/animate_data.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`plot.DSD()`](http://michael.hahsler.net/stream/reference/plot.DSD.md)
+[`animate_data()`](https://michael.hahsler.net/stream/reference/animate_data.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`plot.DSD()`](https://michael.hahsler.net/stream/reference/plot.DSD.md)
 
 Other evaluation:
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md)
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md)
 
 ## Author
 

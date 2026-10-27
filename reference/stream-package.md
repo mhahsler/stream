@@ -8,26 +8,26 @@ R21HG005912. Hahsler et al (2017)
 
 ## Key Classes
 
-- [DSD](http://michael.hahsler.net/stream/reference/DSD.md) Data stream
-  data and [DSF](http://michael.hahsler.net/stream/reference/DSF.md)
+- [DSD](https://michael.hahsler.net/stream/reference/DSD.md) Data stream
+  data and [DSF](https://michael.hahsler.net/stream/reference/DSF.md)
   data stream filter to transform data streams in flight.
 
-- [DST](http://michael.hahsler.net/stream/reference/DST.md) Data stream
+- [DST](https://michael.hahsler.net/stream/reference/DST.md) Data stream
   mining tasks:
 
-  - [DSAggregate](http://michael.hahsler.net/stream/reference/DSAggregate.md)
+  - [DSAggregate](https://michael.hahsler.net/stream/reference/DSAggregate.md)
     Data stream aggregator
 
-  - [DSC](http://michael.hahsler.net/stream/reference/DSC.md) Data
+  - [DSC](https://michael.hahsler.net/stream/reference/DSC.md) Data
     stream clustering
 
-  - [DSClassifier](http://michael.hahsler.net/stream/reference/DSClassifier.md)
+  - [DSClassifier](https://michael.hahsler.net/stream/reference/DSClassifier.md)
     Data stream classifiers
 
-  - [DSOutlier](http://michael.hahsler.net/stream/reference/DSOutlier.md)
+  - [DSOutlier](https://michael.hahsler.net/stream/reference/DSOutlier.md)
     Data stream outlier detectors
 
-  - [DSRegressor](http://michael.hahsler.net/stream/reference/DSRegressor.md)
+  - [DSRegressor](https://michael.hahsler.net/stream/reference/DSRegressor.md)
     Data stream regressors
 
 ## See also

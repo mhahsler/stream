@@ -58,11 +58,11 @@ connected by a chain of pairwise directly reachable micro-clusters. All
 mutually reachable micro-clusters are put in the same cluster.
 
 Reachability uses internally
-[DSC_Hierarchical](http://michael.hahsler.net/stream/reference/DSC_Hierarchical.md)
+[DSC_Hierarchical](https://michael.hahsler.net/stream/reference/DSC_Hierarchical.md)
 with single link.
 
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) and
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md) and
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 invisibly return the assignment of the data points to clusters.
 
 **Note** that this clustering cannot be updated iteratively and every
@@ -79,12 +79,12 @@ Discovery and Data Mining (KDD-96).* AAAI Press. pp. 226-231.
 ## See also
 
 Other DSC_Macro:
-[`DSC_DBSCAN()`](http://michael.hahsler.net/stream/reference/DSC_DBSCAN.md),
-[`DSC_EA()`](http://michael.hahsler.net/stream/reference/DSC_EA.md),
-[`DSC_Hierarchical()`](http://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
-[`DSC_Kmeans()`](http://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md)
+[`DSC_DBSCAN()`](https://michael.hahsler.net/stream/reference/DSC_DBSCAN.md),
+[`DSC_EA()`](https://michael.hahsler.net/stream/reference/DSC_EA.md),
+[`DSC_Hierarchical()`](https://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
+[`DSC_Kmeans()`](https://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md)
 
 ## Author
 

@@ -18,20 +18,20 @@ DSRegressor(...)
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 Other DSRegressor:
-[`DSRegressor_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSRegressor_SlidingWindow.md)
+[`DSRegressor_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSRegressor_SlidingWindow.md)
 
 ## Author
 

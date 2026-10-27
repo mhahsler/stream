@@ -13,7 +13,7 @@ DSF_Func(dsd = NULL, func, ..., info = FALSE)
 - dsd:
 
   An object of class
-  [DSD](http://michael.hahsler.net/stream/reference/DSD.md).
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md).
 
 - func:
 
@@ -32,8 +32,8 @@ DSF_Func(dsd = NULL, func, ..., info = FALSE)
 ## Value
 
 An object of class `DSF_Func` (subclass of
-[DSF](http://michael.hahsler.net/stream/reference/DSF.md) and
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md)).
+[DSF](https://michael.hahsler.net/stream/reference/DSF.md) and
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md)).
 
 ## Details
 
@@ -41,19 +41,19 @@ The function's first argument needs to be a data.frame representing
 points of the data stream. The function will be called as
 `ps %>% your_function()`, where `ps` is the data.frame with some points
 obtained using
-[`get_points()`](http://michael.hahsler.net/stream/reference/get_points.md)
+[`get_points()`](https://michael.hahsler.net/stream/reference/get_points.md)
 on the data stream source.
 
 ## See also
 
 Other DSF:
-[`DSF()`](http://michael.hahsler.net/stream/reference/DSF.md),
-[`DSF_Convolve()`](http://michael.hahsler.net/stream/reference/DSF_Convolve.md),
-[`DSF_Downsample()`](http://michael.hahsler.net/stream/reference/DSF_Downsample.md),
-[`DSF_ExponentialMA()`](http://michael.hahsler.net/stream/reference/DSF_ExponentialMA.md),
-[`DSF_FeatureSelection()`](http://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
-[`DSF_Scale()`](http://michael.hahsler.net/stream/reference/DSF_Scale.md),
-[`DSF_dplyr()`](http://michael.hahsler.net/stream/reference/DSF_dplyr.md)
+[`DSF()`](https://michael.hahsler.net/stream/reference/DSF.md),
+[`DSF_Convolve()`](https://michael.hahsler.net/stream/reference/DSF_Convolve.md),
+[`DSF_Downsample()`](https://michael.hahsler.net/stream/reference/DSF_Downsample.md),
+[`DSF_ExponentialMA()`](https://michael.hahsler.net/stream/reference/DSF_ExponentialMA.md),
+[`DSF_FeatureSelection()`](https://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
+[`DSF_Scale()`](https://michael.hahsler.net/stream/reference/DSF_Scale.md),
+[`DSF_dplyr()`](https://michael.hahsler.net/stream/reference/DSF_dplyr.md)
 
 ## Author
 
@@ -65,11 +65,11 @@ Michael Hahsler
 stream <- DSD_Gaussians(k = 3, d = 3)
 get_points(stream, n = 5)
 #>           X1        X2        X3 .class
-#> 1 0.45352651 0.3377911 0.7501500      2
-#> 2 0.10889782 0.7046719 0.3270846      1
-#> 3 0.15342412 0.6878773 0.3662223      1
-#> 4 0.46755162 0.3070608 0.7462469      2
-#> 5 0.08766125 0.7228658 0.3108044      1
+#> 1 0.45644198 0.3192106 0.7213576      2
+#> 2 0.11084322 0.7060063 0.3254849      1
+#> 3 0.15460289 0.6886859 0.3652530      1
+#> 4 0.47480522 0.3168706 0.7498813      2
+#> 5 0.08529232 0.7212409 0.3127524      1
 
 ## Example 1: rename the columns
 rename <- function(x, names) {
@@ -85,10 +85,10 @@ stream2
 #> Class: DSF_Func, DSF, DSD_R, DSD 
 get_points(stream2, n = 5)
 #>           A         B         C .class
-#> 1 0.4454009 0.3557983 0.7326923      2
+#> 1 0.4342038 0.3322064 0.7157336      2
 #> 2 0.3824367 0.1147064 0.1412927      3
 #> 3 0.3733803 0.1483660 0.1584031      3
-#> 4 0.1460239 0.7605481 0.4059452      1
+#> 4 0.1380883 0.7551047 0.4124708      1
 #> 5 0.3474889 0.1122304 0.1654209      3
 
 ## Example 2: add a sum columns
@@ -103,20 +103,20 @@ stream3
 #> Class: DSF_Func, DSF, DSD_R, DSD 
 get_points(stream3, n = 5)
 #>            A         B         C       sum .class
-#> 1 0.07085441 0.7726183 0.3380148 1.1814875      1
-#> 2 0.39420442 0.3895611 0.6889625 1.4727280      2
-#> 3 0.09919765 0.7195967 0.3200393 1.1388336      1
-#> 4 0.37565418 0.3833801 0.7551145 1.5141487      2
+#> 1 0.07319499 0.7742238 0.3360901 1.1835089      1
+#> 2 0.39464178 0.3911129 0.6904716 1.4762263      2
+#> 3 0.09524489 0.7168854 0.3232897 1.1354199      1
+#> 4 0.44223147 0.3676431 0.6463945 1.4562691      2
 #> 5 0.45132830 0.1428343 0.1689007 0.7630633      3
 
 ## Example 3: Project the stream on its first 2 PCs (using a sample)
 pr <- princomp(get_points(stream, n = 100, info = FALSE))
 pca_trans <- function(x) predict(pr, x[, c("X1", "X2", "X3")])[, 1:2 , drop = FALSE]
 pca_trans(get_points(stream, n = 3, info = FALSE))
-#>           Comp.1     Comp.2
-#> [1,]  0.34725993 -0.1106581
-#> [2,] -0.09195096  0.2118342
-#> [3,]  0.40392289 -0.1143252
+#>          Comp.1     Comp.2
+#> [1,]  0.3402103 -0.1265072
+#> [2,] -0.1041374  0.2394933
+#> [3,]  0.3966679 -0.1333895
 
 stream4 <- stream %>% DSF_Func(pca_trans)
 stream4
@@ -126,9 +126,9 @@ stream4
 
 get_points(stream4, n = 3)
 #>        Comp.1     Comp.2 .class
-#> 1 -0.05475198  0.3240890      2
-#> 2 -0.09279490  0.3273300      2
-#> 3 -0.28205895 -0.2130127      1
+#> 1 -0.02680910  0.3166875      2
+#> 2 -0.01125253  0.2773255      2
+#> 3 -0.29376430 -0.1950964      1
 plot(stream4)
 
 
@@ -144,10 +144,10 @@ stream5
 
 get_points(stream5, n = 5)
 #>          X1        X2        X3 .class
-#> 1 0.4515509 0.3323482 0.7465442      2
-#> 2 0.4618741 0.3200468 0.7277833      2
+#> 1 0.4590594 0.3239982 0.7254512      2
+#> 2 0.4553169 0.3295803 0.7492146      2
 #> 3 0.2780631 0.1934227 0.2678634     NA
 #> 4 0.3986266 0.1221774 0.1386862     NA
-#> 5 0.1488373 0.7141263 0.3775558      1
+#> 5 0.1461974 0.7123155 0.3797266      1
 plot(stream5)
 ```

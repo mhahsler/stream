@@ -1,9 +1,9 @@
 # TwoStage Clustering Process
 
 Combines an **online clustering component**
-([DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md))
+([DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md))
 and an **offline reclustering component**
-([DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md))
+([DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md))
 into a single process.
 
 ## Usage
@@ -17,27 +17,29 @@ DSC_TwoStage(micro, macro)
 - micro:
 
   Clustering algorithm used in the online stage
-  ([DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md))
+  ([DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md))
 
 - macro:
 
   Clustering algorithm used for reclustering in the offline stage
-  ([DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md))
+  ([DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md))
 
 ## Value
 
 An object of class `DSC_TwoStage` (subclass of
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md),
-[DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md))
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md),
+[DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md))
 which is a named list with elements:
 
 - `description`: a description of the clustering algorithms.
 
-- `micro`: The [DSD](http://michael.hahsler.net/stream/reference/DSD.md)
-  used for creating micro clusters in the online component.
+- `micro`: The
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md) used for
+  creating micro clusters in the online component.
 
-- `macro`: The [DSD](http://michael.hahsler.net/stream/reference/DSD.md)
-  for offline reclustering.
+- `macro`: The
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md) for offline
+  reclustering.
 
 - `state`: an environment storing state information needed for
   reclustering.
@@ -46,11 +48,12 @@ with the two clusterers. The names are “
 
 ## Details
 
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) runs
-the online micro-clustering stage and only when macro cluster
+[`update()`](https://michael.hahsler.net/stream/reference/update.md)
+runs the online micro-clustering stage and only when macro cluster
 centers/weights are requested using
-[`get_centers()`](http://michael.hahsler.net/stream/reference/DSC.md) or
-[`get_weights()`](http://michael.hahsler.net/stream/reference/DSC.md),
+[`get_centers()`](https://michael.hahsler.net/stream/reference/DSC.md)
+or
+[`get_weights()`](https://michael.hahsler.net/stream/reference/DSC.md),
 then the offline stage reclustering is automatically performed.
 
 Available clustering methods can be found in the See Also section below.
@@ -58,25 +61,25 @@ Available clustering methods can be found in the See Also section below.
 ## See also
 
 Other DSC_TwoStage:
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 Other DSC:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 ## Author
 

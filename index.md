@@ -198,7 +198,7 @@ evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "n
 
 Preparing complete stream process pipelines that can be run using a
 single
-[`update()`](http://michael.hahsler.net/stream/reference/update.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md)
 call.
 
 ``` r

@@ -13,7 +13,7 @@ DSF_Scale(dsd = NULL, dim = NULL, center = TRUE, scale = TRUE, n = 100L)
 - dsd:
 
   An object of class
-  [DSD](http://michael.hahsler.net/stream/reference/DSD.md) to scale.
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md) to scale.
 
 - dim:
 
@@ -33,8 +33,8 @@ DSF_Scale(dsd = NULL, dim = NULL, center = TRUE, scale = TRUE, n = 100L)
 ## Value
 
 An object of class `DSF_Scale` (subclass of
-[DSF](http://michael.hahsler.net/stream/reference/DSF.md) and
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md)).
+[DSF](https://michael.hahsler.net/stream/reference/DSF.md) and
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md)).
 
 ## Details
 
@@ -52,13 +52,13 @@ values advances the stream by `n` points.
 [scale](https://rdrr.io/r/base/scale.html) in base
 
 Other DSF:
-[`DSF()`](http://michael.hahsler.net/stream/reference/DSF.md),
-[`DSF_Convolve()`](http://michael.hahsler.net/stream/reference/DSF_Convolve.md),
-[`DSF_Downsample()`](http://michael.hahsler.net/stream/reference/DSF_Downsample.md),
-[`DSF_ExponentialMA()`](http://michael.hahsler.net/stream/reference/DSF_ExponentialMA.md),
-[`DSF_FeatureSelection()`](http://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
-[`DSF_Func()`](http://michael.hahsler.net/stream/reference/DSF_Func.md),
-[`DSF_dplyr()`](http://michael.hahsler.net/stream/reference/DSF_dplyr.md)
+[`DSF()`](https://michael.hahsler.net/stream/reference/DSF.md),
+[`DSF_Convolve()`](https://michael.hahsler.net/stream/reference/DSF_Convolve.md),
+[`DSF_Downsample()`](https://michael.hahsler.net/stream/reference/DSF_Downsample.md),
+[`DSF_ExponentialMA()`](https://michael.hahsler.net/stream/reference/DSF_ExponentialMA.md),
+[`DSF_FeatureSelection()`](https://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
+[`DSF_Func()`](https://michael.hahsler.net/stream/reference/DSF_Func.md),
+[`DSF_dplyr()`](https://michael.hahsler.net/stream/reference/DSF_dplyr.md)
 
 ## Author
 

@@ -1,7 +1,7 @@
 # Make a Prediction for a Data Stream Mining Task
 
 `predict()` for data stream mining tasks
-[DST](http://michael.hahsler.net/stream/reference/DST.md).
+[DST](https://michael.hahsler.net/stream/reference/DST.md).
 
 ## Usage
 
@@ -23,7 +23,7 @@ predict(
 
 - object:
 
-  The [DST](http://michael.hahsler.net/stream/reference/DST.md) object.
+  The [DST](https://michael.hahsler.net/stream/reference/DST.md) object.
 
 - newdata:
 
@@ -36,7 +36,7 @@ predict(
 - type:
 
   Use micro- or macro-clusters in
-  [DSC](http://michael.hahsler.net/stream/reference/DSC.md) for
+  [DSC](https://michael.hahsler.net/stream/reference/DSC.md) for
   assignment.
 
 - method:
@@ -61,33 +61,33 @@ on the type of the data stream mining task.
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 Other DSC:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 ## Author
 

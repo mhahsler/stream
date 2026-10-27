@@ -1,7 +1,7 @@
 # Moving Generator Cluster
 
 Creates an evolving cluster for use as a component of a
-[DSD_MG](http://michael.hahsler.net/stream/reference/DSD_MG.md) data
+[DSD_MG](https://michael.hahsler.net/stream/reference/DSD_MG.md) data
 stream.
 
 ## Usage
@@ -99,7 +99,7 @@ MGC_Static(density = 1, center, parameter, shape = Shape_Gaussian)
 ## Details
 
 An `MGC` describes a single cluster for use as a component in a
-[DSD_MG](http://michael.hahsler.net/stream/reference/DSD_MG.md).
+[DSD_MG](https://michael.hahsler.net/stream/reference/DSD_MG.md).
 Different MGCs allow users to express different cluster behaviors within
 a single data stream. Static, (i.e., not moving) clusters are defined
 as:
@@ -133,9 +133,9 @@ New shapes can be defined as a function with parameters `center` and
 
 ## See also
 
-[DSD_MG](http://michael.hahsler.net/stream/reference/DSD_MG.md) for
+[DSD_MG](https://michael.hahsler.net/stream/reference/DSD_MG.md) for
 details on how to use an `MGC` within a
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md).
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md).
 
 ## Author
 

@@ -1,8 +1,8 @@
 # Plot Results of a Data Stream Clustering
 
 Method to plot the result of data stream data clustering. To plot
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md) see
-[`plot.DSD()`](http://michael.hahsler.net/stream/reference/plot.DSD.md).
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md) see
+[`plot.DSD()`](https://michael.hahsler.net/stream/reference/plot.DSD.md).
 
 ## Usage
 
@@ -31,12 +31,12 @@ plot(
 
 - x:
 
-  the [DSC](http://michael.hahsler.net/stream/reference/DSC.md) object
+  the [DSC](https://michael.hahsler.net/stream/reference/DSC.md) object
   to be plotted.
 
 - dsd:
 
-  a [DSD](http://michael.hahsler.net/stream/reference/DSD.md) object to
+  a [DSD](https://michael.hahsler.net/stream/reference/DSD.md) object to
   plot the data in the background.
 
 - n:
@@ -99,25 +99,25 @@ plot(
 ## See also
 
 Other DSC:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate.DSC`](http://michael.hahsler.net/stream/reference/evaluate.DSC.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate.DSC`](https://michael.hahsler.net/stream/reference/evaluate.DSC.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 Other plot:
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`animate_data()`](http://michael.hahsler.net/stream/reference/animate_data.md),
-[`plot.DSD()`](http://michael.hahsler.net/stream/reference/plot.DSD.md)
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`animate_data()`](https://michael.hahsler.net/stream/reference/animate_data.md),
+[`plot.DSD()`](https://michael.hahsler.net/stream/reference/plot.DSD.md)
 
 ## Author
 
@@ -138,7 +138,7 @@ update(dstream, stream, 500)
 dstream
 #> D-Stream 
 #> Class: DSC_DStream, DSC_Micro, DSC_R, DSC 
-#> Number of micro-clusters: 34 
+#> Number of micro-clusters: 32 
 #> Number of macro-clusters: 3 
 plot(dstream, stream)
 
@@ -168,9 +168,9 @@ trans <- function(x) predict(pr, x)[, 1:2 , drop = FALSE]
 
 trans(get_points(stream, n = 3))
 #>           Comp.1     Comp.2
-#> [1,]  0.02703892  0.3641819
-#> [2,] -0.08120138  0.4726015
-#> [3,] -0.08475106 -0.4587557
+#> [1,]  0.02591908  0.3655249
+#> [2,] -0.08271036  0.4720425
+#> [3,] -0.07703028 -0.4579451
 
 plot(dstream, stream, transform = trans)
 ```

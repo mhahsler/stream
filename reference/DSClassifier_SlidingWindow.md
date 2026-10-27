@@ -30,7 +30,7 @@ DSClassifier_SlidingWindow(formula, model = rpart::rpart, window, rebuild, ...)
   interval (number of points) for rebuilding the classifier. Set rebuild
   to `Inf` to prevent automatic rebuilding. Rebuilding can be initiated
   manually when calling
-  [`update()`](http://michael.hahsler.net/stream/reference/update.md).
+  [`update()`](https://michael.hahsler.net/stream/reference/update.md).
 
 - ...:
 
@@ -44,16 +44,16 @@ An object of class `DST_SlidingWindow`.
 ## Details
 
 This constructor creates classifier based on
-[`DST_SlidingWindow`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md).
+[`DST_SlidingWindow`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md).
 The classifier has a
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) and
-[`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md) and
+[`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
 method.
 
 ## See also
 
 Other DSClassifier:
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md)
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md)
 
 ## Author
 

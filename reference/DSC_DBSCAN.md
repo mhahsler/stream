@@ -43,9 +43,9 @@ DSC_DBSCAN(
 ## Value
 
 An object of class `DSC_DBSCAN` (a subclass of
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md),
-[DSC_R](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md)).
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md),
+[DSC_R](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md)).
 
 ## Details
 
@@ -58,8 +58,8 @@ DBSCAN first finds core points based on the number of other points in
 its eps-neighborhood. Then core points are joined into clusters using
 reachability (overlapping eps-neighborhoods).
 
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) and
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md) and
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 invisibly return the assignment of the data points to clusters.
 
 **Note** that this clustering cannot be updated iteratively and every
@@ -76,12 +76,12 @@ Discovery and Data Mining (KDD-96).* AAAI Press. pp. 226-231.
 ## See also
 
 Other DSC_Macro:
-[`DSC_EA()`](http://michael.hahsler.net/stream/reference/DSC_EA.md),
-[`DSC_Hierarchical()`](http://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
-[`DSC_Kmeans()`](http://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Reachability()`](http://michael.hahsler.net/stream/reference/DSC_Reachability.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md)
+[`DSC_EA()`](https://michael.hahsler.net/stream/reference/DSC_EA.md),
+[`DSC_Hierarchical()`](https://michael.hahsler.net/stream/reference/DSC_Hierarchical.md),
+[`DSC_Kmeans()`](https://michael.hahsler.net/stream/reference/DSC_Kmeans.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Reachability()`](https://michael.hahsler.net/stream/reference/DSC_Reachability.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md)
 
 ## Author
 

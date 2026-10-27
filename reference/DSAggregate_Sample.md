@@ -54,8 +54,8 @@ Stream Evolution. International Conference on Very Large Databases
 ## See also
 
 Other DSAggregate:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSAggregate_Window()`](http://michael.hahsler.net/stream/reference/DSAggregate_Window.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSAggregate_Window()`](https://michael.hahsler.net/stream/reference/DSAggregate_Window.md)
 
 ## Author
 

@@ -39,7 +39,7 @@ predict(object, newdata, ...)
 - ...:
 
   additional parameters passed on to the
-  [`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+  [`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
   function of the underlying model.
 
 - object:
@@ -48,7 +48,7 @@ predict(object, newdata, ...)
 
 - dsd:
 
-  A [DSD](http://michael.hahsler.net/stream/reference/DSD.md) object
+  A [DSD](https://michael.hahsler.net/stream/reference/DSD.md) object
   with the data stream.
 
 - n:
@@ -78,11 +78,11 @@ the form
 
 where `data` is the data.frame with the points in the sliding window
 (See
-[`get_points()`](http://michael.hahsler.net/stream/reference/get_points.md)
+[`get_points()`](https://michael.hahsler.net/stream/reference/get_points.md)
 in
-[DSAggregate_Window](http://michael.hahsler.net/stream/reference/DSAggregate_Window.md)).
+[DSAggregate_Window](https://michael.hahsler.net/stream/reference/DSAggregate_Window.md)).
 The function will be executed at regular intervals after
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) was
+[`update()`](https://michael.hahsler.net/stream/reference/update.md) was
 called with fixed number of points. `update(..., rebuild = TRUE)` can be
 used to force recomputing the function. This can be used with `n = 0` to
 recompute it even without adding more points. The last valid function
@@ -92,23 +92,23 @@ Many modelling functions provide a formula interface which lets them be
 directly used inside a `DST_SlidingWindow` (see Examples section).
 
 If the function returns a model that supports
-[`predict()`](http://michael.hahsler.net/stream/reference/predict.md),
+[`predict()`](https://michael.hahsler.net/stream/reference/predict.md),
 then predict can directly be called on the `DST_SlidingWindow` object.
 
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`stream_pipeline`](http://michael.hahsler.net/stream/reference/stream_pipeline.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`stream_pipeline`](https://michael.hahsler.net/stream/reference/stream_pipeline.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 ## Author
 

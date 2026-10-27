@@ -2,12 +2,18 @@
 
 ## stream 2.0.7 (unpublished)
 
+### Bugfix
+
+- Fixed BICO’s optional k-means projection search to use precomputed
+  center projections and reset the projection for each point.
+
 ### Changes
 
 - Improved consistency and formatting in data stream filter
   documentation.
 - Added tests for downsampling, feature selection, convolution,
   exponential moving averages, and scaling.
+- Removed including R.h before Rcpp.h.
 
 ## stream 2.0.6 (07/27/26)
 

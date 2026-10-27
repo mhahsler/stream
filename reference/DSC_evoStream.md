@@ -74,7 +74,7 @@ DSC_evoStream(
 ## Details
 
 The online component uses a simplified version of
-[DBSTREAM](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md)
+[DBSTREAM](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md)
 to generate micro-clusters. The micro-clusters are then incrementally
 reclustered using an evolutionary algorithm. Evolutionary algorithms
 create slight variations by combining and randomly modifying existing
@@ -83,7 +83,7 @@ pressure is created which improves the clustering over time. Since the
 evolutionary algorithm is incremental, it is possible to apply it
 between observations, e.g. in the idle time of the stream. Whenever
 there is idle time, we can call the
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 function of the reference class to improve the macro-clusters (see
 example). The evolutionary algorithm can also be applied as a
 traditional reclustering step, or a combination of both. In addition,
@@ -98,18 +98,18 @@ Clustering Utilizing Idle Times", Big Data Research.
 ## See also
 
 Other DSC_Micro:
-[`DSC_BICO()`](http://michael.hahsler.net/stream/reference/DSC_BICO.md),
-[`DSC_BIRCH()`](http://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_Sample()`](http://michael.hahsler.net/stream/reference/DSC_Sample.md),
-[`DSC_Window()`](http://michael.hahsler.net/stream/reference/DSC_Window.md)
+[`DSC_BICO()`](https://michael.hahsler.net/stream/reference/DSC_BICO.md),
+[`DSC_BIRCH()`](https://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_Sample()`](https://michael.hahsler.net/stream/reference/DSC_Sample.md),
+[`DSC_Window()`](https://michael.hahsler.net/stream/reference/DSC_Window.md)
 
 Other DSC_TwoStage:
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md)
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md)
 
 ## Author
 

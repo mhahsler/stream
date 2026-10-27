@@ -24,16 +24,16 @@ in the See Also section below.
 
 `DSD` provides common functionality like:
 
-- [`get_points()`](http://michael.hahsler.net/stream/reference/get_points.md)
+- [`get_points()`](https://michael.hahsler.net/stream/reference/get_points.md)
 
 - [`print()`](https://rdrr.io/r/base/print.html)
 
-- [`plot()`](http://michael.hahsler.net/stream/reference/plot.DSD.md)
+- [`plot()`](https://michael.hahsler.net/stream/reference/plot.DSD.md)
 
-- [`reset_stream()`](http://michael.hahsler.net/stream/reference/reset_stream.md)
+- [`reset_stream()`](https://michael.hahsler.net/stream/reference/reset_stream.md)
   (if available)
 
-- [`close_stream()`](http://michael.hahsler.net/stream/reference/close_stream.md)
+- [`close_stream()`](https://michael.hahsler.net/stream/reference/close_stream.md)
   (if needed)
 
 `DSD_R` inherits form `DSD` and is the abstract parent class for DSD
@@ -50,26 +50,26 @@ For details see [`vignette()`](https://rdrr.io/r/utils/vignette.html)
 ## See also
 
 Other DSD:
-[`DSD_BarsAndGaussians()`](http://michael.hahsler.net/stream/reference/DSD_BarsAndGaussians.md),
-[`DSD_Benchmark()`](http://michael.hahsler.net/stream/reference/DSD_Benchmark.md),
-[`DSD_Cubes()`](http://michael.hahsler.net/stream/reference/DSD_Cubes.md),
-[`DSD_Gaussians()`](http://michael.hahsler.net/stream/reference/DSD_Gaussians.md),
-[`DSD_MG()`](http://michael.hahsler.net/stream/reference/DSD_MG.md),
-[`DSD_Memory()`](http://michael.hahsler.net/stream/reference/DSD_Memory.md),
-[`DSD_Mixture()`](http://michael.hahsler.net/stream/reference/DSD_Mixture.md),
-[`DSD_NULL()`](http://michael.hahsler.net/stream/reference/DSD_NULL.md),
-[`DSD_ReadDB()`](http://michael.hahsler.net/stream/reference/DSD_ReadDB.md),
-[`DSD_ReadStream()`](http://michael.hahsler.net/stream/reference/DSD_ReadStream.md),
-[`DSD_Target()`](http://michael.hahsler.net/stream/reference/DSD_Target.md),
-[`DSD_UniformNoise()`](http://michael.hahsler.net/stream/reference/DSD_UniformNoise.md),
-[`DSD_mlbenchData()`](http://michael.hahsler.net/stream/reference/DSD_mlbenchData.md),
-[`DSD_mlbenchGenerator()`](http://michael.hahsler.net/stream/reference/DSD_mlbenchGenerator.md),
-[`DSF()`](http://michael.hahsler.net/stream/reference/DSF.md),
-[`animate_data()`](http://michael.hahsler.net/stream/reference/animate_data.md),
-[`close_stream()`](http://michael.hahsler.net/stream/reference/close_stream.md),
-[`get_points()`](http://michael.hahsler.net/stream/reference/get_points.md),
-[`plot.DSD()`](http://michael.hahsler.net/stream/reference/plot.DSD.md),
-[`reset_stream()`](http://michael.hahsler.net/stream/reference/reset_stream.md)
+[`DSD_BarsAndGaussians()`](https://michael.hahsler.net/stream/reference/DSD_BarsAndGaussians.md),
+[`DSD_Benchmark()`](https://michael.hahsler.net/stream/reference/DSD_Benchmark.md),
+[`DSD_Cubes()`](https://michael.hahsler.net/stream/reference/DSD_Cubes.md),
+[`DSD_Gaussians()`](https://michael.hahsler.net/stream/reference/DSD_Gaussians.md),
+[`DSD_MG()`](https://michael.hahsler.net/stream/reference/DSD_MG.md),
+[`DSD_Memory()`](https://michael.hahsler.net/stream/reference/DSD_Memory.md),
+[`DSD_Mixture()`](https://michael.hahsler.net/stream/reference/DSD_Mixture.md),
+[`DSD_NULL()`](https://michael.hahsler.net/stream/reference/DSD_NULL.md),
+[`DSD_ReadDB()`](https://michael.hahsler.net/stream/reference/DSD_ReadDB.md),
+[`DSD_ReadStream()`](https://michael.hahsler.net/stream/reference/DSD_ReadStream.md),
+[`DSD_Target()`](https://michael.hahsler.net/stream/reference/DSD_Target.md),
+[`DSD_UniformNoise()`](https://michael.hahsler.net/stream/reference/DSD_UniformNoise.md),
+[`DSD_mlbenchData()`](https://michael.hahsler.net/stream/reference/DSD_mlbenchData.md),
+[`DSD_mlbenchGenerator()`](https://michael.hahsler.net/stream/reference/DSD_mlbenchGenerator.md),
+[`DSF()`](https://michael.hahsler.net/stream/reference/DSF.md),
+[`animate_data()`](https://michael.hahsler.net/stream/reference/animate_data.md),
+[`close_stream()`](https://michael.hahsler.net/stream/reference/close_stream.md),
+[`get_points()`](https://michael.hahsler.net/stream/reference/get_points.md),
+[`plot.DSD()`](https://michael.hahsler.net/stream/reference/plot.DSD.md),
+[`reset_stream()`](https://michael.hahsler.net/stream/reference/reset_stream.md)
 
 ## Author
 
@@ -108,11 +108,11 @@ stream <- DSD_Gaussians(k = 3, d = 3)
 # get points from stream
 get_points(stream, n = 5)
 #>          X1         X2        X3 .class
-#> 1 0.4050989 0.44667298 0.3475992      3
-#> 2 0.6763585 0.09054988 0.4570557      1
-#> 3 0.4252745 0.12934062 0.7642332      2
-#> 4 0.3707175 0.43533796 0.3756607      3
-#> 5 0.4084845 0.11938364 0.6896738      2
+#> 1 0.3831682 0.44882922 0.3644049      3
+#> 2 0.6412330 0.02733078 0.4092730      1
+#> 3 0.4461315 0.14489404 0.7313965      2
+#> 4 0.4173832 0.43074978 0.3399003      3
+#> 5 0.3831580 0.10049728 0.7295471      2
 
 # plotting the data (scatter plot matrix, first and third dimension, and first
 #  two principal components)

@@ -21,10 +21,10 @@ library(stream)
 
 ## Create and inspect a data stream
 
-[`DSD_Gaussians()`](http://michael.hahsler.net/stream/reference/DSD_Gaussians.md)
+[`DSD_Gaussians()`](https://michael.hahsler.net/stream/reference/DSD_Gaussians.md)
 generates a stream with three clusters and a small amount of noise. A
 stream can be unbounded, so request a finite number of points with
-[`get_points()`](http://michael.hahsler.net/stream/reference/get_points.md):
+[`get_points()`](https://michael.hahsler.net/stream/reference/get_points.md):
 
 ``` r
 
@@ -53,11 +53,11 @@ plot(stream, n = 500)
 
 ## Update a clustering model
 
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md)
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md)
 combines an online micro-clusterer with an offline macro-clusterer.
 Here, a sliding window stores recent points and k-means groups the
 window’s micro-clusters into three macro-clusters.
-[`update()`](http://michael.hahsler.net/stream/reference/update.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md)
 feeds 500 points from the stream into the model:
 
 ``` r
@@ -95,7 +95,7 @@ plot(clustering, stream, type = "both")
 
 ## Evaluate on new points
 
-[`evaluate_static()`](http://michael.hahsler.net/stream/reference/evaluate.md)
+[`evaluate_static()`](https://michael.hahsler.net/stream/reference/evaluate.md)
 tests the current model on new points without updating it. The generated
 stream includes true cluster labels, so external measures such as purity
 and the adjusted Rand index can be calculated:
@@ -124,7 +124,7 @@ evaluate_static(
 ## Further reading
 
 See the [function
-reference](http://michael.hahsler.net/stream/reference/index.md) and the
-package vignettes for details on data generators, stream filters,
+reference](https://michael.hahsler.net/stream/reference/index.md) and
+the package vignettes for details on data generators, stream filters,
 clustering methods, evaluation, and extending `stream` with new
 components.

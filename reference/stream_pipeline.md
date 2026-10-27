@@ -14,13 +14,13 @@ DST_Runner(dsd, dst)
 - dsd:
 
   A data stream (subclass of
-  [DSD](http://michael.hahsler.net/stream/reference/DSD.md)) typically
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md)) typically
   provided using a `%>%` (pipe).
 
 - dst:
 
   A data stream mining task (subclass of
-  [DST](http://michael.hahsler.net/stream/reference/DST.md)).
+  [DST](https://michael.hahsler.net/stream/reference/DST.md)).
 
 ## Details
 
@@ -30,32 +30,32 @@ mining task:
 `DSD %>% DSF %>% DST_Runner`
 
 Once the pipeline is defined, it can be run using
-[`update()`](http://michael.hahsler.net/stream/reference/update.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md)
 where points are taken from the
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md) data stream
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md) data stream
 source, filtered through a sequence of
-[DSF](http://michael.hahsler.net/stream/reference/DSF.md) filters and
+[DSF](https://michael.hahsler.net/stream/reference/DSF.md) filters and
 then used to update the
-[DST](http://michael.hahsler.net/stream/reference/DST.md) task.
+[DST](https://michael.hahsler.net/stream/reference/DST.md) task.
 
-[DST_Multi](http://michael.hahsler.net/stream/reference/DST_Multi.md)
+[DST_Multi](https://michael.hahsler.net/stream/reference/DST_Multi.md)
 can be used to update multiple models in the pipeline with the same
 stream.
 
 ## See also
 
 Other DST:
-[`DSAggregate()`](http://michael.hahsler.net/stream/reference/DSAggregate.md),
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSClassifier()`](http://michael.hahsler.net/stream/reference/DSClassifier.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md),
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md),
-[`DST()`](http://michael.hahsler.net/stream/reference/DST.md),
-[`DST_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
-[`DST_WriteStream()`](http://michael.hahsler.net/stream/reference/DST_WriteStream.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`update`](http://michael.hahsler.net/stream/reference/update.md)
+[`DSAggregate()`](https://michael.hahsler.net/stream/reference/DSAggregate.md),
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSClassifier()`](https://michael.hahsler.net/stream/reference/DSClassifier.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md),
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md),
+[`DST()`](https://michael.hahsler.net/stream/reference/DST.md),
+[`DST_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md),
+[`DST_WriteStream()`](https://michael.hahsler.net/stream/reference/DST_WriteStream.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`update`](https://michael.hahsler.net/stream/reference/update.md)
 
 ## Author
 

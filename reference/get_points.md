@@ -1,7 +1,7 @@
 # Get Points from a Data Stream Generator
 
 Gets points from a
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md) object.
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md) object.
 
 ## Usage
 
@@ -18,7 +18,7 @@ remove_info(points)
 
 - x:
 
-  A [DSD](http://michael.hahsler.net/stream/reference/DSD.md) object.
+  A [DSD](https://michael.hahsler.net/stream/reference/DSD.md) object.
 
 - ...:
 
@@ -48,7 +48,7 @@ to) `n` rows and as many columns as `x` produces.
 Each DSD object has a unique way for creating/returning data points, but
 they all are called through the generic function, `get_points()`. This
 is done by using the S3 class system. See the man page for the specific
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md) class on the
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md) class on the
 semantics for each implementation of `get_points()`.
 
 **Additional Point Information**
@@ -56,7 +56,7 @@ semantics for each implementation of `get_points()`.
 Additional point information (e.g., known cluster/class assignment,
 noise status) can be requested with `info = TRUE`. This information is
 returned as additional columns. The column names start with `.` and are
-ignored by [DST](http://michael.hahsler.net/stream/reference/DST.md)
+ignored by [DST](https://michael.hahsler.net/stream/reference/DST.md)
 implementations. `remove_info()` is a convenience function to remove the
 information columns. Examples are
 
@@ -71,31 +71,31 @@ information columns. Examples are
 **Resetting a Stream**
 
 Many streams can be reset using
-[`reset_stream()`](http://michael.hahsler.net/stream/reference/reset_stream.md).
+[`reset_stream()`](https://michael.hahsler.net/stream/reference/reset_stream.md).
 
 ## See also
 
 Other DSD:
-[`DSD()`](http://michael.hahsler.net/stream/reference/DSD.md),
-[`DSD_BarsAndGaussians()`](http://michael.hahsler.net/stream/reference/DSD_BarsAndGaussians.md),
-[`DSD_Benchmark()`](http://michael.hahsler.net/stream/reference/DSD_Benchmark.md),
-[`DSD_Cubes()`](http://michael.hahsler.net/stream/reference/DSD_Cubes.md),
-[`DSD_Gaussians()`](http://michael.hahsler.net/stream/reference/DSD_Gaussians.md),
-[`DSD_MG()`](http://michael.hahsler.net/stream/reference/DSD_MG.md),
-[`DSD_Memory()`](http://michael.hahsler.net/stream/reference/DSD_Memory.md),
-[`DSD_Mixture()`](http://michael.hahsler.net/stream/reference/DSD_Mixture.md),
-[`DSD_NULL()`](http://michael.hahsler.net/stream/reference/DSD_NULL.md),
-[`DSD_ReadDB()`](http://michael.hahsler.net/stream/reference/DSD_ReadDB.md),
-[`DSD_ReadStream()`](http://michael.hahsler.net/stream/reference/DSD_ReadStream.md),
-[`DSD_Target()`](http://michael.hahsler.net/stream/reference/DSD_Target.md),
-[`DSD_UniformNoise()`](http://michael.hahsler.net/stream/reference/DSD_UniformNoise.md),
-[`DSD_mlbenchData()`](http://michael.hahsler.net/stream/reference/DSD_mlbenchData.md),
-[`DSD_mlbenchGenerator()`](http://michael.hahsler.net/stream/reference/DSD_mlbenchGenerator.md),
-[`DSF()`](http://michael.hahsler.net/stream/reference/DSF.md),
-[`animate_data()`](http://michael.hahsler.net/stream/reference/animate_data.md),
-[`close_stream()`](http://michael.hahsler.net/stream/reference/close_stream.md),
-[`plot.DSD()`](http://michael.hahsler.net/stream/reference/plot.DSD.md),
-[`reset_stream()`](http://michael.hahsler.net/stream/reference/reset_stream.md)
+[`DSD()`](https://michael.hahsler.net/stream/reference/DSD.md),
+[`DSD_BarsAndGaussians()`](https://michael.hahsler.net/stream/reference/DSD_BarsAndGaussians.md),
+[`DSD_Benchmark()`](https://michael.hahsler.net/stream/reference/DSD_Benchmark.md),
+[`DSD_Cubes()`](https://michael.hahsler.net/stream/reference/DSD_Cubes.md),
+[`DSD_Gaussians()`](https://michael.hahsler.net/stream/reference/DSD_Gaussians.md),
+[`DSD_MG()`](https://michael.hahsler.net/stream/reference/DSD_MG.md),
+[`DSD_Memory()`](https://michael.hahsler.net/stream/reference/DSD_Memory.md),
+[`DSD_Mixture()`](https://michael.hahsler.net/stream/reference/DSD_Mixture.md),
+[`DSD_NULL()`](https://michael.hahsler.net/stream/reference/DSD_NULL.md),
+[`DSD_ReadDB()`](https://michael.hahsler.net/stream/reference/DSD_ReadDB.md),
+[`DSD_ReadStream()`](https://michael.hahsler.net/stream/reference/DSD_ReadStream.md),
+[`DSD_Target()`](https://michael.hahsler.net/stream/reference/DSD_Target.md),
+[`DSD_UniformNoise()`](https://michael.hahsler.net/stream/reference/DSD_UniformNoise.md),
+[`DSD_mlbenchData()`](https://michael.hahsler.net/stream/reference/DSD_mlbenchData.md),
+[`DSD_mlbenchGenerator()`](https://michael.hahsler.net/stream/reference/DSD_mlbenchGenerator.md),
+[`DSF()`](https://michael.hahsler.net/stream/reference/DSF.md),
+[`animate_data()`](https://michael.hahsler.net/stream/reference/animate_data.md),
+[`close_stream()`](https://michael.hahsler.net/stream/reference/close_stream.md),
+[`plot.DSD()`](https://michael.hahsler.net/stream/reference/plot.DSD.md),
+[`reset_stream()`](https://michael.hahsler.net/stream/reference/reset_stream.md)
 
 ## Author
 

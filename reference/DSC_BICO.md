@@ -59,13 +59,13 @@ Clustering. *ESA 2013:* 481-492.
 ## See also
 
 Other DSC_Micro:
-[`DSC_BIRCH()`](http://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_DStream()`](http://michael.hahsler.net/stream/reference/DSC_DStream.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_Sample()`](http://michael.hahsler.net/stream/reference/DSC_Sample.md),
-[`DSC_Window()`](http://michael.hahsler.net/stream/reference/DSC_Window.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_BIRCH()`](https://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_DStream()`](https://michael.hahsler.net/stream/reference/DSC_DStream.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_Sample()`](https://michael.hahsler.net/stream/reference/DSC_Sample.md),
+[`DSC_Window()`](https://michael.hahsler.net/stream/reference/DSC_Window.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 ## Author
 

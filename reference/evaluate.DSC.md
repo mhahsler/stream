@@ -1,12 +1,12 @@
 # Evaluate a Stream Clustering Task
 
 Methods for the generic functions
-[`evaluate_static()`](http://michael.hahsler.net/stream/reference/evaluate.md)
+[`evaluate_static()`](https://michael.hahsler.net/stream/reference/evaluate.md)
 and
-[`evaluate_stream()`](http://michael.hahsler.net/stream/reference/evaluate.md)
+[`evaluate_stream()`](https://michael.hahsler.net/stream/reference/evaluate.md)
 to calculate evaluation measures for micro or macro-clusters created by
-a [DSC](http://michael.hahsler.net/stream/reference/DSC.md) on the a
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md) object.
+a [DSC](https://michael.hahsler.net/stream/reference/DSC.md) on the a
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md) object.
 
 ## Usage
 
@@ -46,12 +46,12 @@ evaluate_stream(
 
 - object:
 
-  The [DSC](http://michael.hahsler.net/stream/reference/DSC.md) object
+  The [DSC](https://michael.hahsler.net/stream/reference/DSC.md) object
   that the evaluation measure is being requested from.
 
 - dsd:
 
-  The [DSD](http://michael.hahsler.net/stream/reference/DSD.md) object
+  The [DSD](https://michael.hahsler.net/stream/reference/DSD.md) object
   that holds the initial training data for the DSC.
 
 - measure:
@@ -66,7 +66,7 @@ evaluate_stream(
 - type:
 
   Use micro- or macro-clusters for evaluation. Auto used the class of
-  [DSC](http://michael.hahsler.net/stream/reference/DSC.md) to decide.
+  [DSC](https://michael.hahsler.net/stream/reference/DSC.md) to decide.
 
 - assign:
 
@@ -75,7 +75,7 @@ evaluate_stream(
 - assignmentMethod:
 
   How are points assigned to clusters for evaluation (see
-  [`predict()`](http://michael.hahsler.net/stream/reference/predict.md))?
+  [`predict()`](https://michael.hahsler.net/stream/reference/predict.md))?
 
 - excludeNoise:
 
@@ -114,11 +114,11 @@ evaluation measures can be computed.
 
 We provide two evaluation methods:
 
-- [`evaluate_static()`](http://michael.hahsler.net/stream/reference/evaluate.md)
+- [`evaluate_static()`](https://michael.hahsler.net/stream/reference/evaluate.md)
   evaluates the current static clustering using new data without
   updating the model.
 
-- [`evaluate_stream()`](http://michael.hahsler.net/stream/reference/evaluate.md)
+- [`evaluate_stream()`](https://michael.hahsler.net/stream/reference/evaluate.md)
   evaluates the clustering process using *prequential error estimation*
   (see Gama, Sebastiao and Rodrigues; 2013). The current model is first
   applied to the data points in the horizon to calculate the evaluation
@@ -250,10 +250,10 @@ Many measures are the average over all clusters. For example, purity is
 the average purity over all clusters.
 
 For
-[DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md)
+[DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md)
 objects, data points are assigned to micro-clusters and then each
 micro-cluster is evaluated. For
-[DSC_Macro](http://michael.hahsler.net/stream/reference/DSC_Macro.md)
+[DSC_Macro](https://michael.hahsler.net/stream/reference/DSC_Macro.md)
 objects, data points by default (`assign = "micro"`) also assigned to
 micro-clusters, but these assignments are translated to macro-clusters.
 The evaluation is here done for macro-clusters. This is important when
@@ -329,24 +329,24 @@ and
 [`fpc::cluster.stats()`](https://rdrr.io/pkg/fpc/man/cluster.stats.html).
 
 Other DSC:
-[`DSC()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`DSC_Macro()`](http://michael.hahsler.net/stream/reference/DSC_Macro.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_R()`](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[`DSC_SlidingWindow()`](http://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
-[`DSC_Static()`](http://michael.hahsler.net/stream/reference/DSC_Static.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`get_assignment()`](http://michael.hahsler.net/stream/reference/get_assignment.md),
-[`plot.DSC()`](http://michael.hahsler.net/stream/reference/plot.DSC.md),
-[`predict`](http://michael.hahsler.net/stream/reference/predict.md),
-[`prune_clusters()`](http://michael.hahsler.net/stream/reference/prune_clusters.md),
-[`read_saveDSC`](http://michael.hahsler.net/stream/reference/read_saveDSC.md),
-[`recluster()`](http://michael.hahsler.net/stream/reference/recluster.md)
+[`DSC()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`DSC_Macro()`](https://michael.hahsler.net/stream/reference/DSC_Macro.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_R()`](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[`DSC_SlidingWindow()`](https://michael.hahsler.net/stream/reference/DSC_SlidingWindow.md),
+[`DSC_Static()`](https://michael.hahsler.net/stream/reference/DSC_Static.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`get_assignment()`](https://michael.hahsler.net/stream/reference/get_assignment.md),
+[`plot.DSC()`](https://michael.hahsler.net/stream/reference/plot.DSC.md),
+[`predict`](https://michael.hahsler.net/stream/reference/predict.md),
+[`prune_clusters()`](https://michael.hahsler.net/stream/reference/prune_clusters.md),
+[`read_saveDSC`](https://michael.hahsler.net/stream/reference/read_saveDSC.md),
+[`recluster()`](https://michael.hahsler.net/stream/reference/recluster.md)
 
 Other evaluation:
-[`animate_cluster()`](http://michael.hahsler.net/stream/reference/animate_cluster.md),
-[`evaluate`](http://michael.hahsler.net/stream/reference/evaluate.md)
+[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md),
+[`evaluate`](https://michael.hahsler.net/stream/reference/evaluate.md)
 
 ## Author
 

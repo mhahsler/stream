@@ -33,7 +33,7 @@ pow2(x)
 - dsd:
 
   An object of class
-  [DSD](http://michael.hahsler.net/stream/reference/DSD.md).
+  [DSD](https://michael.hahsler.net/stream/reference/DSD.md).
 
 - dim:
 
@@ -88,8 +88,8 @@ pow2(x)
 ## Value
 
 An object of class `DSF_Convolve` (subclass of
-[DSF](http://michael.hahsler.net/stream/reference/DSF.md) and
-[DSD](http://michael.hahsler.net/stream/reference/DSD.md)).
+[DSF](https://michael.hahsler.net/stream/reference/DSF.md) and
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md)).
 
 ## Details
 
@@ -123,13 +123,13 @@ ISBN 0966017633, URL: https://www.dspguide.com/
 non-streaming convolution.
 
 Other DSF:
-[`DSF()`](http://michael.hahsler.net/stream/reference/DSF.md),
-[`DSF_Downsample()`](http://michael.hahsler.net/stream/reference/DSF_Downsample.md),
-[`DSF_ExponentialMA()`](http://michael.hahsler.net/stream/reference/DSF_ExponentialMA.md),
-[`DSF_FeatureSelection()`](http://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
-[`DSF_Func()`](http://michael.hahsler.net/stream/reference/DSF_Func.md),
-[`DSF_Scale()`](http://michael.hahsler.net/stream/reference/DSF_Scale.md),
-[`DSF_dplyr()`](http://michael.hahsler.net/stream/reference/DSF_dplyr.md)
+[`DSF()`](https://michael.hahsler.net/stream/reference/DSF.md),
+[`DSF_Downsample()`](https://michael.hahsler.net/stream/reference/DSF_Downsample.md),
+[`DSF_ExponentialMA()`](https://michael.hahsler.net/stream/reference/DSF_ExponentialMA.md),
+[`DSF_FeatureSelection()`](https://michael.hahsler.net/stream/reference/DSF_FeatureSelection.md),
+[`DSF_Func()`](https://michael.hahsler.net/stream/reference/DSF_Func.md),
+[`DSF_Scale()`](https://michael.hahsler.net/stream/reference/DSF_Scale.md),
+[`DSF_dplyr()`](https://michael.hahsler.net/stream/reference/DSF_dplyr.md)
 
 ## Author
 

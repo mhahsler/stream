@@ -132,7 +132,7 @@ DSOutlier_DStream(
 
 - dsd:
 
-  a [DSD](http://michael.hahsler.net/stream/reference/DSD.md) data
+  a [DSD](https://michael.hahsler.net/stream/reference/DSD.md) data
   stream object.
 
 - n:
@@ -166,9 +166,9 @@ DSOutlier_DStream(
 ## Value
 
 An object of class `DSC_DStream` (subclass of
-[DSC](http://michael.hahsler.net/stream/reference/DSC.md),
-[DSC_R](http://michael.hahsler.net/stream/reference/DSC_R.md),
-[DSC_Micro](http://michael.hahsler.net/stream/reference/DSC_Micro.md)).
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md),
+[DSC_R](https://michael.hahsler.net/stream/reference/DSC_R.md),
+[DSC_Micro](https://michael.hahsler.net/stream/reference/DSC_Micro.md)).
 
 ## Details
 
@@ -189,13 +189,13 @@ macro-clusters based on attraction between dense adjacent grids (uses
 `Cm2` which in the original algorithm is equal to `Cm`).
 
 For many functions (e.g.,
-[`get_centers()`](http://michael.hahsler.net/stream/reference/DSC.md),
-[`plot()`](http://michael.hahsler.net/stream/reference/plot.DSD.md)),
+[`get_centers()`](https://michael.hahsler.net/stream/reference/DSC.md),
+[`plot()`](https://michael.hahsler.net/stream/reference/plot.DSD.md)),
 D-Stream adds a parameter `grid_type` with possible values of `"dense"`,
 `"transitional"`, `"sparse"`, `"all"` and `"used"`. This only returns
 the selected type of grid cells. `"used"` includes dense and adjacent
 transitional cells which are used in D-Stream for reclustering. For
-[`plot()`](http://michael.hahsler.net/stream/reference/plot.DSD.md)
+[`plot()`](https://michael.hahsler.net/stream/reference/plot.DSD.md)
 D-Stream also provides extra parameters `"grid"` and `"grid_type"` to
 show micro-clusters as grid cells (density represented by gray values).
 
@@ -221,22 +221,22 @@ and attraction. *ACM Transactions on Knowledge Discovery from Data,*
 ## See also
 
 Other DSC_Micro:
-[`DSC_BICO()`](http://michael.hahsler.net/stream/reference/DSC_BICO.md),
-[`DSC_BIRCH()`](http://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_Micro()`](http://michael.hahsler.net/stream/reference/DSC_Micro.md),
-[`DSC_Sample()`](http://michael.hahsler.net/stream/reference/DSC_Sample.md),
-[`DSC_Window()`](http://michael.hahsler.net/stream/reference/DSC_Window.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_BICO()`](https://michael.hahsler.net/stream/reference/DSC_BICO.md),
+[`DSC_BIRCH()`](https://michael.hahsler.net/stream/reference/DSC_BIRCH.md),
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_Micro()`](https://michael.hahsler.net/stream/reference/DSC_Micro.md),
+[`DSC_Sample()`](https://michael.hahsler.net/stream/reference/DSC_Sample.md),
+[`DSC_Window()`](https://michael.hahsler.net/stream/reference/DSC_Window.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 Other DSC_TwoStage:
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSC_TwoStage()`](http://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
-[`DSC_evoStream()`](http://michael.hahsler.net/stream/reference/DSC_evoStream.md)
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSC_TwoStage()`](https://michael.hahsler.net/stream/reference/DSC_TwoStage.md),
+[`DSC_evoStream()`](https://michael.hahsler.net/stream/reference/DSC_evoStream.md)
 
 Other DSOutlier:
-[`DSC_DBSTREAM()`](http://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
-[`DSOutlier()`](http://michael.hahsler.net/stream/reference/DSOutlier.md)
+[`DSC_DBSTREAM()`](https://michael.hahsler.net/stream/reference/DSC_DBSTREAM.md),
+[`DSOutlier()`](https://michael.hahsler.net/stream/reference/DSOutlier.md)
 
 ## Author
 

@@ -29,7 +29,7 @@ DSRegressor_SlidingWindow(formula, model = stats::lm, window, rebuild, ...)
   interval (number of points) for rebuilding the regression. Set rebuild
   to `Inf` to prevent automatic rebuilding. Rebuilding can be initiated
   manually when calling
-  [`update()`](http://michael.hahsler.net/stream/reference/update.md).
+  [`update()`](https://michael.hahsler.net/stream/reference/update.md).
 
 - ...:
 
@@ -43,16 +43,16 @@ An object of class `DST_SlidingWindow`.
 ## Details
 
 This constructor creates a regressor based on
-[`DST_SlidingWindow`](http://michael.hahsler.net/stream/reference/DST_SlidingWindow.md).
+[`DST_SlidingWindow`](https://michael.hahsler.net/stream/reference/DST_SlidingWindow.md).
 The regressor has a
-[`update()`](http://michael.hahsler.net/stream/reference/update.md) and
-[`predict()`](http://michael.hahsler.net/stream/reference/predict.md)
+[`update()`](https://michael.hahsler.net/stream/reference/update.md) and
+[`predict()`](https://michael.hahsler.net/stream/reference/predict.md)
 method.
 
 ## See also
 
 Other DSRegressor:
-[`DSRegressor()`](http://michael.hahsler.net/stream/reference/DSRegressor.md)
+[`DSRegressor()`](https://michael.hahsler.net/stream/reference/DSRegressor.md)
 
 ## Author
 
