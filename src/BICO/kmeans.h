@@ -21,7 +21,7 @@ public:
     KMEANS(MASTER*master, int k, int dimension, int numberOfPoints);
     bool reGroupPoints(triple<double, double*, int>** points, double** centers, double *weights);
     int findNearest(double* point, double** centers);
-    int findNearest(triple<double, double*, int>* point, double** centers, double* projection, double projectVal);
+    int findNearest(triple<double, double*, int>* point, double** centers, double* centerProjections, double projectVal);
     double**recomputeCenters(triple<double, double*, int>** points);
     void initialCenters(triple<double, double*, int>** points, double** centers);
     double squaredDistance(double*p1, double*p2);
@@ -37,7 +37,7 @@ private:
 };
 
 KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints)
-  //: rg(rd())
+    //: rg(rd())
 {
 
     this->master = master;
@@ -48,7 +48,7 @@ KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints)
 }
 
 KMEANS::KMEANS(MASTER*master, int k, int dimension, int numberOfPoints, bool projections)
-//: rg(rd())
+    //: rg(rd())
 {
     this->master = master;
     this->k = k;
@@ -65,7 +65,7 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
         //double projection[dimension];
         double* projection = new double[dimension];
 
-	double random;
+        double random;
         double length = 0;
         for (int i = 0; i < dimension; i++)
         {
@@ -80,23 +80,24 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
         {
             projection[i] = projection[i] / length;
         }
-        double sum;
+        // Precompute each center's position along the projection vector.
+        double* centerProjections = new double[k];
         for (int i = 0; i < k; i++)
         {
-            sum = 0;
+            centerProjections[i] = 0;
             for (int j = 0; j < dimension; j++)
             {
-                sum += projection[j] * centers[i][j];
+                centerProjections[i] += projection[j] * centers[i][j];
             }
         }
         bool result = true;
 
-	//double newCenter[k][dimension];
+        //double newCenter[k][dimension];
         double** newCenter = new double*[k];
         for(int i = 0; i < k; ++i)
-           newCenter[i] = new double[dimension];
+            newCenter[i] = new double[dimension];
 
-	for (int i = 0; i < k; i++)
+        for (int i = 0; i < k; i++)
         {
             weight[i] = 0;
             for (int j = 0; j < dimension; j++)
@@ -105,18 +106,18 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
             }
         }
         int temp;
-        double projectVal=0.0;
 
         //std::cout << "projection vector created, grouping centers..."<<std::endl;
         //compute nearest center and store contribution to the new centroid
         for (int i = 0; i < numberOfPoints; i++)
         {
+            double projectVal = 0.0;
             for (int j = 0; j < dimension; j++)
             {
                 projectVal += projection[j]* (points[i]->second[j]);
             }
             //std::cout << "Point projected"<<std::endl;
-            temp = findNearest(points[i], centers, projection, projectVal);
+            temp = findNearest(points[i], centers, centerProjections, projectVal);
             //std::cout << "Nearest center: " << temp << std::endl;
             if (temp != points[i]->third)
             {
@@ -140,24 +141,25 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
         }
 
         for(int i = 0; i < k; ++i)
-           delete[] newCenter[i];
-	delete[] newCenter;
+            delete[] newCenter[i];
+        delete[] newCenter;
 
-	delete[] projection;
+        delete[] projection;
+        delete[] centerProjections;
 
-	return result;
+        return result;
     }
     else
     {
         bool result = true;
 
-	//double newCenter[k][dimension];
+        //double newCenter[k][dimension];
         double** newCenter = new double*[k];
         for(int i = 0; i < k; ++i)
-           newCenter[i] = new double[dimension];
+            newCenter[i] = new double[dimension];
 
 
-	for (int i = 0; i < k; i++)
+        for (int i = 0; i < k; i++)
         {
             weight[i] = 0;
             for (int j = 0; j < dimension; j++)
@@ -192,14 +194,14 @@ bool KMEANS::reGroupPoints(triple<double, double*, int>**points, double**centers
         }
 
         for(int i = 0; i < k; ++i)
-           delete[] newCenter[i];
-	delete[] newCenter;
+            delete[] newCenter[i];
+        delete[] newCenter;
 
-	return result;
+        return result;
     }
 }
 
-int KMEANS::findNearest(triple<double, double*, int>* point, double** centers, double* projection, double projectVal)
+int KMEANS::findNearest(triple<double, double*, int>* point, double** centers, double* centerProjections, double projectVal)
 {
     int nearest = point->third;
     //std::cout << "next center: "<<nearest<<std::endl;
@@ -208,7 +210,7 @@ int KMEANS::findNearest(triple<double, double*, int>* point, double** centers, d
     double distance;
     for (int i = 0; i < point->third; i++)
     {
-        if (minDistance > fabs(projection[i] - projectVal))
+        if (minDistance > fabs(centerProjections[i] - projectVal))
         {
             distance = sqrt(squaredDistance(point->second, centers[i]));
             if (distance < minDistance)
@@ -220,7 +222,7 @@ int KMEANS::findNearest(triple<double, double*, int>* point, double** centers, d
     }
     for (int i = point->third + 1; i < k; i++)
     {
-        if (minDistance > fabs(projection[i] - projectVal))
+        if (minDistance > fabs(centerProjections[i] - projectVal))
         {
             distance = sqrt(squaredDistance(point->second, centers[i]));
             if (distance < minDistance)
