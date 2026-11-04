@@ -23,6 +23,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/stream.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator</a></li>
+    <li><a class="dropdown-item" href="../articles/moving_data.html">Clustering moving data</a></li>
+  </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -46,7 +52,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="changes-2-0-7">Changes<a class="anchor" aria-label="anchor" href="#changes-2-0-7"></a></h3>
-<ul><li>Improved consistency and formatting in data stream filter documentation.</li>
+<ul><li>Added vignettes fir DBSTREAM, clustering moving data, and the DSD Moving Generator.</li>
+<li>Improved consistency and formatting in data stream filter documentation.</li>
 <li>Added tests for downsampling, feature selection, convolution, exponential moving averages, and scaling.</li>
 <li>Removed including R.h before Rcpp.h.</li>
 </ul></div>

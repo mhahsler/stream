@@ -9,6 +9,8 @@
 
 ### Changes
 
+- Added vignettes fir DBSTREAM, clustering moving data, and the DSD
+  Moving Generator.
 - Improved consistency and formatting in data stream filter
   documentation.
 - Added tests for downsampling, feature selection, convolution,

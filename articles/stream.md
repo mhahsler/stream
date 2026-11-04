@@ -123,6 +123,16 @@ evaluate_static(
 
 ## Further reading
 
+- [Clustering data streams with
+  DBSTREAM](https://michael.hahsler.net/stream/articles/DBSTREAM.md)
+  explains micro-clusters and shared-density reclustering.
+- [Clustering moving
+  data](https://michael.hahsler.net/stream/articles/moving_data.md)
+  compares clustering methods on an evolving stream.
+- [The DSD Moving
+  Generator](https://michael.hahsler.net/stream/articles/DSD_MG.md)
+  shows how to construct custom evolving streams.
+
 See the [function
 reference](https://michael.hahsler.net/stream/reference/index.md) and
 the package vignettes for details on data generators, stream filters,
