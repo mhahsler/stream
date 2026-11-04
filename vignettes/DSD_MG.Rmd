@@ -1,0 +1,157 @@
+---
+title: "The DSD Moving Generator"
+author: "Michael Hahsler"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{The DSD Moving Generator}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+  fig.width = 7, fig.height = 5)
+library(stream)
+set.seed(1000)
+```
+
+`DSD_MG()` combines Moving Generator Clusters (`MGC`s) into an evolving data
+stream. Each component specifies a cluster's location, shape, size, and density
+over time. This guide expands on the generator introduced in the original
+`stream_vignette.Rnw`, using examples from the `DSD_MG` and `MGC` help pages.
+
+## Combine clusters and noise
+
+Start with a Gaussian cluster, a uniform rectangular cluster, and uniform
+background noise. All components must have the stream's dimensionality.
+`parameter` gives standard deviations for `Shape_Gaussian` and side lengths for
+`Shape_Block`.
+
+```{r static-stream}
+stream <- DSD_MG(dimension = 2,
+  MGC_Static(density = 45, center = c(1, 0), parameter = 0.1),
+  MGC_Static(density = 45, center = c(2, 0), parameter = c(0.4, 0.6),
+    shape = Shape_Block),
+  MGC_Noise(density = 10, range = rbind(c(0, 3), c(-1, 1))),
+  labels = c(1, 2, NA)
+)
+stream
+get_points(stream, n = 5)
+plot(stream, n = 500, xlim = c(0, 3), ylim = c(-1, 1))
+```
+
+`density` controls both the relative chance of choosing a component and the
+number of points generated per unit of generator time. Here the total density
+is 100, so approximately 100 points advance the generator by one time unit.
+Noise has label `NA` in the `.class` column. Supply the same label to multiple
+components when they should represent one ground-truth cluster.
+
+## Define movement with keyframes
+
+`MGC_Linear()` interpolates the center, density, and shape parameters between
+keyframes. The next example starts with one cluster. At time 50, a second
+component appears at the same location, then moves in another direction.
+
+```{r splitting-stream}
+c1 <- MGC_Linear(dimension = 2, keyframelist = list(
+  keyframe(time = 1, density = 20, center = c(0, 0), parameter = 5),
+  keyframe(time = 50, density = 20, center = c(50, 50), parameter = 5),
+  keyframe(time = 100, density = 20, center = c(50, 100), parameter = 5)
+))
+c2 <- MGC_Linear(dimension = 2, keyframelist = list(
+  keyframe(time = 50, density = 20, center = c(50, 50), parameter = 5),
+  keyframe(time = 100, density = 20, center = c(100, 50), parameter = 5)
+))
+stream <- DSD_MG(dimension = 2, c1, c2)
+get_keyframes(c1)
+```
+
+A linear component produces no points before its first keyframe. After its last
+keyframe it keeps its final attributes. A keyframe with `reset = TRUE` can make
+the trajectory repeat, as in `DSD_Benchmark(1)`.
+
+Generator time is different from the count of requested points. The second
+component starts after about 980 points: 49 time units at density 20. Once it
+appears, the total density becomes 40. Plot three short sections around this
+change and near the end of the movement:
+
+```{r splitting-snapshots, fig.width=9, fig.height=3.5}
+local({
+  old_par <- par(mfrow = c(1, 3))
+  on.exit(par(old_par))
+  plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
+    main = "One cluster")
+  invisible(get_points(stream, n = 780))
+  plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
+    main = "Second cluster appears")
+  invisible(get_points(stream, n = 1400))
+  plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
+    main = "Separate paths")
+})
+```
+
+## Add and remove components
+
+Generators can be modified after construction. `get_clusters()` returns the
+component list; `remove_cluster()` takes an index in that list.
+
+```{r modify-stream}
+noise <- MGC_Noise(density = 2, range = rbind(c(-15, 115), c(-15, 115)))
+add_cluster(stream, noise, label = NA)
+length(get_clusters(stream))
+plot(stream, n = 500, xlim = c(-15, 115), ylim = c(-15, 115))
+remove_cluster(stream, i = 3)
+length(get_clusters(stream))
+```
+
+Use `add_keyframe()` and `remove_keyframe()` to edit a linear component's
+trajectory. Stream and component objects contain mutable state: updating a
+component can also affect a stream that contains it.
+
+## Specify movement as a function of time
+
+`MGC_Function()` accepts functions of generator time for density, center, and
+shape parameters. Here a Gaussian cluster travels around a circle while a
+static cluster remains at the center.
+
+```{r functional-stream}
+orbit <- MGC_Function(
+  density = function(t) 20,
+  center = function(t) c(0.5 + 0.35 * cos(t / 10),
+    0.5 + 0.35 * sin(t / 10)),
+  parameter = function(t) 0.03
+)
+stream <- DSD_MG(dimension = 2, orbit,
+  MGC_Static(density = 5, center = c(0.5, 0.5), parameter = 0.03))
+```
+
+The GIF below shows the functional generator in batches of 50 points, making
+the orbiting cluster's movement visible. It loops automatically at ten frames
+per second and is embedded directly in the HTML.
+
+Knitr creates the GIF using the `gifski` R package.
+Install `gifski` before rendering to include the animation. The animation chunk
+is skipped when `gifski` is unavailable or the output is not HTML.
+
+```{r generator-animation, eval=knitr::is_html_output() && requireNamespace("gifski", quietly=TRUE), fig.show='animate', animation.hook='gifski', interval=0.1, aniopts='loop', dev='png', fig.width=6.4, fig.height=4.8, dpi=100, fig.retina=1, fig.alt='A moving Gaussian cluster orbiting a static cluster'}
+local({
+  set.seed(1000)
+  reset_stream(stream)
+  for (i in seq_len(30)) {
+    plot(stream, n = 50, xlim = c(0, 1), ylim = c(0, 1),
+      main = paste("Moving Generator after", i * 50, "points"))
+  }
+})
+```
+
+For interactive exploration, the following example uses the `animation` package
+and is not run during vignette builds.
+
+```{r animation, eval=FALSE}
+reset_stream(stream)
+animate_data(stream, n = 1500, horizon = 100,
+  xlim = c(0, 1), ylim = c(0, 1))
+animation::ani.replay()
+```

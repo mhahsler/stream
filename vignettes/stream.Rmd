@@ -98,6 +98,13 @@ evaluate_static(
 
 ## Further reading
 
+* [Clustering data streams with DBSTREAM](DBSTREAM.html) explains micro-clusters
+  and shared-density reclustering.
+* [Clustering moving data](moving_data.html) compares clustering methods on an
+  evolving stream.
+* [The DSD Moving Generator](DSD_MG.html) shows how to construct custom evolving
+  streams.
+
 See the [function reference](../reference/index.html) and the package vignettes
 for details on data generators, stream filters, clustering methods, evaluation,
 and extending `stream` with new components.

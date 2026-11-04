@@ -1,0 +1,90 @@
+---
+title: "Clustering data streams with DBSTREAM"
+author: "Michael Hahsler"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Clustering data streams with DBSTREAM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+  fig.width = 6, fig.height = 5)
+library(stream)
+set.seed(1000)
+```
+
+The package `stream` provides the reference implementation of the DBSTREAM
+algorithm (Hahsler and Bolaños, 2016), a density-based data steam clustering algorithm
+that uses density between micro-clusters via a shared density graph to form larger
+clusters.
+
+## Prepare a reproducible stream
+
+The Bars and Gaussians generator contains two Gaussian clusters and two
+rectangular clusters with different densities, plus noise. Store 1500 points in
+memory so that plots and experiments can reuse exactly the same data.
+
+```{r data}
+stream <- DSD_Memory(DSD_BarsAndGaussians(noise = 0.05), n = 10000)
+plot(stream, n = 1000)
+```
+
+Plotting a stream consumes points. Resetting the memory stream puts its cursor
+back at the first point. We will use the first 1000 points for training and the
+remaining 500 for evaluation.
+
+```{r reset}
+reset_stream(stream)
+```
+
+## DBSTREAM
+
+The radius `r` controls the scale of the micro-clusters. A smaller radius can
+preserve finer structure but usually requires more micro-clusters. Choose it
+relative to the scale of the features; the value below is specific to this data.
+With `shared_density = TRUE`, DBSTREAM records points shared by overlapping
+micro-clusters. Reclustering uses this evidence to decide which micro-clusters
+belong together. The parameter `alpha` controls the minimum shared-density
+proportion needed to connect them.
+
+```{r train}
+dbstream<- DSC_DBSTREAM(r = 1, shared_density = TRUE, alpha = 0.3, minweight = .1)
+update(dbstream, stream, n = 5000)
+dbstream
+```
+
+Updating the clustering with 5000 points from the stream creates micro-clusters. 
+We can visual the clustering. Red bubbles are the micro-clusters where the size 
+shows how many data points they represent. The shared density is shown as black
+lines. Wider lines represent more shared density. The macro-clusters represent 
+micro clusters connected by sufficient shared density and are shown by big blue 
+crosses.
+
+```{r inspect}
+plot(dbstream, dsd = stream, type = "both", shared_density = TRUE, n = 500)
+```
+
+
+DBSTREAM is able to identify the four clusters.
+
+## Follow changing data
+
+DBSTREAM fades older observations using `lambda`. Increasing it makes the model
+forget faster. `gaptime` determines how often weak micro-clusters and weak
+shared-density entries are removed, and `Cm` controls the minimum micro-cluster
+weight. These settings interact with the stream's speed of change and arrival
+rate.
+
+## References
+
+Hahsler, M., and Bolaños, M. (2016). Clustering data streams based on shared
+density between micro-clusters. *IEEE Transactions on Knowledge and Data
+Engineering*, 28(6), 1449–1461.
+
+Hahsler, M., Bolaños, M., and Forrest, J. (2017). Introduction to stream: An
+extensible framework for data stream clustering research with R.
+*Journal of Statistical Software*, 76(14), 1–50. doi:10.18637/jss.v076.i14.

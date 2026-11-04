@@ -42,6 +42,7 @@ Suggests:
     animation,
     DBI,
     dplyr,
+    gifski,
     knitr,
     rmarkdown,
     rJava,
