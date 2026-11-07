@@ -17,7 +17,8 @@ from.}
 \item{dsd}{The \link{DSD} object used to create the test data.}
 
 \item{measure}{Evaluation measure(s) to use. If missing then all available
-measures are returned.}
+measures are returned. See the \emph{Available measures} note in the Details
+section for where to find the list of measures for each task.}
 
 \item{n}{The number of data points being requested.}
 
@@ -51,6 +52,14 @@ The available evaluation measures depend on the task. Currently available task t
 \itemize{
 \item \link{DSC} via \link{evaluate.DSC}
 }
+
+\strong{Available measures:} The measures that can be used for the argument
+\code{measure} depend on the task and are listed in the help page of the
+task's method. For \link{DSC} objects, see the \emph{Details} section of
+\link{evaluate.DSC} for internal and external measures
+(e.g., \code{"purity"}, \code{"cRand"}, \code{"SSQ"}). If \code{measure} is missing, all measures
+available for the task and stream (external measures need a stream that
+provides class labels) are calculated.
 }
 \references{
 Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On

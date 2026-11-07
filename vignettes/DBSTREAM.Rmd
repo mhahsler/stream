@@ -159,21 +159,20 @@ plot(moving_dbstream, dsd = moving_stream, type = "both",
 ```
 
 The following animation processes 5000 points in batches of 100 and shows
-DBSTREAM's micro- and macro-clusters after each batch. Knitr creates the GIF
-using the `gifski` R package. The chunk is skipped when `gifski` is unavailable
-or the output is not HTML.
+DBSTREAM's micro- and macro-clusters after each batch. 
 
-```{r moving-animation, eval=knitr::is_html_output() && requireNamespace("gifski", quietly=TRUE), fig.show='animate', animation.hook='gifski', interval=0.1, aniopts='loop', dev='png', fig.width=6.4, fig.height=4.8, dpi=100, fig.retina=1, fig.alt='DBSTREAM following two moving clusters'}
+```{r moving-animation, eval=knitr::is_html_output() && requireNamespace("gifski", quietly=TRUE) && requireNamespace("animation", quietly=TRUE), fig.show='animate', animation.hook='gifski', interval=0.1, aniopts='loop', dev='png', fig.width=6.4, fig.height=4.8, dpi=100, fig.retina=1, fig.alt='DBSTREAM following two moving clusters'}
 set.seed(1000)
 animation_stream <- DSD_Benchmark(1)
 animation_model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
-for (i in seq_len(50)) {
-  batch <- get_points(animation_stream, n = 100)
-  update(animation_model, batch)
-  plot(animation_model, remove_info(batch), type = "both",
-    xlim = c(0, 1), ylim = c(0, 1),
-    main = paste("DBSTREAM after", i * 100, "points"))
-}
+
+res <- animate_cluster(animation_model, 
+                       animation_stream, 
+                       horizon = 100, 
+                       n = 5000, 
+                       wait = 0,  # for use in a notebook
+                       plot.args = list(xlim = c(0, 1), ylim = c(0, 1), 
+                                        type = "both"))
 ```
 
 Near the crossing, the two generating clusters overlap and are hard to separate

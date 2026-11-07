@@ -37,6 +37,14 @@
 #'
 #' * [DSC] via [evaluate.DSC]
 #'
+#' **Available measures:** The measures that can be used for the argument
+#' `measure` depend on the task and are listed in the help page of the
+#' task's method. For [DSC] objects, see the _Details_ section of
+#' [evaluate.DSC] for internal and external measures
+#' (e.g., `"purity"`, `"cRand"`, `"SSQ"`). If `measure` is missing, all measures
+#' available for the task and stream (external measures need a stream that
+#' provides class labels) are calculated.
+#'
 #' @family DST
 #' @family evaluation
 #'
@@ -46,7 +54,8 @@
 #'   from.
 #' @param dsd The [DSD] object used to create the test data.
 #' @param measure Evaluation measure(s) to use. If missing then all available
-#'   measures are returned.
+#'   measures are returned. See the _Available measures_ note in the Details
+#'   section for where to find the list of measures for each task.
 #' @param n The number of data points being requested.
 #' @param horizon Evaluation is done using horizon many previous points (see
 #' detail section).
