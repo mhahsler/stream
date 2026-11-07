@@ -45,8 +45,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Clustering moving data</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
+    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -84,8 +84,43 @@ of the DBSTREAM algorithm (Hahsler and Bolaños, 2016), a density-based
 data steam clustering algorithm that uses density between micro-clusters
 via a shared density graph to form larger clusters.</p>
 <div class="section level2">
-<h2 id="prepare-a-reproducible-stream">Prepare a reproducible stream<a class="anchor" aria-label="anchor" href="#prepare-a-reproducible-stream"></a>
+<h2 id="advantages-of-dbstream">Advantages of DBSTREAM<a class="anchor" aria-label="anchor" href="#advantages-of-dbstream"></a>
 </h2>
+<ul>
+<li>
+<strong>Single pass with bounded memory.</strong> Each point is
+processed once as it arrives and is only used to update a small set of
+micro-clusters, so the stream never needs to be stored.</li>
+<li>
+<strong>No need to specify the number of clusters.</strong> The
+number of macro-clusters follows from the data and the shared-density
+threshold <code>alpha</code>, rather than being fixed in advance as in
+k-means-style methods.</li>
+<li>
+<strong>Arbitrarily shaped clusters.</strong> Because micro-clusters
+are connected by the density of points they share, reclustering can
+follow non-spherical clusters, not just compact, round ones.</li>
+<li>
+<strong>Robust to noise.</strong> Weak micro-clusters and weak
+shared-density entries are removed, so sparse noise does not form or
+join clusters.</li>
+<li>
+<strong>Better reclustering than centers alone.</strong>
+Reclustering methods that only use micro-cluster centers and weights can
+merge clusters that are close but separated by a low-density gap. The
+shared density captures that gap directly (Hahsler and Bolaños,
+2016).</li>
+<li>
+<strong>Adapts to change.</strong> Fading of old observations lets
+the clustering follow an evolving stream.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="example-1-clustering-static-clusters-with-different-densities">Example 1: Clustering Static Clusters with Different Densities<a class="anchor" aria-label="anchor" href="#example-1-clustering-static-clusters-with-different-densities"></a>
+</h2>
+<div class="section level3">
+<h3 id="defining-the-data-stream">Defining the data stream<a class="anchor" aria-label="anchor" href="#defining-the-data-stream"></a>
+</h3>
 <p>The Bars and Gaussians generator contains two Gaussian clusters and
 two rectangular clusters with different densities, plus noise. Store
 1500 points in memory so that plots and experiments can reuse exactly
@@ -100,13 +135,13 @@ for training and the remaining 500 for evaluation.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reset_stream.html">reset_stream</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="dbstream">DBSTREAM<a class="anchor" aria-label="anchor" href="#dbstream"></a>
-</h2>
-<p>The radius <code>r</code> controls the scale of the micro-clusters. A
-smaller radius can preserve finer structure but usually requires more
-micro-clusters. Choose it relative to the scale of the features; the
-value below is specific to this data. With
+<div class="section level3">
+<h3 id="clustering-with-dbstream">Clustering with DBSTREAM<a class="anchor" aria-label="anchor" href="#clustering-with-dbstream"></a>
+</h3>
+<p>DBSTREAM uses the radius <code>r</code> controls the scale of the
+micro-clusters. A smaller radius can preserve finer structure but
+usually requires more micro-clusters. Choose it relative to the scale of
+the features; the value below is specific to this data. With
 <code>shared_density = TRUE</code>, DBSTREAM records points shared by
 overlapping micro-clusters. Reclustering uses this evidence to decide
 which micro-clusters belong together. The parameter <code>alpha</code>
@@ -131,15 +166,104 @@ sufficient shared density and are shown by big blue crosses.</p>
 <p><img src="DBSTREAM_files/figure-html/inspect-1.png" class="r-plt" alt="" width="576"></p>
 <p>DBSTREAM is able to identify the four clusters.</p>
 </div>
+<div class="section level3">
+<h3 id="evaluating-the-clustering">Evaluating the clustering<a class="anchor" aria-label="anchor" href="#evaluating-the-clustering"></a>
+</h3>
+<p>Because the generator knows the true cluster of each point, we can
+measure how well the macro-clusters match the truth.
+<code><a href="../reference/evaluate.html">evaluate_static()</a></code> draws new points from the stream (here
+the next 1000, which were not used for training), assigns them to the
+closest micro-cluster, and uses that micro-cluster’s macro-cluster as
+the prediction. We report two external measures:</p>
+<ul>
+<li>
+<strong>Purity</strong> is the fraction of points that belong to the
+majority true class of the cluster they were assigned to. It ranges from
+0 to 1 and is easy to interpret, but it rewards splitting the data into
+many small clusters.</li>
+<li>The <strong>adjusted Rand index</strong> (<code>crand</code>)
+measures agreement between the clustering and the true classes,
+corrected for chance. It is 1 for a perfect match and around 0 for a
+random assignment, so it also penalizes over-splitting.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluate.html">evaluate_static</a></span><span class="op">(</span><span class="va">dbstream</span>, <span class="va">stream</span>, n <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purity"</span>, <span class="st">"crand"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"macro"</span>, assign <span class="op">=</span> <span class="st">"micro"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Evaluation results for macro-clusters.</span></span>
+<span><span class="co">#&gt; Points were assigned to micro-clusters.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    purity     cRand </span></span>
+<span><span class="co">#&gt; 0.8662129 0.9106273</span></span></code></pre></div>
+<p>Comparing with <code>type = "micro"</code> illustrates why both
+measures are useful: the many micro-clusters have high purity, but a low
+adjusted Rand index because they split the true clusters into many
+pieces.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluate.html">evaluate_static</a></span><span class="op">(</span><span class="va">dbstream</span>, <span class="va">stream</span>, n <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purity"</span>, <span class="st">"crand"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"micro"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Evaluation results for micro-clusters.</span></span>
+<span><span class="co">#&gt; Points were assigned to micro-clusters.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    purity     cRand </span></span>
+<span><span class="co">#&gt; 0.9525300 0.1234921</span></span></code></pre></div>
+</div>
+</div>
 <div class="section level2">
-<h2 id="follow-changing-data">Follow changing data<a class="anchor" aria-label="anchor" href="#follow-changing-data"></a>
+<h2 id="example2-cluster-non-stationary-data">Example2: Cluster Non-Stationary Data<a class="anchor" aria-label="anchor" href="#example2-cluster-non-stationary-data"></a>
 </h2>
-<p>DBSTREAM fades older observations using <code>lambda</code>.
-Increasing it makes the model forget faster. <code>gaptime</code>
-determines how often weak micro-clusters and weak shared-density entries
-are removed, and <code>Cm</code> controls the minimum micro-cluster
-weight. These settings interact with the stream’s speed of change and
-arrival rate.</p>
+<p>To be able to addapt to nonstationary data, DBSTREAM fades older
+observations using <code>lambda</code>. <code>gaptime</code> determines
+how often weak micro-clusters and weak shared-density entries are
+removed, and <code>Cm</code> controls the minimum micro-cluster weight.
+These settings interact with the stream’s speed of change and arrival
+rate.</p>
+<div class="section level3">
+<h3 id="defining-a-dataset-with-moving-clusters">Defining a dataset with moving clusters<a class="anchor" aria-label="anchor" href="#defining-a-dataset-with-moving-clusters"></a>
+</h3>
+<p><code>DSD_Benchmark(1)</code> generates two clusters that move
+diagonally across the unit square and intersect in the middle, together
+with background noise. Plotting a stream consumes points, so we plot a
+short section of a separate generator.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/DSD_Benchmark.html">DSD_Benchmark</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">250</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="DBSTREAM_files/figure-html/moving-data-1.png" class="r-plt" alt="" width="576"></p>
+</div>
+<div class="section level3">
+<h3 id="perform-dynamic-stream-clustering">Perform dynamic stream clustering<a class="anchor" aria-label="anchor" href="#perform-dynamic-stream-clustering"></a>
+</h3>
+<p>Here we use a radius <code>r</code> of 0.05, which suits the unit
+square, and a <code>lambda</code> of 0.01 so that older points are
+forgotten quickly enough to follow the movement.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">moving_stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_Benchmark.html">DSD_Benchmark</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">moving_dbstream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSC_DBSTREAM.html">DSC_DBSTREAM</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fl">0.05</span>, lambda <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/update.html">update</a></span><span class="op">(</span><span class="va">moving_dbstream</span>, <span class="va">moving_stream</span>, n <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">moving_dbstream</span>, dsd <span class="op">=</span> <span class="va">moving_stream</span>, type <span class="op">=</span> <span class="st">"both"</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span></code></pre></div>
+<p><img src="DBSTREAM_files/figure-html/moving-train-1.png" class="r-plt" alt="" width="576"></p>
+<p>The following animation processes 5000 points in batches of 100 and
+shows DBSTREAM’s micro- and macro-clusters after each batch. Knitr
+creates the GIF using the <code>gifski</code> R package. The chunk is
+skipped when <code>gifski</code> is unavailable or the output is not
+HTML.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">animation_stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_Benchmark.html">DSD_Benchmark</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">animation_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSC_DBSTREAM.html">DSC_DBSTREAM</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fl">0.05</span>, lambda <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">batch</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_points.html">get_points</a></span><span class="op">(</span><span class="va">animation_stream</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/update.html">update</a></span><span class="op">(</span><span class="va">animation_model</span>, <span class="va">batch</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">animation_model</span>, <span class="fu"><a href="../reference/get_points.html">remove_info</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"both"</span>,</span>
+<span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"DBSTREAM after"</span>, <span class="va">i</span> <span class="op">*</span> <span class="fl">100</span>, <span class="st">"points"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><img src="DBSTREAM_files/figure-html/moving-animation-.gif" class="r-plt" alt="DBSTREAM following two moving clusters"></p>
+<p>Near the crossing, the two generating clusters overlap and are hard
+to separate using only the observed features. See the “Clustering moving
+data” vignette for a comparison with other stream clustering algorithms
+on the same data.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

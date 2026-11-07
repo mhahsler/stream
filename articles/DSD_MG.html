@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>The DSD Moving Generator • stream</title>
+<title>The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream • stream</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -20,7 +20,7 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="The DSD Moving Generator">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -45,8 +45,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Clustering moving data</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
+    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -68,7 +68,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>The DSD Moving Generator</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</h1>
                         <h4 data-toc-skip class="author">Michael
 Hahsler</h4>
             
@@ -79,20 +79,110 @@ Hahsler</h4>
 
     
     
-<p><code><a href="../reference/DSD_MG.html">DSD_MG()</a></code> combines Moving Generator Clusters
-(<code>MGC</code>s) into an evolving data stream. Each component
-specifies a cluster’s location, shape, size, and density over time. This
-guide expands on the generator introduced in the original
-<code>stream_vignette.Rnw</code>, using examples from the
-<code>DSD_MG</code> and <code>MGC</code> help pages.</p>
+<p>Testing stream clustering algorithms on non-stationary data requires
+streams where the ground truth is known and the way the data changes can
+be controlled: clusters that move, grow, shrink, appear, disappear,
+split or merge. The <code><a href="../reference/DSD_MG.html">DSD_MG()</a></code> generator, the Moving
+Generator, provides a flexible framework for building such streams
+<strong>from individual components</strong>.</p>
+<p>Instead of one fixed model, a <code>DSD_MG</code> stream is assembled
+from a list of <strong>Moving Generator Clusters</strong>
+(<code>MGC</code>s). Each <code>MGC</code> is a small, independent
+component that describes a single cluster:</p>
+<ul>
+<li>
+<em>where</em> it is (its center),</li>
+<li>
+<em>how big</em> it is and what <em>shape</em> it has (the shape
+parameters),</li>
+<li>
+<em>how many points</em> it produces (its density),</li>
+</ul>
+<p>and, for moving components, how these properties change over time.
+<code><a href="../reference/DSD_MG.html">DSD_MG()</a></code> combines the components into one stream. Because
+every component has its own behavior, mixing different components
+creates complex evolving streams from simple building blocks. This guide
+introduces the components, shows how to combine them, and shows how to
+change a stream after it has been created. See the help pages
+<code><a href="../reference/DSD_MG.html">?DSD_MG</a></code> and <code><a href="../reference/MGC.html">?MGC</a></code> for the complete
+documentation.</p>
 <div class="section level2">
-<h2 id="combine-clusters-and-noise">Combine clusters and noise<a class="anchor" aria-label="anchor" href="#combine-clusters-and-noise"></a>
+<h2 id="building-blocks">Building blocks<a class="anchor" aria-label="anchor" href="#building-blocks"></a>
+</h2>
+<p>The following components are available. All components for a stream
+must have the stream’s dimensionality.</p>
+<table class="table">
+<colgroup>
+<col width="52%">
+<col width="47%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Component</th>
+<th align="left">Behavior</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code><a href="../reference/MGC.html">MGC_Static()</a></code></td>
+<td align="left">A cluster at a fixed position.</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/MGC.html">MGC_Noise()</a></code></td>
+<td align="left">Uniform random noise in a given area.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/MGC.html">MGC_Linear()</a></code></td>
+<td align="left">A cluster whose center, density, and shape parameters
+are interpolated between <strong>keyframes</strong>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/MGC.html">MGC_Function()</a></code></td>
+<td align="left">A cluster where density, center, and shape parameters
+are <strong>functions of time</strong>.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/MGC.html">MGC_Random()</a></code></td>
+<td align="left">A cluster that follows a <strong>random
+walk</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p>The shape of a cluster is given by the <code>shape</code> argument,
+which is a function that draws a single point from the cluster. Two
+shapes are provided: <code>Shape_Gaussian</code> (the default, where
+<code>parameter</code> is the standard deviation, one per dimension) and
+<code>Shape_Block</code> (a uniform block, where <code>parameter</code>
+gives the side lengths). If a single value is given, it is recycled for
+all dimensions. New shapes can be defined as functions with the
+arguments <code>center</code> and <code>parameter</code> that return a
+single point (see the end of this guide).</p>
+</div>
+<div class="section level2">
+<h2 id="how-the-generator-works">How the generator works<a class="anchor" aria-label="anchor" href="#how-the-generator-works"></a>
+</h2>
+<p>Generation is driven by a <em>generator time</em> that advances as
+points are drawn. Each component has a <code>density</code>. To produce
+a point, <code><a href="../reference/DSD_MG.html">DSD_MG()</a></code> chooses a component with a probability
+proportional to the current densities of all components, and then draws
+a point from the chosen component’s shape at its current center. The
+density therefore controls both the relative chance of choosing a
+component and, through the total density, how fast generator time
+advances: with a total density of 100, approximately 100 points advance
+the generator by one time unit. Components that change over time thus
+change what the stream looks like, and components can be added or
+removed at any time.</p>
+<p>Each point is returned with a <code>.class</code> column containing
+the label of the component that produced it. Components can share a
+label to form one ground-truth cluster, and noise has the label
+<code>NA</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="combine-static-clusters-and-noise">Combine static clusters and noise<a class="anchor" aria-label="anchor" href="#combine-static-clusters-and-noise"></a>
 </h2>
 <p>Start with a Gaussian cluster, a uniform rectangular cluster, and
-uniform background noise. All components must have the stream’s
-dimensionality. <code>parameter</code> gives standard deviations for
-<code>Shape_Gaussian</code> and side lengths for
-<code>Shape_Block</code>.</p>
+uniform background noise. <code>parameter</code> gives standard
+deviations for <code>Shape_Gaussian</code> and side lengths for
+<code>Shape_Block</code>. By default each component gets its own label;
+we set them explicitly here and use <code>NA</code> for the noise.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">45</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
@@ -113,21 +203,38 @@ dimensionality. <code>parameter</code> gives standard deviations for
 <span><span class="co">#&gt; 5 1.034556  0.02119348      1</span></span>
 <span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">500</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DSD_MG_files/figure-html/static-stream-1.png" class="r-plt" alt="" width="672"></p>
-<p><code>density</code> controls both the relative chance of choosing a
-component and the number of points generated per unit of generator time.
-Here the total density is 100, so approximately 100 points advance the
-generator by one time unit. Noise has label <code>NA</code> in the
-<code>.class</code> column. Supply the same label to multiple components
-when they should represent one ground-truth cluster.</p>
+<p>The total density is 100, so approximately 100 points advance the
+generator by one time unit, and the Gaussian component produces about
+45% of the points. Noise has label <code>NA</code> in the
+<code>.class</code> column.</p>
+<p>Supplying the same label to several components makes them form one
+ground-truth cluster. This makes it easy to build clusters with
+non-convex shapes. Here three blocks form an L-shaped cluster (label 1)
+next to a second cluster (label 2):</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">10</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">.2</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.2</span><span class="op">)</span>,</span>
+<span>    shape <span class="op">=</span> <span class="va">Shape_Block</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">10</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.6</span>, <span class="fl">.5</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.2</span>, <span class="fl">.4</span><span class="op">)</span>,</span>
+<span>    shape <span class="op">=</span> <span class="va">Shape_Block</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">5</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.39</span>, <span class="fl">.53</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.16</span>, <span class="fl">.35</span><span class="op">)</span>,</span>
+<span>    shape <span class="op">=</span> <span class="va">Shape_Block</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Noise</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">1</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">500</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="DSD_MG_files/figure-html/l-shape-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="define-movement-with-keyframes">Define movement with keyframes<a class="anchor" aria-label="anchor" href="#define-movement-with-keyframes"></a>
 </h2>
 <p><code><a href="../reference/MGC.html">MGC_Linear()</a></code> interpolates the center, density, and shape
-parameters between keyframes. The next example starts with one cluster.
-At time 50, a second component appears at the same location, then moves
-in another direction.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+parameters between keyframes. This lets you describe movement, growth,
+and appearance of a cluster with a few points in time. The next example
+starts with one cluster. At time 50, a second component appears at the
+same location, then moves in another direction. This simulates a cluster
+that splits.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">c1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MGC.html">MGC_Linear</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>, keyframelist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/MGC.html">keyframe</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">1</span>, density <span class="op">=</span> <span class="fl">20</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="../reference/MGC.html">keyframe</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">50</span>, density <span class="op">=</span> <span class="fl">20</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
@@ -151,7 +258,7 @@ After its last keyframe it keeps its final attributes. A keyframe with
 second component starts after about 980 points: 49 time units at density
 20. Once it appears, the total density becomes 40. Plot three short
 sections around this change and near the end of the movement:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">local</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span><span class="op">)</span></span>
@@ -165,36 +272,38 @@ sections around this change and near the end of the movement:</p>
 <span>    main <span class="op">=</span> <span class="st">"Separate paths"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DSD_MG_files/figure-html/splitting-snapshots-1.png" class="r-plt" alt="" width="864"></p>
-</div>
-<div class="section level2">
-<h2 id="add-and-remove-components">Add and remove components<a class="anchor" aria-label="anchor" href="#add-and-remove-components"></a>
-</h2>
-<p>Generators can be modified after construction.
-<code><a href="../reference/DSD_MG.html">get_clusters()</a></code> returns the component list;
-<code><a href="../reference/DSD_MG.html">remove_cluster()</a></code> takes an index in that list.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">noise</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MGC.html">MGC_Noise</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">2</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/DSD_MG.html">add_cluster</a></span><span class="op">(</span><span class="va">stream</span>, <span class="va">noise</span>, label <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="../reference/DSD_MG.html">get_clusters</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 3</span></span>
-<span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">500</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="DSD_MG_files/figure-html/modify-stream-1.png" class="r-plt" alt="" width="672"></p>
+<p>Keyframes can also be added to an existing component with
+<code><a href="../reference/MGC.html">add_keyframe()</a></code>, and removed with
+<code><a href="../reference/MGC.html">remove_keyframe()</a></code>. Each keyframe can use a different
+density or shape parameter, so a cluster can also grow, shrink, fade in,
+or fade out.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/DSD_MG.html">remove_cluster</a></span><span class="op">(</span><span class="va">stream</span>, i <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="../reference/DSD_MG.html">get_clusters</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
-<p>Use <code><a href="../reference/MGC.html">add_keyframe()</a></code> and <code><a href="../reference/MGC.html">remove_keyframe()</a></code> to
-edit a linear component’s trajectory. Stream and component objects
-contain mutable state: updating a component can also affect a stream
-that contains it.</p>
+<code class="sourceCode R"><span><span class="va">c3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MGC.html">MGC_Linear</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>, shape <span class="op">=</span> <span class="va">Shape_Block</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MGC.html">add_keyframe</a></span><span class="op">(</span><span class="va">c3</span>, time <span class="op">=</span> <span class="fl">1</span>, density <span class="op">=</span> <span class="fl">25</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MGC.html">add_keyframe</a></span><span class="op">(</span><span class="va">c3</span>, time <span class="op">=</span> <span class="fl">100</span>, density <span class="op">=</span> <span class="fl">25</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>,</span>
+<span>  center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/MGC.html">get_keyframes</a></span><span class="op">(</span><span class="va">c3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   time parameter density  centers reset</span></span>
+<span><span class="co">#&gt; 1    1    10, 10      25     0, 0 FALSE</span></span>
+<span><span class="co">#&gt; 2  100    30, 30      25 100, 100 FALSE</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="specify-movement-as-a-function-of-time">Specify movement as a function of time<a class="anchor" aria-label="anchor" href="#specify-movement-as-a-function-of-time"></a>
 </h2>
 <p><code><a href="../reference/MGC.html">MGC_Function()</a></code> accepts functions of generator time for
-density, center, and shape parameters. Here a Gaussian cluster travels
-around a circle while a static cluster remains at the center.</p>
+density, center, and shape parameters. This allows arbitrary
+trajectories without defining keyframes. For example, a block-shaped
+cluster can move along the diagonal while it grows:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">growing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MGC.html">MGC_Function</a></span><span class="op">(</span></span>
+<span>  density <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fl">100</span>,</span>
+<span>  parameter <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fl">1</span> <span class="op">*</span> <span class="va">t</span>,</span>
+<span>  center <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">t</span><span class="op">)</span>,</span>
+<span>  shape <span class="op">=</span> <span class="va">Shape_Block</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Here a Gaussian cluster travels around a circle while a static
+cluster remains at the center.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">orbit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MGC.html">MGC_Function</a></span><span class="op">(</span></span>
 <span>  density <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fl">20</span>,</span>
 <span>  center <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.35</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">t</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>,</span>
@@ -210,7 +319,7 @@ at ten frames per second and is embedded directly in the HTML.</p>
 Install <code>gifski</code> before rendering to include the animation.
 The animation chunk is skipped when <code>gifski</code> is unavailable
 or the output is not HTML.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">local</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="../reference/reset_stream.html">reset_stream</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span></span>
@@ -223,11 +332,93 @@ or the output is not HTML.</p>
 <p>For interactive exploration, the following example uses the
 <code>animation</code> package and is not run during vignette
 builds.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reset_stream.html">reset_stream</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/animate_data.html">animate_data</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">1500</span>, horizon <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">animation</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/animation/man/ani.record.html" class="external-link">ani.replay</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="clusters-that-move-randomly">Clusters that move randomly<a class="anchor" aria-label="anchor" href="#clusters-that-move-randomly"></a>
+</h2>
+<p><code><a href="../reference/MGC.html">MGC_Random()</a></code> creates a cluster that follows a random
+walk. <code>center</code> is its starting position and
+<code>randomness</code> is the maximum amount it moves in one time step.
+Mixing random and static components gives streams where some clusters
+drift unpredictably while others stay in place.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Random</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">100</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>    randomness <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Random</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">100</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>    shape <span class="op">=</span> <span class="va">Shape_Block</span>, randomness <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">stream</span></span>
+<span><span class="co">#&gt; Moving Data GeneratorClass: DSD_MG, DSD_R, DSD </span></span>
+<span><span class="co">#&gt; With 2 clusters in 2 dimensions. Time is 1</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="add-and-remove-components">Add and remove components<a class="anchor" aria-label="anchor" href="#add-and-remove-components"></a>
+</h2>
+<p>Generators can be modified after construction, so a stream can be
+changed while it is running. <code><a href="../reference/DSD_MG.html">get_clusters()</a></code> returns the
+component list; <code><a href="../reference/DSD_MG.html">add_cluster()</a></code> adds a component and
+<code><a href="../reference/DSD_MG.html">remove_cluster()</a></code> takes an index in that list.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Linear</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>, keyframelist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/MGC.html">keyframe</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">1</span>, density <span class="op">=</span> <span class="fl">20</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/MGC.html">keyframe</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fl">100</span>, density <span class="op">=</span> <span class="fl">20</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">100</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">20</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">noise</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MGC.html">MGC_Noise</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">2</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/DSD_MG.html">add_cluster</a></span><span class="op">(</span><span class="va">stream</span>, <span class="va">noise</span>, label <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="../reference/DSD_MG.html">get_clusters</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 3</span></span>
+<span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">500</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">115</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="DSD_MG_files/figure-html/modify-stream-1.png" class="r-plt" alt="" width="672"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/DSD_MG.html">remove_cluster</a></span><span class="op">(</span><span class="va">stream</span>, i <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="../reference/DSD_MG.html">get_clusters</a></span><span class="op">(</span><span class="va">stream</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
+<p>Use <code><a href="../reference/MGC.html">add_keyframe()</a></code> and <code><a href="../reference/MGC.html">remove_keyframe()</a></code> to
+edit a linear component’s trajectory. Stream and component objects
+contain mutable state: updating a component can also affect a stream
+that contains it.</p>
+</div>
+<div class="section level2">
+<h2 id="define-your-own-shape">Define your own shape<a class="anchor" aria-label="anchor" href="#define-your-own-shape"></a>
+</h2>
+<p>A shape is a function with the arguments <code>center</code> and
+<code>parameter</code> that returns a single point. As an example, here
+is a ring shape in two dimensions, where <code>parameter</code> is the
+radius and the points are spread uniformly around the center with a
+little noise.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Shape_Ring</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">center</span>, <span class="va">parameter</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">angle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span></span>
+<span>  <span class="va">center</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, mean <span class="op">=</span> <span class="va">parameter</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, sd <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">50</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>    shape <span class="op">=</span> <span class="va">Shape_Ring</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/MGC.html">MGC_Static</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fl">25</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">500</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="DSD_MG_files/figure-html/custom-shape-1.png" class="r-plt" alt="" width="672"></p>
+</div>
+<div class="section level2">
+<h2 id="use-the-stream">Use the stream<a class="anchor" aria-label="anchor" href="#use-the-stream"></a>
+</h2>
+<p>A <code>DSD_MG</code> stream is a regular <code>DSD</code> object. It
+can be used like any other stream to cluster and evaluate, for example
+with <code><a href="../reference/update.html">update()</a></code> and <code><a href="../reference/evaluate.html">evaluate_stream()</a></code>. Because
+the generator knows which component produced each point, the true labels
+are available for external evaluation, even when the clusters move. See
+<a href="moving_data.html">Evaluating Non-stationary Clusters</a> for
+how to evaluate clustering on moving data and <a href="DBSTREAM.html">Clustering data streams with DBSTREAM</a> for a
+clustering algorithm that is able to follow such streams.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

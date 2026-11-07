@@ -306,10 +306,6 @@ evaluate_static(dstream1, stream, measure = "crand", type = "macro")
 #> 
 #>     cRand 
 #> 0.8633109 
-#> attr(,"type")
-#> [1] "macro"
-#> attr(,"assign")
-#> [1] "micro"
 
 # use attraction for reclustering
 dstream2 <- DSC_DStream(gridsize = 1, attraction = TRUE, Cm = 1.5)
@@ -328,8 +324,4 @@ evaluate_static(dstream2, stream, measure = "crand", type = "macro")
 #> 
 #>     cRand 
 #> 0.5783599 
-#> attr(,"type")
-#> [1] "macro"
-#> attr(,"assign")
-#> [1] "micro"
 ```

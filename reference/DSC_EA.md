@@ -112,6 +112,7 @@ reset_stream(stream)
 plot(two, stream)
 
 
+
 ## alternatively: do not create twostage but apply directly
 reset_stream(stream)
 update(dbstream, stream, n = 1000)

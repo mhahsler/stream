@@ -150,8 +150,4 @@ evaluate_static(win_km, stream, assign = "macro")
 #>          1.000000e+00          1.000000e+00          1.000000e+00 
 #>                    vi 
 #>          0.000000e+00 
-#> attr(,"type")
-#> [1] "macro"
-#> attr(,"assign")
-#> [1] "macro"
 ```

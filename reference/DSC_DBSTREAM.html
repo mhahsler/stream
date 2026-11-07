@@ -32,8 +32,8 @@ shared-density-based reclustering."><meta property="og:image" content="https://m
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Clustering moving data</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
+    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -321,20 +321,12 @@ Knowledge and Data Engineering,</em> 28(6):1449–1461, June 2016</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    purity </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.9833333 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span><span class="fu"><a href="evaluate.html">evaluate_static</a></span><span class="op">(</span><span class="va">dbstream</span>, <span class="va">stream</span>, measure <span class="op">=</span> <span class="st">"cRand"</span>, type <span class="op">=</span> <span class="st">"macro"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation results for macro-clusters.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Points were assigned to micro-clusters.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     cRand </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.9652249 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "macro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use DBSTREAM also returns the cluster assignment</span></span></span>
 <span class="r-in"><span><span class="co"># later retrieve the cluster assignments for each point)</span></span></span>

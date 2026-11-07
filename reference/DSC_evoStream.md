@@ -154,8 +154,8 @@ get_weights(evoStream, type = "micro")
 ## macro clusters
 get_centers(evoStream, type = "macro")
 #>          X1        X2
-#> 1 0.4122456 0.7680192
-#> 2 0.5071715 0.4316070
+#> 1 0.4351887 0.7680192
+#> 2 0.5355163 0.4316070
 #> 3 0.9296218 0.3876597
 
 ## macro weights

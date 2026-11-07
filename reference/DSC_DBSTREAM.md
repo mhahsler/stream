@@ -287,20 +287,12 @@ evaluate_static(dbstream, stream, measure = "purity")
 #> 
 #>    purity 
 #> 0.9833333 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 evaluate_static(dbstream, stream, measure = "cRand", type = "macro")
 #> Evaluation results for macro-clusters.
 #> Points were assigned to micro-clusters.
 #> 
 #>     cRand 
 #> 0.9652249 
-#> attr(,"type")
-#> [1] "macro"
-#> attr(,"assign")
-#> [1] "micro"
 
 # use DBSTREAM also returns the cluster assignment
 # later retrieve the cluster assignments for each point)

@@ -28,8 +28,8 @@ a DSD object."><meta property="og:image" content="https://michael.hahsler.net/st
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Clustering moving data</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
+    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -355,10 +355,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>          3.625809e-01          1.582054e-01          1.354724e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    vi </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1.963845e+00 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="evaluate.html">evaluate_static</a></span><span class="op">(</span><span class="va">dstream</span>, <span class="va">stream</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"numMicro"</span>, <span class="st">"numMacro"</span>, <span class="st">"purity"</span>, <span class="st">"crand"</span>, <span class="st">"SSQ"</span><span class="op">)</span>,</span></span>
@@ -370,10 +366,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>      21.00000000       3.00000000       0.96666667       0.12803980 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              SSQ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       0.06918242 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># DStream also provides macro clusters. Evaluate macro clusters with type = "macro"</span></span></span>
 <span class="r-in"><span><span class="co"># Note that SSQ and cRand increase.</span></span></span>
@@ -389,10 +381,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>       21.0000000        3.0000000        0.9166667        0.8589756 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              SSQ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        0.2471728 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "macro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Points are by default assigned to micro clusters using the method</span></span></span>
 <span class="r-in"><span><span class="co"># specified for the clustering algorithm.</span></span></span>
@@ -408,10 +396,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>       21.0000000        3.0000000        0.8750000        0.7414465 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              SSQ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        0.3147806 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "macro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "macro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2: Evaluate with Noise/Outliers</span></span></span>
 <span class="r-in"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="DSD_Gaussians.html">DSD_Gaussians</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">3</span>, d <span class="op">=</span> <span class="fl">2</span>, noise <span class="op">=</span> <span class="fl">.05</span><span class="op">)</span></span></span>
@@ -432,10 +416,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>   100.00000000     9.00000000     5.00000000     0.55555556     0.55555556 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          cRand            SSQ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     0.21014360     0.04074987 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note that if noise is excluded, the number of used points is reduced.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="evaluate.html">evaluate_static</a></span><span class="op">(</span><span class="va">dstream</span>, <span class="va">stream</span>, n <span class="op">=</span> <span class="fl">100</span>,</span></span>
@@ -448,10 +428,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>     92.0000000      8.0000000      0.0000000      0.0000000      0.0000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          cRand            SSQ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      0.1421843      0.0440498 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 3: Evaluate an evolving data stream</span></span></span>
@@ -461,13 +437,13 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-in"><span><span class="fu"><a href="evaluate.html">evaluate_stream</a></span><span class="op">(</span><span class="va">dstream</span>, <span class="va">stream</span>, type <span class="op">=</span> <span class="st">"macro"</span>, assign <span class="op">=</span> <span class="st">"micro"</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"numMicro"</span>, <span class="st">"numMacro"</span>, <span class="st">"purity"</span>, <span class="st">"cRand"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  n <span class="op">=</span> <span class="fl">600</span>, horizon <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   points numMicro numMacro    purity     cRand</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0        0        0 0.5200000 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    100        9        6 0.8974359 0.9127801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    200        6        5 0.8750000 0.4829038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    300       12        6 1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400       12        5 0.9722222 0.9737499</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    500        8        6 0.8412698 0.7703008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   points numMicroClusters numMacroClusters    purity     cRand</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0                0                0 0.5200000 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    100                9                6 0.8974359 0.9127801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    200                6                5 0.8750000 0.4829038</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    300               12                6 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    400               12                5 0.9722222 0.9737499</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    500                8                6 0.8412698 0.7703008</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># animate the clustering process</span></span></span>
@@ -506,10 +482,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>           100.0            20.0            25.0             0.2             0.0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         noiseFP </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             5.0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="evaluate.html">evaluate_static</a></span><span class="op">(</span><span class="va">dstream</span>, <span class="va">stream</span>, callbacks <span class="op">=</span> <span class="va">callbacks</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation results for micro-clusters.</span>
@@ -543,10 +515,6 @@ Clustering Algorithm for Outlier Detection in Evolving Data Streams,
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1.867307e+00          2.200000e-01          0.000000e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               noiseFP </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          8.000000e+00 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"type")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"assign")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "micro"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

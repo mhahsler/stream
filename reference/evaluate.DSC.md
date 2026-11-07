@@ -396,10 +396,6 @@ evaluate_static(dstream, stream, n = 100)
 #>          3.625809e-01          1.582054e-01          1.354724e-01 
 #>                    vi 
 #>          1.963845e+00 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 
 evaluate_static(dstream, stream,
   measure = c("numMicro", "numMacro", "purity", "crand", "SSQ"),
@@ -411,10 +407,6 @@ evaluate_static(dstream, stream,
 #>      21.00000000       3.00000000       0.96666667       0.12803980 
 #>              SSQ 
 #>       0.06918242 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 
 # DStream also provides macro clusters. Evaluate macro clusters with type = "macro"
 # Note that SSQ and cRand increase.
@@ -430,10 +422,6 @@ evaluate_static(dstream, stream, type = "macro",
 #>       21.0000000        3.0000000        0.9166667        0.8589756 
 #>              SSQ 
 #>        0.2471728 
-#> attr(,"type")
-#> [1] "macro"
-#> attr(,"assign")
-#> [1] "micro"
 
 # Points are by default assigned to micro clusters using the method
 # specified for the clustering algorithm.
@@ -449,10 +437,6 @@ evaluate_static(dstream, stream, type = "macro", assign = "macro",
 #>       21.0000000        3.0000000        0.8750000        0.7414465 
 #>              SSQ 
 #>        0.3147806 
-#> attr(,"type")
-#> [1] "macro"
-#> attr(,"assign")
-#> [1] "macro"
 
 # Example 2: Evaluate with Noise/Outliers
 stream <- DSD_Gaussians(k = 3, d = 2, noise = .05)
@@ -473,10 +457,6 @@ evaluate_static(dstream, stream, n = 100,
 #>   100.00000000     9.00000000     5.00000000     0.55555556     0.55555556 
 #>          cRand            SSQ 
 #>     0.21014360     0.04074987 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 
 # Note that if noise is excluded, the number of used points is reduced.
 evaluate_static(dstream, stream, n = 100,
@@ -489,10 +469,6 @@ evaluate_static(dstream, stream, n = 100,
 #>     92.0000000      8.0000000      0.0000000      0.0000000      0.0000000 
 #>          cRand            SSQ 
 #>      0.1421843      0.0440498 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 
 
 # Example 3: Evaluate an evolving data stream
@@ -502,13 +478,13 @@ dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.1)
 evaluate_stream(dstream, stream, type = "macro", assign = "micro",
   measure = c("numMicro", "numMacro", "purity", "cRand"),
   n = 600, horizon = 100)
-#>   points numMicro numMacro    purity     cRand
-#> 1      0        0        0 0.5200000 0.0000000
-#> 2    100        9        6 0.8974359 0.9127801
-#> 3    200        6        5 0.8750000 0.4829038
-#> 4    300       12        6 1.0000000 1.0000000
-#> 5    400       12        5 0.9722222 0.9737499
-#> 6    500        8        6 0.8412698 0.7703008
+#>   points numMicroClusters numMacroClusters    purity     cRand
+#> 1      0                0                0 0.5200000 0.0000000
+#> 2    100                9                6 0.8974359 0.9127801
+#> 3    200                6                5 0.8750000 0.4829038
+#> 4    300               12                6 1.0000000 1.0000000
+#> 5    400               12                5 0.9722222 0.9737499
+#> 6    500                8                6 0.8412698 0.7703008
 
 if (interactive()){
 # animate the clustering process
@@ -547,10 +523,6 @@ evaluate_static(dstream, stream,
 #>           100.0            20.0            25.0             0.2             0.0 
 #>         noiseFP 
 #>             5.0 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 
 evaluate_static(dstream, stream, callbacks = callbacks)
 #> Evaluation results for micro-clusters.
@@ -584,8 +556,4 @@ evaluate_static(dstream, stream, callbacks = callbacks)
 #>          1.867307e+00          2.200000e-01          0.000000e+00 
 #>               noiseFP 
 #>          8.000000e+00 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 ```

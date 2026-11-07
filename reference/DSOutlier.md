@@ -129,10 +129,6 @@ evaluate_static(outlier_detector, stream, measure =
 #> 
 #>    noiseActual noisePredicted noisePrecision outlierJaccard 
 #>           10.0            9.0            1.0            0.9 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 
 # use a different detector
 outlier_detector2 <- DSOutlier_DStream(gridsize = .05, Cl = 0.5, outlier_multiplier = 2)
@@ -147,8 +143,4 @@ evaluate_static(outlier_detector2, stream, measure =
 #> 
 #>    noiseActual noisePredicted noisePrecision outlierJaccard 
 #>     14.0000000     15.0000000      0.9333333      0.9333333 
-#> attr(,"type")
-#> [1] "micro"
-#> attr(,"assign")
-#> [1] "micro"
 ```
