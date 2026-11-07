@@ -176,22 +176,21 @@ plot(moving_dbstream, dsd = moving_stream, type = "both",
 ![](DBSTREAM_files/figure-html/moving-train-1.png)
 
 The following animation processes 5000 points in batches of 100 and
-shows DBSTREAM’s micro- and macro-clusters after each batch. Knitr
-creates the GIF using the `gifski` R package. The chunk is skipped when
-`gifski` is unavailable or the output is not HTML.
+shows DBSTREAM’s micro- and macro-clusters after each batch.
 
 ``` r
 
 set.seed(1000)
 animation_stream <- DSD_Benchmark(1)
 animation_model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
-for (i in seq_len(50)) {
-  batch <- get_points(animation_stream, n = 100)
-  update(animation_model, batch)
-  plot(animation_model, remove_info(batch), type = "both",
-    xlim = c(0, 1), ylim = c(0, 1),
-    main = paste("DBSTREAM after", i * 100, "points"))
-}
+
+res <- animate_cluster(animation_model, 
+                       animation_stream, 
+                       horizon = 100, 
+                       n = 5000, 
+                       wait = 0,  # for use in a notebook
+                       plot.args = list(xlim = c(0, 1), ylim = c(0, 1), 
+                                        type = "both"))
 ```
 
 ![DBSTREAM following two moving

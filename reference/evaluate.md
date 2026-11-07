@@ -28,7 +28,8 @@ evaluate_stream(object, dsd, measure, n, horizon, ..., verbose = FALSE)
 - measure:
 
   Evaluation measure(s) to use. If missing then all available measures
-  are returned.
+  are returned. See the *Available measures* note in the Details section
+  for where to find the list of measures for each task.
 
 - n:
 
@@ -75,6 +76,17 @@ available task to evaluate:
 
 - [DSC](https://michael.hahsler.net/stream/reference/DSC.md) via
   [evaluate.DSC](https://michael.hahsler.net/stream/reference/evaluate.DSC.md)
+
+**Available measures:** The measures that can be used for the argument
+`measure` depend on the task and are listed in the help page of the
+task's method. For
+[DSC](https://michael.hahsler.net/stream/reference/DSC.md) objects, see
+the *Details* section of
+[evaluate.DSC](https://michael.hahsler.net/stream/reference/evaluate.DSC.md)
+for internal and external measures (e.g., `"purity"`, `"cRand"`,
+`"SSQ"`). If `measure` is missing, all measures available for the task
+and stream (external measures need a stream that provides class labels)
+are calculated.
 
 ## References
 

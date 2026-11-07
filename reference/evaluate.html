@@ -74,7 +74,8 @@ from.</p></dd>
 
 <dt id="arg-measure">measure<a class="anchor" aria-label="anchor" href="#arg-measure"></a></dt>
 <dd><p>Evaluation measure(s) to use. If missing then all available
-measures are returned.</p></dd>
+measures are returned. See the <em>Available measures</em> note in the Details
+section for where to find the list of measures for each task.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -108,7 +109,14 @@ in the horizon are first used to calculate the evaluation measure and then
 they are used for updating the cluster model. A horizon of ` means that each point is evaluated and
 then used to update the model.</p></li>
 </ul><p>The available evaluation measures depend on the task. Currently available task to evaluate:</p><ul><li><p><a href="DSC.html">DSC</a> via <a href="evaluate.DSC.html">evaluate.DSC</a></p></li>
-</ul></div>
+</ul><p><strong>Available measures:</strong> The measures that can be used for the argument
+<code>measure</code> depend on the task and are listed in the help page of the
+task's method. For <a href="DSC.html">DSC</a> objects, see the <em>Details</em> section of
+<a href="evaluate.DSC.html">evaluate.DSC</a> for internal and external measures
+(e.g., <code>"purity"</code>, <code>"cRand"</code>, <code>"SSQ"</code>). If <code>measure</code> is missing, all measures
+available for the task and stream (external measures need a stream that
+provides class labels) are calculated.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Joao Gama, Raquel Sebastiao, Pedro Pereira Rodrigues (2013). On

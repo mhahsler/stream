@@ -283,47 +283,28 @@ The following animation shows 5000 points in batches of 100, with
 DBSTREAM’s micro- and macro-clusters overlaid. The GIF loops
 automatically, displaying ten frames per second. It is embedded directly
 in the HTML, so the document can be shared without separate image files.
-
-Knitr creates the GIF using the `gifski` R package; FFmpeg is not
-required. Install `gifski` before rendering to include the animation.
-The animation chunk is skipped when `gifski` is unavailable or the
-output is not HTML.
+I set `wait` to 0 in the animation since it is rendered in the notebook.
+Use a suitable value for interactive use.
 
 ``` r
 
 set.seed(1000)
 animation_stream <- DSD_Benchmark(1)
 animation_model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
-for (i in seq_len(50)) {
-  batch <- get_points(animation_stream, n = 100)
-  update(animation_model, batch)
-  plot(animation_model, remove_info(batch), type = "both",
-    xlim = c(0, 1), ylim = c(0, 1),
-    main = paste("DBSTREAM after", i * 100, "points"))
-}
+
+res <- animate_cluster(animation_model, 
+                       animation_stream,
+                       measure = "cRand",
+                       horizon = 100, 
+                       n = 5000, 
+                       wait = 0,  # for use in a notebook
+                       plot.args = list(xlim = c(0, 1), 
+                                        ylim = c(0, 1), 
+                                        type = "both"))
 ```
 
 ![DBSTREAM following two moving
 clusters](moving_data_files/figure-html/moving-animation-.gif)
-
-For interactive exploration, the following examples use the package’s
-animation helpers. They are not run when building the vignette.
-[`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md)
-also displays the evaluation score as it is computed. Start with a fresh
-stream and model.
-
-``` r
-
-stream <- DSD_Benchmark(1)
-animate_data(stream, n = 5000, horizon = 100,
-  xlim = c(0, 1), ylim = c(0, 1))
-
-stream <- DSD_Benchmark(1)
-model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
-animate_cluster(model, stream, n = 5000, horizon = 100,
-  measure = "crand", type = "macro", assign = "micro",
-  plot.args = list(xlim = c(0, 1), ylim = c(0, 1), type = "both"))
-```
 
 ## Summary
 

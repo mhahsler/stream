@@ -164,21 +164,23 @@ sections around this change and near the end of the movement:
 
 ``` r
 
-local({
-  old_par <- par(mfrow = c(1, 3))
-  on.exit(par(old_par))
-  plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
-    main = "One cluster")
-  invisible(get_points(stream, n = 780))
-  plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
-    main = "Second cluster appears")
-  invisible(get_points(stream, n = 1400))
-  plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
-    main = "Separate paths")
-})
+old_par <- par(mfrow = c(1, 3))
+plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
+  main = "One cluster")
+invisible(get_points(stream, n = 780))
+plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
+  main = "Second cluster appears")
+invisible(get_points(stream, n = 1400))
+plot(stream, n = 200, xlim = c(-15, 115), ylim = c(-15, 115),
+  main = "Separate paths")
 ```
 
 ![](DSD_MG_files/figure-html/splitting-snapshots-1.png)
+
+``` r
+
+par(old_par)
+```
 
 Keyframes can also be added to an existing component with
 [`add_keyframe()`](https://michael.hahsler.net/stream/reference/MGC.md),
@@ -232,7 +234,9 @@ stream <- DSD_MG(dimension = 2, orbit,
   MGC_Static(density = 5, center = c(0.5, 0.5), parameter = 0.03))
 ```
 
-The GIF below shows the functional generator in batches of 50 points,
+The GIF below shows the functional generator in batches of 50 points
+using
+[`animate_data()`](https://michael.hahsler.net/stream/reference/animate_data.md),
 making the orbiting cluster’s movement visible. It loops automatically
 at ten frames per second and is embedded directly in the HTML.
 
@@ -242,14 +246,10 @@ skipped when `gifski` is unavailable or the output is not HTML.
 
 ``` r
 
-local({
-  set.seed(1000)
-  reset_stream(stream)
-  for (i in seq_len(30)) {
-    plot(stream, n = 50, xlim = c(0, 1), ylim = c(0, 1),
-      main = paste("Moving Generator after", i * 50, "points"))
-  }
-})
+set.seed(1000)
+reset_stream(stream)
+animate_data(stream, n = 1500, horizon = 50, wait = 0,
+  xlim = c(0, 1), ylim = c(0, 1))
 ```
 
 ![A moving Gaussian cluster orbiting a static

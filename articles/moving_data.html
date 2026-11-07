@@ -310,38 +310,24 @@ how quickly the stream changes and how fast points arrive.</p>
 scores. The following animation shows 5000 points in batches of 100,
 with DBSTREAM’s micro- and macro-clusters overlaid. The GIF loops
 automatically, displaying ten frames per second. It is embedded directly
-in the HTML, so the document can be shared without separate image
-files.</p>
-<p>Knitr creates the GIF using the <code>gifski</code> R package; FFmpeg
-is not required. Install <code>gifski</code> before rendering to include
-the animation. The animation chunk is skipped when <code>gifski</code>
-is unavailable or the output is not HTML.</p>
+in the HTML, so the document can be shared without separate image files.
+I set <code>wait</code> to 0 in the animation since it is rendered in
+the notebook. Use a suitable value for interactive use.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="va">animation_stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_Benchmark.html">DSD_Benchmark</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">animation_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSC_DBSTREAM.html">DSC_DBSTREAM</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fl">0.05</span>, lambda <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">batch</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_points.html">get_points</a></span><span class="op">(</span><span class="va">animation_stream</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="../reference/update.html">update</a></span><span class="op">(</span><span class="va">animation_model</span>, <span class="va">batch</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="../reference/plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">animation_model</span>, <span class="fu"><a href="../reference/get_points.html">remove_info</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"both"</span>,</span>
-<span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"DBSTREAM after"</span>, <span class="va">i</span> <span class="op">*</span> <span class="fl">100</span>, <span class="st">"points"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<p><img src="moving_data_files/figure-html/moving-animation-.gif" class="r-plt" alt="DBSTREAM following two moving clusters"></p>
-<p>For interactive exploration, the following examples use the package’s
-animation helpers. They are not run when building the vignette.
-<code><a href="../reference/animate_cluster.html">animate_cluster()</a></code> also displays the evaluation score as it
-is computed. Start with a fresh stream and model.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_Benchmark.html">DSD_Benchmark</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/animate_data.html">animate_data</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">5000</span>, horizon <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSD_Benchmark.html">DSD_Benchmark</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DSC_DBSTREAM.html">DSC_DBSTREAM</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fl">0.05</span>, lambda <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/animate_cluster.html">animate_cluster</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">stream</span>, n <span class="op">=</span> <span class="fl">5000</span>, horizon <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  measure <span class="op">=</span> <span class="st">"crand"</span>, type <span class="op">=</span> <span class="st">"macro"</span>, assign <span class="op">=</span> <span class="st">"micro"</span>,</span>
-<span>  plot.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/animate_cluster.html">animate_cluster</a></span><span class="op">(</span><span class="va">animation_model</span>, </span>
+<span>                       <span class="va">animation_stream</span>,</span>
+<span>                       measure <span class="op">=</span> <span class="st">"cRand"</span>,</span>
+<span>                       horizon <span class="op">=</span> <span class="fl">100</span>, </span>
+<span>                       n <span class="op">=</span> <span class="fl">5000</span>, </span>
+<span>                       wait <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># for use in a notebook</span></span>
+<span>                       plot.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>                                        ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>                                        type <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="moving_data_files/figure-html/moving-animation-.gif" class="r-plt" alt="DBSTREAM following two moving clusters"></p>
 </div>
 <div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
