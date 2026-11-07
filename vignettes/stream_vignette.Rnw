@@ -845,7 +845,7 @@ can be used.
 
 \item In-flight stream operations.
 \begin{itemize}
-\item \code{DSD_ScaleStream} can be used to standardize (centering and scaling)
+\item \code{DSF_Scale} can be used to standardize (centering and scaling)
 data in a data stream in-flight.
 \end{itemize}
 \end{itemize}
@@ -1203,7 +1203,7 @@ write_stream(stream, "data.csv", n = 100, sep = ",")
 a DSD object, and then
 either a connection or a file name.
 The instruction above creates a new file called
-\code{dsd\_data.csv}.
+\code{data.csv}.
 The \code{sep} parameter defines how the dimensions in each
 data point (row) are separated.
 Here a comma is used to create a comma separated values file.
@@ -1252,11 +1252,11 @@ get_points(stream_file, n = 5)
 @
 
 For clustering it is often necessary to normalize data first.
-Streams can be scaled and centered in-flight using \code{DSD_ScaleStream}.
+Streams can be scaled and centered in-flight using \code{DSF_Scale}.
 The scaling and centering factors are computed from a set of points
 (by default 1000) from the beginning of the stream.
 <<>>=
-stream_scaled <- DSD_ScaleStream(stream_file, center = TRUE, scale = TRUE)
+stream_scaled <- DSF_Scale(stream_file, center = TRUE, scale = TRUE)
 get_points(stream_scaled, n = 5)
 @
 
@@ -2146,11 +2146,11 @@ ev <- evaluate_stream(dstream, stream,
 head(ev)
 @
 
-Note that the first row in the results contains \code{NA} for the purity
-measure. This is the case since
-we started evaluation with a new, empty clustering and
+Note that the first row in the results is computed before the clustering has
+seen any data. We started evaluation with a new, empty clustering and
 for evaluating the first horizon no prior clusters
-were available.
+were available. The measures in the first row (here purity) are therefore
+not meaningful and may be \code{NA}.
 
 <<evaluation, fig=TRUE, include=FALSE, height=4>>=
 plot(ev[ , "points"], ev[ , "purity"], type = "l",
@@ -2854,7 +2854,7 @@ con <- gzcon(
 
 stream <- DSD_ReadCSV(con, take=c(1, 5, 6, 8:11, 13:20, 23:42),
     class = 42, k = 7)
-stream2 <- DSD_ScaleStream(stream, n = 1000)
+stream2 <- DSF_Scale(stream, n = 1000)
 @
 
 Next, we set up D-Stream with slightly modified values for gaptime (increased number of points after which

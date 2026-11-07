@@ -3,14 +3,24 @@
 ## Bugfix
 * Fixed BICO's optional k-means projection search to use precomputed center
   projections and reset the projection for each point.
+* `evaluate_stream()` for DSC objects now names its result columns with the
+  measure names used by `evaluate_static()` (e.g., `cRand` instead of the
+  spelling given by the user such as `crand`), and expands partial measure
+  names. Code that selects result columns by a differently capitalized name
+  needs to be updated.
 
 ## Changes
 * Added vignettes fir DBSTREAM, clustering moving data, and the
   DSD Moving Generator.
+* Printing the result of `evaluate_static()` no longer shows the `type` and
+  `assign` attributes.
 * Improved consistency and formatting in data stream filter documentation.
 * Added tests for downsampling, feature selection, convolution, exponential
   moving averages, and scaling.
 * Removed including R.h before Rcpp.h.
+* Updated the vignettes to use `DSF_Scale()` instead of the deprecated
+  `DSD_ScaleStream()` and corrected statements about `evaluate_stream()` output
+  and `write_stream()` file names.
 
 # stream 2.0.6 (07/27/26)
 

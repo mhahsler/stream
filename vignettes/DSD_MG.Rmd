@@ -1,11 +1,11 @@
 ---
-title: "The DSD Moving Generator"
+title: "The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream"
 author: "Michael Hahsler"
 output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{The DSD Moving Generator}
+  %\VignetteIndexEntry{The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,17 +17,70 @@ library(stream)
 set.seed(1000)
 ```
 
-`DSD_MG()` combines Moving Generator Clusters (`MGC`s) into an evolving data
-stream. Each component specifies a cluster's location, shape, size, and density
-over time. This guide expands on the generator introduced in the original
-`stream_vignette.Rnw`, using examples from the `DSD_MG` and `MGC` help pages.
+Testing stream clustering algorithms on non-stationary data requires streams
+where the ground truth is known and the way the data changes can be controlled:
+clusters that move, grow, shrink, appear, disappear, split or merge. The
+`DSD_MG()` generator, the Moving Generator, provides a flexible framework for
+building such streams **from individual components**.
 
-## Combine clusters and noise
+Instead of one fixed model, a `DSD_MG` stream is assembled from a list of
+**Moving Generator Clusters** (`MGC`s). Each `MGC` is a small, independent
+component that describes a single cluster:
+
+* *where* it is (its center),
+* *how big* it is and what *shape* it has (the shape parameters),
+* *how many points* it produces (its density),
+
+and, for moving components, how these properties change over time. `DSD_MG()`
+combines the components into one stream. Because every component has its own
+behavior, mixing different components creates complex evolving streams from
+simple building blocks. This guide introduces the components, shows how to
+combine them, and shows how to change a stream after it has been created. See
+the help pages `?DSD_MG` and `?MGC` for the complete documentation.
+
+## Building blocks
+
+The following components are available. All components for a stream must have
+the stream's dimensionality.
+
+| Component | Behavior |
+|:----------|:---------|
+| `MGC_Static()` | A cluster at a fixed position. |
+| `MGC_Noise()` | Uniform random noise in a given area. |
+| `MGC_Linear()` | A cluster whose center, density, and shape parameters are interpolated between **keyframes**. |
+| `MGC_Function()` | A cluster where density, center, and shape parameters are **functions of time**. |
+| `MGC_Random()` | A cluster that follows a **random walk**. |
+
+The shape of a cluster is given by the `shape` argument, which is a function
+that draws a single point from the cluster. Two shapes are provided:
+`Shape_Gaussian` (the default, where `parameter` is the standard deviation, one
+per dimension) and `Shape_Block` (a uniform block, where `parameter` gives the
+side lengths). If a single value is given, it is recycled for all dimensions.
+New shapes can be defined as functions with the arguments `center` and
+`parameter` that return a single point (see the end of this guide).
+
+## How the generator works
+
+Generation is driven by a *generator time* that advances as points are drawn.
+Each component has a `density`. To produce a point, `DSD_MG()` chooses a
+component with a probability proportional to the current densities of all
+components, and then draws a point from the chosen component's shape at its
+current center. The density therefore controls both the relative chance of
+choosing a component and, through the total density, how fast generator time
+advances: with a total density of 100, approximately 100 points advance the
+generator by one time unit. Components that change over time thus change what
+the stream looks like, and components can be added or removed at any time.
+
+Each point is returned with a `.class` column containing the label of the
+component that produced it. Components can share a label to form one
+ground-truth cluster, and noise has the label `NA`.
+
+## Combine static clusters and noise
 
 Start with a Gaussian cluster, a uniform rectangular cluster, and uniform
-background noise. All components must have the stream's dimensionality.
-`parameter` gives standard deviations for `Shape_Gaussian` and side lengths for
-`Shape_Block`.
+background noise. `parameter` gives standard deviations for `Shape_Gaussian` and
+side lengths for `Shape_Block`. By default each component gets its own label; we
+set them explicitly here and use `NA` for the noise.
 
 ```{r static-stream}
 stream <- DSD_MG(dimension = 2,
@@ -42,17 +95,35 @@ get_points(stream, n = 5)
 plot(stream, n = 500, xlim = c(0, 3), ylim = c(-1, 1))
 ```
 
-`density` controls both the relative chance of choosing a component and the
-number of points generated per unit of generator time. Here the total density
-is 100, so approximately 100 points advance the generator by one time unit.
-Noise has label `NA` in the `.class` column. Supply the same label to multiple
-components when they should represent one ground-truth cluster.
+The total density is 100, so approximately 100 points advance the generator by
+one time unit, and the Gaussian component produces about 45% of the points.
+Noise has label `NA` in the `.class` column.
+
+Supplying the same label to several components makes them form one ground-truth
+cluster. This makes it easy to build clusters with non-convex shapes. Here three
+blocks form an L-shaped cluster (label 1) next to a second cluster (label 2):
+
+```{r l-shape}
+stream <- DSD_MG(dimension = 2,
+  MGC_Static(density = 10, center = c(.5, .2), parameter = c(.4, .2),
+    shape = Shape_Block),
+  MGC_Static(density = 10, center = c(.6, .5), parameter = c(.2, .4),
+    shape = Shape_Block),
+  MGC_Static(density = 5, center = c(.39, .53), parameter = c(.16, .35),
+    shape = Shape_Block),
+  MGC_Noise(density = 1, range = rbind(c(0, 1), c(0, 1))),
+  labels = c(1, 1, 2, NA)
+)
+plot(stream, n = 500, xlim = c(0, 1), ylim = c(0, 1))
+```
 
 ## Define movement with keyframes
 
 `MGC_Linear()` interpolates the center, density, and shape parameters between
-keyframes. The next example starts with one cluster. At time 50, a second
-component appears at the same location, then moves in another direction.
+keyframes. This lets you describe movement, growth, and appearance of a cluster
+with a few points in time. The next example starts with one cluster. At time 50,
+a second component appears at the same location, then moves in another
+direction. This simulates a cluster that splits.
 
 ```{r splitting-stream}
 c1 <- MGC_Linear(dimension = 2, keyframelist = list(
@@ -92,29 +163,36 @@ local({
 })
 ```
 
-## Add and remove components
+Keyframes can also be added to an existing component with `add_keyframe()`, and
+removed with `remove_keyframe()`. Each keyframe can use a different density or
+shape parameter, so a cluster can also grow, shrink, fade in, or fade out.
 
-Generators can be modified after construction. `get_clusters()` returns the
-component list; `remove_cluster()` takes an index in that list.
-
-```{r modify-stream}
-noise <- MGC_Noise(density = 2, range = rbind(c(-15, 115), c(-15, 115)))
-add_cluster(stream, noise, label = NA)
-length(get_clusters(stream))
-plot(stream, n = 500, xlim = c(-15, 115), ylim = c(-15, 115))
-remove_cluster(stream, i = 3)
-length(get_clusters(stream))
+```{r add-keyframe}
+c3 <- MGC_Linear(dimension = 2, shape = Shape_Block)
+add_keyframe(c3, time = 1, density = 25, parameter = c(10, 10), center = c(0, 0))
+add_keyframe(c3, time = 100, density = 25, parameter = c(30, 30),
+  center = c(100, 100))
+get_keyframes(c3)
 ```
-
-Use `add_keyframe()` and `remove_keyframe()` to edit a linear component's
-trajectory. Stream and component objects contain mutable state: updating a
-component can also affect a stream that contains it.
 
 ## Specify movement as a function of time
 
 `MGC_Function()` accepts functions of generator time for density, center, and
-shape parameters. Here a Gaussian cluster travels around a circle while a
-static cluster remains at the center.
+shape parameters. This allows arbitrary trajectories without defining
+keyframes. For example, a block-shaped cluster can move along the diagonal
+while it grows:
+
+```{r function-growing}
+growing <- MGC_Function(
+  density = function(t) 100,
+  parameter = function(t) 1 * t,
+  center = function(t) c(t, t),
+  shape = Shape_Block
+)
+```
+
+Here a Gaussian cluster travels around a circle while a static cluster remains
+at the center.
 
 ```{r functional-stream}
 orbit <- MGC_Function(
@@ -155,3 +233,77 @@ animate_data(stream, n = 1500, horizon = 100,
   xlim = c(0, 1), ylim = c(0, 1))
 animation::ani.replay()
 ```
+
+## Clusters that move randomly
+
+`MGC_Random()` creates a cluster that follows a random walk. `center` is its
+starting position and `randomness` is the maximum amount it moves in one time
+step. Mixing random and static components gives streams where some clusters
+drift unpredictably while others stay in place.
+
+```{r random-stream}
+stream <- DSD_MG(dimension = 2,
+  MGC_Random(density = 100, center = c(1, 0), parameter = 0.1,
+    randomness = 0.2),
+  MGC_Random(density = 100, center = c(2, 0), parameter = 0.4,
+    shape = Shape_Block, randomness = 0.2)
+)
+stream
+```
+
+## Add and remove components
+
+Generators can be modified after construction, so a stream can be changed while
+it is running. `get_clusters()` returns the component list; `add_cluster()` adds
+a component and `remove_cluster()` takes an index in that list.
+
+```{r modify-stream}
+stream <- DSD_MG(dimension = 2,
+  MGC_Linear(dimension = 2, keyframelist = list(
+    keyframe(time = 1, density = 20, center = c(0, 0), parameter = 5),
+    keyframe(time = 100, density = 20, center = c(100, 100), parameter = 5))),
+  MGC_Static(density = 20, center = c(50, 50), parameter = 5))
+
+noise <- MGC_Noise(density = 2, range = rbind(c(-15, 115), c(-15, 115)))
+add_cluster(stream, noise, label = NA)
+length(get_clusters(stream))
+plot(stream, n = 500, xlim = c(-15, 115), ylim = c(-15, 115))
+remove_cluster(stream, i = 3)
+length(get_clusters(stream))
+```
+
+Use `add_keyframe()` and `remove_keyframe()` to edit a linear component's
+trajectory. Stream and component objects contain mutable state: updating a
+component can also affect a stream that contains it.
+
+## Define your own shape
+
+A shape is a function with the arguments `center` and `parameter` that returns a
+single point. As an example, here is a ring shape in two dimensions, where
+`parameter` is the radius and the points are spread uniformly around the center
+with a little noise.
+
+```{r custom-shape}
+Shape_Ring <- function(center, parameter) {
+  angle <- runif(1, 0, 2 * pi)
+  center + rnorm(1, mean = parameter[1], sd = 0.02) * c(cos(angle), sin(angle))
+}
+
+stream <- DSD_MG(dimension = 2,
+  MGC_Static(density = 50, center = c(0.5, 0.5), parameter = 0.3,
+    shape = Shape_Ring),
+  MGC_Static(density = 25, center = c(0.5, 0.5), parameter = 0.05)
+)
+plot(stream, n = 500, xlim = c(0, 1), ylim = c(0, 1))
+```
+
+## Use the stream
+
+A `DSD_MG` stream is a regular `DSD` object. It can be used like any other
+stream to cluster and evaluate, for example with `update()` and
+`evaluate_stream()`. Because the generator knows which component produced each
+point, the true labels are available for external evaluation, even when the
+clusters move. See
+[Evaluating Non-stationary Clusters](moving_data.html) for how to evaluate
+clustering on moving data and [Clustering data streams with DBSTREAM](DBSTREAM.html)
+for a clustering algorithm that is able to follow such streams.

@@ -447,8 +447,6 @@ evaluate_stream.DSC <-
         by = horizon,
         length.out = rounds
       ))
-    for (m in measure)
-      evaluation[[m]] <- NA_real_
 
     for (i in seq(rounds)) {
       d <- DSD_Memory(dsd, n = horizon, loop = FALSE)
@@ -456,20 +454,27 @@ evaluate_stream.DSC <-
       ## evaluate first
       reset_stream(d)
 
-      evaluation[i, -1L] <-
-        evaluate_static(
-          object,
-          d,
-          measure,
-          horizon,
-          ### this is n
-          type,
-          assign,
-          assignmentMethod,
-          excludeNoise = excludeNoise,
-          callbacks,
-          ...
-        )
+      res <- evaluate_static(
+        object,
+        d,
+        measure,
+        horizon,
+        ### this is n
+        type,
+        assign,
+        assignmentMethod,
+        excludeNoise = excludeNoise,
+        callbacks,
+        ...
+      )
+
+      ## use the measure names reported by evaluate_static() (e.g., cRand)
+      ## so column names do not depend on how the user spelled the measure.
+      if (i == 1L)
+        for (m in names(res))
+          evaluation[[m]] <- NA_real_
+
+      evaluation[i, -1L] <- unlist(res, use.names = FALSE)
 
       ## then update the model
       reset_stream(d)
@@ -495,7 +500,13 @@ print.stream_eval <-  function(x, ...) {
     attr(x, "assign"),
     "-clusters.\n\n",
     sep = "")
-  print(unclass(x))
+  # show the values without the "type" and "assign" attributes
+  # (they are already reported above)
+  y <- unclass(x)
+  attr(y, "type") <- NULL
+  attr(y, "assign") <- NULL
+  print(y, ...)
+  invisible(x)
 }
 
 

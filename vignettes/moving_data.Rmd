@@ -1,11 +1,11 @@
 ---
-title: "Clustering moving data"
+title: "Evaluating Non-stationary Clusters"
 author: "Michael Hahsler"
 output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Clustering moving data}
+  %\VignetteIndexEntry{Evaluating Non-stationary Clusters}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,10 +17,14 @@ library(stream)
 set.seed(1000)
 ```
 
-In an evolving stream, the distribution of incoming points changes over time.
-A clustering model needs to forget outdated observations to follow this concept
-drift. This guide adapts the moving-cluster and evolving-stream comparison
-examples from the package's original `stream_vignette.Rnw`.
+In a non-stationary (evolving) stream, the distribution of incoming points
+changes over time. A clustering model has to forget outdated observations to
+follow this concept drift, and a single quality score computed at one point in
+time cannot tell us whether it does. This guide shows how to evaluate stream
+clustering when the data moves: how to measure quality on new points, how to
+track that quality over time, and how to compare models and settings fairly.
+If you are new to the package, start
+with [Getting started with stream](stream.html).
 
 ## Inspect moving clusters
 
@@ -37,24 +41,62 @@ Fixed axis limits make the movement visible. Both `plot()` and `get_points()`
 advance the stream.
 
 ```{r snapshots, fig.height=7}
-local({
-  old_par <- par(mfrow = c(2, 2))
-  on.exit(par(old_par))
-  for (i in seq_len(4)) {
-    plot(stream, n = 250, xlim = c(0, 1), ylim = c(0, 1),
-      main = paste("Starting at point", 1 + (i - 1) * 1650))
-    arrows(0.15, 0.85, 0.85, 0.15, col = "gray70", lwd = 2)
-    arrows(0.15, 0.15, 0.85, 0.85, col = "gray70", lwd = 2)
-    if (i < 4) invisible(get_points(stream, n = 1400))
-  }
-})
+old_par <- par(mfrow = c(2, 2))
+for (i in seq_len(4)) {
+  plot(stream, n = 250, xlim = c(0, 1), ylim = c(0, 1),
+    main = paste("Starting at point", 1 + (i - 1) * 1650))
+  arrows(0.15, 0.85, 0.85, 0.15, col = "gray70", lwd = 2)
+  arrows(0.15, 0.15, 0.85, 0.85, col = "gray70", lwd = 2)
+  if (i < 4) invisible(get_points(stream, n = 1400))
+}
+par(old_par)
 ```
 
 The arrows indicate the directions of travel. Near the crossing, the two
 generating clusters overlap, making them difficult to distinguish using only
 the observed features.
 
-## Compare models on the same points
+## Why a single score is not enough
+
+As in [Getting started with stream](stream.html), `evaluate_static()` tests the
+current model on new points without updating it. The generated stream carries
+the true cluster labels, so external measures such as purity and the adjusted
+Rand index (`crand`) can be calculated.
+
+On a stationary stream, one such score is a reasonable summary. Here, the score
+depends on *when* we look. Train a DBSTREAM model on the first 1000 points and
+evaluate it on the points that follow immediately, and again on points taken
+much later, after the clusters have moved.
+
+```{r static-pitfall}
+set.seed(0)
+stream <- DSD_Memory(DSD_Benchmark(1), n = 5000)
+
+model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
+update(model, stream, n = 1000)
+
+# new points right after the training data
+evaluate_static(model, stream, n = 200,
+  measure = c("purity", "crand"), type = "macro", assign = "micro")
+
+# points from late in the stream; the model has not seen the movement
+invisible(get_points(stream, n = 3000))
+evaluate_static(model, stream, n = 200,
+  measure = c("purity", "crand"), type = "macro", assign = "micro")
+```
+
+The model is frozen after the first 1000 points, so the second result measures
+how well an outdated model describes the current data. This is the situation
+that stream evaluation needs to capture: a model should be judged on the points
+it has not yet seen, at every stage of the stream, while it keeps being updated.
+
+## Prequential evaluation
+
+`evaluate_stream()` implements *prequential* (test-then-train) evaluation. It
+repeatedly evaluates the current model on the next batch of points, and only
+then updates the model with that batch. Every point is therefore used for
+testing before it is used for learning, and the result is a series of scores
+that follows the stream over time.
 
 Generate and store 5000 points. Resetting a `DSD_Memory` stream replays the same
 points, which makes comparisons fair. Resetting a generator resets its position
@@ -84,47 +126,112 @@ algorithms <- list(
 )
 ```
 
-`evaluate_stream()` uses prequential evaluation: it evaluates the current model
-on the next batch, then updates the model with those points. Here each batch
-contains 100 points, producing 50 evaluations per model. The adjusted Rand
-index (`crand`) compares the macro-clustering with the true cluster labels.
-Assignments go through micro-clusters to retain the shape of density-based
-macro-clusters.
+Each batch contains `horizon = 100` points, producing 50 evaluations per model
+over the 5000 points. We request purity and the adjusted Rand index for the
+macro-clusters. Assignments go through micro-clusters to retain the shape of
+density-based macro-clusters. Each model is evaluated on the same replayed
+points.
 
 ```{r evaluation}
 evaluation <- lapply(algorithms, function(model) {
   reset_stream(stream)
   evaluate_stream(model, stream, horizon = 100, n = 5000,
-    measure = "crand", type = "macro", assign = "micro")
+    measure = c("purity", "crand"), type = "macro", assign = "micro")
 })
-scores <- sapply(evaluation, function(x) x[, "crand"])
-head(scores)
+head(evaluation[["DBSTREAM"]])
 ```
 
-The first score is `NA` because each model starts empty. Plot the scores over
-time and compare their distributions over the stream.
+Each result has a `points` column with the position in the stream and one
+column per measure. The first row is computed before the model has seen any
+points, so it is `NA` or meaningless for some models.
+
+## Compare models over time
+
+Collect the adjusted Rand index of all models and plot it against the position
+in the stream.
 
 ```{r score-trajectories}
 position <- evaluation[[1]][, "points"]
+scores <- sapply(evaluation, function(x) x[, "cRand"])
+
 matplot(position, scores, type = "l", lwd = 1,
   xlab = "Points processed", ylab = "Adjusted Rand index")
 legend("bottomleft", legend = names(algorithms),
   col = seq_along(algorithms), lty = seq_along(algorithms), cex = 0.8)
 ```
 
+The trajectories show that all clustering algorithms do better when the two 
+clusters are well separated. The quality deteriorate where the clusters
+overlap near the crossing because it is impossible to separate the 
+points of two clusters in the same location. In the second half of the plot, you
+see how quickly each model recovers when the clusters separate again.
+Note that the methods differ in their noise handling. K-means cannot handle noise
+and assigns every point to
+a cluster, while the density-based methods can leave points unassigned. This is why 
+the k-means based methods never reach the almost perfect adjusted Rand index 
+like D-Stream and DBSTREAM.
+
+To summarize a whole run, look at the distribution of the scores, or at their
+mean.
+
 ```{r score-distributions}
 boxplot(scores, las = 2, cex.axis = 0.8, ylab = "Adjusted Rand index")
+colMeans(scores)
 ```
 
-Read the score trajectories alongside the snapshots: overlap can lower quality
-even when a model follows the movement. The methods also differ in their noise
-handling; k-means assigns points to a cluster, while the density-based methods
-can leave points unassigned. These settings illustrate one experiment rather
-than establishing a ranking across streams.
+Purity is available from the same evaluation. It is easy to interpret, but it
+rewards splitting the data into many small clusters, so report it together with
+the adjusted Rand index.
+
+```{r purity}
+purity <- sapply(evaluation, function(x) x[, "purity"])
+colMeans(purity)
+```
+
+These
+settings illustrate one experiment rather than establishing a ranking across
+streams. Repeat the evaluation with several random streams before drawing
+conclusions.
+
+## Tune the forgetting rate of data stream clustering algorithms
+
+Most data stream algorithms include a mechanism to forget old data so they can
+focus on more recent data in non-stationary
+stream. A common implementation is to use a 
+fading rate `lambda`. 
+
+Both D-Stream and DBSTREAM have a `lambda` parameter. Here,
+we evaluate DBSTREAM with several `lambda` values on the same data. A value of
+0 means that old points are never forgotten.
+
+```{r lambda}
+lambdas <- c(0, 0.001, 0.01, 0.1)
+lambda_eval <- lapply(lambdas, function(l) {
+  reset_stream(stream)
+  evaluate_stream(DSC_DBSTREAM(r = 0.05, lambda = l), stream,
+    horizon = 100, n = 5000,
+    measure = "crand", type = "macro", assign = "micro")
+})
+lambda_scores <- sapply(lambda_eval, function(x) x[, "cRand"])
+colnames(lambda_scores) <- paste("lambda =", lambdas)
+
+matplot(position, lambda_scores, type = "l", lwd = 1,
+  xlab = "Points processed", ylab = "Adjusted Rand index")
+legend("bottomleft", legend = colnames(lambda_scores),
+  col = seq_along(lambdas), lty = seq_along(lambdas), cex = 0.8)
+colMeans(lambda_scores, na.rm = TRUE)
+```
+
+Without forgetting (`lambda = 0`), the model keeps describing where the
+clusters used to be and scores clearly lower. In this experiment the mean score
+improves as `lambda` grows up to 0.1. Forgetting that is too fast would
+eventually discard points before they can support a stable cluster, so the best
+value depends on how quickly the stream changes and how fast points arrive.
 
 ## Animate the stream and clustering
 
-The following animation shows 5000 points in batches of 100, with DBSTREAM's
+Seeing the clustering next to the data helps to understand the scores. The
+following animation shows 5000 points in batches of 100, with DBSTREAM's
 micro- and macro-clusters overlaid. The GIF loops automatically, displaying ten
 frames per second. It is embedded directly in the HTML, so the document can be
 shared without separate image files.
@@ -134,23 +241,22 @@ Install `gifski` before rendering to include the animation. The animation chunk
 is skipped when `gifski` is unavailable or the output is not HTML.
 
 ```{r moving-animation, eval=knitr::is_html_output() && requireNamespace("gifski", quietly=TRUE), fig.show='animate', animation.hook='gifski', interval=0.1, aniopts='loop', dev='png', fig.width=6.4, fig.height=4.8, dpi=100, fig.retina=1, fig.alt='DBSTREAM following two moving clusters'}
-local({
-  set.seed(1000)
-  animation_stream <- DSD_Benchmark(1)
-  animation_model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
-  for (i in seq_len(50)) {
-    batch <- get_points(animation_stream, n = 100)
-    update(animation_model, batch)
-    plot(animation_model, remove_info(batch), type = "both",
-      xlim = c(0, 1), ylim = c(0, 1),
-      main = paste("DBSTREAM after", i * 100, "points"))
-  }
-})
+set.seed(1000)
+animation_stream <- DSD_Benchmark(1)
+animation_model <- DSC_DBSTREAM(r = 0.05, lambda = 0.01)
+for (i in seq_len(50)) {
+  batch <- get_points(animation_stream, n = 100)
+  update(animation_model, batch)
+  plot(animation_model, remove_info(batch), type = "both",
+    xlim = c(0, 1), ylim = c(0, 1),
+    main = paste("DBSTREAM after", i * 100, "points"))
+}
 ```
 
 For interactive exploration, the following examples use the package's animation
-helpers. They are not run when building the vignette. Start with a fresh stream
-and model.
+helpers. They are not run when building the vignette. `animate_cluster()` also
+displays the evaluation score as it is computed. Start with a fresh stream and
+model.
 
 ```{r animations, eval=FALSE}
 stream <- DSD_Benchmark(1)
@@ -163,3 +269,15 @@ animate_cluster(model, stream, n = 5000, horizon = 100,
   measure = "crand", type = "macro", assign = "micro",
   plot.args = list(xlim = c(0, 1), ylim = c(0, 1), type = "both"))
 ```
+
+## Summary
+
+* Evaluate a non-stationary stream over time. A single score only describes one
+  moment.
+* Use prequential evaluation (`evaluate_stream()`) so that each batch is tested
+  before the model learns from it.
+* Replay a stored `DSD_Memory` stream so that all models see the same points.
+* Report the adjusted Rand index together with purity, and look at the whole
+  trajectory as well as its mean.
+* Treat the forgetting rate and similar settings as part of the model you are
+  evaluating, and compare several values.

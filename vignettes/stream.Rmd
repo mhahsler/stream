@@ -11,15 +11,28 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+  fig.width = 6, fig.height = 5)
 library(stream)
 set.seed(1234)
 ```
 
-The `stream` package provides tools to generate or read data streams, update
-stream mining models, and inspect their results. This guide walks through a
-small clustering workflow: create a stream, inspect incoming points, build a
-clustering model, and evaluate it on new points.
+The `stream` package provides an R framework for data stream mining. A data
+stream is a potentially unbounded sequence of observations that can only be
+read once, in order, so models have to be updated incrementally with limited
+memory. This guide introduces the main building blocks of the package and walks
+through a complete clustering workflow:
+
+* **Data stream data (DSD)** objects generate or read points. They include
+  simulated generators, replay of stored data, and files read in chunks.
+* **Data stream task (DST)** are mining models that are updated with new points.
+  This guide uses data stream clustering (DSC) objects, which combine
+  online micro-clusters with offline macro-clusters.
+* **Evaluation** measures the quality of a clustering on new points, either at
+  one moment or continuously along the stream.
+* **Non-stationary streams** have a distribution that changes over time
+  (concept drift), so a model needs to forget outdated observations, and 
+  evaluation needs to be adapted to this setting.
 
 ## Installation
 
@@ -33,78 +46,268 @@ install.packages("stream")
 library(stream)
 ```
 
-## Create and inspect a data stream
+## Data streams (DSD)
 
-`DSD_Gaussians()` generates a stream with three clusters and a small amount of
-noise. A stream can be unbounded, so request a finite number of points with
-`get_points()`:
+### Create and inspect a stream
+
+`DSD_Gaussians()` generates points from randomly placed Gaussian clusters. Here
+we create three clusters in two dimensions, with 5% of the points being noise.
+Setting the random seed makes simulated data reproducible.
 
 ```{r create-stream}
+set.seed(1000)
 stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
-points <- get_points(stream, n = 5)
-points
+stream
 ```
 
-The returned data frame contains feature columns and information columns such
-as `.class`, which records the generating cluster. Use `info = FALSE` when you
-only need feature values. Plot a sample of the stream to see its structure:
+A stream can be unbounded, so we request a finite number of points with
+`get_points()`. Every request advances the stream, so the next call returns new
+points.
 
-```{r plot-stream, fig.width=6, fig.height=5}
+```{r get-points}
+get_points(stream, n = 5)
+```
+
+The result is a data frame with the features as columns. Columns starting with
+a dot contain additional information. `.class` is the ground truth, i.e., the
+cluster that generated the point, and is `NA` for noise. Use `info = FALSE` to
+get only the features. Plot a sample of the stream to see its structure; the
+true classes are used for colors and symbols, and noise is gray.
+
+```{r plot-stream}
 plot(stream, n = 500)
 ```
 
-## Update a clustering model
+Other generators include `DSD_BarsAndGaussians()`, `DSD_mlbenchData()` for
+the data sets in package `mlbench`, `DSD_MG()` for custom moving generators
+(see [The DSD Moving Generator](DSD_MG.html)), and `DSD_Benchmark()` which we
+use below. Use `plot(stream, method = "pc")` to project data with more than
+two dimensions onto its first two principal components.
 
-`DSC_TwoStage()` combines an online micro-clusterer with an offline
-macro-clusterer. Here, a sliding window stores recent points and k-means groups
-the window's micro-clusters into three macro-clusters. `update()` feeds 500
-points from the stream into the model:
+### Replay stored data
 
-```{r cluster-stream}
-clustering <- DSC_TwoStage(
-  micro = DSC_Window(horizon = 100),
-  macro = DSC_Kmeans(k = 3)
-)
+To test algorithms on exactly the same points, store them with `DSD_Memory()`.
+It turns a matrix or data frame into a stream, and the position can be reset
+with `reset_stream()`. This is also useful for data that is already in R. Here
+we use the daily closing prices of four European stock indices.
 
-update(clustering, stream, n = 500)
-clustering
+```{r memory}
+replayer <- DSD_Memory(EuStockMarkets, k = NA)
+replayer
+get_points(replayer, n = 3)
+replayer
+reset_stream(replayer)
+get_points(replayer, n = 1)
 ```
 
-Inspect the number of clusters and their centers, then plot the result:
+You can also store a part of a generated stream: `DSD_Memory(stream, n = 1000)`
+draws 1000 points once and then replays them.
 
-```{r inspect-clustering, fig.width=6, fig.height=5}
-nclusters(clustering, type = "micro")
-nclusters(clustering, type = "macro")
-get_centers(clustering, type = "macro")
-plot(clustering, stream, type = "both")
+### Read and write streams
+
+Parts of a stream can be written to disk with `write_stream()`. `DSD_ReadCSV()`
+reads a file in chunks, so files larger than the available memory can be
+processed one block at a time. The package includes a compressed sample of the
+KDD Cup 1999 network intrusion data. We select some of the numeric columns as
+features and use the last column as the class label.
+
+```{r read-csv}
+file <- system.file("examples", "kddcup10000.data.gz", package = "stream")
+stream_file <- DSD_ReadCSV(gzfile(file),
+  take = c(1, 5, 6, 8:11, 13:20, 23:41, .class = 42), k = 7)
+stream_file
+head(get_points(stream_file, n = 5), 3)
 ```
 
-## Evaluate on new points
+No data is read until `get_points()` is called. Writing works the other way
+around:
 
-`evaluate_static()` tests the current model on new points without updating it.
-The generated stream includes true cluster labels, so external measures such as
-purity and the adjusted Rand index can be calculated:
-
-```{r evaluate-clustering}
-evaluate_static(
-  clustering,
-  stream,
-  measure = c("purity", "crand"),
-  n = 200,
-  type = "macro",
-  assign = "macro"
-)
+```{r write-csv}
+tmp <- tempfile(fileext = ".csv")
+write_stream(DSD_Gaussians(k = 3, d = 2), tmp, n = 100, sep = ",")
+head(read.csv(tmp, header = FALSE), 3)
+unlink(tmp)
 ```
+
+### Transform a stream
+
+Stream filters (`DSF_`) transform a stream while it is read. This is
+useful for clustering, where features often need to be on the same scale.
+`DSF_Scale()` centers and scales a stream using the first 1000 points. It
+takes the stream as its first argument, so it can also be used in a pipe.
+
+```{r scale}
+stream_scaled <- DSF_Scale(stream_file, center = TRUE, scale = TRUE)
+head(get_points(stream_scaled, n = 5), 3)
+```
+
+## Cluster a stream (DSC)
+
+A data stream clustering (DSC) object holds a model and is updated
+incrementally. Most algorithms work in two stages: an *online* component
+summarizes the stream in many small **micro-clusters** while the data arrives,
+and an *offline* component groups the micro-clusters into the final
+**macro-clusters** when they are needed. Implemented algorithms include
+D-Stream (`DSC_DStream()`), DBSTREAM (`DSC_DBSTREAM()`), BIRCH (`DSC_BIRCH()`),
+and sliding windows and samples (`DSC_Window()`, `DSC_Sample()`). Macro-clustering methods such as `DSC_Kmeans()`
+and `DSC_Hierarchical()` can be used to recluster the micro-clusters.
+
+### Cluster the stream
+
+D-Stream assigns points to the cells of a grid and groups dense, adjacent
+cells. We create a model with a cell size of 0.1 on a stream with three
+clusters.
+
+```{r dstream}
+set.seed(1000)
+stream <- DSD_Gaussians(k = 3, d = 2, noise = 0.05)
+dstream <- DSC_DStream(gridsize = 0.1, Cm = 1.2)
+dstream
+```
+
+`update()` feeds points from the stream into the model. DSC objects are
+mutable, so `update()` changes `dstream` in place and no assignment is needed.
+
+```{r update}
+update(dstream, stream, n = 500)
+dstream
+```
+
+Inspect the number of clusters and their centers, then plot the micro-clusters
+(red, with size showing weight) on top of new points from the stream. D-Stream
+has built-in reclustering, and `type = "both"` also shows its macro-clusters
+as blue crosses.
+
+```{r inspect-clustering}
+nclusters(dstream, type = "micro")
+nclusters(dstream, type = "macro")
+head(get_centers(dstream, type = "micro"), 3)
+plot(dstream, stream, type = "both")
+```
+
+### Recluster the micro-clusters
+
+D-Stream's built-in reclustering joins adjacent dense cells, which can have
+trouble separating overlapping clusters. Micro-clusters from any algorithm can
+be reclustered with any macro-clustering algorithm using `recluster()`. Here we use weighted k-means with `k = 3`, where the weights are
+the numbers of points represented by the micro-clusters.
+
+```{r recluster}
+kmeans_macro <- DSC_Kmeans(k = 3, weighted = TRUE)
+recluster(kmeans_macro, dstream)
+plot(kmeans_macro, stream, type = "both")
+```
+
+Components can also be combined into a single model with `DSC_TwoStage()`,
+for example `DSC_TwoStage(micro = DSC_Window(horizon = 100), macro =
+DSC_Kmeans(k = 3))`, which is then updated like any other DSC object.
+
+## Evaluate a clustering
+
+`evaluate_static()` tests the current model on new points drawn from a stream
+without updating it. The generated stream contains the true cluster labels, so
+external measures such as purity and the adjusted Rand index (`crand`) can be
+calculated. We evaluate the micro-clusters of D-Stream, its built-in
+macro-clusters, and the macro-clusters found by k-means. Points are assigned to
+the closest micro-cluster, and for macro-clusters this assignment is translated
+to the macro-cluster that contains the micro-cluster.
+
+```{r evaluate-static}
+evaluate_static(dstream, stream, n = 500,
+  measure = c("purity", "crand"), type = "micro")
+
+evaluate_static(dstream, stream, n = 500,
+  measure = c("purity", "crand"), type = "macro")
+
+evaluate_static(kmeans_macro, stream, n = 500,
+  measure = c("purity", "crand"), type = "macro")
+```
+
+Purity of the micro-clusters is high, because each small micro-cluster covers
+points from a single true cluster. The adjusted Rand index is low, because the
+true clusters are split into many pieces. The macro-clusters match the true
+clusters much better. Purity alone rewards many small clusters, so report it
+together with the adjusted Rand index. Leave out `measure` to calculate all
+available measures, including internal measures such as the sum of squares
+(`SSQ`) that do not need the ground truth. Because the evaluation points are
+drawn fresh from the stream, repeated calls give slightly different values.
+
+## Non-stationary streams
+
+In many applications, the distribution of the data changes over time. This
+concept drift is the main challenge that sets data stream clustering apart from
+clustering static data. `DSD_Benchmark(1)` generates two clusters that move
+diagonally across the unit square and cross in the middle.
+
+```{r benchmark}
+set.seed(1000)
+stream <- DSD_Benchmark(1)
+stream
+```
+
+To see the movement, we plot four sections of 250 points and skip 1400 points
+between them. The arrows indicate the direction of travel.
+
+```{r snapshots, fig.height=7}
+old_par <- par(mfrow = c(2, 2))
+for (i in seq_len(4)) {
+  plot(stream, n = 250, xlim = c(0, 1), ylim = c(0, 1),
+    main = paste("Starting at point", 1 + (i - 1) * 1650))
+  arrows(0.15, 0.85, 0.85, 0.15, col = "gray70", lwd = 2)
+  arrows(0.15, 0.15, 0.85, 0.85, col = "gray70", lwd = 2)
+  if (i < 4) invisible(get_points(stream, n = 1400))
+}
+par(old_par)
+```
+
+A model for such a stream needs to fade out old points. Both D-Stream and
+DBSTREAM have a decay parameter `lambda` for this. Larger values forget faster.
+`animate_data()` and `animate_cluster()` create animations of a stream and a
+clustering as it develops (see [Evaluating Non-stationary Clusters](moving_data.html)).
+
+### Evaluate over time with prequential evaluation
+
+A single score computed at one moment cannot show how well a model follows a
+changing stream. `evaluate_stream()` uses *prequential* (test-then-train)
+evaluation. It repeatedly evaluates the model on the next `horizon` points and
+only then updates the model with them, so every point is used for testing
+before it is used for learning. The result is a time series of scores.
+
+```{r evaluate-stream}
+set.seed(1000)
+stream <- DSD_Benchmark(1)
+dstream <- DSC_DStream(gridsize = 0.05, lambda = 0.01)
+ev <- evaluate_stream(dstream, stream, horizon = 100, n = 5000,
+  measure = c("numMicroClusters", "purity"))
+head(ev)
+```
+
+The first row is computed before the model has seen any points, so it is not
+meaningful. Plot the micro-cluster purity over the stream.
+
+```{r plot-evaluation}
+plot(ev[, "points"], ev[, "purity"], type = "l",
+  xlab = "Points processed", ylab = "Average purity")
+```
+
+Purity is lowest around the middle of the stream, where the two true clusters
+overlap, and is higher again once they separate. The vignette
+[Evaluating Non-stationary Clusters](moving_data.html) compares several
+algorithms on this stream, uses the adjusted Rand index, and shows how to
+tune the forgetting rate.
 
 ## Further reading
 
 * [Clustering data streams with DBSTREAM](DBSTREAM.html) explains micro-clusters
   and shared-density reclustering.
-* [Clustering moving data](moving_data.html) compares clustering methods on an
-  evolving stream.
+* [Evaluating Non-stationary Clusters](moving_data.html) compares clustering
+  methods on an evolving stream using prequential evaluation.
 * [The DSD Moving Generator](DSD_MG.html) shows how to construct custom evolving
   streams.
+* The [function reference](https://michael.hahsler.net/stream/reference/index.html).
 
-See the [function reference](../reference/index.html) and the package vignettes
-for details on data generators, stream filters, clustering methods, evaluation,
-and extending `stream` with new components.
+## References
+
+Hahsler, M., Bolaños, M., and Forrest, J. (2017). Introduction to stream: An
+extensible framework for data stream clustering research with R.
+*Journal of Statistical Software*, 76(14), 1–50. doi:10.18637/jss.v076.i14.
