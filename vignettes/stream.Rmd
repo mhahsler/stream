@@ -263,7 +263,7 @@ par(old_par)
 A model for such a stream needs to fade out old points. Both D-Stream and
 DBSTREAM have a decay parameter `lambda` for this. Larger values forget faster.
 `animate_data()` and `animate_cluster()` create animations of a stream and a
-clustering as it develops (see [Evaluating Non-stationary Clusters](moving_data.html)).
+clustering as it develops (see [Evaluating Non-stationary Clusters](evaluation_non-stationary.html)).
 
 ### Evaluate over time with prequential evaluation
 
@@ -292,7 +292,7 @@ plot(ev[, "points"], ev[, "purity"], type = "l",
 
 Purity is lowest around the middle of the stream, where the two true clusters
 overlap, and is higher again once they separate. The vignette
-[Evaluating Non-stationary Clusters](moving_data.html) compares several
+[Evaluating Non-stationary Clusters](evaluation_non-stationary.html) compares several
 algorithms on this stream, uses the adjusted Rand index, and shows how to
 tune the forgetting rate.
 
@@ -300,7 +300,7 @@ tune the forgetting rate.
 
 * [Clustering data streams with DBSTREAM](DBSTREAM.html) explains micro-clusters
   and shared-density reclustering.
-* [Evaluating Non-stationary Clusters](moving_data.html) compares clustering
+* [Evaluating Non-stationary Clusters](evaluation_non-stationary.html) compares clustering
   methods on an evolving stream using prequential evaluation.
 * [The DSD Moving Generator](DSD_MG.html) shows how to construct custom evolving
   streams.

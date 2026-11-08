@@ -1,4 +1,4 @@
-# stream 2.0.7 (unpublished)
+# stream 2.0.7 (11/07/26)
 
 ## Bugfix
 * Fixed BICO's optional k-means projection search to use precomputed center

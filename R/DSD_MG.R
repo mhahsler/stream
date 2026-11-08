@@ -18,25 +18,45 @@
 
 #' DSD Moving Generator
 #'
-#' Creates an evolving DSD consisting of several [MGC]s, each representing a moving cluster.
+#' Creates an evolving data stream generator from a list of Moving Generator
+#' Clusters ([MGC]s), each representing one cluster that can be static or
+#' change over time.
 #'
-#' This DSD is able to generate complex datasets that are able to evolve over a
-#' period of time. Its behavior is determined by a set of [MGC]s, each representing
-#' a moving cluster.
+#' `DSD_MG` is able to generate complex data streams with known ground truth
+#' that evolve over a period of time: clusters can move, grow, shrink, appear,
+#' disappear, split or merge. The behavior of the stream is determined by its
+#' components, the [MGC]s. See [MGC] for the available components, how
+#' density and generator time work, and how to define cluster shapes.
+#'
+#' Each point is returned with a `.class` column containing the label of the
+#' component that produced it. By default, each component gets a new integer
+#' label. Several components can share a label to form one ground-truth
+#' cluster (e.g., to create non-convex clusters). Noise components
+#' ([MGC_Noise]) get the label `NA` unless a label is specified.
+#'
+#' The generator can be modified after it was created: `add_cluster()` adds a
+#' component, `remove_cluster()` removes the component with a given index in
+#' the list returned by `get_clusters()`. `reset_stream()` sets the generator
+#' time back (to 1 by default). Note that streams and components are mutable
+#' objects. Modifying a component also affects every stream that contains it.
 #'
 #' @family DSD
 #'
-#' @param dimension the dimension of the DSD object
-#' @param ... initial set of [MGC]s
+#' @param dimension the dimension of the DSD object. All [MGC]s added to the
+#' stream need to have the same dimensionality.
+#' @param ... initial set of [MGC]s.
 #' @param x A `DSD_MG` object.
-#' @param c The cluster that should be added to the `DSD_MG` object.
+#' @param c The cluster ([MGC]) that should be added to the `DSD_MG` object.
 #' @param i The index of the cluster that should be removed from the
-#' `DSD_MG` object.
+#' `DSD_MG` object. The index refers to the list returned by `get_clusters()`.
 #' @param label,labels integer representing the cluster label. `NA`
 #' represents noise.  If labels are not specified, then each new cluster gets a
-#' new label.
+#' new label. `labels` is a vector with one label for each cluster in `...`.
 #' @param description An optional string used by `print()` to describe the
 #' data generator.
+#' @return `DSD_MG()` returns a `DSD_MG` object (a [DSD]). `add_cluster()` and
+#' `remove_cluster()` modify and invisibly return the stream, and
+#' `get_clusters()` returns the list of [MGC] components.
 #' @seealso [MGC] for types of moving clusters.
 #' @author Matthew Bolanos
 #' @examples

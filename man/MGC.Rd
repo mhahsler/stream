@@ -43,81 +43,131 @@ MGC_Static(density = 1, center, parameter, shape = Shape_Gaussian)
 \arguments{
 \item{...}{Further arguments.}
 
-\item{density}{The density of the cluster. For \code{MGC_Function}, this
-attribute is a function and defines the density of a cluster (i.e., how many points it creates)
-at each given timestamp.}
+\item{density}{The relative density of the cluster, i.e., how many points it
+produces compared to the other components (see Details). For \code{MGC_Function},
+\code{density} is a function of time returning the density. For \code{keyframe()}
+and \code{add_keyframe()} it is the density at the keyframe.}
 
-\item{center}{A list that defines the center of the cluster. The list should
-have a length equal to the dimensionality. For \code{MGC_Function}, this
-list consists of functions that define the movement of the cluster. For
-\code{MGC_Random}, this attribute defines the beginning location for the
-\code{MGC} before it begins moving.}
+\item{center}{The center of the cluster as a numeric vector with one value
+per dimension. For \code{MGC_Function}, \code{center} is a function of time that
+returns such a vector. For \code{MGC_Random}, this is the starting location
+of the cluster before it begins to move. For \code{keyframe()} and
+\code{add_keyframe()} it is the center at the keyframe.}
 
 \item{parameter}{Parameters for the shape. For the default shape
 \code{Shape_Gaussian} the parameter is the standard deviation, one per
-dimension. If a single value is specified then it is recycled for all
-dimensions.}
+dimension. For \code{Shape_Block}, it is the side length. If a single value is
+specified then it is recycled for all dimensions. For \code{MGC_Function},
+\code{parameter} is a function of time returning the parameter. For \code{keyframe()}
+and \code{add_keyframe()} it is the parameter at the keyframe.}
 
-\item{shape}{A function that creates the shape of the cluster. It receives
-the \code{parameter} argument described above. Available functions are
-\code{Shape_Gaussian} (the parameters are a vector containing standard
-deviations) and \code{Shape_Block} (parameters are the dimensions of the
-uniform block).}
+\item{shape}{A function that creates the shape of the cluster. It is called
+with the arguments \code{center} and \code{parameter} and returns a single point.
+Available functions are \code{Shape_Gaussian} (the parameters are standard
+deviations) and \code{Shape_Block} (the parameters are the side lengths of the
+uniform block). See Details for how to define a new shape.}
 
 \item{dimension}{Dimensionality of the data stream.}
 
-\item{keyframelist}{a list of keyframes to initialize the \code{MGC_Linear}
-object with.}
+\item{keyframelist}{a list of keyframes created with \code{keyframe()} to
+initialize the \code{MGC_Linear} object with.}
 
-\item{time}{The time stamp the keyframe should be located or which keyframe
-should be removed.}
+\item{time}{The time stamp the keyframe is located at or the time stamp of
+the keyframe that should be removed. Adding a keyframe at an existing time
+replaces the existing keyframe with a warning.}
 
-\item{reset}{Should the cluster reset to the first keyframe (time 0) after
-this keyframe is finished?}
+\item{reset}{Should the trajectory restart at the first keyframe after
+this keyframe is reached? Only the first keyframe with \code{reset = TRUE} is
+used.}
 
 \item{x}{An object of class \code{MGC_Linear}.}
 
-\item{range}{The area in which the noise should appear.}
+\item{range}{The area in which the noise should appear as a matrix with one
+row per dimension containing the minimum and maximum, e.g.,
+\code{rbind(c(0, 1), c(-1, 1))} for two dimensions.}
 
-\item{randomness}{The maximum amount the cluster will move during one time
-step.}
+\item{randomness}{The maximum amount the cluster center will move in each
+dimension during one time step (a uniform step in
+\verb{[-randomness, randomness]}).}
+}
+\value{
+\code{MGC_Static()}, \code{MGC_Noise()}, \code{MGC_Linear()}, \code{MGC_Function()} and
+\code{MGC_Random()} return an \code{MGC} object that can be added to a \link{DSD_MG}
+stream. \code{keyframe()} returns a keyframe (a list), \code{get_keyframes()} returns
+a data.frame with the keyframes of an \code{MGC_Linear} object, and \code{add_keyframe()}
+and \code{remove_keyframe()} modify the \code{MGC_Linear} object (which is a mutable
+object, so a stream that contains it is also affected).
+\code{Shape_Gaussian()} and \code{Shape_Block()} return a single point as a numeric
+vector.
 }
 \description{
-Creates an evolving cluster for use as a component of a \link{DSD_MG} data stream.
+Components for building evolving clusters for the \link{DSD_MG} data stream
+generator. Each Moving Generator Cluster (\code{MGC}) describes a single cluster:
+where it is (its center), how large it is and what shape it has (the shape
+parameters), and how many points it produces (its density). Moving
+components also describe how these properties change over time.
 }
 \details{
-An \code{MGC} describes a single cluster for use as a component in a \link{DSD_MG}.
-Different \link{MGC}s allow users to express
-different cluster behaviors within a single data stream. Static, (i.e., not moving)
-clusters are defined as:
+A \link{DSD_MG} stream is assembled from a list of \code{MGC}s. Mixing components
+with different behavior creates complex evolving streams from simple
+building blocks. All components of a stream must have the stream's
+dimensionality.
+
+Static (i.e., not moving) components are:
 \itemize{
-\item \code{MGC_Static} cluster positions are fixed
-\item \code{MGC_Noise} allows users to add random noise.
+\item \code{MGC_Static} is a stationary cluster with fixed density, center and
+shape parameters.
+\item \code{MGC_Noise} produces uniform random noise in the area given by \code{range}.
+It is often used to create individual random outliers.
 }
 
-Moving (evolving) clusters are defined as:
+Moving (evolving) components are:
 \itemize{
-\item \code{MGC_Linear} creates an evolving cluster whose behavior is determined by
-keyframes. Several keyframe
-functions are provided to create, add and remove keyframes.
-See Examples section for details.
+\item \code{MGC_Linear} creates an evolving cluster whose density, center and shape
+parameters are linearly interpolated between keyframes. Before its first
+keyframe the component produces no points. After its last keyframe it
+keeps the attributes of that keyframe, unless a keyframe with
+\code{reset = TRUE} makes the trajectory repeat.
+\code{keyframe()} creates a keyframe (for the \code{keyframelist} argument),
+\code{add_keyframe()} and \code{remove_keyframe()} modify the keyframes of an
+existing component, and \code{get_keyframes()} returns them as a data.frame.
 \item \code{MGC_Function} allows users to specify \code{density}, \code{center}, and \code{parameter}
-as a function of time.
+as functions of time. This allows arbitrary trajectories.
 \item \code{MGC_Random} creates a cluster that follows a random walk.
 }
 
-Cluster shapes can be specified using the functions:
+\strong{Time and density.} Generation in \link{DSD_MG} is driven by a generator time
+that advances as points are drawn. To produce a point, \code{DSD_MG} chooses a
+component with a probability proportional to the current densities of all
+components and then draws a point from the component's shape. The
+density is therefore a relative value that determines the chance of choosing
+a component and, through the total density, how fast time advances: with a
+total density of 100, approximately 100 points advance the generator by one
+time unit. Time-dependent arguments (functions and keyframes) refer to this
+generator time, which starts at 1.
+
+\strong{Cluster shapes.} The shape of a cluster is given by the \code{shape} argument.
+Available shapes are:
 \itemize{
-\item \code{Shape_Gaussian}
-\item \code{Shape_Block}
+\item \code{Shape_Gaussian} (the default) draws from a multivariate normal
+distribution with independent dimensions. \code{parameter} is the standard
+deviation, one per dimension.
+\item \code{Shape_Block} draws uniformly from a block (hyper-rectangle) centered at
+\code{center}. \code{parameter} gives the side length for each dimension.
 }
 
-New shapes can be defined as a function with parameters \code{center} and \code{parameter} that returns a single
-point. Here is an example:
+If a single value is given as \code{parameter}, it is recycled for all dimensions.
+
+New shapes can be defined as a function with arguments \code{center} and
+\code{parameter} that returns a single point (a numeric vector with the
+dimensionality of the stream). Here is the definition of the Gaussian
+shape as an example:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{Shape_Gaussian <- function(center, parameter)
    rnorm(length(center), mean = center, sd = parameter)
 }\if{html}{\out{</div>}}
+
+See the examples below for a custom ring shape in two dimensions.
 }
 \examples{
 MGC()
@@ -196,6 +246,20 @@ animate_data(stream, 5000,
              xlim = c(0, 100), ylim = c(0, 100),
              horizon = 100)
 }
+
+### define your own shape: a ring in two dimensions where `parameter` is the
+### radius. Points are spread uniformly around the center with a little noise.
+Shape_Ring <- function(center, parameter) {
+  angle <- runif(1, 0, 2 * pi)
+  center + rnorm(1, mean = parameter[1], sd = 0.02) * c(cos(angle), sin(angle))
+}
+
+stream <- DSD_MG(dimension = 2,
+  MGC_Static(density = 50, center = c(0.5, 0.5), parameter = 0.3,
+    shape = Shape_Ring),
+  MGC_Static(density = 25, center = c(0.5, 0.5), parameter = 0.05)
+)
+plot(stream, n = 500, xlim = c(0, 1), ylim = c(0, 1))
 
 ### two fixed and a moving cluster
 stream <- DSD_MG(dimension = 2,

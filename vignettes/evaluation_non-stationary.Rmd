@@ -1,11 +1,11 @@
 ---
-title: "Evaluating Non-stationary Clusters"
+title: "Cluster Evaluation for Non-stationary Data Streams"
 author: "Michael Hahsler"
 output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Evaluating Non-stationary Clusters}
+  %\VignetteIndexEntry{Cluster Evaluation for Non-stationary Data Streams}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

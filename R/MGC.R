@@ -18,70 +18,119 @@
 
 #' Moving Generator Cluster
 #'
-#' Creates an evolving cluster for use as a component of a [DSD_MG] data stream.
+#' Components for building evolving clusters for the [DSD_MG] data stream
+#' generator. Each Moving Generator Cluster (`MGC`) describes a single cluster:
+#' where it is (its center), how large it is and what shape it has (the shape
+#' parameters), and how many points it produces (its density). Moving
+#' components also describe how these properties change over time.
 #'
-#' An `MGC` describes a single cluster for use as a component in a [DSD_MG].
-#' Different [MGC]s allow users to express
-#' different cluster behaviors within a single data stream. Static, (i.e., not moving)
-#' clusters are defined as:
+#' A [DSD_MG] stream is assembled from a list of `MGC`s. Mixing components
+#' with different behavior creates complex evolving streams from simple
+#' building blocks. All components of a stream must have the stream's
+#' dimensionality.
 #'
-#'   - `MGC_Static` cluster positions are fixed
+#' Static (i.e., not moving) components are:
 #'
-#'   - `MGC_Noise` allows users to add random noise.
+#'   - `MGC_Static` is a stationary cluster with fixed density, center and
+#'      shape parameters.
 #'
-#' Moving (evolving) clusters are defined as:
+#'   - `MGC_Noise` produces uniform random noise in the area given by `range`.
+#'      It is often used to create individual random outliers.
 #'
-#'   - `MGC_Linear` creates an evolving cluster whose behavior is determined by
-#'      keyframes. Several keyframe
-#'      functions are provided to create, add and remove keyframes.
-#'      See Examples section for details.
+#' Moving (evolving) components are:
+#'
+#'   - `MGC_Linear` creates an evolving cluster whose density, center and shape
+#'      parameters are linearly interpolated between keyframes. Before its first
+#'      keyframe the component produces no points. After its last keyframe it
+#'      keeps the attributes of that keyframe, unless a keyframe with
+#'      `reset = TRUE` makes the trajectory repeat.
+#'      `keyframe()` creates a keyframe (for the `keyframelist` argument),
+#'      `add_keyframe()` and `remove_keyframe()` modify the keyframes of an
+#'      existing component, and `get_keyframes()` returns them as a data.frame.
 #'
 #'   - `MGC_Function` allows users to specify `density`, `center`, and `parameter`
-#'      as a function of time.
+#'      as functions of time. This allows arbitrary trajectories.
 #'
 #'   - `MGC_Random` creates a cluster that follows a random walk.
 #'
-#' Cluster shapes can be specified using the functions:
+#' **Time and density.** Generation in [DSD_MG] is driven by a generator time
+#' that advances as points are drawn. To produce a point, `DSD_MG` chooses a
+#' component with a probability proportional to the current densities of all
+#' components and then draws a point from the component's shape. The
+#' density is therefore a relative value that determines the chance of choosing
+#' a component and, through the total density, how fast time advances: with a
+#' total density of 100, approximately 100 points advance the generator by one
+#' time unit. Time-dependent arguments (functions and keyframes) refer to this
+#' generator time, which starts at 1.
 #'
-#'  - `Shape_Gaussian`
-#'  - `Shape_Block`
+#' **Cluster shapes.** The shape of a cluster is given by the `shape` argument.
+#' Available shapes are:
 #'
-#' New shapes can be defined as a function with parameters `center` and `parameter` that returns a single
-#' point. Here is an example:
+#'  - `Shape_Gaussian` (the default) draws from a multivariate normal
+#'     distribution with independent dimensions. `parameter` is the standard
+#'     deviation, one per dimension.
+#'  - `Shape_Block` draws uniformly from a block (hyper-rectangle) centered at
+#'     `center`. `parameter` gives the side length for each dimension.
+#'
+#' If a single value is given as `parameter`, it is recycled for all dimensions.
+#'
+#' New shapes can be defined as a function with arguments `center` and
+#' `parameter` that returns a single point (a numeric vector with the
+#' dimensionality of the stream). Here is the definition of the Gaussian
+#' shape as an example:
 #' ```
 #' Shape_Gaussian <- function(center, parameter)
 #'    rnorm(length(center), mean = center, sd = parameter)
 #' ```
 #'
-#' @param center A list that defines the center of the cluster. The list should
-#' have a length equal to the dimensionality. For `MGC_Function`, this
-#' list consists of functions that define the movement of the cluster. For
-#' `MGC_Random`, this attribute defines the beginning location for the
-#' `MGC` before it begins moving.
-#' @param density The density of the cluster. For `MGC_Function`, this
-#' attribute is a function and defines the density of a cluster (i.e., how many points it creates)
-#' at each given timestamp.
+#' See the examples below for a custom ring shape in two dimensions.
+#'
+#'
+#' @param center The center of the cluster as a numeric vector with one value
+#' per dimension. For `MGC_Function`, `center` is a function of time that
+#' returns such a vector. For `MGC_Random`, this is the starting location
+#' of the cluster before it begins to move. For `keyframe()` and
+#' `add_keyframe()` it is the center at the keyframe.
+#' @param density The relative density of the cluster, i.e., how many points it
+#' produces compared to the other components (see Details). For `MGC_Function`,
+#' `density` is a function of time returning the density. For `keyframe()`
+#' and `add_keyframe()` it is the density at the keyframe.
 #' @param dimension Dimensionality of the data stream.
-#' @param keyframelist a list of keyframes to initialize the `MGC_Linear`
-#' object with.
+#' @param keyframelist a list of keyframes created with `keyframe()` to
+#' initialize the `MGC_Linear` object with.
 #' @param parameter Parameters for the shape. For the default shape
 #' `Shape_Gaussian` the parameter is the standard deviation, one per
-#' dimension. If a single value is specified then it is recycled for all
-#' dimensions.
-#' @param randomness The maximum amount the cluster will move during one time
-#' step.
-#' @param range The area in which the noise should appear.
-#' @param reset Should the cluster reset to the first keyframe (time 0) after
-#' this keyframe is finished?
-#' @param shape A function that creates the shape of the cluster. It receives
-#' the `parameter` argument described above. Available functions are
-#' `Shape_Gaussian` (the parameters are a vector containing standard
-#' deviations) and `Shape_Block` (parameters are the dimensions of the
-#' uniform block).
-#' @param time The time stamp the keyframe should be located or which keyframe
-#' should be removed.
+#' dimension. For `Shape_Block`, it is the side length. If a single value is
+#' specified then it is recycled for all dimensions. For `MGC_Function`,
+#' `parameter` is a function of time returning the parameter. For `keyframe()`
+#' and `add_keyframe()` it is the parameter at the keyframe.
+#' @param randomness The maximum amount the cluster center will move in each
+#' dimension during one time step (a uniform step in
+#' `[-randomness, randomness]`).
+#' @param range The area in which the noise should appear as a matrix with one
+#' row per dimension containing the minimum and maximum, e.g.,
+#' `rbind(c(0, 1), c(-1, 1))` for two dimensions.
+#' @param reset Should the trajectory restart at the first keyframe after
+#' this keyframe is reached? Only the first keyframe with `reset = TRUE` is
+#' used.
+#' @param shape A function that creates the shape of the cluster. It is called
+#' with the arguments `center` and `parameter` and returns a single point.
+#' Available functions are `Shape_Gaussian` (the parameters are standard
+#' deviations) and `Shape_Block` (the parameters are the side lengths of the
+#' uniform block). See Details for how to define a new shape.
+#' @param time The time stamp the keyframe is located at or the time stamp of
+#' the keyframe that should be removed. Adding a keyframe at an existing time
+#' replaces the existing keyframe with a warning.
 #' @param x An object of class `MGC_Linear`.
 #' @param ... Further arguments.
+#' @return `MGC_Static()`, `MGC_Noise()`, `MGC_Linear()`, `MGC_Function()` and
+#' `MGC_Random()` return an `MGC` object that can be added to a [DSD_MG]
+#' stream. `keyframe()` returns a keyframe (a list), `get_keyframes()` returns
+#' a data.frame with the keyframes of an `MGC_Linear` object, and `add_keyframe()`
+#' and `remove_keyframe()` modify the `MGC_Linear` object (which is a mutable
+#' object, so a stream that contains it is also affected).
+#' `Shape_Gaussian()` and `Shape_Block()` return a single point as a numeric
+#' vector.
 #' @author Matthew Bolanos
 #' @seealso [DSD_MG] for details on how to use an `MGC` within
 #' a [DSD].
@@ -162,6 +211,20 @@
 #'              xlim = c(0, 100), ylim = c(0, 100),
 #'              horizon = 100)
 #' }
+#'
+#' ### define your own shape: a ring in two dimensions where `parameter` is the
+#' ### radius. Points are spread uniformly around the center with a little noise.
+#' Shape_Ring <- function(center, parameter) {
+#'   angle <- runif(1, 0, 2 * pi)
+#'   center + rnorm(1, mean = parameter[1], sd = 0.02) * c(cos(angle), sin(angle))
+#' }
+#'
+#' stream <- DSD_MG(dimension = 2,
+#'   MGC_Static(density = 50, center = c(0.5, 0.5), parameter = 0.3,
+#'     shape = Shape_Ring),
+#'   MGC_Static(density = 25, center = c(0.5, 0.5), parameter = 0.05)
+#' )
+#' plot(stream, n = 500, xlim = c(0, 1), ylim = c(0, 1))
 #'
 #' ### two fixed and a moving cluster
 #' stream <- DSD_MG(dimension = 2,

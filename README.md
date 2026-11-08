@@ -149,11 +149,7 @@ evaluate_static(dsc, stream, n = 100)
     ##                    FM               Jaccard                    PS 
     ##                0.3159                0.1470                0.0541 
     ##                    vi 
-    ##                2.2264 
-    ## attr(,"type")
-    ## [1] "micro"
-    ## attr(,"assign")
-    ## [1] "micro"
+    ##                2.2264
 
 Outlier detection using DBSTREAM which uses micro-clusters with a given
 radius.
@@ -175,11 +171,7 @@ evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "n
     ## Points were assigned to micro-clusters.
     ## 
     ##      numPoints    noiseActual noisePredicted noisePrecision 
-    ##            100              7              7              1 
-    ## attr(,"type")
-    ## [1] "micro"
-    ## attr(,"assign")
-    ## [1] "micro"
+    ##            100              7              7              1
 
 Preparing complete stream process pipelines that can be run using a
 single `update()` call.

@@ -19,31 +19,53 @@ remove_cluster(x, i)
 \method{add_cluster}{DSD_MG}(x, c, label = NULL)
 }
 \arguments{
-\item{dimension}{the dimension of the DSD object}
+\item{dimension}{the dimension of the DSD object. All \link{MGC}s added to the
+stream need to have the same dimensionality.}
 
-\item{...}{initial set of \link{MGC}s}
+\item{...}{initial set of \link{MGC}s.}
 
 \item{description}{An optional string used by \code{print()} to describe the
 data generator.}
 
 \item{x}{A \code{DSD_MG} object.}
 
-\item{c}{The cluster that should be added to the \code{DSD_MG} object.}
+\item{c}{The cluster (\link{MGC}) that should be added to the \code{DSD_MG} object.}
 
 \item{label, labels}{integer representing the cluster label. \code{NA}
 represents noise.  If labels are not specified, then each new cluster gets a
-new label.}
+new label. \code{labels} is a vector with one label for each cluster in \code{...}.}
 
 \item{i}{The index of the cluster that should be removed from the
-\code{DSD_MG} object.}
+\code{DSD_MG} object. The index refers to the list returned by \code{get_clusters()}.}
+}
+\value{
+\code{DSD_MG()} returns a \code{DSD_MG} object (a \link{DSD}). \code{add_cluster()} and
+\code{remove_cluster()} modify and invisibly return the stream, and
+\code{get_clusters()} returns the list of \link{MGC} components.
 }
 \description{
-Creates an evolving DSD consisting of several \link{MGC}s, each representing a moving cluster.
+Creates an evolving data stream generator from a list of Moving Generator
+Clusters (\link{MGC}s), each representing one cluster that can be static or
+change over time.
 }
 \details{
-This DSD is able to generate complex datasets that are able to evolve over a
-period of time. Its behavior is determined by a set of \link{MGC}s, each representing
-a moving cluster.
+\code{DSD_MG} is able to generate complex data streams with known ground truth
+that evolve over a period of time: clusters can move, grow, shrink, appear,
+disappear, split or merge. The behavior of the stream is determined by its
+components, the \link{MGC}s. See \link{MGC} for the available components, how
+density and generator time work, and how to define cluster shapes.
+
+Each point is returned with a \code{.class} column containing the label of the
+component that produced it. By default, each component gets a new integer
+label. Several components can share a label to form one ground-truth
+cluster (e.g., to create non-convex clusters). Noise components
+(\link{MGC_Noise}) get the label \code{NA} unless a label is specified.
+
+The generator can be modified after it was created: \code{add_cluster()} adds a
+component, \code{remove_cluster()} removes the component with a given index in
+the list returned by \code{get_clusters()}. \code{reset_stream()} sets the generator
+time back (to 1 by default). Note that streams and components are mutable
+objects. Modifying a component also affects every stream that contains it.
 }
 \examples{
 ### create an empty DSD_MG
