@@ -1,6 +1,6 @@
 # Changelog
 
-## stream 2.0.7 (unpublished)
+## stream 2.0.7 (11/07/26)
 
 ### Bugfix
 

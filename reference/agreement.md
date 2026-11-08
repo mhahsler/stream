@@ -56,5 +56,5 @@ agreement(actual, predicted)
 # No agreement
 predicted <- sample(predicted)
 agreement(actual, predicted)
-#> [1] -0.25
+#> [1] 0.1666667
 ```

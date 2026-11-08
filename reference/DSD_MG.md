@@ -1,8 +1,9 @@
 # DSD Moving Generator
 
-Creates an evolving DSD consisting of several
-[MGC](https://michael.hahsler.net/stream/reference/MGC.md)s, each
-representing a moving cluster.
+Creates an evolving data stream generator from a list of Moving
+Generator Clusters
+([MGC](https://michael.hahsler.net/stream/reference/MGC.md)s), each
+representing one cluster that can be static or change over time.
 
 ## Usage
 
@@ -23,12 +24,14 @@ add_cluster(x, c, label = NULL)
 
 - dimension:
 
-  the dimension of the DSD object
+  the dimension of the DSD object. All
+  [MGC](https://michael.hahsler.net/stream/reference/MGC.md)s added to
+  the stream need to have the same dimensionality.
 
 - ...:
 
   initial set of
-  [MGC](https://michael.hahsler.net/stream/reference/MGC.md)s
+  [MGC](https://michael.hahsler.net/stream/reference/MGC.md)s.
 
 - description:
 
@@ -42,24 +45,55 @@ add_cluster(x, c, label = NULL)
 
 - c:
 
-  The cluster that should be added to the `DSD_MG` object.
+  The cluster
+  ([MGC](https://michael.hahsler.net/stream/reference/MGC.md)) that
+  should be added to the `DSD_MG` object.
 
 - label, labels:
 
   integer representing the cluster label. `NA` represents noise. If
   labels are not specified, then each new cluster gets a new label.
+  `labels` is a vector with one label for each cluster in `...`.
 
 - i:
 
   The index of the cluster that should be removed from the `DSD_MG`
-  object.
+  object. The index refers to the list returned by `get_clusters()`.
+
+## Value
+
+`DSD_MG()` returns a `DSD_MG` object (a
+[DSD](https://michael.hahsler.net/stream/reference/DSD.md)).
+`add_cluster()` and `remove_cluster()` modify and invisibly return the
+stream, and `get_clusters()` returns the list of
+[MGC](https://michael.hahsler.net/stream/reference/MGC.md) components.
 
 ## Details
 
-This DSD is able to generate complex datasets that are able to evolve
-over a period of time. Its behavior is determined by a set of
-[MGC](https://michael.hahsler.net/stream/reference/MGC.md)s, each
-representing a moving cluster.
+`DSD_MG` is able to generate complex data streams with known ground
+truth that evolve over a period of time: clusters can move, grow,
+shrink, appear, disappear, split or merge. The behavior of the stream is
+determined by its components, the
+[MGC](https://michael.hahsler.net/stream/reference/MGC.md)s. See
+[MGC](https://michael.hahsler.net/stream/reference/MGC.md) for the
+available components, how density and generator time work, and how to
+define cluster shapes.
+
+Each point is returned with a `.class` column containing the label of
+the component that produced it. By default, each component gets a new
+integer label. Several components can share a label to form one
+ground-truth cluster (e.g., to create non-convex clusters). Noise
+components
+([MGC_Noise](https://michael.hahsler.net/stream/reference/MGC.md)) get
+the label `NA` unless a label is specified.
+
+The generator can be modified after it was created: `add_cluster()` adds
+a component, `remove_cluster()` removes the component with a given index
+in the list returned by `get_clusters()`.
+[`reset_stream()`](https://michael.hahsler.net/stream/reference/reset_stream.md)
+sets the generator time back (to 1 by default). Note that streams and
+components are mutable objects. Modifying a component also affects every
+stream that contains it.
 
 ## See also
 

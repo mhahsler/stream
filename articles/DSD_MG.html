@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream • stream</title>
+<title>DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation • stream</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -20,7 +20,7 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -45,8 +45,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation</a></li>
+    <li><a class="dropdown-item" href="../articles/evaluation_non-stationary.html">Cluster Evaluation for Non-stationary Data Streams</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -68,7 +68,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation</h1>
                         <h4 data-toc-skip class="author">Michael
 Hahsler</h4>
             
@@ -82,11 +82,11 @@ Hahsler</h4>
 <p>Testing stream clustering algorithms on non-stationary data requires
 streams where the ground truth is known and the way the data changes can
 be controlled: clusters that move, grow, shrink, appear, disappear,
-split or merge. The <code><a href="../reference/DSD_MG.html">DSD_MG()</a></code> generator, the Moving
-Generator, provides a flexible framework for building such streams
-<strong>from individual components</strong>.</p>
+split or merge. <code><a href="../reference/DSD_MG.html">DSD_MG()</a></code>, the Data Stream Moving Cluster
+Generator provides a flexible framework for building such streams from
+individual components.</p>
 <p>Instead of one fixed model, a <code>DSD_MG</code> stream is assembled
-from a list of <strong>Moving Generator Clusters</strong>
+from a list of <strong>Moving Generator Cluster</strong> objects
 (<code>MGC</code>s). Each <code>MGC</code> is a small, independent
 component that describes a single cluster:</p>
 <ul>
@@ -123,26 +123,28 @@ must have the stream’s dimensionality.</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code><a href="../reference/MGC.html">MGC_Static()</a></code></td>
-<td align="left">A cluster at a fixed position.</td>
+<td align="left">A stationary cluster with fixed properties (size,
+position, etc.).</td>
 </tr>
 <tr class="even">
-<td align="left"><code><a href="../reference/MGC.html">MGC_Noise()</a></code></td>
-<td align="left">Uniform random noise in a given area.</td>
-</tr>
-<tr class="odd">
 <td align="left"><code><a href="../reference/MGC.html">MGC_Linear()</a></code></td>
 <td align="left">A cluster whose center, density, and shape parameters
-are interpolated between <strong>keyframes</strong>.</td>
+are linearly interpolated between <strong>keyframes</strong>.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/MGC.html">MGC_Function()</a></code></td>
 <td align="left">A cluster where density, center, and shape parameters
 are <strong>functions of time</strong>.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/MGC.html">MGC_Random()</a></code></td>
 <td align="left">A cluster that follows a <strong>random
 walk</strong>.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/MGC.html">MGC_Noise()</a></code></td>
+<td align="left">Uniform random noise in a given area often used to
+create individual random outliers.</td>
 </tr>
 </tbody>
 </table>
@@ -412,8 +414,8 @@ can be used like any other stream to cluster and evaluate, for example
 with <code><a href="../reference/update.html">update()</a></code> and <code><a href="../reference/evaluate.html">evaluate_stream()</a></code>. Because
 the generator knows which component produced each point, the true labels
 are available for external evaluation, even when the clusters move. See
-<a href="moving_data.html">Evaluating Non-stationary Clusters</a> for
-how to evaluate clustering on moving data and <a href="DBSTREAM.html">Clustering data streams with DBSTREAM</a> for a
+<a href="evaluation_non-stationary.html">Evaluating Non-stationary
+Clusters</a> for how to evaluate clustering on moving data and <a href="DBSTREAM.html">Clustering data streams with DBSTREAM</a> for a
 clustering algorithm that is able to follow such streams.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

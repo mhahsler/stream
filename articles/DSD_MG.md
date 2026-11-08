@@ -1,15 +1,15 @@
-# The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream
+# DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation
 
 Testing stream clustering algorithms on non-stationary data requires
 streams where the ground truth is known and the way the data changes can
 be controlled: clusters that move, grow, shrink, appear, disappear,
-split or merge. The
-[`DSD_MG()`](https://michael.hahsler.net/stream/reference/DSD_MG.md)
-generator, the Moving Generator, provides a flexible framework for
-building such streams **from individual components**.
+split or merge.
+[`DSD_MG()`](https://michael.hahsler.net/stream/reference/DSD_MG.md),
+the Data Stream Moving Cluster Generator provides a flexible framework
+for building such streams from individual components.
 
 Instead of one fixed model, a `DSD_MG` stream is assembled from a list
-of **Moving Generator Clusters** (`MGC`s). Each `MGC` is a small,
+of **Moving Generator Cluster** objects (`MGC`s). Each `MGC` is a small,
 independent component that describes a single cluster:
 
 - *where* it is (its center),
@@ -34,11 +34,11 @@ have the stream’s dimensionality.
 
 | Component | Behavior |
 |:---|:---|
-| [`MGC_Static()`](https://michael.hahsler.net/stream/reference/MGC.md) | A cluster at a fixed position. |
-| [`MGC_Noise()`](https://michael.hahsler.net/stream/reference/MGC.md) | Uniform random noise in a given area. |
-| [`MGC_Linear()`](https://michael.hahsler.net/stream/reference/MGC.md) | A cluster whose center, density, and shape parameters are interpolated between **keyframes**. |
+| [`MGC_Static()`](https://michael.hahsler.net/stream/reference/MGC.md) | A stationary cluster with fixed properties (size, position, etc.). |
+| [`MGC_Linear()`](https://michael.hahsler.net/stream/reference/MGC.md) | A cluster whose center, density, and shape parameters are linearly interpolated between **keyframes**. |
 | [`MGC_Function()`](https://michael.hahsler.net/stream/reference/MGC.md) | A cluster where density, center, and shape parameters are **functions of time**. |
 | [`MGC_Random()`](https://michael.hahsler.net/stream/reference/MGC.md) | A cluster that follows a **random walk**. |
+| [`MGC_Noise()`](https://michael.hahsler.net/stream/reference/MGC.md) | Uniform random noise in a given area often used to create individual random outliers. |
 
 The shape of a cluster is given by the `shape` argument, which is a
 function that draws a single point from the cluster. Two shapes are
@@ -363,7 +363,7 @@ other stream to cluster and evaluate, for example with
 Because the generator knows which component produced each point, the
 true labels are available for external evaluation, even when the
 clusters move. See [Evaluating Non-stationary
-Clusters](https://michael.hahsler.net/stream/articles/moving_data.md)
+Clusters](https://michael.hahsler.net/stream/articles/evaluation_non-stationary.md)
 for how to evaluate clustering on moving data and [Clustering data
 streams with
 DBSTREAM](https://michael.hahsler.net/stream/articles/DBSTREAM.md) for a

@@ -48,8 +48,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
-    <li><a class="dropdown-item" href="articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
+    <li><a class="dropdown-item" href="articles/DSD_MG.html">DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation</a></li>
+    <li><a class="dropdown-item" href="articles/evaluation_non-stationary.html">Cluster Evaluation for Non-stationary Data Streams</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -184,11 +184,7 @@
 <span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="do">##                    FM               Jaccard                    PS </span></span>
 <span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="do">##                0.3159                0.1470                0.0541 </span></span>
 <span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="do">##                    vi </span></span>
-<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="do">##                2.2264 </span></span>
-<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="do">## attr(,"type")</span></span>
-<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="do">## [1] "micro"</span></span>
-<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="do">## attr(,"assign")</span></span>
-<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="do">## [1] "micro"</span></span></code></pre></div>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="do">##                2.2264</span></span></code></pre></div>
 <p>Outlier detection using DBSTREAM which uses micro-clusters with a given radius.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dso</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/DSC_DBSTREAM.html">DSOutlier_DBSTREAM</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
@@ -202,11 +198,7 @@
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="do">## Points were assigned to micro-clusters.</span></span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="do">##      numPoints    noiseActual noisePredicted noisePrecision </span></span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="do">##            100              7              7              1 </span></span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="do">## attr(,"type")</span></span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="do">## [1] "micro"</span></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="do">## attr(,"assign")</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="do">## [1] "micro"</span></span></code></pre></div>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="do">##            100              7              7              1</span></span></code></pre></div>
 <p>Preparing complete stream process pipelines that can be run using a single <code><a href="reference/update.html">update()</a></code> call.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pipeline</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/DSD_Gaussians.html">DSD_Gaussians</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">3</span>, d <span class="op">=</span> <span class="fl">2</span>, noise <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>

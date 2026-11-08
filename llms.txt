@@ -159,11 +159,7 @@ evaluate_static(dsc, stream, n = 100)
 ##                    FM               Jaccard                    PS 
 ##                0.3159                0.1470                0.0541 
 ##                    vi 
-##                2.2264 
-## attr(,"type")
-## [1] "micro"
-## attr(,"assign")
-## [1] "micro"
+##                2.2264
 ```
 
 Outlier detection using DBSTREAM which uses micro-clusters with a given
@@ -189,11 +185,7 @@ evaluate_static(dso, stream, n = 100, measure = c("numPoints", "noiseActual", "n
 ## Points were assigned to micro-clusters.
 ## 
 ##      numPoints    noiseActual noisePredicted noisePrecision 
-##            100              7              7              1 
-## attr(,"type")
-## [1] "micro"
-## attr(,"assign")
-## [1] "micro"
+##            100              7              7              1
 ```
 
 Preparing complete stream process pipelines that can be run using a
@@ -512,10 +504,10 @@ IIS-0948893, NSF CMMI 1728612, and NIH R21HG005912.
 
 - [Clustering data streams with
   DBSTREAM](https://michael.hahsler.net/stream/articles/DBSTREAM.md):
-- [The DSD Moving Generator: A flexible Framework to Construct
-  Non-Stationary Data
-  Stream](https://michael.hahsler.net/stream/articles/DSD_MG.md):
-- [Evaluating Non-stationary
-  Clusters](https://michael.hahsler.net/stream/articles/moving_data.md):
+- [DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream
+  for
+  Evaluation](https://michael.hahsler.net/stream/articles/DSD_MG.md):
+- [Cluster Evaluation for Non-stationary Data
+  Streams](https://michael.hahsler.net/stream/articles/evaluation_non-stationary.md):
 - [Getting started with
   stream](https://michael.hahsler.net/stream/articles/stream.md):

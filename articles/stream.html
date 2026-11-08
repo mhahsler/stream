@@ -45,8 +45,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation</a></li>
+    <li><a class="dropdown-item" href="../articles/evaluation_non-stationary.html">Cluster Evaluation for Non-stationary Data Streams</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -409,8 +409,8 @@ travel.</p>
 and DBSTREAM have a decay parameter <code>lambda</code> for this. Larger
 values forget faster. <code><a href="../reference/animate_data.html">animate_data()</a></code> and
 <code><a href="../reference/animate_cluster.html">animate_cluster()</a></code> create animations of a stream and a
-clustering as it develops (see <a href="moving_data.html">Evaluating
-Non-stationary Clusters</a>).</p>
+clustering as it develops (see <a href="evaluation_non-stationary.html">Evaluating Non-stationary
+Clusters</a>).</p>
 <div class="section level3">
 <h3 id="evaluate-over-time-with-prequential-evaluation">Evaluate over time with prequential evaluation<a class="anchor" aria-label="anchor" href="#evaluate-over-time-with-prequential-evaluation"></a>
 </h3>
@@ -443,9 +443,9 @@ is not meaningful. Plot the micro-cluster purity over the stream.</p>
 <p><img src="stream_files/figure-html/plot-evaluation-1.png" class="r-plt" alt="" width="576"></p>
 <p>Purity is lowest around the middle of the stream, where the two true
 clusters overlap, and is higher again once they separate. The vignette
-<a href="moving_data.html">Evaluating Non-stationary Clusters</a>
-compares several algorithms on this stream, uses the adjusted Rand
-index, and shows how to tune the forgetting rate.</p>
+<a href="evaluation_non-stationary.html">Evaluating Non-stationary
+Clusters</a> compares several algorithms on this stream, uses the
+adjusted Rand index, and shows how to tune the forgetting rate.</p>
 </div>
 </div>
 <div class="section level2">
@@ -456,9 +456,9 @@ index, and shows how to tune the forgetting rate.</p>
 <a href="DBSTREAM.html">Clustering data streams with DBSTREAM</a>
 explains micro-clusters and shared-density reclustering.</li>
 <li>
-<a href="moving_data.html">Evaluating Non-stationary Clusters</a>
-compares clustering methods on an evolving stream using prequential
-evaluation.</li>
+<a href="evaluation_non-stationary.html">Evaluating Non-stationary
+Clusters</a> compares clustering methods on an evolving stream using
+prequential evaluation.</li>
 <li>
 <a href="DSD_MG.html">The DSD Moving Generator</a> shows how to
 construct custom evolving streams.</li>

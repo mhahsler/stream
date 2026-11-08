@@ -5,7 +5,15 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Moving Generator Cluster — MGC"><meta name="description" content="Creates an evolving cluster for use as a component of a DSD_MG data stream."><meta property="og:description" content="Creates an evolving cluster for use as a component of a DSD_MG data stream."><meta property="og:image" content="https://michael.hahsler.net/stream/logo.svg"></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Moving Generator Cluster — MGC"><meta name="description" content="Components for building evolving clusters for the DSD_MG data stream
+generator. Each Moving Generator Cluster (MGC) describes a single cluster:
+where it is (its center), how large it is and what shape it has (the shape
+parameters), and how many points it produces (its density). Moving
+components also describe how these properties change over time."><meta property="og:description" content="Components for building evolving clusters for the DSD_MG data stream
+generator. Each Moving Generator Cluster (MGC) describes a single cluster:
+where it is (its center), how large it is and what shape it has (the shape
+parameters), and how many points it produces (its density). Moving
+components also describe how these properties change over time."><meta property="og:image" content="https://michael.hahsler.net/stream/logo.svg"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -26,8 +34,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/DBSTREAM.html">Clustering data streams with DBSTREAM</a></li>
-    <li><a class="dropdown-item" href="../articles/DSD_MG.html">The DSD Moving Generator: A flexible Framework to Construct Non-Stationary Data Stream</a></li>
-    <li><a class="dropdown-item" href="../articles/moving_data.html">Evaluating Non-stationary Clusters</a></li>
+    <li><a class="dropdown-item" href="../articles/DSD_MG.html">DSD_MG: A flexible Framework to Construct Non-Stationary Data Stream for Evaluation</a></li>
+    <li><a class="dropdown-item" href="../articles/evaluation_non-stationary.html">Cluster Evaluation for Non-stationary Data Streams</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -46,7 +54,11 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>Creates an evolving cluster for use as a component of a <a href="DSD_MG.html">DSD_MG</a> data stream.</p>
+    <p>Components for building evolving clusters for the <a href="DSD_MG.html">DSD_MG</a> data stream
+generator. Each Moving Generator Cluster (<code>MGC</code>) describes a single cluster:
+where it is (its center), how large it is and what shape it has (the shape
+parameters), and how many points it produces (its density). Moving
+components also describe how these properties change over time.</p>
     </div>
 
     <div class="section level2">
@@ -85,32 +97,35 @@
 
 
 <dt id="arg-density">density<a class="anchor" aria-label="anchor" href="#arg-density"></a></dt>
-<dd><p>The density of the cluster. For <code>MGC_Function</code>, this
-attribute is a function and defines the density of a cluster (i.e., how many points it creates)
-at each given timestamp.</p></dd>
+<dd><p>The relative density of the cluster, i.e., how many points it
+produces compared to the other components (see Details). For <code>MGC_Function</code>,
+<code>density</code> is a function of time returning the density. For <code>keyframe()</code>
+and <code>add_keyframe()</code> it is the density at the keyframe.</p></dd>
 
 
 <dt id="arg-center">center<a class="anchor" aria-label="anchor" href="#arg-center"></a></dt>
-<dd><p>A list that defines the center of the cluster. The list should
-have a length equal to the dimensionality. For <code>MGC_Function</code>, this
-list consists of functions that define the movement of the cluster. For
-<code>MGC_Random</code>, this attribute defines the beginning location for the
-<code>MGC</code> before it begins moving.</p></dd>
+<dd><p>The center of the cluster as a numeric vector with one value
+per dimension. For <code>MGC_Function</code>, <code>center</code> is a function of time that
+returns such a vector. For <code>MGC_Random</code>, this is the starting location
+of the cluster before it begins to move. For <code>keyframe()</code> and
+<code>add_keyframe()</code> it is the center at the keyframe.</p></dd>
 
 
 <dt id="arg-parameter">parameter<a class="anchor" aria-label="anchor" href="#arg-parameter"></a></dt>
 <dd><p>Parameters for the shape. For the default shape
 <code>Shape_Gaussian</code> the parameter is the standard deviation, one per
-dimension. If a single value is specified then it is recycled for all
-dimensions.</p></dd>
+dimension. For <code>Shape_Block</code>, it is the side length. If a single value is
+specified then it is recycled for all dimensions. For <code>MGC_Function</code>,
+<code>parameter</code> is a function of time returning the parameter. For <code>keyframe()</code>
+and <code>add_keyframe()</code> it is the parameter at the keyframe.</p></dd>
 
 
 <dt id="arg-shape">shape<a class="anchor" aria-label="anchor" href="#arg-shape"></a></dt>
-<dd><p>A function that creates the shape of the cluster. It receives
-the <code>parameter</code> argument described above. Available functions are
-<code>Shape_Gaussian</code> (the parameters are a vector containing standard
-deviations) and <code>Shape_Block</code> (parameters are the dimensions of the
-uniform block).</p></dd>
+<dd><p>A function that creates the shape of the cluster. It is called
+with the arguments <code>center</code> and <code>parameter</code> and returns a single point.
+Available functions are <code>Shape_Gaussian</code> (the parameters are standard
+deviations) and <code>Shape_Block</code> (the parameters are the side lengths of the
+uniform block). See Details for how to define a new shape.</p></dd>
 
 
 <dt id="arg-dimension">dimension<a class="anchor" aria-label="anchor" href="#arg-dimension"></a></dt>
@@ -118,18 +133,20 @@ uniform block).</p></dd>
 
 
 <dt id="arg-keyframelist">keyframelist<a class="anchor" aria-label="anchor" href="#arg-keyframelist"></a></dt>
-<dd><p>a list of keyframes to initialize the <code>MGC_Linear</code>
-object with.</p></dd>
+<dd><p>a list of keyframes created with <code>keyframe()</code> to
+initialize the <code>MGC_Linear</code> object with.</p></dd>
 
 
 <dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
-<dd><p>The time stamp the keyframe should be located or which keyframe
-should be removed.</p></dd>
+<dd><p>The time stamp the keyframe is located at or the time stamp of
+the keyframe that should be removed. Adding a keyframe at an existing time
+replaces the existing keyframe with a warning.</p></dd>
 
 
 <dt id="arg-reset">reset<a class="anchor" aria-label="anchor" href="#arg-reset"></a></dt>
-<dd><p>Should the cluster reset to the first keyframe (time 0) after
-this keyframe is finished?</p></dd>
+<dd><p>Should the trajectory restart at the first keyframe after
+this keyframe is reached? Only the first keyframe with <code>reset = TRUE</code> is
+used.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -137,34 +154,72 @@ this keyframe is finished?</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
-<dd><p>The area in which the noise should appear.</p></dd>
+<dd><p>The area in which the noise should appear as a matrix with one
+row per dimension containing the minimum and maximum, e.g.,
+<code>rbind(c(0, 1), c(-1, 1))</code> for two dimensions.</p></dd>
 
 
 <dt id="arg-randomness">randomness<a class="anchor" aria-label="anchor" href="#arg-randomness"></a></dt>
-<dd><p>The maximum amount the cluster will move during one time
-step.</p></dd>
+<dd><p>The maximum amount the cluster center will move in each
+dimension during one time step (a uniform step in
+<code>[-randomness, randomness]</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p><code>MGC_Static()</code>, <code>MGC_Noise()</code>, <code>MGC_Linear()</code>, <code>MGC_Function()</code> and
+<code>MGC_Random()</code> return an <code>MGC</code> object that can be added to a <a href="DSD_MG.html">DSD_MG</a>
+stream. <code>keyframe()</code> returns a keyframe (a list), <code>get_keyframes()</code> returns
+a data.frame with the keyframes of an <code>MGC_Linear</code> object, and <code>add_keyframe()</code>
+and <code>remove_keyframe()</code> modify the <code>MGC_Linear</code> object (which is a mutable
+object, so a stream that contains it is also affected).
+<code>Shape_Gaussian()</code> and <code>Shape_Block()</code> return a single point as a numeric
+vector.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>An <code>MGC</code> describes a single cluster for use as a component in a <a href="DSD_MG.html">DSD_MG</a>.
-Different MGCs allow users to express
-different cluster behaviors within a single data stream. Static, (i.e., not moving)
-clusters are defined as:</p><ul><li><p><code>MGC_Static</code> cluster positions are fixed</p></li>
-<li><p><code>MGC_Noise</code> allows users to add random noise.</p></li>
-</ul><p>Moving (evolving) clusters are defined as:</p><ul><li><p><code>MGC_Linear</code> creates an evolving cluster whose behavior is determined by
-keyframes. Several keyframe
-functions are provided to create, add and remove keyframes.
-See Examples section for details.</p></li>
+    <p>A <a href="DSD_MG.html">DSD_MG</a> stream is assembled from a list of <code>MGC</code>s. Mixing components
+with different behavior creates complex evolving streams from simple
+building blocks. All components of a stream must have the stream's
+dimensionality.</p>
+<p>Static (i.e., not moving) components are:</p><ul><li><p><code>MGC_Static</code> is a stationary cluster with fixed density, center and
+shape parameters.</p></li>
+<li><p><code>MGC_Noise</code> produces uniform random noise in the area given by <code>range</code>.
+It is often used to create individual random outliers.</p></li>
+</ul><p>Moving (evolving) components are:</p><ul><li><p><code>MGC_Linear</code> creates an evolving cluster whose density, center and shape
+parameters are linearly interpolated between keyframes. Before its first
+keyframe the component produces no points. After its last keyframe it
+keeps the attributes of that keyframe, unless a keyframe with
+<code>reset = TRUE</code> makes the trajectory repeat.
+<code>keyframe()</code> creates a keyframe (for the <code>keyframelist</code> argument),
+<code>add_keyframe()</code> and <code>remove_keyframe()</code> modify the keyframes of an
+existing component, and <code>get_keyframes()</code> returns them as a data.frame.</p></li>
 <li><p><code>MGC_Function</code> allows users to specify <code>density</code>, <code>center</code>, and <code>parameter</code>
-as a function of time.</p></li>
+as functions of time. This allows arbitrary trajectories.</p></li>
 <li><p><code>MGC_Random</code> creates a cluster that follows a random walk.</p></li>
-</ul><p>Cluster shapes can be specified using the functions:</p><ul><li><p><code>Shape_Gaussian</code></p></li>
-<li><p><code>Shape_Block</code></p></li>
-</ul><p>New shapes can be defined as a function with parameters <code>center</code> and <code>parameter</code> that returns a single
-point. Here is an example:</p>
+</ul><p><strong>Time and density.</strong> Generation in <a href="DSD_MG.html">DSD_MG</a> is driven by a generator time
+that advances as points are drawn. To produce a point, <code>DSD_MG</code> chooses a
+component with a probability proportional to the current densities of all
+components and then draws a point from the component's shape. The
+density is therefore a relative value that determines the chance of choosing
+a component and, through the total density, how fast time advances: with a
+total density of 100, approximately 100 points advance the generator by one
+time unit. Time-dependent arguments (functions and keyframes) refer to this
+generator time, which starts at 1.</p>
+<p><strong>Cluster shapes.</strong> The shape of a cluster is given by the <code>shape</code> argument.
+Available shapes are:</p><ul><li><p><code>Shape_Gaussian</code> (the default) draws from a multivariate normal
+distribution with independent dimensions. <code>parameter</code> is the standard
+deviation, one per dimension.</p></li>
+<li><p><code>Shape_Block</code> draws uniformly from a block (hyper-rectangle) centered at
+<code>center</code>. <code>parameter</code> gives the side length for each dimension.</p></li>
+</ul><p>If a single value is given as <code>parameter</code>, it is recycled for all dimensions.</p>
+<p>New shapes can be defined as a function with arguments <code>center</code> and
+<code>parameter</code> that returns a single point (a numeric vector with the
+dimensionality of the stream). Here is the definition of the Gaussian
+shape as an example:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>Shape_Gaussian <span class="ot">&lt;-</span> <span class="cf">function</span>(center, parameter)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>   <span class="fu">rnorm</span>(<span class="fu">length</span>(center), <span class="at">mean =</span> center, <span class="at">sd =</span> parameter)</span></code></pre><p></p></div>
+<p>See the examples below for a custom ring shape in two dimensions.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -269,6 +324,21 @@ a <a href="DSD.html">DSD</a>.</p></div>
 <span class="r-in"><span>             xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>             horizon <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### define your own shape: a ring in two dimensions where `parameter` is the</span></span></span>
+<span class="r-in"><span><span class="co">### radius. Points are spread uniformly around the center with a little noise.</span></span></span>
+<span class="r-in"><span><span class="va">Shape_Ring</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">center</span>, <span class="va">parameter</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">angle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">center</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, mean <span class="op">=</span> <span class="va">parameter</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, sd <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">MGC_Static</span><span class="op">(</span>density <span class="op">=</span> <span class="fl">50</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
+<span class="r-in"><span>    shape <span class="op">=</span> <span class="va">Shape_Ring</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">MGC_Static</span><span class="op">(</span>density <span class="op">=</span> <span class="fl">25</span>, center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, parameter <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.DSD.html">plot</a></span><span class="op">(</span><span class="va">stream</span>, n <span class="op">=</span> <span class="fl">500</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="MGC-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### two fixed and a moving cluster</span></span></span>
 <span class="r-in"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="DSD_MG.html">DSD_MG</a></span><span class="op">(</span>dimension <span class="op">=</span> <span class="fl">2</span>,</span></span>

@@ -20,12 +20,13 @@
 Source:
 [`inst/CITATION`](https://github.com/mhahsler/stream/blob/master/inst/CITATION)
 
-Hahsler M (????). *stream: Infrastructure for Data Stream Mining*. R
+Hahsler M (2026). *stream: Infrastructure for Data Stream Mining*. R
 package version 2.0.7, <https://github.com/mhahsler/stream>.
 
     @Manual{,
       title = {stream: Infrastructure for Data Stream Mining},
       author = {Michael Hahsler},
+      year = {2026},
       note = {R package version 2.0.7},
       url = {https://github.com/mhahsler/stream},
     }

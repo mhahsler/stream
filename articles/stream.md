@@ -396,7 +396,7 @@ and
 [`animate_cluster()`](https://michael.hahsler.net/stream/reference/animate_cluster.md)
 create animations of a stream and a clustering as it develops (see
 [Evaluating Non-stationary
-Clusters](https://michael.hahsler.net/stream/articles/moving_data.md)).
+Clusters](https://michael.hahsler.net/stream/articles/evaluation_non-stationary.md)).
 
 ### Evaluate over time with prequential evaluation
 
@@ -439,7 +439,7 @@ plot(ev[, "points"], ev[, "purity"], type = "l",
 Purity is lowest around the middle of the stream, where the two true
 clusters overlap, and is higher again once they separate. The vignette
 [Evaluating Non-stationary
-Clusters](https://michael.hahsler.net/stream/articles/moving_data.md)
+Clusters](https://michael.hahsler.net/stream/articles/evaluation_non-stationary.md)
 compares several algorithms on this stream, uses the adjusted Rand
 index, and shows how to tune the forgetting rate.
 
@@ -449,7 +449,7 @@ index, and shows how to tune the forgetting rate.
   DBSTREAM](https://michael.hahsler.net/stream/articles/DBSTREAM.md)
   explains micro-clusters and shared-density reclustering.
 - [Evaluating Non-stationary
-  Clusters](https://michael.hahsler.net/stream/articles/moving_data.md)
+  Clusters](https://michael.hahsler.net/stream/articles/evaluation_non-stationary.md)
   compares clustering methods on an evolving stream using prequential
   evaluation.
 - [The DSD Moving
