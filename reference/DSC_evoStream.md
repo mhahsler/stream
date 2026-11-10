@@ -155,12 +155,12 @@ get_weights(evoStream, type = "micro")
 get_centers(evoStream, type = "macro")
 #>          X1        X2
 #> 1 0.4351887 0.7680192
-#> 2 0.5355163 0.4316070
-#> 3 0.9296218 0.3876597
+#> 2 0.8490315 0.3876597
+#> 3 0.5355163 0.4316070
 
 ## macro weights
 get_weights(evoStream, type = "macro")
-#> [1] 243.3549 215.1682 189.1393
+#> [1] 243.3549 189.1393 215.1682
 
 ## plot result
 reset_stream(stream)
@@ -179,5 +179,5 @@ plot(evoStream, stream)
 
 ## get assignment of micro to macro clusters
 microToMacro(evoStream)
-#>  [1] 1 2 3 2 1 1 3 3 1 1 2 2 2 3
+#>  [1] 1 3 2 3 1 1 2 2 1 1 3 3 3 2
 ```

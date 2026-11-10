@@ -18,7 +18,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/mhahsler/stream/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/mhahsler/stream/blob/stream_2.0.7/inst/CITATION)
 
 Hahsler M (2026). *stream: Infrastructure for Data Stream Mining*. R
 package version 2.0.7, <https://github.com/mhahsler/stream>.
